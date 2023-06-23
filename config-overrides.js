@@ -9,7 +9,8 @@ module.exports = function override(config) {
       "https": require.resolve("https-browserify"),
       "path": require.resolve("path-browserify"),
       "os": require.resolve("os-browserify"), 
-      "url": require.resolve("url") 
+      "url": require.resolve("url"),
+      'process/browser': require.resolve('process/browser'),
       }) 
    config.resolve.fallback = fallback; 
    config.plugins = (config.plugins || []).concat([ 
