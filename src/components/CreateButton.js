@@ -1,26 +1,49 @@
 import React from 'react'
 
-const CreateButton = ({ isCreating, mintHandler, isMinting, image, url }) => {
+const CreateButton = ({ isCreating, mintHandler, isMinting, image, url, OnChangeFile, isUploading, fileURL, setChecked, checked }) => {
   return (
     <div
     style={{
       display: "flex",
       width: "100%",
       justifyContent: "space-between",
-      margin: "15px 0px",
+      alignItems: "center",
+      // margin: "15px 0px",
     }}
     className=''
   >
+  
+    <div>
+
+{/* <input 
+      onChange={OnChangeFile}
+      type={"file"}
+      accept="image/*"
+      content=""
+      // value={isCreating ? "Uploading..." : "Upload"}
+      // className={ 
+      //   isCreating 
+      //   ? "disabledButton" 
+      //   : isMinting ?
+      //   "disabledButton"
+      //   : "uploadButton"}
+    ></input> */}
+    
     <input
-      type="submit"
-      value={isCreating ? "Creating Art..." : "Create"}
-      className={ 
-        isCreating 
-        ? "waitingButton" 
-        : isMinting ?
-        "disabledButton"
-        : ""}
-    ></input>
+    type="submit"
+    value={isCreating ? "Creating Art..." : "Create"}
+    className={ 
+      isCreating 
+      ? "waitingButton" 
+      : isMinting ?
+      "disabledButton"
+      : ""}
+  ></input>
+
+</div>
+
+
+
     <input
     onClick={mintHandler}
     type="submit"
@@ -28,9 +51,9 @@ const CreateButton = ({ isCreating, mintHandler, isMinting, image, url }) => {
     className={
       isMinting 
         ? "waitingButton"
-        : !image || url || isCreating
+        : isCreating 
         ? "disabledButton"
-        : ""
+        : "activeButtom"
     }
   ></input>
   </div>

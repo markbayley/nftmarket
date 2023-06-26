@@ -11,7 +11,8 @@ const Thumbnails = ({
   isMinting,
   message,
   isLoading,
-  setThumbs
+  setThumbs,
+  currentAccount
 }) => {
   const [lgShow, setLgShow] = useState(false);
   const [modalData, setModalData] = useState([]);
@@ -23,7 +24,7 @@ const Thumbnails = ({
 
   return (
     <>
-      <div className="heading">Minted Artblocks</div>
+      {/* <div className="heading">Minted Artblocks</div> */}
 
       <div className="thumbnails">
         {thumbs.length === 0 ? (
@@ -31,7 +32,7 @@ const Thumbnails = ({
         ) : (
           thumbs
             .map((item, index) => (
-              item.account === account &&
+              item.account === currentAccount &&
               <div
                 className="thumbnail"
                 onClick={() => {
@@ -66,7 +67,7 @@ const Thumbnails = ({
                     </div>
                   </div>
                 ) : 
-                  isLoading &&  
+                  // isLoading &&  
                     <div>
                       <img
                         src={item.url ? item.url : placeholder}

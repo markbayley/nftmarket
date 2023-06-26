@@ -14,11 +14,11 @@ function NFTTile (data) {
 
     return (
         <Link to={newTo}>
-        <div className="m-6 flex flex-col items-start rounded-lg md:w-72 shadow-2xl">
-            <img src={IPFSUrl} alt="" className="w-72 h-72 rounded-lg object-cover" crossOrigin="anonymous" />
-            <div className= "flex text-white  p-2   pt-5 -mt-4">
-                <p className=" capitalize">{data.data.name}  
-                &nbsp; &nbsp;"{data.data.description}"
+        <div className="m-6 flex flex-col items-center rounded-lg md:w-72 shadow-2xl">
+            <img src={IPFSUrl} alt=""className="w-72 h-72 rounded-lg object-cover" crossOrigin="anonymous" />
+            <div className= "title">
+                <p className=" capitalize ">{data.data.name}  
+                &nbsp; &nbsp;{data.data.price}&nbsp;Eth
                 </p>
               
             </div>

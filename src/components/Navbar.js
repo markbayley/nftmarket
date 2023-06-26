@@ -1,5 +1,6 @@
 import logo from "../logo_3.png";
 import fullLogo from "../full_logo.png";
+import inblockLogo from "../inblocklogolight.png";
 import {
   BrowserRouter as Router,
   Switch,
@@ -16,17 +17,17 @@ import { AiOutlineClose } from "react-icons/ai";
 
 // import logo from "./../images/logo.png";
 
-const NavBarItem = ({ title, classprops, link }) => (
+const NavBarItem = ({ title, classprops, link, setActiveLink, activeLink }) => (
  
 
   <>
-   <Link to={link}>
+   <Link to={link} onClick={() => setActiveLink(title)}>
   <li className={`mx-4 cursor-pointer hover:border-b-2  ${classprops}`}>
    {title}
   </li>
   </Link>
 </>
- 
+
 );
 
 // {location.pathname === "/sellNFT" ?
@@ -45,6 +46,8 @@ const Navbar = () => {
   const [connected, toggleConnect] = useState(false);
   const location = useLocation();
   const [currAddress, updateAddress] = useState("0x");
+
+  const [activeLink, setActiveLink] = useState("Send")
 
   async function getAddress() {
     const ethers = require("ethers");
@@ -97,18 +100,21 @@ const Navbar = () => {
     });
   });
 
+  console.log(activeLink, location.pathname.slice(1,6))
+
   return (
     <nav className="w-full flex md:justify-center justify-between items-center p-4 gradient-bg-services ">
       <Link
         to="/"
         className="md:flex-[0.5] flex-initial justify-center items-center"
       >
-        <img src={fullLogo} alt="logo" className="w-32 cursor-pointer" />
+        <img src={inblockLogo} alt="logo" className="w-32 cursor-pointer" />
       </Link>
 
       <ul className="text-white md:flex hidden list-none flex-row justify-between items-center flex-initial">
-        {["Exchange", "Upload", "Create", "Wallet"].map((item, index) => (
-          <NavBarItem key={item + index} title={item} link={"/" + item} />
+        {["Send", "Trade", "Create", "Wallet"].map((item, index) => (
+          <NavBarItem key={item + index} title={item} link={"/" + item} activelink={activeLink}
+          setActiveLink={setActiveLink} />
         ))}
 
         <li>
@@ -144,20 +150,21 @@ const Navbar = () => {
             <li className="text-xl w-full my-2">
               <AiOutlineClose onClick={() => setToggleMenu(false)} />
             </li>
-            {["Exchange", "Upload", "Create", "Wallet"].map(
+            {["Send", "Trade", "Create", "Wallet"].map(
               (item, index) => (
                 <NavBarItem
                   key={item + index}
                   title={item}
                   classprops="my-2 text-lg"
+                 
                 />
               )
             )}
           </ul>
         )}
-            <div className='text-white text-bold text-right mr-10 text-sm'>
+            {/* <div className='text-white text-bold text-right mr-10 text-sm'>
           {currAddress !== "0x" ? "":"Not Connected. Please login to view NFTs"} {currAddress !== "0x" ? (currAddress.substring(0,5)+'...'+(currAddress.substring(38,42))):""}
-        </div>
+        </div> */}
       </div>
   
     </nav>

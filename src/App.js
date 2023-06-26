@@ -12,6 +12,7 @@ import Navbar from "./components/Navbar";
 import Services from "./components/Services";
 import { Transactions } from "./components";
 import AIGenerator from "./components/AIGenerator";
+import Send from "./components/Send";
 
 
 // import { Footer, Navbar, Services, Transactions, Welcome } from "./components"
@@ -35,14 +36,14 @@ function App() {
               </div>
             }
           />
-
+          <Route path="/Send" element={ <div className="gradient-bg-welcome"><Welcome /></div>} />
           <Route path="/nftPage/:tokenId" element={<NFTPage />} />
           <Route path="/Wallet" element={<Profile />} />
-          <Route path="/Upload" element={<SellNFT />} />
+          {/* <Route path="/Upload" element={<SellNFT />} /> */}
 
           <Route path="/Create" element={<AIGenerator />} />
 
-          <Route path="/Exchange" element={<Marketplace />} />
+          <Route path="/Trade" element={<Marketplace />} />
         </Routes>
       </BrowserRouter>
       <Footer />

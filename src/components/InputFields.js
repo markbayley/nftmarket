@@ -335,7 +335,7 @@ const mediums = [
 
 const subjects = [
   {
-    name: "Subjects",
+    name: "Category",
   },
   {
     name: "Cute Animal",
@@ -460,6 +460,9 @@ const InputFields = ({
   setActive,
   setKeyword,
   keyword,
+  handleNftData,
+  nftData,
+  isCreating, mintHandler, isMinting, image, url, OnChangeFile, isUploading, fileURL, setChecked, checked 
 }) => {
   const patternWords = active.filter((word) =>
     patterns.some((pattern) => pattern.name === word)
@@ -493,7 +496,7 @@ const InputFields = ({
     let title = e.target.id
     setActive([...active, e.target.value]);
     setFormData({ ...formData,  [title]: e.target.value });
-    console.log(active);
+    // console.log(active);
   };
 
   const handleChecked = (e) => {
@@ -508,12 +511,12 @@ const InputFields = ({
     }
   };
 
- console.log("formDataIF", formData)
+//  console.log("formDataIF", formData)
 
   return (
-    <div className="p-5 mt-8  w-full flex flex-col justify-start items-start blue-glassmorphism" >
+    <div className="p-5 my-8  w-full flex flex-col justify-start items-start blue-glassmorphism " >
       <div className="select ">
-        <input className="my-2 w-half rounded-sm p-2 outline-none bg-transparent text-white border-none text-sm white-glassmorphism"
+        <input className="my-2 w-half rounded-sm p-2 outline-none bg-transparent text-white border-none white-glassmorphism"
           required
           type="text"
           placeholder="NFT Title..."
@@ -522,7 +525,7 @@ const InputFields = ({
             setFormData({ ...formData, title: e.target.value });
           }}
         ></input>
-        <input className="my-2 w-half rounded-sm p-2 outline-none bg-transparent text-white border-none text-sm white-glassmorphism"
+        <input className="my-2 w-half rounded-sm p-2 outline-none bg-transparent text-white border-none white-glassmorphism "
           required
           type="text"
           placeholder="NFT Description..."
@@ -534,7 +537,7 @@ const InputFields = ({
       </div>
 
       <div className="check">
-        <select value={style} id="style" onChange={(id) => handleFormChange(id)} className="text-white outline-none blue-glassmorphism">
+        <select value={style} id="style" onChange={(id) => handleFormChange(id)} className="text-white outline-none blue-glassmorphism ">
           {styles.map((style, index) => (
             <option key={index} value={style.name} >
               {style.name}
@@ -633,7 +636,7 @@ const InputFields = ({
       </div>
 
       <div className="check">
-        <select value={subject} id="subject" onChange={(id) => handleFormChange(id)} className="text-white outline-none blue-glassmorphism">
+        <select value={subject.name} id="subject" onChange={(id) => handleFormChange(id)} className="text-white outline-none blue-glassmorphism">
           {subjects.map((subject, index) => (
             <option key={index} value={subject.name}>
               {subject.name}
@@ -641,17 +644,32 @@ const InputFields = ({
           ))}
         </select>
 
-        <select value={medium} id="medium" onChange={(id) => handleFormChange(id)} className="text-white outline-none blue-glassmorphism" >
+        {/* <select value={medium} id="medium"   name="medium" onChange={handleNftData}
+          // handleFormChange(id)
+          className="text-white outline-none blue-glassmorphism" >
           {mediums.map((medium, index) => (
             <option key={index} value={medium.name}>
               {medium.name}
             </option>
           ))}
-        </select>
+        </select> */}
+           <div className="">
+                  <input
+                    className="ml-3 p-3  md:w-96 w-40 rounded-lg outline-none shadow-2xl text-white border-none blue-glassmorphism"
+                    type="number"
+                    placeholder="Price 0.01 ETH"
+                    step="0.01"
+                    value={formData.price}
+                    onChange={(e) =>
+                     setFormData({ ...formData, price: e.target.value })
+                    }
+                  ></input>
+                </div>
+             
       </div>
 
       <div className="check">
-        <div className="tabs">
+        {/* <div className="tabs">
           {subjectWords.slice(0, 4).map((item, index) => (
             <button
               key={index}
@@ -662,10 +680,10 @@ const InputFields = ({
               }`}
             >
               {item}
-              {/* <span className="icon">+</span>  */}
+           
             </button>
           ))}
-        </div>
+        </div> */}
 
         <div className=" tabs">
           {mediumWords.slice(0, 4).map((item, index) => (
@@ -687,7 +705,19 @@ const InputFields = ({
      
 
       </div>
-
+    <CreateButton
+              isCreating={isCreating}
+              isMinting={isMinting}
+              image={image}
+              mintHandler={mintHandler}
+              url={url}
+              nftData={nftData}
+              OnChangeFile={OnChangeFile}
+              isUploading={isUploading}
+              fileURL={fileURL}
+              setChecked={setChecked}
+              checked={checked}
+            />
      
 
       {/* <div className="check tabs">

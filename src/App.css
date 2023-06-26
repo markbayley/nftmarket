@@ -21,6 +21,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+body::-webkit-scrollbar {
+  width: 8px; /* width of the entire scrollbar */
+}
+
+body::-webkit-scrollbar-track {
+  background: #1c1a3f; /* color of the tracking area */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #2b2865; /* color of the scroll thumb */
+  border-radius: 10px; /* roundness of the scroll thumb */
+  /* border: 1px solid orange;   */
+}
+
 a {
   /* color: white; */
   color: var(--clr-orange);
@@ -81,7 +95,6 @@ nav {
   transition: all 250ms ease;
 }
 
-
 .nav__connect:hover {
   background-color: var(--clr-blue-2);
 }
@@ -108,25 +121,44 @@ nav {
   display: flex;
 } */
 
-
 /* ------------------------------------------------------ */
 /* -- FORM -- */
+.form {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: start;
+}
 
 form {
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
   flex-direction: column;
-  margin: 0 25px;
+ 
 }
 
-.form {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 420px;
-  /* margin: 10px !important; */
+input::file-selector-button {
+  background-color: var(--clr-blue);
+  color: var(--clr-white);
+  width: 120px;
+  /* height: 50px; */
+  margin: 10px 20px;
+  padding: 10px;
+  border: none;
+  border-radius: 7px;
+  font-family: "Play";
+  /* font-size: 1.10em; */
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 250ms ease;
 }
+input::file-selector-button:hover {
+  background-position-x: 100%;
+  background-color: var(--clr-blue-2);
+}
+
+
+
+
+
 
 form input[type="text"] {
   min-width: 25vw;
@@ -143,21 +175,17 @@ input + input {
 }
 
 form input[type="submit"] {
-  background-color: var(--clr-orange);
+  background-color: var(--clr-blue);
   color: var(--clr-white);
-
   width: 120px;
   /* height: 50px; */
   margin: 10px 20px;
   padding: 10px;
-
   border: none;
-  border-radius: 24px;
-
+  border-radius: 7px;
   font-family: "Play";
   /* font-size: 1.10em; */
   font-weight: 400;
-
   cursor: pointer;
   transition: all 250ms ease;
 }
@@ -187,8 +215,6 @@ select {
 select + select {
   margin-left: 10px;
 }
-
-
 
 .check {
   display: flex;
@@ -258,7 +284,7 @@ select + select {
 }
 
 .colourButton {
-  /* background-color: var(--clr-blue); */
+  background-color: var(--clr-blue);
   color: white;
   height: 30px;
   font-size: 0.8em;
@@ -271,7 +297,7 @@ select + select {
 
 .disabledButton {
   cursor: not-allowed !important;
-  background-color: lightgray !important;
+  background-color: gray !important;
 }
 
 button {
@@ -285,9 +311,6 @@ button {
   border-radius: 5px;
 }
 
-button + button {
-  /* margin-left: 10px; */
-}
 
 button:hover {
   background-color: var(--clr-blue-2);
@@ -295,58 +318,7 @@ button:hover {
   transition: all 250ms ease;
 }
 
-.button1 {
-  background-color: var(--clr-blue);
-  color: #fff;
-}
-.button2 {
-  background-color: var(--clr-blue);
-  color: #fff;
-}
-.button3 {
-  background-color: var(--clr-blue);
-  color: #fff;
-}
-.button4 {
-  background-color: var(--clr-blue);
-  color: #fff;
-}
-.btn {
-  background-color: var(--clr-blue);
-  color: #fff;
-}
 
-.icon {
-  width: 20px;
-  height: 10px;
-  /* background-color: white; */
-  border: 1px solid gray;
-  border-radius: 5px;
-  padding: 0px 5px;
-  margin: 0px 0px 20px 0px;
-  background-color: #f8b817;
-  color: red !important;
-}
-
-
-
-.color-square {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  margin-right: 5px;
-  /* border: 1px solid #000000; */
-}
-
-
-/* .icon:hover {
-  width: 200px;
-  color: black;
-  background-color: white;
-  border: 1px solid white;
-  padding: 0px;
-  margin: 0px;
-} */
 
 /* ------------------------------------------------------ */
 /* -- IMAGE -- */
@@ -354,9 +326,9 @@ button:hover {
 .thumbnails {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  /* justify-content: center; */
   gap: 20px;
-  margin: 20px;
+  padding: 20px;
 }
 
 /* .thumbnails::after {
@@ -367,12 +339,9 @@ button:hover {
 
 .thumbnails > .thumbnail {
   flex-basis: 300px;
-
   position: relative;
   cursor: pointer;
-
   text-transform: capitalize;
-  /* border: 2px solid lightgray; */
   border-radius: 5px;
 }
 
@@ -385,6 +354,43 @@ button:hover {
   cursor: pointer;
 }
 
+.mainimage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex-basis: 350px;
+  margin-top: 35px;
+}
+
+.mainimage > .image {
+  width: 100%;
+  position: relative;
+  cursor: pointer;
+  text-transform: capitalize;
+  border-radius: 15px;
+}
+
+.mainimage .image img {
+  object-fit: cover;
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+  border-radius: 5px;
+}
+
+
+.spinner {
+  width: 350px;
+  height: 350px; 
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  flex-direction: column; 
+  border-radius: 5px;
+}
+
+
 .overlay {
   position: absolute;
   width: 100%;
@@ -392,8 +398,9 @@ button:hover {
   top: 0;
   left: 0;
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items: start;
+  justify-content: start;
+  /* border: 5px solid green; */
 }
 
 .overlay > .points {
@@ -423,6 +430,17 @@ button:hover {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  border: 1px solid red;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .loading {
@@ -440,31 +458,14 @@ button:hover {
   }
 }
 
-.placeholder-image {
-  width: 350px;
-  /* border: 2px solid var(--clr-orange); */
-}
-
-.image__placeholder p {
-  margin: 0 10px;
-}
-
-.text__placeholder {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-  width: 90vw;
-}
-
 /* ------------------------------------------------------ */
-
-
 
 @media screen and (max-width: 835px) {
   .form {
     flex-direction: column;
+    align-items: center;
   }
+ 
   form input[type="text"] {
     max-width: 48%;
   }
@@ -476,11 +477,8 @@ button:hover {
   }
 }
 
-
 @media screen and (min-width: 835px) {
-
   #mobile-menu {
     display: none;
   }
-
 }

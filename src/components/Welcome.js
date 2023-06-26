@@ -5,7 +5,7 @@ import { BsInfoCircle } from "react-icons/bs";
 
 import { TransactionContext } from "../context/TransactionContext";
 import { shortenAddress } from "../utils/shortenAddress";
-import Loader  from "./Loader";
+import Loader from "./Loader";
 import Transactions from "./Transactions";
 
 // const companyCommonStyles = "min-h-[70px] sm:px-0 px-2 sm:min-w-[120px] flex justify-center items-center border-[0.5px] border-gray-400 text-sm font-light text-white";
@@ -22,7 +22,17 @@ const Input = ({ placeholder, name, type, value, handleChange }) => (
 );
 
 const Welcome = () => {
-  const { currentAccount, connectWallet, handleChange, sendTransaction, formData, isLoading, transactions, dummyData } = useContext(TransactionContext);
+  const {
+    currentAccount,
+    walletBalance,
+    connectWallet,
+    handleChange,
+    sendTransaction,
+    formData,
+    isLoading,
+    transactions,
+    dummyData,
+  } = useContext(TransactionContext);
 
   const handleSubmit = (e) => {
     const { addressTo, amount, keyword, message } = formData;
@@ -34,59 +44,68 @@ const Welcome = () => {
     sendTransaction();
   };
 
-  console.log("transactions", transactions[0].addressTo)
-  const sender = transactions[0].addressFrom
-  const receiver = transactions[0].addressTo
-  const amount = transactions[0].amount
-  const text = transactions[0].message
+  // console.log("transactions", transactions[0].addressTo)
+  // const sender = transactions[0].addressFrom;
+  // const receiver = transactions[0].addressTo;
+  // const amount = transactions[0].amount;
+  // const text = transactions[0].message;
 
   return (
-    <div className="flex w-full justify-center items-center">
+    <div className="flex w-full justify-center items-center gradient-bg-transactions">
       <div className="items-start flex-col justify-between md:p-10 px-4">
-      <h1 className="text-3xl sm:text-5xl text-white text-gradient py-1">
-            Send Crypto 
-          </h1>
-             <p className="text-left my-3 text-white font-light md:w-9/12 w-11/12 text-base">
-            Explore the crypto world. <br />Buy and sell cryptocurrencies easily on Krypto.
-          </p>
-
-
-
+        <h1 className="text-3xl sm:text-5xl text-white text-gradient py-1">
+          Send Crypto
+        </h1>
+        <p className="text-left my-3 text-white font-light md:w-9/12 w-11/12 text-base">
+          Explore the crypto world. <br />
+          Buy and sell cryptocurrencies easily on Krypto.
+        </p>
 
         <div className="flex flex-wrap justify-start items-start flex-row mf:mr-10">
-          
-       
-    
-
-
-
-
           <div className="p-6 sm:w-96  w-full flex flex-col justify-center items-center blue-glassmorphism">
+            <Input
+              placeholder="Address To"
+              name="addressTo"
+              type="text"
+              handleChange={handleChange}
+            />
+            <Input
+              placeholder="Amount (ETH)"
+              name="amount"
+              type="number"
+              handleChange={handleChange}
+            />
+            <Input
+              placeholder="Keyword (Gif)"
+              name="keyword"
+              type="text"
+              handleChange={handleChange}
+            />
+            <Input
+              placeholder="Enter Message"
+              name="message"
+              type="text"
+              handleChange={handleChange}
+            />
 
-         <Input placeholder="Address To" name="addressTo" type="text" handleChange={handleChange} />
-         <Input placeholder="Amount (ETH)" name="amount" type="number"  handleChange={handleChange}/>
-         <Input placeholder="Keyword (Gif)" name="keyword" type="text" handleChange={handleChange} />
-         <Input placeholder="Enter Message" name="message" type="text" handleChange={handleChange} /> 
-  
-  
-         {/* <div className="h-[1px] w-full bg-gray-400 my-2" /> */}
+            {/* <div className="h-[1px] w-full bg-gray-400 my-2" /> */}
 
-         {isLoading
-           ? <Loader />
-           : (
-             <button
-               type="button"
-               onClick={handleSubmit}
-               className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] hover:bg-[#3d4f7c] rounded-full cursor-pointer"
-             >
-               Send now
-             </button>
-            )}  
-       </div>
+            {isLoading ? (
+              <Loader />
+            ) : (
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] hover:bg-[#3d4f7c] rounded-full cursor-pointer"
+              >
+                Send now
+              </button>
+            )}
+          </div>
 
-{/* //card div */}
-            
-       {/* <div className="py-1 sm:w-96 w-full flex flex-col justify-start items-center "> */}
+          {/* //card div */}
+
+          {/* <div className="py-1 sm:w-96 w-full flex flex-col justify-start items-center "> */}
 
           <div className=" p-5 mt-3 sm:w-96 h-48 w-full lg:h-56 lg:mx-3 lg:mt-0 flex justify-end items-start flex-col rounded-xl eth-card .white-glassmorphism ">
             <div className="flex justify-between flex-col w-full h-full">
@@ -101,20 +120,25 @@ const Welcome = () => {
                   {shortenAddress(currentAccount)}
                 </p>
                 <p className="text-white font-semibold text-lg mt-1">
-                  Ethereum
+                {Math.round((walletBalance + Number.EPSILON) * 100) / 100 + " "} Ethereum
                 </p>
               </div>
             </div>
 
-            <div className=" text-white"> { "You sent" + " " + amount + " " + "Eth to" + " " + shortenAddress(receiver)} </div>
+            {/* <div className=" text-white">
+              {" "}
+              {"You sent" +
+                " " +
+                amount +
+                " " +
+                "Eth to" +
+                " " +
+                shortenAddress(receiver)}{" "}
+            </div> */}
           </div>
-         
-       
-    
         </div>
 
-  
-          {/* <div className="grid sm:grid-cols-3 grid-cols-2 w-full mt-10">
+        {/* <div className="grid sm:grid-cols-3 grid-cols-2 w-full mt-10">
             <div className={`rounded-tl-2xl ${companyCommonStyles}`}>
               Reliability
             </div>
@@ -130,8 +154,8 @@ const Welcome = () => {
               Blockchain
             </div>
           </div>  */}
-         {/* <div className="h-[1px] w-full bg-gray-400 my-2" /> */}
-         {/* {!currentAccount ? 
+        {/* <div className="h-[1px] w-full bg-gray-400 my-2" /> */}
+        {/* {!currentAccount ? 
             <button
               type="button"
               onClick={connectWallet}
@@ -154,21 +178,14 @@ const Welcome = () => {
             </p>
           </button> 
            }   */}
-     
-    
 
-     
-
-      
-
-   
         {/* </div> */}
 
         <div className="flex flex-col flex-1 items-center justify-start w-full mf:mt-0 mt-10">
-        <p className="text-left my-3 text-white font-light md:w-9/12 w-11/12 text-base">
-            Explore the crypto world. Buy and sell cryptocurrencies easily on Krypto.
+          <p className="text-left my-3 text-white font-light md:w-9/12 w-11/12 text-base">
+            Explore the crypto world. Buy and sell cryptocurrencies easily on
+            Krypto.
           </p>
-          
         </div>
       </div>
     </div>
