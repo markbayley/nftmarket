@@ -6,6 +6,8 @@ import { useContext, useEffect, useState } from "react";
 import { GetIpfsUrlFromPinata } from "../utils";
 import { TransactionContext } from "../context/TransactionContext";
 
+import marketDataTest from "../utils/marketDataTest";
+
 export default function Marketplace() {
   const { getAllNFTs, marketData } = useContext(TransactionContext);
 
@@ -42,12 +44,13 @@ export default function Marketplace() {
     },
   ];
 
-  useEffect(() => {
-    getAllNFTs();
-  }, [marketData]);
+  // useEffect(() => {
+  //   getAllNFTs();
+  // }, [marketData]);
+  console.log("marketData", marketData)
 
   return (
-    <div className="gradient-bg-welcome" style={{ minHeight: "100vh" }}>
+    <div className="gradient-bg-services" >
       <div className="w-half items-start flex-col justify-between md:p-10 py-6 px-4">
         <h1 className="text-3xl sm:text-5xl text-white text-gradient py-1">
           Trade your NFTs
@@ -57,9 +60,13 @@ export default function Marketplace() {
         </p>
 
         <div className="flex flex-col place-items-center ">
+        <h3 className="text-white text-3xl text-center my-2">
+            Listed For Sale
+          </h3>
           <div className="flex mt-5  flex-wrap max-w-screen-xl text-center">
+         
             {marketData &&
-              marketData.map((value, index) => {
+          [...marketDataTest, ...marketData].reverse().map((value, index) => {
                 return <NFTTile data={value} key={index}></NFTTile>;
               })}
           </div>

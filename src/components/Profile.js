@@ -22,6 +22,7 @@ export default function Profile() {
     thumbs,
     setThumbs,
     walletBalance,
+
     
   } = useContext(TransactionContext);
 
@@ -35,10 +36,10 @@ export default function Profile() {
 
   return (
 <>
-    <div className="  w-full flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0 flex items-start gradient-bg-services"
+    <div className="  w-full flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0 flex items-start "
      >
 
-    <aside class=" md:w-1/3 lg:w-1/4 p-10 " >
+    {/* <aside className=" md:w-1/3 lg:w-1/4 p-10 " >
       
         
            <h1 className="text-5xl sm:text-5xl text-white text-gradient ">
@@ -66,12 +67,21 @@ export default function Profile() {
               </div>
             </div>
           </div>
+
+
+          
+
+
+
+
+
+
           <h3 className="text-3xl sm:text-3xl text-white text-gradient py-6">
           Transactions
           </h3>
-        </aside>
-
-        <main class=" md:w-2/3 lg:w-3/4 px-5 py-7">
+        </aside> */}
+{/* 
+        <main className=" md:w-2/3 lg:w-3/4 px-5 py-7">
         <h3 className="text-3xl sm:text-3xl text-white text-gradient py-3 text-center">
          Minted NFTs
           </h3>
@@ -81,7 +91,7 @@ export default function Profile() {
             currentAccount={currentAccount}
           />
       
-        </main>
+        </main> */}
         {/* <aside class=" md:w-1/3 lg:w-2/4 px-5 py-40">
             <h1 class="text-2xl md:text-4xl">Sidebar</h1>
         
@@ -94,21 +104,7 @@ export default function Profile() {
         </aside> */}
     </div>
 
-    <div
-      className="profileClass gradient-bg-services"
-      style={{ minHeight: "100vh" }}
-    >
-      <div className="w-half items-start flex-col justify-between md:p-10  px-4 ">
-        <div className="flex flex-col border-2">
-        <h1 className="text-3xl sm:text-4xl text-white text-gradient py-1">
-          Your wallet
-        </h1>
-        <p className="text-left my-3 text-white font-light md:w-9/12 w-11/12 text-base">
-   
-          Buy and sell cryptocurrencies easily on Krypto.
-        </p>
-        {/* <Navbar></Navbar> */}
-        <div className="profileClass">
+          {/* <div className="profileClass">
           <div className=" p-5 mt-3 sm:w-96 h-48 w-full lg:h-56 lg:mt-0 flex justify-end items-start flex-col rounded-xl eth-card .white-glassmorphism ">
             <div className="flex justify-between flex-col w-full h-full">
               <div className="flex justify-between items-start">
@@ -127,29 +123,23 @@ export default function Profile() {
               </div>
             </div>
           </div>
-          </div>
-          </div>
-          <div className="flex flex-col border-2">
-          <Thumbnails
-            thumbs={thumbs}
-            setThumbs={setThumbs}
-            currentAccount={currentAccount}
-          />
+          </div> */}
 
-          <div className="mb-5">
+<div className="flex flex-col ">
+          {/* <div className="mb-5">
             <h2 className="font-bold">Wallet Address</h2>
             {walletAddress.substring(0, 5) +
               "..." +
               walletAddress.substring(38, 42)}
-          </div>
-          <div className="flex flex-row text-center justify-center mt-0 text-white">
+          </div> */}
+          {/* <div className="flex flex-row text-center justify-center mt-0 text-white">
             <h2 className="font-bold">
               No. of NFTs &nbsp; {walletData.length} &nbsp; &nbsp;
             </h2>
 
             <h2 className="font-bold">Total Value &nbsp; {totalPrice} ETH</h2>
-          </div>
-          <div className="ml-20"></div>
+          </div> */}
+          {/* <div className="ml-20"></div> */}
           {/* <div className="flex flex-row text-center justify-center mt-10 text-white"></div> */}
           <div className="flex flex-col text-center items-center mt-11 text-white">
             {/* <h2 className="font-bold">Your NFTs</h2> */}
@@ -165,8 +155,6 @@ export default function Profile() {
             </div>
           </div>
           </div>
-      </div>
-    </div>
     
 </>
   );

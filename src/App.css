@@ -37,7 +37,7 @@ body::-webkit-scrollbar-thumb {
 
 a {
   /* color: white; */
-  color: var(--clr-orange);
+  /* color: var(--clr-orange); */
   text-decoration: none;
 }
 
@@ -53,8 +53,9 @@ nav {
   /* grid-template-columns: repeat(3, 1fr); */
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid #2b2865;
   height: 60px;
+
 }
 
 .nav__brand {
@@ -68,15 +69,15 @@ nav {
 }
 
 .nav__connect {
-  width: 100px;
-  margin: 5px 25px 5px 0px;
-  background-color: var(--clr-orange);
+  /* width: 100px; */
+  /* margin: 5px 25px 5px 0px; */
+  background-color: rgb(246, 12, 75);
   color: var(--clr-white);
   border: none;
   border-radius: 30px;
-  font-family: "Play";
+  /* font-family: "Play";
   font-size: 0.8em;
-  font-weight: 600;
+  font-weight: 600; */
   cursor: pointer;
   transition: all 250ms ease;
 }
@@ -164,9 +165,19 @@ form input[type="text"] {
   min-width: 25vw;
   height: 50px;
   margin-top: 10px;
-  padding: 10px 0px 0px 15px;
+  padding: 10px 0px 0px 5px;
   border: none;
   border-bottom: 1px solid var(--clr-blue);
+  text-transform: capitalize;
+}
+
+form input[type="number"] {
+  /* min-width: 50%; */
+  height: 48px;
+  /* margin-top: 10px; */
+  /* padding: 5px 0px 0px 15px; */
+  border: none;
+  /* border-bottom: 1px solid var(--clr-blue); */
   text-transform: capitalize;
 }
 
@@ -221,7 +232,7 @@ select + select {
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 .checked {
@@ -293,11 +304,14 @@ select + select {
 
 .waitingButton {
   background-color: var(--clr-blue) !important;
+  cursor: wait ;
 }
 
 .disabledButton {
-  cursor: not-allowed !important;
-  background-color: gray !important;
+  cursor: not-allowed ;
+  background-color: none ;
+  color: gray;
+  border: 1px solid gray;
 }
 
 button {
@@ -317,6 +331,12 @@ button:hover {
   color: white;
   transition: all 250ms ease;
 }
+
+
+.active-style { color:#6c63ff }
+
+
+
 
 
 
@@ -376,7 +396,6 @@ button:hover {
   width: 100%;
   height: auto;
   vertical-align: middle;
-  border-radius: 5px;
 }
 
 
@@ -387,7 +406,7 @@ button:hover {
   justify-content: center; 
   align-items: center;
   flex-direction: column; 
-  border-radius: 5px;
+ 
 }
 
 

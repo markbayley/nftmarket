@@ -17,7 +17,7 @@ const Input = ({ placeholder, name, type, value, handleChange }) => (
     step="0.0001"
     value={value}
     onChange={(e) => handleChange(e, name)}
-    className="m-3 p-3 w-full rounded-sm outline-none bg-transparent text-white border-none white-glassmorphism"
+    className="m-3 p-3 w-full rounded-sm outline-none bg-[#273057] text-white border-none shadow-2xl "
   />
 );
 
@@ -51,18 +51,18 @@ const Welcome = () => {
   // const text = transactions[0].message;
 
   return (
-    <div className="flex w-full justify-center items-center gradient-bg-transactions">
-      <div className="items-start flex-col justify-between md:p-10 px-4">
+    <div className="flex w-full justify-center items-center ">
+      <div className="items-start flex-col justify-between md:p-10 px-4 my-10">
         <h1 className="text-3xl sm:text-5xl text-white text-gradient py-1">
-          Send Crypto
+          Create NFTs
         </h1>
-        <p className="text-left my-3 text-white font-light md:w-9/12 w-11/12 text-base">
-          Explore the crypto world. <br />
-          Buy and sell cryptocurrencies easily on Krypto.
+        <p className="text-left my-3 text-white font-light md:w-12/12 w-11/12 text-base">
+          {/* Explore the crypto world. <br /> */}
+          Create and trade NFTs with advanced AI technology.
         </p>
 
         <div className="flex flex-wrap justify-start items-start flex-row mf:mr-10">
-          <div className="p-6 sm:w-96  w-full flex flex-col justify-center items-center blue-glassmorphism">
+          <div className="p-6 md:mr-3 sm:w-96  w-full flex flex-col justify-center items-center blue-glassmorphism">
             <Input
               placeholder="Address To"
               name="addressTo"
@@ -107,7 +107,7 @@ const Welcome = () => {
 
           {/* <div className="py-1 sm:w-96 w-full flex flex-col justify-start items-center "> */}
 
-          <div className=" p-5 mt-3 sm:w-96 h-48 w-full lg:h-56 lg:mx-3 lg:mt-0 flex justify-end items-start flex-col rounded-xl eth-card .white-glassmorphism ">
+          <div className=" p-5 mt-3 sm:w-96 h-48 w-full lg:h-56 lg:mx-0 lg:mt-0 flex justify-end items-start flex-col rounded-xl eth-card .white-glassmorphism ">
             <div className="flex justify-between flex-col w-full h-full">
               <div className="flex justify-between items-start">
                 <div className="w-10 h-10 rounded-full border-2 border-white flex justify-center items-center">
@@ -120,7 +120,7 @@ const Welcome = () => {
                   {shortenAddress(currentAccount)}
                 </p>
                 <p className="text-white font-semibold text-lg mt-1">
-                {Math.round((walletBalance + Number.EPSILON) * 100) / 100 + " "} Ethereum
+                { walletBalance && Math.round((walletBalance + Number.EPSILON) * 1000) / 1000 + " " } Ethereum
                 </p>
               </div>
             </div>
@@ -181,10 +181,9 @@ const Welcome = () => {
 
         {/* </div> */}
 
-        <div className="flex flex-col flex-1 items-center justify-start w-full mf:mt-0 mt-10">
-          <p className="text-left my-3 text-white font-light md:w-9/12 w-11/12 text-base">
-            Explore the crypto world. Buy and sell cryptocurrencies easily on
-            Krypto.
+        <div className="flex flex-col flex-1 items-start justify-start w-full mf:mt-0 mt-10">
+          <p className="text-left my-3 text-white font-light md:w-12/12 w-11/12 text-base">
+             Create and sell digital assets easily with Blocklings.
           </p>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CreateButton = ({ isCreating, mintHandler, isMinting, image, url, OnChangeFile, isUploading, fileURL, setChecked, checked }) => {
+const CreateButton = ({ isCreating, mintHandler, isMinting, image, url, OnChangeFile, isUploading, fileURL, setChecked, checked, file }) => {
   return (
     <div
     style={{
@@ -41,6 +41,12 @@ const CreateButton = ({ isCreating, mintHandler, isMinting, image, url, OnChange
   ></input>
 
 </div>
+
+{/* <button
+    file="file"
+    onClick={(e) => OnChangeFile(e, file)}
+    type=""
+  >Pinata</button> */}
 
 
 

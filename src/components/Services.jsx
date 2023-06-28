@@ -18,39 +18,39 @@ const ServiceCard = ({ color, title, icon, subtitle }) => (
 );
 
 const Services = () => (
-  <div className="flex w-full justify-center items-center gradient-bg-services">
+  <div className="flex w-full justify-center items-center">
     <div className="flex mf:flex-row flex-col items-center justify-between md:p-20 py-12 px-4">
-      <div className="flex-1 flex flex-col justify-start items-start">
+      <div className="flex-1 flex flex-col justify-start items-start w-half">
         <h1 className="text-white text-3xl sm:text-5xl py-2 text-gradient ">
-          Services that we
-          <br />
-          continue to improve
+          Getting Started is Easy
+          {/* <br />
+          continue to improve */}
         </h1>
-        <p className="text-left my-2 text-white font-light md:w-9/12 w-11/12 text-base">
-          The best choice for buying and selling your crypto assets, with the
-          various super friendly services we offer
+        <p className="text-left my-2 text-white font-light md:w-11/12 w-11/12 text-base">
+          The best choice for creating and trading your digital assets.
         </p>
       </div>
 
       <div className="flex-1 flex flex-col justify-start items-center">
         <ServiceCard
           color="bg-[#2952E3]"
-          title="Security gurantee"
-          icon={<BsShieldFillCheck fontSize={21} className="text-white" />}
-          subtitle="Security is guranteed. We always maintain privacy and maintain the quality of our products"
+          title="Install MetaMask"
+          icon={<BsShieldFillCheck fontSize={21} className="text-white w-half" />}
+          subtitle="Metamask is an Ethereum based wallet. Is a decentralized account to make payments on the blockchain."
+        />
+          <ServiceCard
+          color="bg-[#F84550]"
+          title="Create or Upload Images"
+          icon={<RiHeart2Fill fontSize={21} className="text-white w-half" />}
+          subtitle="Our A.I. technology makes creating NFTs easy, or you can upload your existing creations to our exchange."
         />
         <ServiceCard
           color="bg-[#8945F8]"
-          title="Best exchange rates"
-          icon={<BiSearchAlt fontSize={21} className="text-white" />}
-          subtitle="Security is guranteed. We always maintain privacy and maintain the quality of our products"
+          title="Fund Your Wallet To Mint"
+          icon={<BiSearchAlt fontSize={21} className="text-white w-half" />}
+          subtitle="Purchase Ethereum and other cryptocurrencies through Coinbase, Binance, or other exchange providers."
         />
-        <ServiceCard
-          color="bg-[#F84550]"
-          title="Fastest transactions"
-          icon={<RiHeart2Fill fontSize={21} className="text-white" />}
-          subtitle="Security is guranteed. We always maintain privacy and maintain the quality of our products"
-        />
+      
       </div>
     </div>
   </div>

@@ -3,11 +3,16 @@ import axie from "../tile.jpeg";
 import { useLocation, useParams } from "react-router-dom";
 import MarketplaceJSON from "../Marketplace.json";
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { GetIpfsUrlFromPinata } from "../utils";
 import { shortenAddress } from "../utils/shortenAddress";
+import { TransactionContext } from "../context/TransactionContext";
 
 export default function NFTPage(props) {
+
+  const { marketData } = useContext(TransactionContext);
+
+
   const [data, updateData] = useState({});
   const [dataFetched, updateDataFetched] = useState(false);
   const [message, updateMessage] = useState("");
@@ -67,15 +72,15 @@ export default function NFTPage(props) {
         signer
       );
       const salePrice = ethers.utils.parseUnits(data.price, "ether");
-      updateMessage("Buying the NFT... Please Wait (Upto 5 mins)");
+      updateMessage("Purchasing NFT... Please Wait");
       //run the executeSale function
       let transaction = await contract.executeSale(tokenId, {
         value: salePrice,
       });
       await transaction.wait();
 
-      alert("You successfully bought the NFT!");
-      updateMessage("");
+      updateMessage("Success! Check your wallet");
+      // updateMessage("");
     } catch (e) {
       alert("Upload Error" + e);
     }
@@ -88,54 +93,119 @@ export default function NFTPage(props) {
     data.image = GetIpfsUrlFromPinata(data.image);
 
   return (
-    <div style={{ minHeight: "100vh" }} className="gradient-bg-services">
+    <div style={{ minHeight: "100vh" }} className=" mx-5 my-10 md:mx-20 ">
+   <h1 className="text-4xl sm:text-5xl text-white text-gradient ">
+            Detailed View
+          </h1>
+          {/* <div className="flex items-center">
+            <p className="text-left mt-3 text-white font-light md:w-9/12 w-11/12 text-base pl-5">
+              Ready to buy this NFT?
+            </p>
+          </div> */}
 
-      <div className="flex  pt-7 w-full justify-evenly flex-col md:flex-row ">
-        <div className="md:w-3/5 m-5 p-2 white-glassmorphism">
-          <img src={data.image} alt="" />
+
+      <div className="flex  pt-5 w-full justify-evenly flex-col md:flex-row ">
+        
+        <div className="rounded md:w-1/2 ">
+          <img src={data.image} alt="" className="rounded-lg"/>
         </div>
 
-        <div className="text-xl my-5 mx-1 h-5/5 md:w-3/5 space-y-8 text-white  rounded-lg blue-glassmorphism p-10 ">
-          <h1 className="text-3xl sm:text-5xl text-white text-gradient py-1">
+
+
+
+
+        <div className="text-xl   md:w-1/2 md:ml-5  space-y-5 text-white  rounded-lg  ">
+
+          <div className="blue-glassmorphism  p-5 ">
+
+
+          <h1 className="text-3xl sm:text-5xl text-white text-gradient py-1 capitalize">
             {data.name}
           </h1>
+          <p className="text-left my-3 text-xl text-white font-light capitalize">
+           <em>"{data.description}"</em> 
+          </p>
+          {/* <p className="text-left my-3 text-md text-white font-light ">
+          {data.collection}
+          </p>
           <p className="text-left my-3 text-md text-white font-light ">
-            {data.description}.
+          {data.category}
+          </p>
+          <p className="text-left my-3 text-md text-white font-light ">
+          {data.style}
+          </p>
+          <p className="text-left my-3 text-md text-white font-light ">
+          {data.tokenId}
+          </p> */}
+
+          <p className="text-left my-3 text-md text-white font-light ">
+          ID #{data.tokenId}
           </p>
 
           <div>
-            Price: <span className="">{data.price + " ETH"}</span>
+             <span className="">{data.price + " ETH"}</span>
           </div>
-          <div>
-            NFT Contract:{" "}
-            <span className="text-md">
-              {data.owner && shortenAddress(data.owner)}
-            </span>
-          </div>
-          <div>
-            Seller:{" "}
-            <span className="text-md">
-              {data.seller && shortenAddress(data.seller)}
-            </span>
-          </div>
+
+          {/* <p className="text-left my-3 text-md text-white font-light ">
+          {data.hashLink}
+          </p> */}
+
           <div>
             {currAddress != data.owner && currAddress != data.seller ? (
               <button
-                className="enableEthereumButton bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm"
+                className="enableEthereumButton bg-transparent outline-none hover:bg-[#4c46b6] text-white font-bold py-2 px-10 mt-10 rounded text-sm"
                 onClick={() => buyNFT(tokenId)}
               >
-                Buy this NFT
+                BUY
               </button>
             ) : (
-              <div className="text-yellow-400">You own this NFT</div>
+              <div className="text-yellow-400 pt-3">You own this NFT</div>
             )}
 
             <div className="text-orange text-center mt-3">{message}</div>
           </div>
+
+
+
+          </div>
+
+          <div className="text-xl p-7  space-y-5 text-white  rounded-lg blue-glassmorphism  ">
+
+
+          <div className="flex justify-between items-end  ">
+          <div  className="text-sm">
+            NFT Contract:{" "}
+            <span>
+              {data.owner && shortenAddress(data.owner)}
+            </span>
+          </div>
+          <div className="text-sm">
+            Seller:{" "}
+            <span >
+              {data.seller && shortenAddress(data.seller)}
+            </span>
+          </div>
+          </div>
+
+
+
+
+
+          </div>
+
+          
         </div>
 
-        <div className="text-xl m-5 h-5/5 md:w-1/5 space-y-8 text-white shadow-2xl rounded-lg blue-glassmorphism p-10 "></div>
+     
+      
+
+
+  
+      
+
+
       </div>
+  
     </div>
   );
 }

@@ -462,7 +462,7 @@ const InputFields = ({
   keyword,
   handleNftData,
   nftData,
-  isCreating, mintHandler, isMinting, image, url, OnChangeFile, isUploading, fileURL, setChecked, checked 
+  isCreating, mintHandler, isMinting, image, url, OnChangeFile, isUploading, fileURL, setChecked, checked, file
 }) => {
   const patternWords = active.filter((word) =>
     patterns.some((pattern) => pattern.name === word)
@@ -514,7 +514,7 @@ const InputFields = ({
 //  console.log("formDataIF", formData)
 
   return (
-    <div className="p-5 my-8  w-full flex flex-col justify-start items-start blue-glassmorphism " >
+    <div className="p-5 my-8  w-full flex flex-col justify-start items-start " >
       <div className="select ">
         <input className="my-2 w-half rounded-sm p-2 outline-none bg-transparent text-white border-none white-glassmorphism"
           required
@@ -717,6 +717,7 @@ const InputFields = ({
               fileURL={fileURL}
               setChecked={setChecked}
               checked={checked}
+              file={file}
             />
      
 

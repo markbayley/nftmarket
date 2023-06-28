@@ -19,7 +19,7 @@ import Send from "./components/Send";
 
 function App() {
   return (
-    <div className="">
+    <body className="">
      
       <BrowserRouter>
       <Navbar />
@@ -27,27 +27,31 @@ function App() {
           <Route
             path="/"
             element={
-              <div className="gradient-bg-welcome">
+              <div className="">
           
              
-                  <Welcome /> <Services />
-                  <Transactions />{" "}
+                <Welcome /><Services />
+               
               
               </div>
             }
           />
-          <Route path="/Send" element={ <div className="gradient-bg-welcome"><Welcome /></div>} />
-          <Route path="/nftPage/:tokenId" element={<NFTPage />} />
-          <Route path="/Wallet" element={<Profile />} />
+        
+         
+      
           {/* <Route path="/Upload" element={<SellNFT />} /> */}
 
-          <Route path="/Create" element={<AIGenerator />} />
+          <Route path="/Create" element={<SellNFT />} />
 
-          <Route path="/Trade" element={<Marketplace />} />
+          <Route path="/Trade" element={<><Marketplace /> <Transactions /></>} />
+          <Route path="/nftPage/:tokenId" element={<NFTPage />} />
+
+          <Route path="/Wallet" element={<><Welcome /><Profile /></>} />
+          <Route path="/Help" element={ <div className=""><Services /></div>} />
         </Routes>
       </BrowserRouter>
       <Footer />
-    </div>
+    </body>
   );
 }
 

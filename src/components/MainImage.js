@@ -1,8 +1,9 @@
 import { useState } from "react";
-import Spinner from "react-bootstrap/Spinner";
 import Modal from "react-bootstrap/Modal";
 import placeholder from "../placerdark.png";
-import Loader from "./Loader";
+import {
+  Link,
+} from "react-router-dom";
 
 const MainImage = ({
   isCreating,
@@ -21,6 +22,8 @@ const MainImage = ({
   setChecked,
   checked,
   setImage,
+  setFile,
+  OnChangeFile,
 }) => {
   const [lgShow, setLgShow] = useState(false);
 
@@ -41,20 +44,24 @@ const MainImage = ({
   function uploadLocally(e) {
     e.preventDefault();
     let file = e.target.files[0];
- 
+        setFile(file);
         var src = createObjectURL(file);
         var image = new Image();
         image.src = src;
         setImage(image.src);
         // Do whatever you want with your image, it's just like any other image
         // but it displays directly from the user machine, not the server!
-      
+        // console.log("file", file);
+      //   console.log("src", src);
+      // console.log("image", image);
+      // console.log("image.src", image.src);
     
   }
 
   return (
     <>
-      <div className="mainimage" onClick={() => setLgShow(true)}>
+
+      <div className="mainimage" >
         {!checked ? (
           <div className="image">
             {!isCreating && !isMinting && image ? (
@@ -70,10 +77,20 @@ const MainImage = ({
                       </span>
                     )}
                   </div>
+                {url ?
                   <div className="title">
-                    &nbsp;{title}
-                    <em>"{description}"</em>
+                    View NFT&nbsp;{title}
+                    <em>"{description}"&nbsp;</em> in your&nbsp;&nbsp; <Link to="/Wallet">wallet</Link  >
+                 
                   </div>
+                  :
+                  <div className="title">
+                  &nbsp;{title}
+                    <em>"{description}"&nbsp;</em>
+                 
+                  </div>
+
+            }
                 </div>
               </>
             ) : isCreating || isMinting || (isUploading && !fileURL) ? (
@@ -89,7 +106,7 @@ const MainImage = ({
                 <div className="title">&nbsp;{message}</div>
               </div>
             ) : (
-              <div show={lgShow} onHide={() => setLgShow(false)}>
+              <div >
                 <div>
                   <img
                     src={fileURL ? fileURL : placeholder}
@@ -102,16 +119,16 @@ const MainImage = ({
             )}
           </div>
         ) : (
-          <div class="flex items-center justify-center w-full h-96 pb-8">
+          <div className="flex items-center justify-center w-full h-96 pb-8">
             <label
               for="dropzone-file"
-              class="flex flex-col items-center justify-center w-full sm:h-64 md:h-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+              className="flex flex-col items-center justify-center w-full sm:h-64 md:h-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
             >
-              <div class="flex flex-col items-center justify-center pt-5 pb-6 ">
-                {!image ? (
+              <div className="flex flex-col items-center justify-center pt-5 pb-6 ">
+                {!fileURL ? (
                   <svg
                     aria-hidden="true"
-                    class="w-10 h-10 mb-3 text-gray-400"
+                    className="w-10 h-10 mb-3 text-gray-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -125,53 +142,58 @@ const MainImage = ({
                     ></path>
                   </svg>
                 ) : (
-                  <img src={image} alt="AI generated art" className="" />
+                  <>
+                  <img src={fileURL} alt="AI generated art" className="" />
+                  {message}
+                  </>
                 )}
 
-            { !image &&
+            { !fileURL  &&
             <>
-                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                  <span class="font-semibold">Click to upload</span> or drag and
+                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                  <span className="font-semibold">Click to upload</span> or drag and
                   drop
                 </p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">
-                  SVG, PNG, JPG or GIF (MAX. 800x400px)
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  SVG, PNG, JPG or GIF (MAX. 800x800px)
                 </p>
                 </>
-}
+             }
 
               </div>
               <input
                 id="dropzone-file"
                 type="file"
                 className="hidden "
-                onChange={(e) => uploadLocally(e)}
+                // onChange={(e) => uploadLocally(e)}
+                onChange={OnChangeFile}
               />
             </label>
           </div>
         )}
         <div className="flex items-center">
-          <p class="inline text-left text-white font-light md:w-9/12 w-11/12 text-base my-3">
+          <p className="inline text-left text-white font-light md:w-9/12 w-11/12 text-base my-3">
             Create&nbsp;&nbsp;&nbsp;&nbsp;
           </p>
-          <label class="relative inline-flex items-center cursor-pointer my-3">
+          <label className="relative inline-flex items-center cursor-pointer my-3">
             <input
               type="checkbox"
               value=""
-              class="sr-only peer "
+              className="sr-only peer "
               onChange={() => setChecked(!checked)}
             ></input>
 
-            <div class="w-14 h-7 bg-blue-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 "></div>
-            <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+            <div className="w-14 h-7 bg-blue-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 "></div>
+            <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
               <p className="inline text-left text-white font-light md:w-9/12 w-11/12 text-base">
                 Upload?{" "}
               </p>
             </span>
           </label>
         </div>
+        {message}
       </div>
-
+   
       {/* {lgShow === true && (
   <div className="overlay"
     style={{
@@ -216,6 +238,7 @@ const MainImage = ({
     </div>
   </div>
 )} */}
+   
     </>
   );
 };
