@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import Modal from "react-bootstrap/Modal";
-import placeholder from "./../placer.png";
+import placeholder from "./../images/placer.png";
 
 const Thumbnails = ({
   thumbs,

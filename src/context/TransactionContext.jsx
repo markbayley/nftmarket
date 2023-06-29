@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import { GetIpfsUrlFromPinata } from "../utils";
+import { GetIpfsUrlFromPinata } from "../utils/utils";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { contractABI, contractAddress } from "../utils/constants";
@@ -92,7 +92,7 @@ export const TransactionsProvider = ({ children }) => {
   //PROFILE WALLET
   const [walletData, updateWalletData] = useState([]);
   const [walletDataFetched, updateWalletFetched] = useState(false);
-  const [walletAddress, updateWalletAddress] = useState("0x");
+  const [walletAddress, updateWalletAddress] = useState();
   const [totalPrice, updateTotalPrice] = useState("0");
   const [walletBalance, updateWalletBalance] = useState();
 
@@ -100,21 +100,18 @@ export const TransactionsProvider = ({ children }) => {
     const ethers = require("ethers");
     let sumPrice = 0;
     //After adding your Hardhat network to your metamask, this code will get providers and signers
-    // const provider = new ethers.providers.Web3Provider(ethereum);
-    // const signer = provider.getSigner();
-
-    // const addr = await signer.getAddress();
-    // const amount = await provider.getBalance(addr);
-    // const bal = parseInt(amount._hex) / 10 ** 18;
-
-  
-    // updateWalletBalance(bal);
- 
     // console.log("contractP", contract)
     try {
       if (ethereum) {
 
-           //Pull the deployed contract instance
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const addr = await signer.getAddress();
+        const amount = await provider.getBalance(addr);
+        const bal = parseInt(amount._hex) / 10 ** 18;
+        updateWalletBalance(bal);
+
+        //Pull the deployed contract instance
         const marketplaceContract = createMarketplaceContract();
         //create an NFT Token //get the transactions
         const transaction = await marketplaceContract.getMyNFTs();
@@ -124,6 +121,7 @@ export const TransactionsProvider = ({ children }) => {
          * and creates an object of information that is to be displayed
          */
 
+       
         const items = await Promise.all(
           transaction.map(async (i) => {
             const tokenURI = await marketplaceContract.tokenURI(i.tokenId);
@@ -321,6 +319,7 @@ export const TransactionsProvider = ({ children }) => {
   useEffect(() => {
     checkIfWalletIsConnect();
     checkIfTransactionsExists();
+    // getNFTData(tokenId);
   
   }, [transactionCount]);
 

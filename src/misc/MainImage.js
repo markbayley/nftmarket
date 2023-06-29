@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
-import placeholder from "../placerdark.png";
+import placeholder from "../images/placerdark.png";
 import {
   Link,
 } from "react-router-dom";

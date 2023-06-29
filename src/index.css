@@ -1,25 +1,39 @@
-/* @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=Play:wght@400;700&display=swap");
 
 * html {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  
 }
 
 body {
   margin: 0;
-  font-family: "Open Sans", sans-serif;
+  font-family: "Play","Open Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body::-webkit-scrollbar {
+  width: 8px; /* width of the entire scrollbar */
+}
+
+body::-webkit-scrollbar-track {
+  background: #1c1a3f; /* color of the tracking area */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #2b2865; /* color of the scroll thumb */
+  border-radius: 10px; /* roundness of the scroll thumb */
+  /* border: 1px solid orange;   */
+}
+
+.app {
     background-color:#0f0e13;
     background-image: 
     radial-gradient(at 20% 25%, hsla(225,39%,25%,1) 0, transparent 50%),
     radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%);
-  
 }
-
-
 
 .gradient-bg-welcome {
   background-color:#0f0e13;
@@ -78,8 +92,44 @@ body {
     radial-gradient(at 27% 71%, hsla(336,91%,65%,1) 0, transparent 49%), 
     radial-gradient(at 74% 89%, hsla(30,98%,65%,1) 0, transparent 51%), 
     radial-gradient(at 53% 75%, hsla(174,94%,68%,1) 0, transparent 45%);
+
 }
 
+.seal {
+  /* background-color:#a099ff; */
+  background-image: 
+  
+  radial-gradient(at 67% 20%, hsla(357,94%,71%,1) 0, transparent 59%), 
+  radial-gradient(at 27% 71%, hsla(336,91%,65%,1) 0, transparent 49%), 
+  radial-gradient(at 88% 35%, hsla(222,81%,65%,1) 0, transparent 50%), 
+  radial-gradient(at 31% 91%, hsla(9,61%,61%,1) 0, transparent 52%), 
+  
+  radial-gradient(at 83% 67%, rgb(152, 231, 156) 0, transparent 58%),
+  radial-gradient(at 74% 89%, hsla(30,98%,65%,1) 0, transparent 51%), 
+  radial-gradient(at 53% 75%, hsla(174,94%,68%,1) 0, transparent 45%);
+  background-size: 400% 400%;
+
+  -webkit-animation: inset 10s ease infinite;
+  -moz-animation: inset 10s ease infinite;
+  animation: inset 10s ease infinite;
+}
+
+@-webkit-keyframes inset {
+  0%{background-position:5% 0%}
+  50%{background-position:40% 100%}
+  100%{background-position:75% 0%}
+}
+
+@-moz-keyframes inset {
+  0%{background-position:31% 0%}
+  50%{background-position:70% 100%}
+  100%{background-position:31% 0%}
+}
+@keyframes inset {
+  0%{background-position:31% 0%}
+  50%{background-position:70% 100%}
+  100%{background-position:31% 0%}
+}
 .text-gradient {
   background-color: #fff;
   background-image: radial-gradient(at 4% 36%, hsla(0,0%,100%,1) 0, transparent 53%), radial-gradient(at 100% 60%, rgb(0, 0, 0) 0, transparent 50%);
@@ -88,19 +138,22 @@ body {
 }
 
 
-
 @tailwind base;
+
+@layer base {
+  html {
+    @apply text-neutral-800;
+  }
+  html.dark {
+    @apply text-neutral-50;
+    @apply bg-neutral-800;
+  }
+}
+
 @tailwind components;
 @tailwind utilities;
 
-/* li.hover:border-b-2 {
-  padding: none !important;
-}
 
-
-li.border-b-2 {
-  border: none !important;
-} */
 
 
 

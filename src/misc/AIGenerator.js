@@ -4,11 +4,11 @@ import { Buffer } from "buffer";
 import axios from "axios";
 import NFT from "../abis/NFT.json";
 import { ethers } from "ethers";
-import config from "../config.json";
-import { uploadFileToIPFS, uploadJSONToIPFS } from "../pinata";
+import config from "../config/config.json";
+import { uploadFileToIPFS, uploadJSONToIPFS } from "../utils/pinata";
 import Thumbnails from "./Thumbnails";
-import MainImage from "../components/MainImage";
-import InputFields from "../components/InputFields";
+import MainImage from "./MainImage";
+import InputFields from "./InputFields";
 import { TransactionContext } from "../context/TransactionContext";
 
 const AIGenerator = () => {

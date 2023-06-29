@@ -1,17 +1,16 @@
 import Navbar from "./Navbar";
-import axie from "../tile.jpeg";
+import axie from "../images/tile.jpeg";
 import { useLocation, useParams } from "react-router-dom";
-import MarketplaceJSON from "../Marketplace.json";
+import MarketplaceJSON from "../abis/Marketplace.json";
 import axios from "axios";
 import { useContext, useState } from "react";
-import { GetIpfsUrlFromPinata } from "../utils";
+import { GetIpfsUrlFromPinata } from "../utils/utils";
 import { shortenAddress } from "../utils/shortenAddress";
 import { TransactionContext } from "../context/TransactionContext";
 
 export default function NFTPage(props) {
 
-  const { marketData } = useContext(TransactionContext);
-
+  const { marketData, provider } = useContext(TransactionContext);
 
   const [data, updateData] = useState({});
   const [dataFetched, updateDataFetched] = useState(false);
@@ -21,7 +20,12 @@ export default function NFTPage(props) {
   const shortenAddress = (address) =>
     `${address.slice(0, 5)}...${address.slice(address.length - 4)}`;
 
+
+
   async function getNFTData(tokenId) {
+    
+    try {
+      if (provider) {     
     const ethers = require("ethers");
     //After adding your Hardhat network to your metamask, this code will get providers and signers
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -56,7 +60,19 @@ export default function NFTPage(props) {
     updateDataFetched(true);
     console.log("address", addr);
     updateCurrAddress(addr);
+  } else {
+    console.log("Ethereum is not present NFT Page");
+  
+
+    
   }
+} catch (error) {
+  console.log(error);
+  
+ 
+}
+};
+
 
   async function buyNFT(tokenId) {
     try {
@@ -92,8 +108,10 @@ export default function NFTPage(props) {
   if (typeof data.image == "string")
     data.image = GetIpfsUrlFromPinata(data.image);
 
+    console.log("Message", message);
+
   return (
-    <div style={{ minHeight: "100vh" }} className=" mx-5 my-10 md:mx-20 ">
+    <div style={{ minHeight: "100vh" }} className="fade-in mx-5 my-10 md:mx-20 ">
    <h1 className="text-4xl sm:text-5xl text-white text-gradient ">
             Detailed View
           </h1>
@@ -107,7 +125,8 @@ export default function NFTPage(props) {
       <div className="flex  pt-5 w-full justify-evenly flex-col md:flex-row ">
         
         <div className="rounded md:w-1/2 ">
-          <img src={data.image} alt="" className="rounded-lg"/>
+          {data ? <img src={ data.image} alt="" className="rounded-lg"/> : updateMessage(() => "Install Metamask")}
+         
         </div>
 
 
@@ -120,7 +139,7 @@ export default function NFTPage(props) {
 
 
           <h1 className="text-3xl sm:text-5xl text-white text-gradient py-1 capitalize">
-            {data.name}
+            {data.name} {message }
           </h1>
           <p className="text-left my-3 text-xl text-white font-light capitalize">
            <em>"{data.description}"</em> 

@@ -1,6 +1,6 @@
 import Navbar from "./Navbar";
 import { useLocation, useParams } from "react-router-dom";
-import MarketplaceJSON from "../Marketplace.json";
+import MarketplaceJSON from "../abis/Marketplace.json";
 import axios from "axios";
 import { useContext, useEffect } from "react";
 import NFTTile from "./NFTTile";
@@ -8,7 +8,7 @@ import { AiFillPlayCircle } from "react-icons/ai";
 import { SiEthereum } from "react-icons/si";
 import { BsInfoCircle } from "react-icons/bs";
 import { shortenAddress } from "../utils/shortenAddress";
-import Thumbnails from "./Thumbnails";
+import Thumbnails from "../misc/Thumbnails";
 import { TransactionContext } from "../context/TransactionContext";
 
 export default function Profile() {
@@ -30,13 +30,13 @@ export default function Profile() {
 
   useEffect(() => {
     getNFTData(tokenId);
-  }, [walletAddress]);
+  }, [walletData]);
 
 
 
   return (
 <>
-    <div className="  w-full flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0 flex items-start "
+    <div className="fade-in  w-full flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0 flex items-start "
      >
 
     {/* <aside className=" md:w-1/3 lg:w-1/4 p-10 " >

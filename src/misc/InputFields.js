@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import MainImage from "./MainImage";
-import CreateButton from "./CreateButton";
+import CreateButton from "../components/CreateButton";
 
 const colours = [
   {

@@ -6,7 +6,7 @@ import {
 import { useLocation } from "react-router";
 import { HiMenuAlt4 } from "react-icons/hi";
 import { AiFillPlayCircle, AiOutlineClose } from "react-icons/ai";
-import inblockLogo from "../inblocklogolight.png";
+import inblockLogo from "../images/inblocklogolight.png";
 import { TransactionContext } from "../context/TransactionContext";
 
 const NavBarItem = ({ title, classprops, link}) => (
@@ -111,7 +111,7 @@ const Navbar = () => {
               className="px-5 mx-3 nav__connect "
               onClick={connectWallet}
             >
-               {currentAccount ? "Connected" : "Connect Wallet"}
+               {currentAccount !== "0x" ?  "Connected" : "Connect Wallet"}
             </button>
           ) : (
             <a target="_blank" href="https://metamask.io/">

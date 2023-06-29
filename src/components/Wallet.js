@@ -9,6 +9,7 @@ import { shortenAddress } from "../utils/shortenAddress";
 import nftImage1 from "../images/futuristic-city.jpg";
 import nftImage2 from "../images/tokyo-haze.jpg";
 import nftCards from "../images/cards.png";
+import Loader from "./Loader";
 
 // const companyCommonStyles = "min-h-[70px] sm:px-0 px-2 sm:min-w-[120px] flex justify-center items-center border-[0.5px] border-gray-400 text-sm font-light text-white";
 
@@ -55,46 +56,18 @@ const Welcome = () => {
   return (
     <div className="flex w-full justify-center items-center fade-in">
       <div className="items-start flex-col justify-between md:p-10 px-4 my-5">
-        <h1 className="text-3xl sm:text-6xl text-white text-gradient py-1">
-          Create & Trade NFTs
+        <h1 className="text-4xl sm:text-5xl text-white text-gradient py-1">
+          My Wallet
         </h1>
-        <h2 className="text-left mb-3 text-white font-light md:w-12/12 w-11/12 text-base text-3xl sm:text-2xl">
+        <p className="text-left mb-3 text-white font-light md:w-12/12 w-11/12 text-base text-3xl sm:text-1xl">
           {/* Explore the crypto world. <br /> */}
-          With Advanced AI Technology
-        </h2>
+          Fund your wallet to mint and trade NFTs.
+         
+        </p>
 
-        <div className="flex flex-wrap justify-start items-start flex-row ">
-
-          <div className="p-5 md:-mr-5 sm:w-96  w-full flex flex-col justify-center items-center blue-glassmorphism relative rotate-5">
-            <div className="w-10 h-10 rounded-full border-2 border-white flex justify-center items-center absolute top-7 left-7 eth-card  seal ">
-              <SiEthereum fontSize={21} color="#fff" />
-            </div>
-            {/* <div className="absolute top-7 right-7 ">
-            <BsInfoCircle fontSize={20} color="#fff" />
-            </div> */}
-        
-            {/* <img src={nftCards} alt="Futuristic City NFT" className="absolute top-7 left-7" /> */}
-            <img src={nftImage1} alt="Futuristic City NFT" className=""/>
-            <div className="title">
-              Futuristic Cityscape <em>"Cypherdome"</em>
-            </div>
-
-            </div>
-
-            <div className="p-5 md:mr-3 sm:w-96  w-full flex flex-col justify-center items-center blue-glassmorphism relative top-70 left-70 rotate-10">
-            <div className="w-10 h-10 rounded-full border-2 border-white flex justify-center items-center absolute top-7 left-7 eth-card  seal ">
-              <SiEthereum fontSize={21} color="#fff" />
-            </div>
-            {/* <div className="absolute top-7 right-7 ">
-            <BsInfoCircle fontSize={20} color="#fff" />
-            </div> */}
-            {/* <img src={nftCards} alt="Futuristic City NFT" className="absolute top-7 left-7" /> */}
-            <img src={nftImage2} alt="Futuristic City NFT" />
-            <div className="title">
-              Tokyo Haze <em>"Metropolis Life"</em>
-            </div>
-          </div>
-            {/* <Input
+        <div className="flex flex-wrap justify-start items-start flex-row w-full">
+          <div className="p-6 md:mr-3 sm:w-96 mf:mr-3 w-full flex flex-col justify-center items-center blue-glassmorphism ">
+            <Input
               placeholder="Address To"
               name="addressTo"
               type="text"
@@ -119,8 +92,6 @@ const Welcome = () => {
               handleChange={handleChange}
             />
 
-        
-
             {isLoading ? (
               <Loader />
             ) : (
@@ -131,15 +102,13 @@ const Welcome = () => {
               >
                 Send now
               </button>
-            )} */}
-       
+            )}
+          </div>
 
-
-          {/* //card div */}
 
           {/* <div className="py-1 sm:w-96 w-full flex flex-col justify-start items-center "> */}
 
-          {/* <div className=" p-5 mt-3 sm:w-96 h-48 w-full lg:h-56 lg:mx-0 lg:mt-0 flex justify-end items-start flex-col rounded-xl eth-card .white-glassmorphism ">
+           <div className=" p-5 mt-3 sm:w-96 h-48 w-full lg:h-56 lg:mx-0 lg:mt-0 flex justify-end items-start flex-col rounded-xl eth-card .white-glassmorphism ">
             <div className="flex justify-between flex-col w-full h-full">
               <div className="flex justify-between items-start">
                 <div className="w-10 h-10 rounded-full border-2 border-white flex justify-center items-center">
@@ -156,7 +125,7 @@ const Welcome = () => {
                 </p>
               </div>
             </div>
-          </div> */}
+          </div> 
         </div>
 
         {/* <div className="grid sm:grid-cols-3 grid-cols-2 w-full mt-10">
@@ -204,7 +173,7 @@ const Welcome = () => {
 
         <div className="flex flex-col flex-1 items-start justify-start w-full mf:mt-0 mt-10">
           <p className="text-center my-3 text-white font-light md:w-12/12 w-11/12 text-base">
-            Learn about NFTs and how to get started below.
+            View your NFT collection below.
           </p>
         </div>
       </div>

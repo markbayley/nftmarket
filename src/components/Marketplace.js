@@ -1,12 +1,14 @@
-import Navbar from "./Navbar";
 import NFTTile from "./NFTTile";
-import MarketplaceJSON from "../Marketplace.json";
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { GetIpfsUrlFromPinata } from "../utils";
 import { TransactionContext } from "../context/TransactionContext";
-
 import marketDataTest from "../utils/marketDataTest";
+import Transactions from "./Transactions";
+import {
+  TETabs,
+  TETabsContent,
+  TETabsItem,
+  TETabsPane,
+} from "tw-elements-react";
 
 export default function Marketplace() {
   const { getAllNFTs, marketData } = useContext(TransactionContext);
@@ -44,33 +46,75 @@ export default function Marketplace() {
     },
   ];
 
-  // useEffect(() => {
-  //   getAllNFTs();
-  // }, [marketData]);
-  console.log("marketData", marketData)
+  useEffect(() => {
+    getAllNFTs();
+  }, []);
+  console.log("marketData", marketData);
+
+  const [basicActive, setBasicActive] = useState("tab1");
+
+  const handleBasicClick = (value) => {
+    if (value === basicActive) {
+      return;
+    }
+    setBasicActive(value);
+  };
 
   return (
-    <div className="gradient-bg-services" >
-      <div className="w-half items-start flex-col justify-between md:p-10 py-6 px-4">
-        <h1 className="text-3xl sm:text-5xl text-white text-gradient py-1">
-          Trade your NFTs
+    <div className="fade-in">
+      <div className="items-start flex-col justify-between gap-x-2 md:p-5">
+        <div className="pt-2 pl-4 ">
+        <h1 className="text-4xl sm:text-5xl text-white text-gradient ">
+          NFT Exchange
         </h1>
-        <p className="text-left my-3 text-white font-light md:w-9/12 w-11/12 text-base">
-          Buy and sell your NFTs with ease.
+        <p className="text-left text-white font-light text-base py-2">
+          Buy and sell your NFTs on our exchange.
         </p>
-
-        <div className="flex flex-col place-items-center ">
-        <h3 className="text-white text-3xl text-center my-2">
-            Listed For Sale
-          </h3>
-          <div className="flex mt-5  flex-wrap max-w-screen-xl text-center">
-         
-            {marketData &&
-          [...marketDataTest, ...marketData].reverse().map((value, index) => {
-                return <NFTTile data={value} key={index}></NFTTile>;
-              })}
-          </div>
         </div>
+        <>
+
+        <TETabs  className="pl-4">
+        <TETabsItem className="hover:bg-transparent"
+          onClick={() => handleBasicClick("tab1")}
+          active={basicActive === "tab1"}
+        >
+          For Sale
+        </TETabsItem>
+        <TETabsItem className="hover:bg-transparent"
+          onClick={() => handleBasicClick("tab2")}
+          active={basicActive === "tab2"}
+        >
+          Just Sold
+        </TETabsItem>
+      
+      </TETabs>
+         
+          <div className="text-white">
+
+          <TETabsContent>
+        <TETabsPane show={basicActive === "tab1"}>
+      
+     
+     
+        
+              <div className="flex flex-col place-items-center ">
+                <div className="flex flex-wrap max-w-screen-xl text-center">
+                  {marketData &&
+                    [...marketDataTest, ...marketData]
+                      .reverse()
+                      .map((value, index) => {
+                        return <NFTTile data={value} key={index}></NFTTile>;
+                      })}
+                </div>
+              </div>
+              </TETabsPane>
+              <TETabsPane show={basicActive === "tab2"}>
+       
+              <Transactions />
+              </TETabsPane>
+              </TETabsContent>
+          </div>
+        </>
       </div>
     </div>
   );
