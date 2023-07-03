@@ -54,7 +54,7 @@ const Welcome = () => {
 
   return (
     <div className="flex w-full justify-center items-center fade-in">
-      <div className="items-start flex-col justify-between md:p-10 px-4 my-5">
+      <div className="items-start flex-col justify-between md:p-10 p-4 ">
         <h1 className="text-3xl sm:text-6xl text-white text-gradient py-1">
           Create & Trade NFTs
         </h1>
@@ -202,7 +202,7 @@ const Welcome = () => {
 
         {/* </div> */}
 
-        <div className="flex flex-col flex-1 items-start justify-start w-full mf:mt-0 mt-10">
+        <div className="flex flex-col flex-1 items-center justify-start w-full mf:mt-0 mt-10">
           <p className="text-center my-3 text-white font-light md:w-12/12 w-11/12 text-base">
             Learn about NFTs and how to get started below.
           </p>

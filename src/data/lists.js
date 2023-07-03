@@ -80,6 +80,9 @@ export const artists = [
     {
       name: "Anime",
     },
+    {
+      name: "Kawaii",
+    },
     // {
     //   name: "Comic Book",
     // },
@@ -107,9 +110,7 @@ export const artists = [
     {
       name: "Realism",
     },
-    {
-      name: "Minimalism",
-    },
+    
     {
       name: "Impressionism",
     },
@@ -181,9 +182,9 @@ export const artists = [
     },
   ];
   
-  export const categorys = [
+  export const category = [
     {
-      name: "Categorys",
+      name: "Category",
     },
     {
       name: "Cute Animal",
@@ -462,3 +463,108 @@ export const artists = [
     },
   ];
   
+
+  export const subcategory = [
+    {
+      name: "Subcategory",
+    },
+    {
+      name: "Cute Animal",
+    },
+    {
+      name: "Portrait",
+    },
+    {
+      name: "Figure",
+    },
+    {
+      name: "Face",
+    },
+    {
+      name: "Girl",
+    },
+    {
+      name: "Boy",
+    },
+    {
+      name: "Warrior",
+    },
+    {
+      name: "Fruit Bowl",
+    },
+    {
+      name: "Streetscape",
+    },
+    {
+      name: "Seascape",
+    },
+    {
+      name: "Landscape",
+    },
+    {
+      name: "Nature",
+    },
+  
+    {
+      name: "Building",
+    },
+    {
+      name: "City",
+    },
+    {
+      name: "Vehicle",
+    },
+  ];
+
+  export const themes = [
+    {
+      name: "Themes",
+    },
+    {
+      name: "Cute Animal",
+    },
+    {
+      name: "Portrait",
+    },
+    {
+      name: "Figure",
+    },
+    {
+      name: "Face",
+    },
+    {
+      name: "Girl",
+    },
+    {
+      name: "Boy",
+    },
+    {
+      name: "Warrior",
+    },
+    {
+      name: "Fruit Bowl",
+    },
+    {
+      name: "Streetscape",
+    },
+    {
+      name: "Seascape",
+    },
+    {
+      name: "Landscape",
+    },
+    {
+      name: "Nature",
+    },
+  
+    {
+      name: "Building",
+    },
+    {
+      name: "City",
+    },
+    {
+      name: "Vehicle",
+    },
+  ];
+ 

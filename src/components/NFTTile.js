@@ -41,22 +41,23 @@ function NFTTile (data) {
          
             <Link to={link}  target="_blank" rel="noopener noreferrer" >
             <div className="w-9 h-9 rounded-full border seal flex justify-center items-center absolute top-7 left-7 eth-card group "  >
-            <span class="absolute  bottom-10 scale-0 transition-all rounded bg-gray-700 p-2 text-xs text-white group-hover:scale-100">Verify&nbsp;NFT</span>
+            <span className="absolute  bottom-10 scale-0 transition-all rounded bg-gray-700 p-2 text-xs text-white group-hover:scale-100">Verify&nbsp;NFT</span>
            <SiEthereum fontSize={21} color="#fff"  />
             </div>
             </Link>
   
-
-            {/* <div className="absolute top-7 right-7 ">
+            {/* <Link to={link}  target="_blank" rel="noopener noreferrer" >
+            <div className="absolute top-7 right-7 ">
             <BsInfoCircle fontSize={20} color="#fff" />
-            </div> */}
-           
+            </div>
+            </Link> */}
 
      
          
             <div className="title">
            <strong> {data.data.name}</strong> &nbsp;<em>"{data.data.description}"</em> 
-           &nbsp; &nbsp; <BsInfoCircle fontSize={18} color="#888888" className="mt-1"/>
+           &nbsp; &nbsp; 
+           <BsInfoCircle fontSize={18} color="#888888" className="mt-1"/>
             </div>
 
           

@@ -61,43 +61,44 @@ export default function Marketplace() {
   };
 
   return (
-    <div className="fade-in">
-      <div className="items-start flex-col justify-between gap-x-2 md:p-5">
-        <div className="pt-2 pl-4 ">
-        <h1 className="text-4xl sm:text-5xl text-white text-gradient ">
-          NFT Exchange
-        </h1>
-        <p className="text-left text-white font-light text-base py-2">
-          Buy and sell your NFTs on our exchange.
-        </p>
-        </div>
-        <>
 
-        <TETabs  className="pl-4">
-        <TETabsItem className="hover:bg-transparent"
-          onClick={() => handleBasicClick("tab1")}
-          active={basicActive === "tab1"}
-        >
-          For Sale
-        </TETabsItem>
-        <TETabsItem className="hover:bg-transparent"
-          onClick={() => handleBasicClick("tab2")}
-          active={basicActive === "tab2"}
-        >
-          Just Sold
-        </TETabsItem>
+      <div className="items-center flex-col justify-between gap-x-2 md:p-5 fade-in">
+
+
+        <div className="flex flex-row  items-center flex-wrap ">
+          <div className="pt-2 pl-4  md:w-1/3 w-full ">
+            <h1 className="text-4xl sm:text-5xl text-white text-gradient ">
+              NFT Exchange
+            </h1>
+            <p className="text-left text-white font-light text-base py-2">
+              Buy and sell your NFTs on our exchange.
+            </p>
+          </div>
       
-      </TETabs>
-         
-          <div className="text-white">
+   <div className="flex md:w-1/3 w-full justify-center ">
+          <TETabs className="lg:pr-4">
+            <TETabsItem
+              className="hover:bg-transparent"
+              onClick={() => handleBasicClick("tab1")}
+              active={basicActive === "tab1"}
+            >
+              For Sale
+            </TETabsItem>
+            <TETabsItem
+              className="hover:bg-transparent"
+              onClick={() => handleBasicClick("tab2")}
+              active={basicActive === "tab2"}
+            >
+              Just Sold
+            </TETabsItem>
+          </TETabs>
+          </div>
+          </div>
+
 
           <TETabsContent>
-        <TETabsPane show={basicActive === "tab1"}>
-      
-     
-     
-        
-              <div className="flex flex-col place-items-center ">
+            <TETabsPane show={basicActive === "tab1"}>
+              <div className="flex flex-col place-items-center text-white">
                 <div className="flex flex-wrap max-w-screen-xl text-center">
                   {marketData &&
                     [...marketDataTest, ...marketData]
@@ -107,15 +108,13 @@ export default function Marketplace() {
                       })}
                 </div>
               </div>
-              </TETabsPane>
-              <TETabsPane show={basicActive === "tab2"}>
-       
+            </TETabsPane>
+            <TETabsPane show={basicActive === "tab2"}>
               <Transactions />
-              </TETabsPane>
-              </TETabsContent>
-          </div>
-        </>
+            </TETabsPane>
+          </TETabsContent>
+       
       </div>
-    </div>
+ 
   );
 }

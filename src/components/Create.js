@@ -17,11 +17,12 @@ const Create = () => {
     medium: "",
     texture: "",
     points: "",
+    seal:"Yes",
     price: "",
   });
 
   
-  const [checked, setChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -41,7 +42,7 @@ const Create = () => {
   const [message, updateMessage] = useState("");
   const location = useLocation();
 
-  console.log("hashLink", hashLink);
+
 
   function createObjectURL(object) {
     return window.URL
@@ -92,21 +93,23 @@ const Create = () => {
   async function OnUploadFile(e) {
     e.preventDefault();
 
-    if (checked) {
-      uploadLocally(e);
-      var file = e.target.files[0];
+    if (isChecked) {
+      // uploadLocally(e);
+      updateMessage("Uploading image...");
+      const file = e.target.files[0];
       // setFileURL(file);
-      updateMessage("Uploading file...");
-      if (isSaving) {
+     
+      // if (isSaving) {
+        
         try {
           //upload the file to IPFS
           // disableButton();
           setIsUploading(true);
-          updateMessage("Loading..!");
+          updateMessage("Loading image..!");
           const response = await uploadFileToIPFS(file);
           if (response.success === true) {
             // enableButton();
-            updateMessage("Image Upload Success");
+            updateMessage("Image uploaded successfully!");
             console.log("Image uploaded: ", response.pinataURL);
             setFileURL(response.pinataURL);
             setIsUploading(false);
@@ -114,7 +117,7 @@ const Create = () => {
         } catch (e) {
           updateMessage("Error during file upload", e);
           setIsUploading(false);
-        }
+        // }
       }
     } else {
       // var file = e.target.files[0];
@@ -122,7 +125,7 @@ const Create = () => {
     }
   }
 
-  async function OnCreateFile(e) {
+  async function OnCreateFile() {
       // Create Image Function
       // const createImage = async () => {
       setIsCreating(true);
@@ -141,16 +144,6 @@ const Create = () => {
         data: JSON.stringify({
           inputs:
             formParams.title + " " + formParams.description + " " + activeKeywords,
-          // formParams.style +
-          // " " +
-          // formParams.artist +
-          // " " +
-          // formParams.colour +
-          // " " +
-          // formParams.medium +
-          // " " +
-          // formParams.category,
-
           options: { wait_for_model: true },
         }),
         responseType: "arraybuffer",
@@ -201,6 +194,7 @@ const Create = () => {
       category,
       medium,
       points,
+      seal
     } = formParams;
     //Make sure that none of the fields are empty
     if (!price) {
@@ -224,6 +218,7 @@ const Create = () => {
       category,
       medium,
       points,
+      seal,
       image: fileURL,
     };
 
@@ -231,7 +226,7 @@ const Create = () => {
       //upload the metadata JSON to IPFS
       const response = await uploadJSONToIPFS(nftJSON);
       if (response.success === true) {
-        updateMessage("Click Confirm in MetaMask");
+       
         return response.pinataURL;
       }
     } catch (e) {
@@ -243,16 +238,20 @@ const Create = () => {
     e.preventDefault();
 
     setIsMinting(true);
-    updateMessage("Minting NFT...Hold tight!");
+   
     //Upload data to IPFS
     try {
       const metadataURL = await uploadMetadataToIPFS();
+      
       if (metadataURL === -1) return;
+      setMetaData(metadataURL);
+      console.log("metadataURL", metadataURL);
+      updateMessage("Click Confirm in MetaMask");
       //After adding your Hardhat network to your metamask, this code will get providers and signers
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       // disableButton();
-
+     
       //Pull the deployed contract instance
       let contract = new ethers.Contract(
         Marketplace.address,
@@ -264,16 +263,19 @@ const Create = () => {
       const price = ethers.utils.parseUnits(formParams.price, "ether");
       let listingPrice = await contract.getListPrice();
       listingPrice = listingPrice.toString();
-
+     
       //actually create the NFT
       let transaction = await contract.createToken(metadataURL, price, {
         value: listingPrice,
       });
       await transaction.wait();
       console.log("transaction", transaction);
+      updateMessage("Minted NFT...Storing Data");
+     
       setTransactionHash(transaction.hash);
       console.log("transaction", transaction);
       setHashLink(`https://sepolia.etherscan.io/tx/${transaction.hash}`);
+      console.log("hashLink", hashLink);
       const powerPoints = transaction.hash.slice(64, 66);
       setPowerPoints(powerPoints);
 
@@ -292,11 +294,11 @@ const Create = () => {
       updateMessage("Upload error" + e);
     }
   }
-  console.log("transactionHash", transactionHash);
-  console.log(formParams);
-  console.log(activeKeywords);
+  // console.log("transactionHash", transactionHash);
+  // console.log(formParams);
+  // console.log(activeKeywords);
 
-  console.log("file", file);
+  // console.log("file", file);
   // console.log("formParams: " + formParams.name)
   // console.log("Working", process.env);
   return (
@@ -313,7 +315,7 @@ const Create = () => {
             </p>
           </div>{" "}
           {/* Form */}
-          <div className="form blue-glassmorphism mt-4 px-2 ">
+          <div className="form blue-glassmorphism mt-4 px-2 pb-5">
             <CreateForm
               isUploading={isUploading}
               isCreating={isCreating}
@@ -329,6 +331,9 @@ const Create = () => {
               activeKeywords={activeKeywords}
               setIsSaving={setIsSaving}
               isSaving={isSaving}
+              isChecked={isChecked}
+              OnUploadFile={OnUploadFile}
+              transactionHash={transactionHash}
             />
 
             <CreateImage
@@ -339,8 +344,12 @@ const Create = () => {
               fileURL={fileURL}
               message={message}
               OnUploadFile={OnUploadFile}
-              setChecked={setChecked}
+              setIsChecked={setIsChecked}
               transactionHash={transactionHash}
+              hashLink={hashLink}
+              setIsCreating={setIsCreating}
+              setIsUploading={setIsUploading}
+              metaData={metaData}
             />
           </div>
         </div>
