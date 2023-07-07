@@ -62,11 +62,11 @@ export default function Marketplace() {
 
   return (
 
-      <div className="items-center flex-col justify-between gap-x-2 md:p-5 fade-in">
+      <div className="items-center flex-col justify-between gap-x-2 md:p-5 fade-in ">
 
 
-        <div className="flex flex-row  items-center flex-wrap ">
-          <div className="pt-2 pl-4  md:w-1/3 w-full ">
+        <div className="flex flex-row  place-items-center flex-wrap ">
+          <div className="pt-2 pl-4  md:w-1/2 w-full ">
             <h1 className="text-4xl sm:text-5xl text-white text-gradient ">
               NFT Exchange
             </h1>
@@ -75,7 +75,7 @@ export default function Marketplace() {
             </p>
           </div>
       
-   <div className="flex md:w-1/3 w-full justify-center ">
+   <div className="flex md:w-1/2 w-full justify-center md:justify-end ">
           <TETabs className="lg:pr-4">
             <TETabsItem
               className="hover:bg-transparent"
@@ -85,11 +85,18 @@ export default function Marketplace() {
               For Sale
             </TETabsItem>
             <TETabsItem
-              className="hover:bg-transparent"
+              className="hover:bg-transparent  px-1 md:px-7"
               onClick={() => handleBasicClick("tab2")}
               active={basicActive === "tab2"}
             >
               Just Sold
+            </TETabsItem>
+            <TETabsItem
+              className="hover:bg-transparent"
+              onClick={() => handleBasicClick("tab3")}
+              active={basicActive === "tab3"}
+            >
+              Newest
             </TETabsItem>
           </TETabs>
           </div>
@@ -99,7 +106,7 @@ export default function Marketplace() {
           <TETabsContent>
             <TETabsPane show={basicActive === "tab1"}>
               <div className="flex flex-col place-items-center text-white">
-                <div className="flex flex-wrap max-w-screen-xl text-center">
+                <div className="flex flex-wrap  text-center">
                   {marketData &&
                     [...marketDataTest, ...marketData]
                       .reverse()
@@ -110,7 +117,21 @@ export default function Marketplace() {
               </div>
             </TETabsPane>
             <TETabsPane show={basicActive === "tab2"}>
+           
+              <div className="flex flex-col place-items-center text-white ">
+                <div className="flex flex-wrap  text-center ">
+                  {marketData &&
+                    [...marketDataTest]
+                      .reverse()
+                      .map((value, index) => {
+                        return <NFTTile data={value} key={index}></NFTTile>;
+                      })}
+                </div>
+              </div>
+            </TETabsPane>
+            <TETabsPane show={basicActive === "tab3"}>
               <Transactions />
+          
             </TETabsPane>
           </TETabsContent>
        

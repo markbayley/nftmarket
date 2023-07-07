@@ -4,7 +4,6 @@ export { default as Footer } from './Footer';
 export { default as Navbar } from './Navbar';
 export { default as Transactions } from './Transactions';
 export { default as Welcome } from './Welcome';
-export { default as Profile } from './Profile';
 export { default as Create } from './Create';
 export { default as NFTPage } from './NFTpage';
 export { default as Wallet } from './Wallet';

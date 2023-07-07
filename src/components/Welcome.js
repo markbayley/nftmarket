@@ -76,7 +76,7 @@ const Welcome = () => {
             {/* <img src={nftCards} alt="Futuristic City NFT" className="absolute top-7 left-7" /> */}
             <img src={nftImage1} alt="Futuristic City NFT" className=""/>
             <div className="title">
-              Futuristic Cityscape <em>"Cypherdome"</em>
+            <strong>Futuristic Cityscape</strong>&nbsp; <em>'Cypherdome'</em>
             </div>
 
             </div>
@@ -91,7 +91,7 @@ const Welcome = () => {
             {/* <img src={nftCards} alt="Futuristic City NFT" className="absolute top-7 left-7" /> */}
             <img src={nftImage2} alt="Futuristic City NFT" />
             <div className="title">
-              Tokyo Haze <em>"Metropolis Life"</em>
+              <strong>Tokyo Haze </strong> &nbsp;<em>'Metropolis Life'</em>
             </div>
           </div>
             {/* <Input

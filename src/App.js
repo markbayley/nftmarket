@@ -4,7 +4,7 @@ import { Footer, Navbar, Services, Transactions, Welcome, Profile, Marketplace, 
 
 function App() {
   return (
-    <div className="app">
+    <div className="app min-h-screen">
       <BrowserRouter>
         <Navbar />
         <Routes>
@@ -35,7 +35,7 @@ function App() {
             element={
               <>
                 <Wallet />
-                <Profile />
+             
               </>
             }
           />

@@ -1,69 +1,32 @@
-import { useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { uploadFileToIPFS, uploadJSONToIPFS } from "../utils/pinata";
 import Marketplace from "../abis/Marketplace.json";
 import { useLocation } from "react-router";
 import axios from "axios";
 import CreateImage from "./CreateImage";
 import CreateForm from "./CreateForm";
-import MintForm from "./MintForm";
+import { TransactionContext } from "../context/TransactionContext";
 import {
   TETabs,
   TETabsContent,
   TETabsItem,
   TETabsPane,
 } from "tw-elements-react";
-
-
+import MintForm from "./MintForm";
 
 const Create = () => {
-  const [formParams, updateFormParams] = useState({
-    name: "",
-    description: "",
-    subtitle: "",
-    theme: "",
-    style: "",
-    artist: "",
-    colour: "",
-    medium: "",
-    texture: "",
-    seal: "Yes",
-    price: "",
-    category: "",
-    subcategory: "",
-    trait1: "",
-    value1: "",
-    trait2: "",
-    value2: "",
-    trait3: "",
-    value3: "",
-    trait4: "",
-    value4: "",
-    trait5: "",
-    value5: "",
-    trait6: "",
-    value6: "",
-  });
-
-  const [isChecked, setIsChecked] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
-  const [isCreating, setIsCreating] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
-  const [isMinting, setIsMinting] = useState(false);
-  const [mint, setMint] = useState(false);
-
-  const [activeKeywords, setActiveKeywords] = useState([]);
-  const [powerPoints, setPowerPoints] = useState(null);
-  const [metaData, setMetaData] = useState(null);
-  const [transactionHash, setTransactionHash] = useState();
-  const [hashLink, setHashLink] = useState(null);
-  const [dateCreated, setDateCreated] = useState();
-
-  const [file, setFile] = useState(null);
-  const [fileURL, setFileURL] = useState(null);
-  const ethers = require("ethers");
-  const [message, updateMessage] = useState("");
-  const location = useLocation();
-  const [ svgFile, setSvgFile ] = useState('')
+  const {
+    formParams,
+    updateFormParams,
+    mintParams,
+    updateMintParams,
+    activeKeywords,
+    setActiveKeywords,
+    fileURL,
+    setFileURL,
+    currentAccount,
+    ethereum,
+  } = useContext(TransactionContext);
 
   const [basicActive, setBasicActive] = useState("tab1");
 
@@ -74,30 +37,39 @@ const Create = () => {
     setBasicActive(value);
   };
 
+  const [isChecked, setIsChecked] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [isMinting, setIsMinting] = useState(false);
+  const [mint, setMint] = useState(false);
 
+  const [powerPoints, setPowerPoints] = useState(null);
+  const [metaData, setMetaData] = useState(null);
+  const [transactionHash, setTransactionHash] = useState();
+  const [hashLink, setHashLink] = useState(null);
+  const [dateCreated, setDateCreated] = useState();
 
+  const [file, setFile] = useState(null);
+  const ethers = require("ethers");
+  const [message, updateMessage] = useState("");
+  const location = useLocation();
 
-  
-  
-
-
-
-
-  // window.localStorage.setItem("activeKeywords", activeKeywords);
+  window.localStorage.setItem("activeKeywords", activeKeywords);
 
   window.localStorage.setItem("fileURL", fileURL);
 
-  // window.localStorage.setItem("formParams", [
-  //   formParams.name,
-  //   formParams.subtitle,
-  //   formParams.description,
-  // ]);
+  window.localStorage.setItem("formParams", [
+    formParams.name,
+    formParams.subtitle,
+    formParams.description,
+  ]);
 
-  // window.localStorage.setItem("mintParams", [
-  //   mintParams.category,
-  //   mintParams.subcategory,
-  //   mintParams.seal,
-  // ]);
+  window.localStorage.setItem("mintParams", [
+    mintParams.category,
+    mintParams.subcategory,
+    mintParams.seal,
+  ]);
 
   function createObjectURL(object) {
     return window.URL
@@ -127,6 +99,12 @@ const Create = () => {
     updateFormParams({ ...formParams, [title]: e.target.value });
   };
 
+  const handleMint = (e) => {
+    let title = e.target.id;
+    setActiveKeywords([...activeKeywords, e.target.value]);
+    updateMintParams({ ...mintParams, [title]: e.target.value });
+  };
+
   const handleChecked = (e) => {
     e.preventDefault();
 
@@ -149,7 +127,6 @@ const Create = () => {
       updateMessage("Uploading image...");
       const file = e.target.files[0];
       // setFileURL(file);
- // Call the convertToSVG function with your file URL
 
       // if (isSaving) {
 
@@ -164,11 +141,10 @@ const Create = () => {
           updateMessage("Image uploaded successfully!");
           console.log("Image uploaded: ", response.pinataURL);
           setFileURL(response.pinataURL);
-     
           setIsUploading(false);
         }
       } catch (e) {
-        updateMessage("Error during file upload", e);
+        updateMessage("Error during file upload");
         setIsUploading(false);
         // }
       }
@@ -198,9 +174,9 @@ const Create = () => {
         inputs:
           formParams.name +
           " " +
-          formParams.subtitle +
-          " " +
           formParams.description +
+          " " +
+          formParams.subtitle +
           " " +
           activeKeywords,
         options: { wait_for_model: true },
@@ -212,29 +188,13 @@ const Create = () => {
     const data = response.data; //arrayBuffer
     const base64data = Buffer.from(data).toString("base64"); //raw string
     const file = `data:${type};base64,` + base64data; //formatted string
-   
-   console.log("fileRAW", file); //data:image/jpeg;base64,/9j/4A
-
-
-    const image = file;
-    const svgimg = document.createElementNS("http://www.w3.org/2000/svg", "image");
-    svgimg.setAttribute( 'width', '100' );
-    svgimg.setAttribute( 'height', '100' );
-    svgimg.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', image);
-    setSvgFile(svgimg); 
-    // document.getElementById("mySvg").appendChild(svgimg);
-
-    console.log("svgFile 00000000000", svgimg)  //<image width="500" height="500" src="data:image/jpeg;base64,/9j/4A
-
     const filePinata = new File([data], "image.jpeg", { type: "image/jpeg" });
     setFile(filePinata);
-
-    console.log("fileAFTERP", file) ////data:image/jpeg;base64,/9j/4A
     // const filePinata = file;
-    console.log("filePinata", filePinata);  //File lastModified: 16886072340 lastModifiedDate:Thu
+    console.log("fileIS", filePinata);
     //check for file extension
     setFileURL(file);
-    updateMessage("Image Created..."); 
+    updateMessage("Image Created...");
     setIsCreating(false);
     // return data;
     // };
@@ -246,8 +206,8 @@ const Create = () => {
       const response = await uploadFileToIPFS(filePinata);
       if (response.success === true) {
         // enableButton();
-        updateMessage("Image created..!");
-        console.log("Image created: ", response.pinataURL);  //https://magenta-realistic-haddock-479.mypinata.cl
+        updateMessage("Success! Image created");
+        console.log("Image created: ", response.pinataURL);
         setFileURL(response.pinataURL);
       }
     } catch (e) {
@@ -262,30 +222,25 @@ const Create = () => {
       name,
       subtitle,
       description,
-      artist,
-      colour,
-      style,
-      medium,
-      texture,
-      theme,
+      activeKeywords,
+    } = formParams;
+
+    const {
       category,
       subcategory,
       trait1,
-      value1,
       trait2,
-      value2,
       trait3,
-      value3,
       trait4,
+      value1,
+      value2,
+      value3,
       value4,
-      trait5,
-      value5,
-      trait6,
-      value6,
-      price,
       seal,
-    } = formParams;
-    //Make sure that none of the fields are empty
+      price,
+      points,
+    } = mintParams;
+    // Make sure that none of the fields are empty
     if (!price) {
       updateMessage("Please select a price in ETH!");
       setIsMinting(false);
@@ -300,26 +255,18 @@ const Create = () => {
     const nftJSON = {
       name,
       subtitle,
-      category,
       description,
-      theme,
-      price,
-      artist,
-      colour,
-      style,
-      texture,
-      medium,
-      seal,
       attributes: [
-        { trait_type: "Category", value: theme },
-        { trait_type: "Subcategory", value: style },
+        { trait_type: "Category", value: category },
+        { trait_type: "Subcategory", value: subcategory },
         { trait_type: trait1, value: value1 },
         { trait_type: trait2, value: value2 },
         { trait_type: trait3, value: value3 },
         { trait_type: trait4, value: value4 },
-        { trait_type: trait5, value: value5 },
-        { trait_type: trait6, value: value6 },
       ],
+      price,
+      seal,
+      activeKeywords,
       image: fileURL,
     };
 
@@ -330,7 +277,7 @@ const Create = () => {
         return response.pinataURL;
       }
     } catch (e) {
-      updateMessage("error uploading JSON metadata:", e);
+      updateMessage("error uploading JSON metadata:");
     }
   }
 
@@ -376,13 +323,13 @@ const Create = () => {
       console.log("transaction", transaction);
       setHashLink(`https://sepolia.etherscan.io/tx/${transaction.hash}`);
       console.log("hashLink", hashLink);
-      const powerPoints = transaction.hash.slice(64, 66);
-      setPowerPoints(powerPoints);
+      // const powerPoints = transaction.hash.slice(64, 66);
+      // setPowerPoints(powerPoints);
 
-      const date = `${new Date().getDate()}/${
-        new Date().getMonth() + 1
-      }/${new Date().getFullYear()}`;
-      setDateCreated(date);
+      // const date = `${new Date().getDate()}/${
+      //   new Date().getMonth() + 1
+      // }/${new Date().getFullYear()}`;
+      // setDateCreated(date);
 
       updateMessage("Successfully listed your NFT!");
       setIsMinting(false);
@@ -390,29 +337,27 @@ const Create = () => {
       // updateFormParams({ name: "", description: "", price: "" });
       // window.location.replace("/Wallet");
     } catch (e) {
-      updateMessage("Upload error" + e);
+      updateMessage("Upload error" + e );
+      setIsMinting(false);
     }
   }
 
 
 
   return (
-    <div className="items-center flex-col justify-between gap-x-2 md:p-5 fade-in lg:mx-12">
+    <div className="items-center flex-col justify-between gap-x-2 md:p-5 fade-in lg:mx-16">
       <div className="flex flex-row  place-items-center flex-wrap ">
         <div className="pt-2 pl-4  md:w-1/2 w-full ">
           <h1 className="text-4xl sm:text-5xl text-white text-gradient">
             Create & Mint NFTs
           </h1>
-{/* { svgFile &&
-          <svg id="mySvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 
-</svg>} */}
           <p className="text-left text-white font-light md:w-9/12  text-base py-2">
             Generate an A.I. image or upload your own.
           </p>
         </div>{" "}
         <div className="flex md:w-1/2 w-full justify-center md:justify-end ">
-          <TETabs className="lg:pr-4 ">
+          <TETabs className="lg:pr-4">
             <TETabsItem
               className="hover:bg-transparent"
               onClick={() => (handleBasicClick("tab1"), setMint(() => false))}
@@ -420,36 +365,27 @@ const Create = () => {
             >
               Create
             </TETabsItem>
-
-            <TETabsItem
-              className="hover:bg-transparent mx-5"
-              onClick={() => (handleBasicClick("tab2"), setMint(() => true))}
+            {/* <TETabsItem
+              className="hover:bg-transparent"
+              onClick={() => handleBasicClick("tab2")}
               active={basicActive === "tab2"}
+            >
+              Upload
+            </TETabsItem> */}
+            <TETabsItem
+              className="hover:bg-transparent  px-1 md:px-7"
+              onClick={() => (handleBasicClick("tab3"), setMint(() => true))}
+              active={basicActive === "tab3"}
             >
               Mint
             </TETabsItem>
           </TETabs>
         </div>
       </div>
-      <div className="form blue-glassmorphism py-5 md:py-10 px-5">
-        <CreateImage
-          isUploading={isUploading}
-          isCreating={isCreating}
-          isMinting={isMinting}
-          formParams={formParams}
-          fileURL={fileURL}
-          message={message}
-          OnUploadFile={OnUploadFile}
-          setIsChecked={setIsChecked}
-          transactionHash={transactionHash}
-          hashLink={hashLink}
-          setIsCreating={setIsCreating}
-          setIsUploading={setIsUploading}
-          metaData={metaData}
-          mint={mint}
-        />
-        <TETabsContent>
-          <TETabsPane show={basicActive === "tab1"}>
+
+      <TETabsContent>
+        <TETabsPane show={basicActive === "tab1"}>
+          <div className="form blue-glassmorphism mt-4 px-2 pb-5">
             <CreateForm
               isUploading={isUploading}
               isCreating={isCreating}
@@ -469,20 +405,47 @@ const Create = () => {
               OnUploadFile={OnUploadFile}
               transactionHash={transactionHash}
             />
-          </TETabsPane>
 
-          <TETabsPane show={basicActive === "tab2"}>
-            <MintForm
+            <CreateImage
               isUploading={isUploading}
               isCreating={isCreating}
               isMinting={isMinting}
               formParams={formParams}
               fileURL={fileURL}
+              message={message}
+              OnUploadFile={OnUploadFile}
+              setIsChecked={setIsChecked}
+              transactionHash={transactionHash}
+              hashLink={hashLink}
+              setIsCreating={setIsCreating}
+              setIsUploading={setIsUploading}
+              metaData={metaData}
+            />
+          </div>
+        </TETabsPane>
+
+        {/* <TETabsPane show={basicActive === "tab2"}>
+
+
+
+
+            </TETabsPane> */}
+
+        <TETabsPane show={basicActive === "tab3"}>
+          <div className="form blue-glassmorphism mt-4 px-2 pb-5 ">
+            <MintForm
+              isUploading={isUploading}
+              isCreating={isCreating}
+              isMinting={isMinting}
+              formParams={formParams}
+              mintParams={mintParams}
+              fileURL={fileURL}
               OnCreateFile={OnCreateFile}
               file={file}
               handleChecked={handleChecked}
-              handleForm={handleForm}
+              handleMint={handleMint}
               updateFormParams={updateFormParams}
+              updateMintParams={updateMintParams}
               listNFT={listNFT}
               activeKeywords={activeKeywords}
               setIsSaving={setIsSaving}
@@ -491,9 +454,26 @@ const Create = () => {
               OnUploadFile={OnUploadFile}
               transactionHash={transactionHash}
             />
-          </TETabsPane>
-        </TETabsContent>
-      </div>
+
+            <CreateImage
+              isUploading={isUploading}
+              isCreating={isCreating}
+              isMinting={isMinting}
+              formParams={formParams}
+              fileURL={fileURL}
+              message={message}
+              OnUploadFile={OnUploadFile}
+              setIsChecked={setIsChecked}
+              transactionHash={transactionHash}
+              hashLink={hashLink}
+              setIsCreating={setIsCreating}
+              setIsUploading={setIsUploading}
+              metaData={metaData}
+              mint={mint}
+            />
+          </div>
+        </TETabsPane>
+      </TETabsContent>
     </div>
   );
 };

@@ -30,15 +30,19 @@ nav {
 }
 
 .nav__connect {
-  /* width: 100px; */
-  /* margin: 5px 25px 5px 0px; */
   background-color: #F60C4B;
   color: var(--clr-white);
   border: none;
   border-radius: 30px;
-  /* font-family: "Play";
-  font-size: 0.8em;
-  font-weight: 600; */
+  cursor: pointer;
+  transition: all 250ms ease;
+}
+
+.nav-connect-connected {
+  background-color: var(--clr-blue-2);
+  color: var(--clr-white);
+  border: none;
+  border-radius: 30px;
   cursor: pointer;
   transition: all 250ms ease;
 }
@@ -58,7 +62,7 @@ nav {
 }
 
 .nav__connect:hover {
-  background-color: var(--clr-blue-2);
+  background-color: var(--clr-blue);
 }
 
 .nav__menu:hover {
@@ -89,6 +93,13 @@ a:hover {
   color: var(--clr-blue);
 }
 
+
+/* svg{
+  margin:20px;
+  display:block;
+      height:100px;
+background-color:#999;
+} */
 
 /* #mobile-menu {
   display: flex;
@@ -126,7 +137,7 @@ input::file-selector-button:hover {
 form input[type="text"] {
   min-width: 25vw;
   height: 50px;
-  margin-top: 6px;
+  /* margin-top: 6px; */
   padding: 10px 0px 0px 15px;
   border: none;
   border-bottom: 1px solid var(--clr-blue);
@@ -204,7 +215,7 @@ select + select {
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  margin-top: 8px;
+  /* margin-top: 8px; */
 }
 
 .checked {
@@ -277,6 +288,7 @@ select + select {
   height: 30px;
   font-size: 0.8em;
   border: none;
+  margin-top: 4px;
 }
 
 .activeButton {

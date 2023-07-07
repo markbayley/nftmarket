@@ -26,7 +26,7 @@ const Navbar = () => {
     currentAccount,
     connectWallet,
     accountMsg,
-    provider,
+    ethereum,
   } = useContext(TransactionContext);
 
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -105,17 +105,17 @@ const Navbar = () => {
         ))}
 
         <li>
-        {provider ? (
+        {ethereum ? (
             <button
               type="button"
-              className="px-5 mx-3 nav__connect "
+              className="px-5 mx-3 nav-connect-connected"
               onClick={connectWallet}
             >
                {currentAccount !== "0x" ?  "Connected" : "Connect Wallet"}
             </button>
           ) : (
             <a target="_blank" href="https://metamask.io/">
-              <button
+              <button 
                 type="button"
                 className="px-5 mx-3 nav__connect "
                 onClick={connectWallet}
@@ -180,9 +180,7 @@ const Navbar = () => {
             )}
           </ul>
         )}
-        {/* <div className='text-white text-bold text-right mr-10 text-sm'>
-          {currentAccount !== "0x" ? "":"Not Connected. Please login to view NFTs"} {currentAccount !== "0x" ? (currentAccount.substring(0,5)+'...'+(currentAccount.substring(38,42))):""}
-        </div> */}
+     
       </div>
     </nav>
   );

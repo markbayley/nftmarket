@@ -38,7 +38,43 @@ const createMarketplaceContract = () => {
 export const TransactionsProvider = ({ children }) => {
   // //AIGENERATOR
 
+  //CREATE
+  const [formParams, updateFormParams] = useState({
+    title: "",
+    subtitle: "",
+    description: "",
+    theme: "",
+    style: "",
+    artist: "",
+    colour: "",
+    medium: "",
+    texture: "",
+    points: "",
+   
+    price: "",
+ 
 
+  }, localStorage.getItem("formParams"));
+
+
+  const [mintParams, updateMintParams] = useState({
+    category: "",
+    subcategory: "",
+    trait1: "",
+    trait2: "",
+    trait3: "",
+    trait4: "",
+    seal:"Yes",
+    price: "",
+
+  }, localStorage.getItem("mintParams"));
+
+
+
+  const [activeKeywords, setActiveKeywords] = useState([], localStorage.getItem("activeKeywords"));
+  const [fileURL, setFileURL] = useState(null, localStorage.getItem("fileURL"));
+
+  console.log(localStorage);
   // //MARKETPLACE
   const [marketData, updateMarketData] = useState([]);
   const [marketDataFetched, updateMarketFetched] = useState(false);
@@ -71,6 +107,9 @@ export const TransactionsProvider = ({ children }) => {
               image: meta.image,
               name: meta.name,
               description: meta.description,
+              subtitle: meta.subtitle,
+              attributes: meta.attributes,
+              metadata: tokenURI
             };
             return item;
           })
@@ -104,13 +143,6 @@ export const TransactionsProvider = ({ children }) => {
     try {
       if (ethereum) {
 
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const addr = await signer.getAddress();
-        const amount = await provider.getBalance(addr);
-        const bal = parseInt(amount._hex) / 10 ** 18;
-        updateWalletBalance(bal);
-
         //Pull the deployed contract instance
         const marketplaceContract = createMarketplaceContract();
         //create an NFT Token //get the transactions
@@ -120,8 +152,6 @@ export const TransactionsProvider = ({ children }) => {
          * Below function takes the metadata from tokenURI and the data returned by getMyNFTs() contract function
          * and creates an object of information that is to be displayed
          */
-
-       
         const items = await Promise.all(
           transaction.map(async (i) => {
             const tokenURI = await marketplaceContract.tokenURI(i.tokenId);
@@ -136,7 +166,9 @@ export const TransactionsProvider = ({ children }) => {
               owner: i.owner,
               image: meta.image,
               name: meta.name,
+              subtitle: meta.subtitle,
               description: meta.description,
+              metadata: tokenURI
             };
             sumPrice += Number(price);
             return item;
@@ -155,9 +187,9 @@ export const TransactionsProvider = ({ children }) => {
     }
   };
 
-  const params = useParams();
-  const tokenId = params.tokenId;
-  if (!walletDataFetched) getNFTData(tokenId);
+   const params = useParams();
+   const tokenId = params.tokenId;
+  // if (!walletDataFetched) getNFTData(tokenId);
 
 
 
@@ -224,7 +256,7 @@ export const TransactionsProvider = ({ children }) => {
         setCurrentAccount(accounts[0]);
 
         getAllTransactions();
-        getAllNFTs();
+      
       } else {
         console.log("No Account");
       }
@@ -261,7 +293,8 @@ export const TransactionsProvider = ({ children }) => {
       });
 
       setCurrentAccount(accounts[0]);
-      window.location.reload();
+      // getNFTData();
+      // window.location.reload();
     } catch (error) {
       console.log(error);
 
@@ -319,7 +352,7 @@ export const TransactionsProvider = ({ children }) => {
   useEffect(() => {
     checkIfWalletIsConnect();
     checkIfTransactionsExists();
-    // getNFTData(tokenId);
+    getNFTData(tokenId);
   
   }, [transactionCount]);
 
@@ -330,11 +363,13 @@ export const TransactionsProvider = ({ children }) => {
         connectWallet,
         transactions,
         currentAccount,
+        setCurrentAccount,
         isLoading,
         sendTransaction,
         handleChange,
         formData,
         provider,
+        ethereum,
 
         getAllNFTs,
         marketData,
@@ -344,18 +379,17 @@ export const TransactionsProvider = ({ children }) => {
         totalPrice,
         tokenId,
         walletBalance,
+        updateWalletBalance,
 
-        // thumbs,
-        // setThumbs,
-        // image,
-        // message,
-        // isCreating,
-        // generateAIImage,
-        // setActive,
-        // setIsCreating,
-        // setMessage,
-        // active,
-        // setImage,
+       formParams,
+       updateFormParams,
+       mintParams,
+       updateMintParams,
+       activeKeywords,
+       setActiveKeywords,
+       fileURL,
+       setFileURL,
+
       }}
     >
       {children}

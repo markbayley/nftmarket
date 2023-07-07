@@ -12,6 +12,7 @@ import {
 import createSvg from "../images/create.svg";
 import uploadSvg from "../images/upload.svg";
 
+
 const CreateImage = ({
   isUploading,
   isCreating,
@@ -23,6 +24,7 @@ const CreateImage = ({
   setIsChecked,
   hashLink,
   metaData,
+  mint,
 }) => {
   const [basicActive, setBasicActive] = useState("tab1");
 
@@ -40,11 +42,11 @@ const CreateImage = ({
   }
 
   return (
-    <div className="mainimage">
+    <div className="mainimage  ">
       {/* // Create */}
       <TETabsContent>
         <TETabsPane show={basicActive === "tab1"}>
-          <div className="image border-[#6c63ff] border rounded ">
+          <div className="image border-[#6c63ff] border rounded-lg ">
             {/* Stable Creating*/}
             {!isCreating && !isMinting && fileURL ? (
               <>
@@ -52,7 +54,7 @@ const CreateImage = ({
                   <img
                     src={fileURL}
                     alt="AI thumbnail"
-                    className="rounded min-w-[22rem] max-h-[22rem] "
+                    className="rounded md:w-[22rem] md:h-[22rem] rounded-lg "
                   />
                   {hashLink && formParams.seal === "Yes" && (
                     <Link
@@ -91,23 +93,23 @@ const CreateImage = ({
               </div>
             ) : (
               // No Image Created
-              <div className="flex items-center justify-center w-full md:h-[22rem]">
+              <div className="  rounded-lg  border-[#4F4B4B]  md:w-[22rem] md:h-[22rem] seal">
                 <label
                   htmlFor=""
-                  className="flex flex-col items-center justify-center w-full h-full border cursor-help
-                   rounded-lg cursor-pointer bg-opacity-60 bg-[#4F4B4B] border-[#4F4B4B]"
+                  className="flex items-center justify-center w-full h-full cursor-help
+                       "
                 >
-                  <div className="flex flex-col items-center justify-center py-24 px-10">
+                  <div className="flex flex-col items-center  py-24 px-10">
                     <img
                       src={createSvg}
                       alt="create-svg"
                       style={{ width: "40px", height: "40px" }}
                     />
-                    <p className="mb-2 text-sm text-[#D1D5DB] pt-3">
-                      Fill in fields and click the{" "}
-                      <span className="font-semibold">CREATE</span> button
+                    <p className="mb-2 text-sm text-white pt-3">
+                      Fill in fields and click{" "}
+                      <span className="font-semibold">GENERATE</span>&nbsp;button 
                     </p>
-                    <p className="text-xs text-[#D1D5DB] ">
+                    <p className="text-xs text-white ">
                       TITLE & DESCRIPTION (MIN. REQUIRED)
                     </p>
                   </div>
@@ -119,14 +121,14 @@ const CreateImage = ({
 
         {/* //Upload */}
         <TETabsPane show={basicActive === "tab2"}>
-          <div className="image rounded border-dashed border-[#6c63ff] border">
+          <div className="image rounded border-dashed border-[#6c63ff]">
             {/* Stable Uploading*/}
             {!isUploading && !isMinting && fileURL ? (
               <div className="overlay ">
                 <img
                   src={fileURL}
                   alt="upload"
-                  className="rounded min-w-[22rem] max-h-[22rem]  "
+                  className="rounded md:w-[22rem] md:h-[22rem] rounded border-dashed border-[#6c63ff] border "
                 />
                 {hashLink && formParams.seal === "Yes" && (
                   <>
@@ -157,19 +159,20 @@ const CreateImage = ({
               <div className="spinner">
                 <div className="animate-spin rounded-full h-20 w-20 border-b-2 border-yellow-700 absolute"></div>
                 <img
-                  src={fileURL ? fileURL : uploadSvg}
+                  src={uploadSvg}
                   alt="upload"
                   className="overlay loading"
+                  style={{ width: "40px", height: "40px" }}
                 />
               </div>
             ) : (
               //No Image Uploaded
-              <div className="flex items-center justify-center w-full md:h-[22rem]">
+              <div className="border-[#6c63ff] border-dashed rounded-lg md:w-[22rem] md:h-[22rem] seal">
                 <label
                   htmlFor="dropzone-file"
-                  className="flex flex-col items-center justify-center w-full h-full
-                 border cursor-move border-dashed rounded-lg cursor-pointer bg-opacity-80 
-                 bg-[#273057] hover:bg-opacity-100 border-[#6c63ff]"
+                  className="flex  items-center justify-center w-full h-full
+                 cursor-move   bg-opacity-10 
+                 bg-[#273057] hover:bg-opacity-70  "
                 >
                   <div className="flex flex-col items-center justify-center py-24 px-10">
                     <img
@@ -177,12 +180,12 @@ const CreateImage = ({
                       alt="upload-svg"
                       style={{ width: "40px", height: "40px" }}
                     />
-                    <p className="mb-2 text-sm text-[#D1D5DB] pt-3">
+                    <p className="mb-2 text-sm text-white pt-3">
                       Drag n drop or click to{" "}
                       <span className="font-semibold">UPLOAD</span>&nbsp;an
                       image
                     </p>
-                    <p className="text-xs text-[#D1D5DB] ">
+                    <p className="text-xs text-white ">
                       SVG, PNG, JPG or GIF (MAX. 800x800px)
                     </p>
                     <input
@@ -215,13 +218,15 @@ const CreateImage = ({
 }
 
       {/* Toggle */}
+
+      {/* { !mint && */}
       <TETabs className="pl-4">
         <TETabsItem
           className="hover:bg-transparent "
           onClick={() => (handleBasicClick("tab1"), setIsChecked(() => false))}
           active={basicActive === "tab1"}
         >
-          Create
+          Generate
         </TETabsItem>
 
         <TETabsItem
@@ -229,9 +234,10 @@ const CreateImage = ({
           onClick={() => (handleBasicClick("tab2"), setIsChecked(() => true))}
           active={basicActive === "tab2"}
         >
-          Upload
+          Upload Image
         </TETabsItem>
       </TETabs>
+{/* } */}
     </div>
   );
 };
