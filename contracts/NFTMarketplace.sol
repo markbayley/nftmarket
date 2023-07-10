@@ -99,7 +99,7 @@ contract NFTMarketplace is ERC721URIStorage {
             payable(address(this)),
             payable(msg.sender),
             price,
-            true
+            true  // false to set not listed for sale
         );
 
         _transfer(msg.sender, address(this), tokenId);
@@ -109,9 +109,12 @@ contract NFTMarketplace is ERC721URIStorage {
             address(this),
             msg.sender,
             price,
-            true
+            true  // false to set not listed for sale
         );
     }
+
+
+    //RESALE FUNCTION
     
     //This will return all the NFTs currently listed to be sold on the marketplace
     function getAllNFTs() public view returns (ListedToken[] memory) {
@@ -158,6 +161,8 @@ contract NFTMarketplace is ERC721URIStorage {
         }
         return items;
     }
+
+    // GET LISTED NFTS NOT JUST THOSE OWNED IN WALLET
 
     function executeSale(uint256 tokenId) public payable {
         uint price = idToListedToken[tokenId].price;

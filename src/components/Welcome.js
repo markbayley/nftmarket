@@ -58,14 +58,22 @@ const Welcome = () => {
         <h1 className="text-3xl sm:text-6xl text-white text-gradient py-1">
           Create & Trade NFTs
         </h1>
-        <h2 className="text-left mb-3 text-white font-light md:w-12/12 w-11/12 text-base text-3xl sm:text-2xl">
+        <h2 className="text-left mb-3 text-white font-light md:w-12/12 w-11/12 text-base text-3xl sm:text-2xl ">
           {/* Explore the crypto world. <br /> */}
           With Advanced AI Technology
         </h2>
 
         <div className="flex flex-wrap justify-start items-start flex-row ">
 
-          <div className="p-5 md:-mr-5 sm:w-96  w-full flex flex-col justify-center items-center blue-glassmorphism relative rotate-5">
+
+        
+
+
+
+
+
+          <div className="p-5 md:-mr-5 sm:w-96  w-full flex flex-col justify-center items-center blue-glassmorphism relative z-0
+          translate-y-6 -rotate-3 md:-rotate-6  -skew-x-1 ">
             <div className="w-10 h-10 rounded-full border-2 border-white flex justify-center items-center absolute top-7 left-7 eth-card  seal ">
               <SiEthereum fontSize={21} color="#fff" />
             </div>
@@ -76,22 +84,33 @@ const Welcome = () => {
             {/* <img src={nftCards} alt="Futuristic City NFT" className="absolute top-7 left-7" /> */}
             <img src={nftImage1} alt="Futuristic City NFT" className=""/>
             <div className="title">
-            <strong>Futuristic Cityscape</strong>&nbsp; <em>'Cypherdome'</em>
+            <strong>Future Drift</strong>&nbsp; <em>'Cypherdome Rain'</em>
             </div>
 
             </div>
 
-            <div className="p-5 md:mr-3 sm:w-96  w-full flex flex-col justify-center items-center blue-glassmorphism relative top-70 left-70 rotate-10">
+            <div className="p-5  sm:w-96 w-full flex flex-col justify-center items-center blue-glassmorphism relative top-70 left-70 z-30
+              rotate-3 md:rotate-12">
             <div className="w-10 h-10 rounded-full border-2 border-white flex justify-center items-center absolute top-7 left-7 eth-card  seal ">
               <SiEthereum fontSize={21} color="#fff" />
             </div>
-            {/* <div className="absolute top-7 right-7 ">
-            <BsInfoCircle fontSize={20} color="#fff" />
-            </div> */}
-            {/* <img src={nftCards} alt="Futuristic City NFT" className="absolute top-7 left-7" /> */}
+         
             <img src={nftImage2} alt="Futuristic City NFT" />
             <div className="title">
               <strong>Tokyo Haze </strong> &nbsp;<em>'Metropolis Life'</em>
+            </div>
+          </div>
+
+
+          <div className="p-5  sm:w-96 w-full flex flex-col justify-center items-center blue-glassmorphism relative top-70 left-70 z-10
+            -translate-x-12 -translate-y-24 skew-y-6 skew-x-3 scale-[0.7] rotate-3 md:rotate-45">
+            <div className="w-10 h-10 rounded-full border-2 border-white flex justify-center items-center absolute top-7 left-7 eth-card  seal ">
+              <SiEthereum fontSize={21} color="#fff" />
+            </div>
+         
+            <img src="https://magenta-realistic-haddock-479.mypinata.cloud/ipfs/QmSWWPGQVDGqVgyRDhuUfEyMthFbhTCCZRSmHfqV8nv8Jk" alt="Futuristic City NFT" />
+            <div className="title">
+              <strong>Kyoto Life </strong> &nbsp;<em>'Dreams of Aftrelife'</em>
             </div>
           </div>
             {/* <Input

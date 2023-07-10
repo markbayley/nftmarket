@@ -30,29 +30,7 @@ const MintForm = ({
   transactionHash,
   mint,
 }) => {
-  const styleWords = activeKeywords.filter((word) =>
-    styles.some((style) => style.name === word)
-  );
 
-  const artistWords = activeKeywords.filter((word) =>
-    artists.some((artist) => artist.name === word)
-  );
-
-  const textureWords = activeKeywords.filter((word) =>
-    textures.some((texture) => texture.name === word)
-  );
-
-  const colourWords = activeKeywords.filter((word) =>
-    colours.some((colour) => colour.name === word)
-  );
-
-  const themeWords = activeKeywords.filter((word) =>
-    themes.some((theme) => theme.name === word)
-  );
-
-  const mediumWords = activeKeywords.filter((word) =>
-    mediums.some((medium) => medium.name === word)
-  );
 
   console.log("formParams", formParams);
 
@@ -62,34 +40,9 @@ const MintForm = ({
        
 
         <div className=" h-[22rem] ">
-          <div className="check  ">
-            <select
-              id="category"
-              onChange={(id) => handleForm(id)}
-              value={category.name}
-              className="text-white outline-none blue-glassmorphism w-half rounded  bg-[#273057] shadow-2xl border-none"
-            >
-              {category.map((category, index) => (
-                <option key={index} value={category.name}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-            <select
-              id="subcategory"
-              onChange={(id) => handleForm(id)}
-              value={subcategory.name}
-              className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#273057] shadow-2xl border-none"
-            >
-              {subcategory.map((subcategory, index) => (
-                <option key={index} value={subcategory.name}>
-                  {subcategory.name}
-                </option>
-              ))}
-            </select>
-          </div>
 
-          <div className="flex w-full my-3 sm:flex-wrap justify-between gap-x-2.5 ">
+
+          <div className="flex w-full mb-3 sm:flex-wrap justify-between gap-x-2.5 ">
             <input
               className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
               type="text"
@@ -203,6 +156,33 @@ const MintForm = ({
               }
               value={formParams.value4}
             ></input>
+          </div>
+
+          <div className="check mt-3 ">
+            <select
+              id="category"
+              onChange={(id) => handleForm(id)}
+              value={category.name}
+              className="text-white outline-none blue-glassmorphism w-half rounded  bg-[#273057] shadow-2xl border-none"
+            >
+              {category.map((category, index) => (
+                <option key={index} value={category.name}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+            <select
+              id="subcategory"
+              onChange={(id) => handleForm(id)}
+              value={subcategory.name}
+              className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#273057] shadow-2xl border-none"
+            >
+              {subcategory.map((subcategory, index) => (
+                <option key={index} value={subcategory.name}>
+                  {subcategory.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="check mt-3 gap-x-2.5">

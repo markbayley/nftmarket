@@ -2,6 +2,7 @@ import React from "react";
 import { BsShieldFillCheck } from "react-icons/bs";
 import { BiSearchAlt } from "react-icons/bi";
 import { RiHeart2Fill } from "react-icons/ri";
+import { SiEthereum } from "react-icons/si";
 
 const ServiceCard = ({ color, title, icon, subtitle }) => (
   <div className="flex flex-row justify-start items-start white-glassmorphism p-3 m-2 cursor-pointer hover:shadow-xl">
@@ -18,8 +19,24 @@ const ServiceCard = ({ color, title, icon, subtitle }) => (
 );
 
 const Services = () => (
-  <div className="flex w-full justify-center items-center fade-in">
-    <div className="flex mf:flex-row flex-col items-center justify-between md:p-20 py-12 px-4">
+  <div className="flex w-full justify-center items-center fade-in ">
+    <div className="flex mf:flex-row flex-col items-center justify-between md:p-20 py-12 px-4 ">
+
+
+    {/* <div className="p-5  sm:w-96 w-full flex flex-col justify-center items-center blue-glassmorphism relative top-70 left-70 
+          scale-[0.75]   translate-x-12 skew-y-12 -skew-x-6 -rotate-3 md:-rotate-45">
+          <div className="w-10 h-10 rounded-full border-2 border-white flex justify-center items-center absolute top-7 left-7 eth-card  seal ">
+            <SiEthereum fontSize={21} color="#fff" />
+          </div>
+       
+          <img src="https://magenta-realistic-haddock-479.mypinata.cloud/ipfs/QmSWWPGQVDGqVgyRDhuUfEyMthFbhTCCZRSmHfqV8nv8Jk" alt="Futuristic City NFT" />
+          <div className="title">
+            <strong>Tokyo Haze </strong> &nbsp;<em>'Metropolis Life'</em>
+          </div>
+        </div> */}
+
+
+
       <div className="flex-1 flex flex-col justify-start items-start w-half">
         <h1 className="text-white text-3xl sm:text-5xl py-2 text-gradient ">
           Getting Started is Easy

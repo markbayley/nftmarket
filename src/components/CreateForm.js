@@ -78,7 +78,7 @@ const CreateForm = ({
             <input
               className=" w-full lg:w-[48%] rounded-sm outline-none  text-white border-none white-glassmorphism"
               type="text"
-              placeholder="NFT Subtitle..."
+              placeholder="NFT Collection..."
               id="subtitle"
               onChange={(e) =>
                 updateFormParams({

@@ -142,6 +142,7 @@ form input[type="text"] {
   border: none;
   border-bottom: 1px solid var(--clr-blue);
   text-transform: capitalize;
+  
 }
 
 form input[type="text2"] {
@@ -163,6 +164,8 @@ form input[type="number"] {
   /* border-bottom: 1px solid var(--clr-blue); */
   text-transform: capitalize;
 }
+
+
 
 /* input + input {
   margin-left: 10px;
@@ -435,15 +438,7 @@ button:hover {
   font-size: 1.2em;
 }
 
-.rotate-5 {
-  transform: rotate(-5deg);
 
-}
-
-.rotate-10 {
-  transform: rotate(10deg);
-
-}
 
 @keyframes spin {
   from {

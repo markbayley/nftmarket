@@ -184,54 +184,24 @@ export const artists = [
   
   export const category = [
     {
-      name: "Category",
+      name: "No Royalties",
     },
     {
-      name: "Cute Animal",
+      name: "5%",
     },
     {
-      name: "Portrait",
+      name: "10%",
     },
     {
-      name: "Figure",
+      name: "15%",
     },
     {
-      name: "Face",
+      name: "20%",
     },
     {
-      name: "Girl",
+      name: "25%",
     },
-    {
-      name: "Boy",
-    },
-    {
-      name: "Warrior",
-    },
-    {
-      name: "Fruit Bowl",
-    },
-    {
-      name: "Streetscape",
-    },
-    {
-      name: "Seascape",
-    },
-    {
-      name: "Landscape",
-    },
-    {
-      name: "Nature",
-    },
-  
-    {
-      name: "Building",
-    },
-    {
-      name: "City",
-    },
-    {
-      name: "Vehicle",
-    },
+
   ];
   
   export const colours = [
@@ -462,58 +432,18 @@ export const artists = [
       name: "Golden Ratio",
     },
   ];
-  
 
   export const subcategory = [
     {
-      name: "Subcategory",
+      name: "Listed For Sale",
     },
     {
-      name: "Cute Animal",
+      name: "Unlisted",
     },
     {
-      name: "Portrait",
+      name: "Auction",
     },
-    {
-      name: "Figure",
-    },
-    {
-      name: "Face",
-    },
-    {
-      name: "Girl",
-    },
-    {
-      name: "Boy",
-    },
-    {
-      name: "Warrior",
-    },
-    {
-      name: "Fruit Bowl",
-    },
-    {
-      name: "Streetscape",
-    },
-    {
-      name: "Seascape",
-    },
-    {
-      name: "Landscape",
-    },
-    {
-      name: "Nature",
-    },
-  
-    {
-      name: "Building",
-    },
-    {
-      name: "City",
-    },
-    {
-      name: "Vehicle",
-    },
+
   ];
 
   export const themes = [
@@ -556,7 +486,6 @@ export const artists = [
     {
       name: "Nature",
     },
-  
     {
       name: "Building",
     },

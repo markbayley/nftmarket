@@ -80,7 +80,7 @@ const Create = () => {
   
   
 
-
+  console.log(activeKeywords)
 
 
   // window.localStorage.setItem("activeKeywords", activeKeywords);
@@ -490,6 +490,7 @@ const Create = () => {
               isChecked={isChecked}
               OnUploadFile={OnUploadFile}
               transactionHash={transactionHash}
+             
             />
           </TETabsPane>
         </TETabsContent>
