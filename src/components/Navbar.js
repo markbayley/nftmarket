@@ -89,7 +89,7 @@ const Navbar = () => {
     <nav className="w-full flex md:justify-center justify-between items-center p-4 ">
     
       <Link
-        to="/"
+        to="/nftmarket"
         className="md:flex-[0.5] flex-initial justify-center items-center"
       >
        <img src={inblockLogo} alt="logo" className="w-28 cursor-pointer" />
