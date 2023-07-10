@@ -23,6 +23,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy" : "npm run build",
+    "deploy" : "gh-pages -d build",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
@@ -57,6 +59,7 @@
     "dotenv": "^16.0.1",
     "ethereum-waffle": "^3.4.4",
     "ethers": "^5.6.8",
+    "gh-pages": "^5.0.0",
     "hardhat": "^2.9.7",
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",
