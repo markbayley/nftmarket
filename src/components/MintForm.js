@@ -3,11 +3,11 @@ import {
   artists,
   styles,
   mediums,
-  category,
   textures,
   colours,
   themes,
-  subcategory,
+  royalty,
+  listing,
 } from "../data/lists.js";
 
 const MintForm = ({
@@ -160,26 +160,26 @@ const MintForm = ({
 
           <div className="check mt-3 ">
             <select
-              id="category"
+              id="royalty"
               onChange={(id) => handleForm(id)}
-              value={category.name}
+              value={royalty.name}
               className="text-white outline-none blue-glassmorphism w-half rounded  bg-[#273057] shadow-2xl border-none"
             >
-              {category.map((category, index) => (
-                <option key={index} value={category.name}>
-                  {category.name}
+              {royalty.map((royalty, index) => (
+                <option key={index} value={royalty.name}>
+                  {royalty.name}
                 </option>
               ))}
             </select>
             <select
-              id="subcategory"
+              id="listing"
               onChange={(id) => handleForm(id)}
-              value={subcategory.name}
+              value={listing.name}
               className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#273057] shadow-2xl border-none"
             >
-              {subcategory.map((subcategory, index) => (
-                <option key={index} value={subcategory.name}>
-                  {subcategory.name}
+              {listing.map((listing, index) => (
+                <option key={index} value={listing.name}>
+                  {listing.name}
                 </option>
               ))}
             </select>

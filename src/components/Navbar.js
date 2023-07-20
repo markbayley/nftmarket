@@ -8,11 +8,12 @@ import { HiMenuAlt4 } from "react-icons/hi";
 import { AiFillPlayCircle, AiOutlineClose } from "react-icons/ai";
 import inblockLogo from "../images/inblocklogolight.png";
 import { TransactionContext } from "../context/TransactionContext";
+import { shortenAddress } from "../utils/shortenAddress";
 
 const NavBarItem = ({ title, classprops, link}) => (
   <>
     <NavLink
-      className={({isActive}) => (isActive ? "active-style" : 'none')}
+      className={({isActive}) => (isActive ? "active-style" : 'text-white')}
       to={link}
     >
       <li className={`mx-5 cursor-pointer   ${classprops}`}>{title}</li>
@@ -27,63 +28,13 @@ const Navbar = () => {
     connectWallet,
     accountMsg,
     ethereum,
+    checksumAddress,
   } = useContext(TransactionContext);
 
   const [toggleMenu, setToggleMenu] = useState(false);
   const [connected, toggleConnect] = useState(false);
   const location = useLocation();
-
-
-  // async function getAddress() {
-  //   const ethers = require("ethers");
-  //   const provider = new ethers.providers.Web3Provider(window.ethereum);
-  //   const signer = provider.getSigner();
-  //   const addr = await signer.getAddress();
-  //   updateAddress(addr);
-  // }
-
-  // function updateButton() {
-  //   const ethereumButton = document.querySelector(".enableEthereumButton");
-  //   ethereumButton.textContent = "Connected";
-  //   ethereumButton.classList.remove("hover:bg-blue-60");
-  //   ethereumButton.classList.remove("bg-blue-70");
-  //   ethereumButton.classList.add("hover:bg-blue-60");
-  //   ethereumButton.classList.add("bg-blue-70");
-  // }
-
-  // async function connectWebsite() {
-  //   const chainId = await window.ethereum.request({ method: "eth_chainId" });
-  //   if(chainId !== '0x5')
-  //   {
-  //     //alert('Incorrect network! Switch your metamask network to Rinkeby');
-  //     await window.ethereum.request({
-  //       method: 'wallet_switchEthereumChain',
-  //       params: [{ chainId: '0x5' }],
-  //    })
-  //   }
-  //   await window.ethereum
-  //     .request({ method: "eth_requestAccounts" })
-  //     .then(() => {
-  //       updateButton();
-  //       // console.log("here");
-  //       getAddress();
-  //       window.location.replace(location.pathname);
-  //     });
-  // }
-
-  // useEffect(() => {
-  //   if (window.ethereum == undefined) return;
-  //   let val = window.ethereum.isConnected();
-  //   if (val) {
-  //     getAddress();
-  //     toggleConnect(val);
-  //     updateButton();
-  //   }
-
-  //   window.ethereum.on("accountsChanged", function (accounts) {
-  //     window.location.replace(location.pathname);
-  //   });
-  // });
+  const [isHovering, setHover] = useState(false);
 
   return (
     <nav className="w-full flex md:justify-center justify-between items-center p-4 ">
@@ -105,44 +56,39 @@ const Navbar = () => {
         ))}
 
         <li>
-        {ethereum ? (
+        {!ethereum ? 
+             <a target="_blank" href="https://metamask.io/">
+             <button 
+               type="button"
+               className="px-5 mx-3 nav-install"
+               onClick={connectWallet}
+             >
+               Install MetaMask
+             </button>
+           </a>
+           : currentAccount === "" ? 
             <button
               type="button"
-              className="px-5 mx-3 nav-connect-connected"
+              className="px-5 mx-3 nav-connect bg-yellow-600 hover:bg-[#6c63ff] "
               onClick={connectWallet}
             >
-               {currentAccount !== "0x" ?  "Connected" : "Connect Wallet"}
+              Connect
             </button>
-          ) : (
-            <a target="_blank" href="https://metamask.io/">
-              <button 
-                type="button"
-                className="px-5 mx-3 nav__connect "
-                onClick={connectWallet}
-              >
-                Install MetaMask
-              </button>
-            </a>
-          )}
+           : 
+           <button
+           type="button"
+           className="px-5 mx-3 nav-connected hover:bg-[#6c63ff] "
+           onClick={connectWallet}
+           onMouseEnter={() => setHover(true)}
+           onMouseLeave={() => setHover(false)}
+         >
+            {currentAccount !== "" && isHovering ? shortenAddress(checksumAddress) :
+            "Connected"} 
+         </button>
+         
+          }
 
 
-        {/* {currentAccount && ( */}
-            {/* <button
-              type="button"
-              onClick={connectWallet}
-              className=" bg-[#2546bd] py-2 px-5 mx-4 rounded-full cursor-pointer hover:bg-[#254ccd] border-none"
-            >
-              {connected ? "Connected" : "Connect Wallet"}
-              {accountMsg}
-            </button> */}
-          {/* )} */}
-
-          {/* <button
-            className="enableEthereumButton bg-[#2546bd] py-2 px-5 mx-4 rounded-full cursor-pointer hover:bg-[#254ccd] border-none"
-            onClick={connectWebsite}
-          >
-            {connected ? "Connected" : "Connect Wallet"}
-          </button> */}
         </li>
       </ul>
 
@@ -163,7 +109,7 @@ const Navbar = () => {
         )}
         {toggleMenu && (
           <ul
-            className="z-10 fixed -top-0 -right-2 p-3 w-[70vw] h-screen shadow-2xl md:hidden list-none
+            className="z-10 fixed -top-0 -right-2 p-3 w-[40vw] h-screen shadow-2xl md:hidden list-none
             flex flex-col justify-start items-end rounded-md blue-glassmorphism text-white animate-slide-in"
           >
             <li className="text-xl w-full my-2">
@@ -172,9 +118,10 @@ const Navbar = () => {
             {["Create", "Trade", "Wallet", "Help"].map(
               (item, index) => (
                 <NavBarItem
+                  classprops="my-2 text-lg"
                   key={item + index}
                   title={item}
-                  classprops="my-2 text-lg"
+                  link={"/" + item}
                 />
               )
             )}

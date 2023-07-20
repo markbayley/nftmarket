@@ -36,12 +36,97 @@ const createMarketplaceContract = () => {
 };
 
 export const TransactionsProvider = ({ children }) => {
-  // //AIGENERATOR
+
+  //-------CONNECTION
+  const [currentAccount, setCurrentAccount] = useState("");
+  const [provider, setProvider] = useState(null);
+  const [error, setError] = useState("");
+  const [openError, setOpenError] = useState(false);
+  const [accountBalance, setAccountBalance] = useState();
+
+   const [ checksumAddress, setChecksumAddress] = useState("");
+
+   //---CHECK IF WALLET IS CONNECTED
+   const checkIfWalletConnected = async () => {
+    try {
+      const accounts = await ethereum.request({
+        method: "eth_accounts",
+      });
+      if (accounts.length) {
+        
+        setCurrentAccount(accounts[0]);
+
+        let checksum = ethers.utils.getAddress(accounts[0]);
+        setChecksumAddress(checksum);
+
+        getAllTransactions();
+        getNFTData();
+      } else {
+        setError("No Account Found");
+        setOpenError(true);
+      }
+
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const getBalance = await provider.getBalance(accounts[0]);
+      const bal = ethers.utils.formatEther(getBalance);
+      const balFormat = bal.slice(0, 5);
+      setAccountBalance(balFormat);
+    } catch (error) {
+      setError("Something wrong while connecting to wallet");
+      console.log(error);
+      setOpenError(true);
+    }
+  };
+
+    
+
+  console.log("checksumAddress", checksumAddress)
+
+  useEffect(() => {
+    ethereum?.on("accountsChanged", checkIfWalletConnected) 
+    return () => {
+     ethereum?.removeListener("accountsChanged", checkIfWalletConnected);
+    };
+  }, []);
+
+  window.onload = function() {
+    checkIfWalletConnected();
+  }
+
+  const connectWallet = async () => {
+    try {
+      if (!ethereum) return console.log("Install");
+
+      const accounts = await ethereum.request({
+        method: "eth_requestAccounts",
+      });
+
+      setCurrentAccount(accounts[0]);
+
+    } catch (error) {
+      console.log(error);
+
+      console.log("No ethereum object CW");
+    }
+  };
+
+
+  const [tab, setTab] = useState("tab1");
+  const handleTab = (value) => {
+    if (value === tab) {
+      return;
+    }
+    setTab(value);
+  };
+
+
+
+
 
   //CREATE
   const [formParams, updateFormParams] = useState({
     title: "",
-    subtitle: "",
+    collection: "",
     description: "",
     theme: "",
     style: "",
@@ -49,25 +134,33 @@ export const TransactionsProvider = ({ children }) => {
     colour: "",
     medium: "",
     texture: "",
-    points: "",
-   
+    royalty: "",
+    seal: "",
+    listed: "",
     price: "",
  
 
   }, localStorage.getItem("formParams"));
 
 
-  const [mintParams, updateMintParams] = useState({
-    category: "",
-    subcategory: "",
-    trait1: "",
-    trait2: "",
-    trait3: "",
-    trait4: "",
-    seal:"Yes",
-    price: "",
+  const handleProfile = (e, name) => {
+    updateProfileParams((prevState) => ({
+      ...prevState,
+      [name]: e.target.value,
+    }));
+  };
 
-  }, localStorage.getItem("mintParams"));
+  const [profileParams, updateProfileParams] = useState(
+    {
+      user: "",
+      country: "",
+      bio: "",
+      website: "",
+      profileUrl: "",
+      address: currentAccount,
+    },
+    localStorage.getItem("profileParams")
+  );
 
 
 
@@ -77,7 +170,16 @@ export const TransactionsProvider = ({ children }) => {
   console.log(localStorage);
   // //MARKETPLACE
   const [marketData, updateMarketData] = useState([]);
-  const [marketDataFetched, updateMarketFetched] = useState(false);
+
+
+  const [filteredResults, setFilteredResults] = useState([]);
+
+  const handleCollection = (e) => {
+    let collection = e.target.value;
+    console.log(collection);
+    const results = marketData.filter((item) => item.name == collection);
+    setFilteredResults(results);
+  }
 
   const getAllNFTs = async () => {
     const ethers = require("ethers");
@@ -107,7 +209,7 @@ export const TransactionsProvider = ({ children }) => {
               image: meta.image,
               name: meta.name,
               description: meta.description,
-              subtitle: meta.subtitle,
+              collection: meta.collection,
               attributes: meta.attributes,
               metadata: tokenURI
             };
@@ -115,7 +217,7 @@ export const TransactionsProvider = ({ children }) => {
           })
         );
 
-        updateMarketFetched(true);
+ 
         updateMarketData(items);
       } else {
         console.log("Ethereum is not present GANFTs");
@@ -129,29 +231,20 @@ export const TransactionsProvider = ({ children }) => {
 
 
   //PROFILE WALLET
-  const [walletData, updateWalletData] = useState([]);
-  const [walletDataFetched, updateWalletFetched] = useState(false);
-  const [walletAddress, updateWalletAddress] = useState();
+  const [walletNFTs, updateWalletNFTs] = useState([]);
   const [totalPrice, updateTotalPrice] = useState("0");
-  const [walletBalance, updateWalletBalance] = useState();
+ const [walletDataFetched, updateWalletDataFetched] = useState(false)
 
   const getNFTData = async (tokenId) => {
     const ethers = require("ethers");
     let sumPrice = 0;
-    //After adding your Hardhat network to your metamask, this code will get providers and signers
-    // console.log("contractP", contract)
+
     try {
       if (ethereum) {
 
-        //Pull the deployed contract instance
         const marketplaceContract = createMarketplaceContract();
-        //create an NFT Token //get the transactions
         const transaction = await marketplaceContract.getMyNFTs();
-        // console.log("transactionP", transaction)
-        /*
-         * Below function takes the metadata from tokenURI and the data returned by getMyNFTs() contract function
-         * and creates an object of information that is to be displayed
-         */
+    
         const items = await Promise.all(
           transaction.map(async (i) => {
             const tokenURI = await marketplaceContract.tokenURI(i.tokenId);
@@ -166,18 +259,17 @@ export const TransactionsProvider = ({ children }) => {
               owner: i.owner,
               image: meta.image,
               name: meta.name,
-              subtitle: meta.subtitle,
               description: meta.description,
+              collection: meta.collection,
+              attributes: meta.attributes,
               metadata: tokenURI
             };
             sumPrice += Number(price);
             return item;
           })
         );
-
-        updateWalletData(items);
-        updateWalletFetched(true);
-        // updateWalletAddress(addr);
+        updateWalletDataFetched(true)
+        updateWalletNFTs(items);
         updateTotalPrice(sumPrice.toPrecision(3));
       } else {
         console.log("Ethereum is not present");
@@ -189,7 +281,7 @@ export const TransactionsProvider = ({ children }) => {
 
    const params = useParams();
    const tokenId = params.tokenId;
-  // if (!walletDataFetched) getNFTData(tokenId);
+   if (!walletDataFetched) getNFTData(tokenId);
 
 
 
@@ -201,13 +293,13 @@ export const TransactionsProvider = ({ children }) => {
     keyword: "",
     message: "",
   });
-  const [currentAccount, setCurrentAccount] = useState("0x");
+
   const [isLoading, setIsLoading] = useState(false);
   const [transactionCount, setTransactionCount] = useState(
     localStorage.getItem("transactionCount")
   );
   const [transactions, setTransactions] = useState([]);
-  const [provider, setProvider] = useState(null);
+
 
   const handleChange = (e, name) => {
     setformData((prevState) => ({ ...prevState, [name]: e.target.value }));
@@ -245,25 +337,7 @@ export const TransactionsProvider = ({ children }) => {
     }
   };
 
-  const checkIfWalletIsConnect = async () => {
-    try {
-      if (!ethereum) return console.log("Install MetaMask");
 
-      setProvider(ethereum);
-      const accounts = await ethereum.request({ method: "eth_accounts" });
-
-      if (accounts.length) {
-        setCurrentAccount(accounts[0]);
-
-        getAllTransactions();
-      
-      } else {
-        console.log("No Account");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const checkIfTransactionsExists = async () => {
     try {
@@ -284,23 +358,6 @@ export const TransactionsProvider = ({ children }) => {
     }
   };
 
-  const connectWallet = async () => {
-    try {
-      if (!ethereum) return console.log("Install");
-
-      const accounts = await ethereum.request({
-        method: "eth_requestAccounts",
-      });
-
-      setCurrentAccount(accounts[0]);
-      // getNFTData();
-      // window.location.reload();
-    } catch (error) {
-      console.log(error);
-
-      console.log("No ethereum object CW");
-    }
-  };
 
   const sendTransaction = async () => {
     try {
@@ -350,7 +407,6 @@ export const TransactionsProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    checkIfWalletIsConnect();
     checkIfTransactionsExists();
     getNFTData(tokenId);
   
@@ -370,25 +426,34 @@ export const TransactionsProvider = ({ children }) => {
         formData,
         provider,
         ethereum,
+        checksumAddress,
 
         getAllNFTs,
         marketData,
-        getNFTData,
-        walletData,
-        walletAddress,
-        totalPrice,
-        tokenId,
-        walletBalance,
-        updateWalletBalance,
+        handleCollection,
+        filteredResults,
+
+        walletNFTs,
 
        formParams,
        updateFormParams,
-       mintParams,
-       updateMintParams,
+
+       profileParams,
+       updateProfileParams,
+       handleProfile,
+       getNFTData,
+    
+       totalPrice,
+       tokenId,
+       accountBalance,
+
        activeKeywords,
        setActiveKeywords,
        fileURL,
        setFileURL,
+
+       tab,
+       handleTab
 
       }}
     >

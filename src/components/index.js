@@ -7,4 +7,5 @@ export { default as Welcome } from './Welcome';
 export { default as Create } from './Create';
 export { default as NFTPage } from './NFTpage';
 export { default as Wallet } from './Wallet';
+export { default as Collections } from './Collections';
 export { default as Marketplace } from './Marketplace';

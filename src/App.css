@@ -3,7 +3,8 @@
   --clr-black: #202020;
   --clr-blue: #6c63ff;
   --clr-blue-2: #4c46b6;
-  --clr-orange: #f8b817;
+  --clr-orange: #ff9900;
+  --clr-red: #ff3366;
 }
 
 
@@ -29,8 +30,8 @@ nav {
   font-weight: 800;
 }
 
-.nav__connect {
-  background-color: #F60C4B;
+.nav-install {
+  background-color: var(--clr-red);
   color: var(--clr-white);
   border: none;
   border-radius: 30px;
@@ -38,13 +39,24 @@ nav {
   transition: all 250ms ease;
 }
 
-.nav-connect-connected {
+.nav-connect {
+  /* background-color: var(--clr-orange); */
+  color: var(--clr-white);
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 250ms ease;
+  width: 130px;
+}
+
+.nav-connected {
   background-color: var(--clr-blue-2);
   color: var(--clr-white);
   border: none;
   border-radius: 30px;
   cursor: pointer;
   transition: all 250ms ease;
+  width: 130px;
 }
 
 .nav__menu {
@@ -61,7 +73,7 @@ nav {
   transition: all 250ms ease;
 }
 
-.nav__connect:hover {
+.nav-connect:hover {
   background-color: var(--clr-blue);
 }
 
@@ -71,7 +83,7 @@ nav {
 
 .provider {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   margin-right: 25px;
   font-size: 0.8em;
   color: #f81717;
@@ -85,32 +97,23 @@ nav {
 
 a {
   /* color: white; */
-  /* color: var(--clr-orange); */
+   color: var(--clr-blue); 
   text-decoration: none;
+  cursor: pointer;
 }
 
-a:hover {
+/* a:hover {
   color: var(--clr-blue);
-}
 
-
-/* svg{
-  margin:20px;
-  display:block;
-      height:100px;
-background-color:#999;
 } */
 
-/* #mobile-menu {
-  display: flex;
-} */
 
 /* ------------------------------------------------------ */
 /* -- FORM -- */
 .form {
   display: flex;
   justify-content: space-evenly;
-  align-items: start;
+  align-items: flex-start;
 }
 
 form {
@@ -333,8 +336,8 @@ button:hover {
   transition: all 250ms ease;
 }
 
-.active-style {
-  color: #6c63ff;
+ .active-style{
+  color: var(--clr-blue);
 }
 
 /* ------------------------------------------------------ */
@@ -451,18 +454,72 @@ button:hover {
 
 .loading {
   opacity: 1;
-  animation: fade 1.5s infinite;
+  animation: fade 1s ;
+  animation-duration: 3s;
 }
 
 @keyframes fade {
   0%,
-  100% {
+  80% {
     opacity: 0.5;
   }
   50% {
     opacity: 1;
   }
 }
+
+
+
+
+
+
+.drift-left {
+  animation: drift-left 50s infinite;
+}
+@keyframes drift-left {
+  0%,100% {
+    scale: 0.3;
+    transform: rotateX(0.1turn) rotateY(1.5turn);  
+  }
+  30% {
+   scale: 0.97;
+   transform: rotateX(0.0turn) rotateY(-0.1turn);
+   transform: translate(0, -65px);
+  }
+}
+
+.drift-center {
+  animation: drift-center 60s infinite;
+}
+@keyframes drift-center {
+  0%,100% {
+    scale: 0.6;
+    
+    transform: rotateX(-.10turn) rotateY(-.20turn);
+  }
+  50% {
+   scale: 1;
+   transform: rotateX(-10deg) rotateY(10deg); 
+
+  }
+}
+
+
+
+
+.drift-right:hover {
+  animation: drift-right 1s ease-in-out;
+}
+@keyframes drift-right {
+
+  100%,0% {
+   /* scale: 0.95; */
+   /* transform: rotateX(-10deg) rotateY(10deg); */
+   transform:  rotateY(180deg);
+
+  }
+}
+
 
 /* ------------------------------------------------------ */
 

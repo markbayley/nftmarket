@@ -42,7 +42,7 @@ const CreateImage = ({
   }
 
   return (
-    <div className="mainimage  ">
+    <div className="mainimage md:mr-4 ">
       {/* // Create */}
       <TETabsContent>
         <TETabsPane show={basicActive === "tab1"}>
@@ -106,8 +106,8 @@ const CreateImage = ({
                       style={{ width: "40px", height: "40px" }}
                     />
                     <p className="mb-2 text-sm text-white pt-3">
-                      Fill in fields and click{" "}
-                      <span className="font-semibold">GENERATE</span>&nbsp;button 
+                      Fill in fields and click the{" "}
+                      <span className="font-semibold">CREATE</span>&nbsp;button 
                     </p>
                     <p className="text-xs text-white ">
                       TITLE & DESCRIPTION (MIN. REQUIRED)

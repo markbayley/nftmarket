@@ -99,7 +99,7 @@ contract NFTMarketplace is ERC721URIStorage {
             payable(address(this)),
             payable(msg.sender),
             price,
-            true  // false to set not listed for sale
+            false // false to set not listed for sale
         );
 
         _transfer(msg.sender, address(this), tokenId);
@@ -109,16 +109,34 @@ contract NFTMarketplace is ERC721URIStorage {
             address(this),
             msg.sender,
             price,
-            true  // false to set not listed for sale
+            false  // false to set not listed for sale
         );
     }
 
 
     //RESALE FUNCTION
+       /* allows someone to resell a token they have purchased */
+    function resellToken(uint256 tokenId, uint256 price) public payable {
+        require(
+            idToListedToken[tokenId].owner == msg.sender,
+            "Only item owner can perform this operation"
+        );
+        require(
+            msg.value == price,
+            "Price must be equal to listing price"
+        );
+        idToListedToken[tokenId].currentlyListed = true;
+        idToListedToken[tokenId].price = price;
+        idToListedToken[tokenId].seller = payable(msg.sender);
+        idToListedToken[tokenId].owner = payable(address(this));
+        _itemsSold.decrement();
+
+        _transfer(msg.sender, address(this), tokenId);
+    }
     
     //This will return all the NFTs currently listed to be sold on the marketplace
     function getAllNFTs() public view returns (ListedToken[] memory) {
-        uint nftCount = _tokenIds.current();
+        uint nftCount = _tokenIds.current() - _itemsSold.current();
         ListedToken[] memory tokens = new ListedToken[](nftCount);
         uint currentIndex = 0;
         uint currentId;

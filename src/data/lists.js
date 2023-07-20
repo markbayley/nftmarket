@@ -182,28 +182,6 @@ export const artists = [
     },
   ];
   
-  export const category = [
-    {
-      name: "No Royalties",
-    },
-    {
-      name: "5%",
-    },
-    {
-      name: "10%",
-    },
-    {
-      name: "15%",
-    },
-    {
-      name: "20%",
-    },
-    {
-      name: "25%",
-    },
-
-  ];
-  
   export const colours = [
     {
       name: "Colours",
@@ -433,19 +411,6 @@ export const artists = [
     },
   ];
 
-  export const subcategory = [
-    {
-      name: "Listed For Sale",
-    },
-    {
-      name: "Unlisted",
-    },
-    {
-      name: "Auction",
-    },
-
-  ];
-
   export const themes = [
     {
       name: "Themes",
@@ -495,5 +460,40 @@ export const artists = [
     {
       name: "Vehicle",
     },
+  ];
+
+  export const listing = [
+    {
+      name: "Listed For Sale",
+    },
+    {
+      name: "Unlisted",
+    },
+    {
+      name: "Auction",
+    },
+
+  ];
+
+  export const royalty = [
+    {
+      name: "No Royalties",
+    },
+    {
+      name: "5%",
+    },
+    {
+      name: "10%",
+    },
+    {
+      name: "15%",
+    },
+    {
+      name: "20%",
+    },
+    {
+      name: "25%",
+    },
+
   ];
  

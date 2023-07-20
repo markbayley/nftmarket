@@ -60,9 +60,9 @@ const CreateForm = ({
     <form className="">
       <div className=" flex flex-col justify-start items-start   ">
         <>
-        <div className="flex w-full mb-2 sm:flex-wrap justify-between gap-x-2.5 ">
+          <div className="flex w-full mb-2  justify-between gap-x-2.5 ">
             <input
-                className=" w-full lg:w-[48%] rounded-sm  outline-none  text-white border-none white-glassmorphism"
+              className="w-full  xl:w-[48%] rounded-sm  outline-none  text-white border-none white-glassmorphism"
               required
               type="text"
               placeholder="NFT Title..."
@@ -76,21 +76,19 @@ const CreateForm = ({
               value={formParams.name}
             ></input>
             <input
-              className=" w-full lg:w-[48%] rounded-sm outline-none  text-white border-none white-glassmorphism"
+              className="w-full  xl:w-[48%] rounded-sm outline-none  text-white border-none white-glassmorphism"
               type="text"
               placeholder="NFT Collection..."
-              id="subtitle"
+              id="collection"
               onChange={(e) =>
                 updateFormParams({
                   ...formParams,
-                  subtitle: e.target.value,
+                  collection: e.target.value,
                 })
               }
-              value={formParams.subtitle}
+              value={formParams.collection}
             ></input>
           </div>
-
-        
 
           <textarea
             required
@@ -106,8 +104,6 @@ const CreateForm = ({
             className=" mt-1 mb-3 block py-1.5 px-2.5 w-full text-white rounded border border-[#6c63ff] focus:ring-blue-500 focus:border-blue-500 white-glassmorphism "
             placeholder="NFT Description..."
           ></textarea>
-
-         
 
           <div className="check ">
             <select
@@ -285,57 +281,52 @@ const CreateForm = ({
           </div>
         </>
 
-      
         {/* Buttons */}
         <div className="flex w-full justify-end text-white gap-x-3 mt-5 ">
-
-
-          { !isChecked ?
-          <button
-            type="button"
-            onClick={OnCreateFile}
-            value={isCreating ? "Creating..." : "Create"}
-            className={
-              isChecked
-                ? "disabledButton md:w-1/2 w-full group"
-                : isMinting
-                ? "inactiveButton md:w-1/2 w-full group"
-                : isCreating
-                ? "waitingButton md:w-1/2 w-full group"
-                : !formParams.name || !formParams.description
-                ? "inactiveButton  md:w-1/2 w-full group"
-                : "activeButton md:w-1/2 w-full group"
-            }
-          >
-            <span className="absolute bottom-20  scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100 ">
-              {isChecked
-                ? "Upload is selected..?"
-                : !formParams.name || !formParams.description
-                ? "Enter title & description..."
-                : "Ready to create image..."}
-            </span>
-            Create
-          </button>
-:
-          <button
-            onChange={(e) => OnUploadFile(e)}
-            type="button"
-            value={isSaving ? "Saving..." : "Save"}
-            className={
-              !isChecked
-                ? "disabledButton w-1/2"
-                : isMinting
-                ? "waitingButton w-1/2"
-                : isSaving
-                ? "waitingButton w-1/2"
-                : !fileURL
-                ? "inactiveButton w-1/2"
-                : "activeButton w-1/2"
-            }
-          >
-            Upload
-          </button>
-}
+          {!isChecked ? (
+            <button
+              type="button"
+              onClick={OnCreateFile}
+              value={isCreating ? "Creating..." : "Create"}
+              className={
+                isChecked
+                  ? "disabledButton md:w-1/2 w-full group"
+                  : isMinting
+                  ? "inactiveButton md:w-1/2 w-full group"
+                  : isCreating
+                  ? "waitingButton md:w-1/2 w-full group"
+                  : !formParams.name || !formParams.description
+                  ? "inactiveButton  md:w-1/2 w-full group"
+                  : "activeButton md:w-1/2 w-full group"
+              }
+            >
+              <span className="absolute bottom-20  scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100 ">
+                {isChecked
+                  ? "Upload is selected..?"
+                  : !formParams.name || !formParams.description
+                  ? "Enter title & description..."
+                  : "Ready to create image..."}
+              </span>
+              Create
+            </button>
+          ) : (
+            <input
+              onChange={(e) => OnUploadFile(e)}
+              type="file"
+              value=""
+              className={
+                !isChecked
+                  ? "disabledButton w-1/2"
+                  : isMinting
+                  ? "waitingButton w-1/2"
+                  : isSaving
+                  ? "waitingButton w-1/2"
+                  : !fileURL
+                  ? "inactiveButton w-1/2"
+                  : "activeButton w-1/2"
+              }
+            />
+          )}
         </div>
       </div>
     </form>
