@@ -4,17 +4,19 @@ import nftImage3 from "../images/kyoto-girl.jpg";
 import nftImage4 from "../images/laughing-panda.jpg";
 import nftImage5 from "../images/tokyo-dreams.jpg";
 import nftImage6 from "../images/download.jpg";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { TransactionContext } from "../context/TransactionContext";
 import { useContext, useEffect, useState } from "react";
 import NFTTile from "./NFTTile";
+import { collections } from "../data/collections";
 
 const Collections = () => {
-  const { marketData, filteredResults, handleCollection } = useContext(TransactionContext);
+  const { marketData, filteredResults, handleCollection, getAllNFTs } =
+    useContext(TransactionContext);
 
   console.log("marketData", marketData);
   console.log("filteredResults", filteredResults);
-  
+
 
   return (
     <>
@@ -34,76 +36,21 @@ const Collections = () => {
       </div>
 
       <div className=" grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 px-4 gap-6  md:px-20 w-full ">
-
-        <div  className="relative">
-          <img
-            src={nftImage1}
-            alt="Future Drift NFT"
-            className="rounded-full "
-          />
-         <button value="Future Drift" onClick={handleCollection} className="bg-[orange] h-8 flex items-center rounded-full absolute bottom-5 right-0">
-            #1 Future Drift
-          </button> 
-        </div>
-
-        <div className="relative">
-          <img
-            src={nftImage2}
-            alt="Tokyo Haze NFT"
-            className="rounded-full mb-3"
-          />
-            <button value="Toyko Haze" onClick={handleCollection} className="bg-[orange] h-8 flex items-center rounded-full absolute bottom-5 right-0">
-            #2 Tokyo Haze
-          </button> 
-        </div>
-
-        <div className="relative">
-          <img
-            src={nftImage3}
-            alt="Futuristic City NFT"
-            className="rounded-full mb-3"
-          />
-            <button value="Kyoto Nights" onClick={handleCollection} className="bg-[orange] h-8 flex items-center rounded-full absolute bottom-5 right-0">
-            #3 Kyoto Nights
-          </button> 
-        </div>
-        <div className="relative">
-          <img
-            src={nftImage4}
-            alt="Laughing Panda NFT"
-            className="rounded-full mb-3"
-          />
-          <button value="Laughing Panda" onClick={handleCollection} className="bg-[orange] h-8 flex items-center rounded-full absolute bottom-5 right-0">
-            #4 Laughing Panda
-          </button> 
-        </div>
-        <div className="relative">
-          <img
-            src={nftImage5}
-            alt="Tokyo Dreams"
-            className="rounded-full mb-3"
-          />
-            <button value="Tokyo Dreams" onClick={handleCollection} className="bg-[orange] h-8 flex items-center rounded-full absolute bottom-5 right-0">
-            #5 Tokyo Dreams
-          </button>
-        </div>
-        <div className="relative">
-          <img
-            src={nftImage6}
-            alt="Baby Panda NFT"
-            className="rounded-full mb-3"
-          />
-            <button value="baby pandas " onClick={handleCollection} className="bg-[orange] h-8 flex items-center rounded-full absolute bottom-5 right-0">
-            #6 Baby Pandas
-          </button> 
-        </div>
-      </div>
-      <div className="flex flex-col place-items-center  text-white text-center ">
-        <div className="flex flex-wrap gap-x-4 justify-center">
-          {[...filteredResults].reverse().map((value, index) => {
-            return <NFTTile data={value} key={index}></NFTTile>;
-          })}
-        </div>
+        {collections.map((collection, index) => {
+          return (
+             <Link to={{ pathname: `/CollectionPage/${collection.name}` }} key={collection.id}>
+             <button 
+             id="collection"
+                  value={collection.name}
+                  onClick={(id) => handleCollection(id)}
+                  className="flex items-end rounded-full h-auto bg-cover bg-center border-transparent hover:border-[#4c46b6] hover:scale-[1.05]" 
+                  style={{backgroundImage: `url(${collection.image})`, height: "10rem", width: "10rem"}} 
+                >
+                 <div className="bg-yellow-600 py-1 px-2 rounded-full text-white text-sm"> #{collection.id} {collection.name}</div>
+             </button>{" "}
+          </Link>
+          );
+        })}
       </div>
     </>
   );

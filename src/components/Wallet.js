@@ -343,7 +343,7 @@ const Wallet = () => {
               ? "Install MetaMask and connect wallet to send ethereum and view your NFTs"
               : currentAccount !== ""
               ? ""
-              :  <div className="flex flex-wrap justify-around items-center flex-row w-full white-glassmorphism md:p-5 ">Connect MetaMask wallet to send ethereum and view your NFTs</div>}
+              :  <div className="flex flex-wrap justify-around items-center flex-row w-full white-glassmorphism p-5 ">Connect MetaMask wallet to send ethereum and view your NFTs</div>}
 
             {/* {currentAccount !== "0x" ? (currentAccount.substring(0,5)+'...'+(currentAccount.substring(38,42))):""} */}
           </p>

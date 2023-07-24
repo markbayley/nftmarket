@@ -1,4 +1,4 @@
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import MarketplaceJSON from "../abis/Marketplace.json";
 import axios from "axios";
 import { useContext, useState } from "react";
@@ -13,29 +13,62 @@ import {
   TETabsItem,
   TETabsPane,
 } from "tw-elements-react";
+import Loader from "./Loader";
 
 const NFTPage = () => {
-  const { ethereum, currentAccount, tab, handleTab, checksumAddress } =
+  const { ethereum, tab, handleTab, checksumAddress, createMarketplaceContractReadOnly, provider, handleCollection,  marketData, setFilteredResults, setCollection, setId } =
     useContext(TransactionContext);
 
   const [data, updateData] = useState({});
   const [dataFetched, updateDataFetched] = useState(false);
   const [message, updateMessage] = useState("");
 
-  async function getNFTData(tokenId) {
+  
+
+  // const handleCollection = (e) => {
+  //   let col = e.target.value;
+  //   let id = e.target.id;
+  //   setCollection(col);
+  //   setId(id);
+  //   console.log(col, id);
+  //   const results = marketData.filter((item) =>  item.style == col);
+  //   setFilteredResults(results);
+  //   console.log("results", results)
+  // }
+
+//   function handleCollection(e) {
+//     let col = e.target.value;
+//     setCollection(col);
+//     let id = e.target.id;
+//     setId(id);
+//     console.log(col, id);
+   
+//     const results= marketData.filter(item => {
+//         return item[id] === col;  
+//     });
+//     setFilteredResults(results);
+    
+//     // Do something with the filtered data (e.g., display it on the page)
+//     console.log(results);
+// }
+
+  async function getNFTToken(tokenId) {
     try {
-      if (ethereum) {
-        const ethers = require("ethers");
+      // if (provider) {
+        // const ethers = require("ethers");
         //After adding your Hardhat network to your metamask, this code will get providers and signers
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const addr = await signer.getAddress();
-        //Pull the deployed contract instance
-        let contract = new ethers.Contract(
-          MarketplaceJSON.address,
-          MarketplaceJSON.abi,
-          signer
-        );
+        // const provider = new ethers.providers.Web3Provider(window.ethereum);
+        // const signer = provider.getSigner();
+        // const addr = await signer.getAddress();
+        // //Pull the deployed contract instance
+        // let contract = new ethers.Contract(
+        //   MarketplaceJSON.address,
+        //   MarketplaceJSON.abi,
+        //   signer
+        // );
+        const contract = createMarketplaceContractReadOnly(provider); 
+        // const marketplaceContract = createMarketplaceContract();
+ 
         //create an NFT Token
         var tokenURI = await contract.tokenURI(tokenId);
         const listedToken = await contract.getListedTokenForId(tokenId);
@@ -57,23 +90,18 @@ const NFTPage = () => {
           royalty: meta.royalty,
           seal: meta.seal,
 
-          trait1: meta.attributes && meta.attributes[0].trait_type,
-          value1: meta.attributes && meta.attributes[0].value,
-
-          trait2: meta.attributes && meta.attributes[1].trait_type,
-          value2: meta.attributes && meta.attributes[1].value,
-
-          trait3: meta.attributes && meta.attributes[2].trait_type,
-          value3: meta.attributes && meta.attributes[2].value,
-
-          trait4: meta.attributes && meta.attributes[3].trait_type,
-          value4: meta.attributes && meta.attributes[3].value,
-
-          trait5: meta.attributes && meta.attributes[4].trait_type,
-          value5: meta.attributes && meta.attributes[4].value,
-
-          trait6: meta.attributes && meta.attributes[5].trait_type,
-          value6: meta.attributes && meta.attributes[5].value,
+          trait1: meta.attributes?.[0] && meta.attributes[0].trait_type,
+          value1: meta.attributes?.[0] && meta.attributes[0].value,
+          trait2: meta.attributes[1] && meta.attributes[1].trait_type,
+          value2: meta.attributes[1] && meta.attributes[1].value,
+          trait3: meta.attributes[2] && meta.attributes[2].trait_type,
+          value3: meta.attributes[2] && meta.attributes[2].value,
+          trait4: meta.attributes[3] && meta.attributes[3].trait_type,
+          value4: meta.attributes[3] && meta.attributes[3].value,
+          trait5: meta.attributes[4] && meta.attributes[4].trait_type,
+          value5: meta.attributes[4] && meta.attributes[4].value,
+          trait6: meta.attributes[5] && meta.attributes[5].trait_type,
+          value6: meta.attributes[5] && meta.attributes[5].value,
 
           code: meta.image.substring(100, 104),
 
@@ -92,9 +120,9 @@ const NFTPage = () => {
         console.log(item);
         updateData(item);
         updateDataFetched(true);
-      } else {
-        console.log("Ethereum is not present NFT Page");
-      }
+      // } else {
+      //   console.log("Ethereum is not present NFT Page");
+      // }
     } catch (error) {
       console.log(error);
     }
@@ -130,7 +158,7 @@ const NFTPage = () => {
 
   const params = useParams();
   const tokenId = params.tokenId;
-  if (!dataFetched) getNFTData(tokenId);
+  if (!dataFetched) getNFTToken(tokenId);
   if (typeof data.image == "string")
     data.image = GetIpfsUrlFromPinata(data.image);
 
@@ -139,9 +167,11 @@ const NFTPage = () => {
   return (
     <div className="fade-in mx-2 my-3 lg:mx-20 ">
       <div className="flex flex-row w-full  flex-wrap ">
-        <div className="pt-2 pl-4  lg:w-1/2 w-full ">
-          <p className="text-4xl sm:text-5xl text-white font-light py-3">
-            Detailed View
+        <div className="pt-2 pl-2  lg:w-1/2 w-full ">
+          <p className="text-4xl sm:text-5xl text-gradient  ">
+            NFT Details
+          </p>
+          <p className="text-left text-white font-light text-base">View details and trade NFTs here
           </p>
         </div>
         {/* <div className="flex items-center">
@@ -174,7 +204,7 @@ const NFTPage = () => {
         <TETabsPane show={tab === "tab1"}>
           <div className="flex flex-wrap w-full justify-center flex-col md:flex-row white-glassmorphism  ">
             <div className="text-lg w-full md:w-1/2 xl:w-2/5 aspect-square   rounded-lg  ">
-              <div className="rounded-xl   p-3 md:p-6 h-fit mb-2">
+              <div className="rounded-xl   p-2 md:py-6 md:pl-6 h-fit mb-2">
                 {data.image ? (
                   <img
                     src={data.image}
@@ -188,6 +218,7 @@ const NFTPage = () => {
                         <p className="text-sm text-white ">
                           CONNECT to MetaMask to view
                         </p>
+                        <Loader />
                       </div>
                     </label>
                   </div>
@@ -195,24 +226,64 @@ const NFTPage = () => {
               </div>
             </div>
 
-            <div className="text-lg w-full md:w-1/2 xl:w-3/5 px-2 md:p-5 rounded-lg  ">
-              <div className=" flex justify-between items-center  flex-wrap  text-[#868686]  h-fit pb-5 ">
-                <p>
-                  <span className=" text-2xl sm:text-3xl  text-white drop-shadow-xl leading-tight uppercase">
-                    {data.collection ? data.collection : "Title"}
+            <div className="text-lg w-full md:w-1/2 xl:w-3/5 px-2 md:p-5 rounded-lg ">
+              <div className="  flex justify-between items-start flex-nowrap  text-[#868686]  h-fit pb-3 ">
+                <div className="" >
+                  <p className=" text-3xl  text-gradient drop-shadow-x2 leading-tight ">
+                    <strong>{data.collection ? data.collection : "Title"} </strong>
+                  </p>
+             
+                
+                  <span className=" text-2xl  font-extralight text-gradient py-2 italic leading-tight">
+                    '{data.name
+                      ? data.name
+                     
+                      : "Untitled"}'
                   </span>
-                </p>
+
+                  <div className=" flex items-center text-[#868686] text-sm h-fit mt-5">
                 <p>
+                  TOKEN ID
+                  <br />
+                  <p className="text-xl text-white py-2 ">
+                    {data.tokenId
+                      ? "#" + data.tokenId
+                     
+                      : "#Token ID"}
+                  </p>
+                  
+                </p>
+              </div>{" "}
+         
+                
+                </div>
+                    <div className=" flex items-center text-[#868686] text-sm h-fit mb-2 ">
+         
+              </div>{" "}
+
+                <Link to={{ pathname: `/CollectionPage/${data.name}` }} key={data.id} className=" ">
+             <button 
+             id="collection"
+                  value={data.name}
+                  onClick={(id) => handleCollection(id)}
+                  className="flex items-end rounded-full bg-cover bg-center border-transparent h-16 w-16 md:h-28 md:w-28 hover:scale-[1.02] " 
+                  style={{backgroundImage: `url(${data.image})`}} 
+                >
+                 <div className="bg-yellow-600 py-1 px-2 rounded-full text-white text-sm hidden md:inline-block">Waldo&nbsp;Bluffs</div>
+             </button>{" "}
+          </Link>
+          {/* <p>
                   <span className=" text-2xl  text-white border px-3 py-1 rounded-full white-glassmorphism">
                     #{data.tokenId}
                   </span>
                   &nbsp;&nbsp;
-                </p>
+                </p> */}
+        
                 {/* <p>COLLECTION&nbsp;&nbsp;<span className="text-md text-[#868686]">{data.subtitle}</span></p> */}
               </div>
 
 
-              <div className=" flex items-center text-[#868686] text-sm h-fit mb-2 ">
+              {/* <div className=" flex items-center text-[#868686] text-sm h-fit mb-2 ">
                 <p>
                   NAME
                   <br />
@@ -224,7 +295,7 @@ const NFTPage = () => {
                   </p>
                   
                 </p>
-              </div>{" "}
+              </div>{" "} */}
 
 
 
@@ -232,7 +303,7 @@ const NFTPage = () => {
 
               <div className=" w-full text-[#868686] text-sm  h-fit ">
                 DESCRIPTION{" "}
-                <div className=" text-lg pt-3 text-white">
+                <div className=" text-lg  pt-3 text-white">
                   {data.description} Lorem ipsum dolor sit amet, consectetur
                   adipiscing elit, sed do eiusmod tempor incididunt ut labore et
                   dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
@@ -258,7 +329,7 @@ const NFTPage = () => {
                       </a>
                     </div>
                   </p>
-                  <div class="grid grid-cols-2 xl:grid-cols-6 text-lg gap-3 pt-5 text-[#868686] text-lg ">
+                  <div className="grid grid-cols-2 xl:grid-cols-6 text-lg gap-3 pt-5 text-white text-lg ">
                     {/* <div className="border rounded-lg p-3 ">
                   <p className="text-xs text-[#6c63ff]">CATEGORY &nbsp;</p>
                   {data.category}
@@ -268,37 +339,38 @@ const NFTPage = () => {
                   {data.subcategory}
                 </div> */}
                     <div className=" bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
-                      <p className="text-xs text-[#6c63ff] uppercase">
+                      <p className="text-xs text-[#868686] uppercase">
                         {data.trait1 ? data.trait1 : "Trait 1"} &nbsp;
                       </p>
                       {data.value1 ? data.value1 : "Value 1"}
                     </div>
                     <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
-                      <p className="text-xs text-[#6c63ff] uppercase">
+                      <p className="text-xs text-[#868686] uppercase">
                         {data.trait2 ? data.trait2 : "Trait 2"} &nbsp;
+                     {/* { data.attributes.trait_type[1]  ? data.attributes.trait_type[1] : "Trait 2"} */}
                       </p>
                       {data.value2 ? data.value2 : "Value 2"}
                     </div>
                     <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
-                      <p className="text-xs text-[#6c63ff] uppercase">
+                      <p className="text-xs text-[#868686] uppercase">
                         {data.trait3 ? data.trait3 : "Trait 3"} &nbsp;
                       </p>
                       {data.value3 ? data.value3 : "Value 3"}
                     </div>
                     <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
-                      <p className="text-xs text-[#6c63ff] uppercase">
+                      <p className="text-xs text-[#868686] uppercase">
                         {data.trait4 ? data.trait4 : "Trait 4"} &nbsp;
                       </p>
                       {data.value4 ? data.value4 : "Value 4"}
                     </div>
                     <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
-                      <p className="text-xs text-[#6c63ff] uppercase">
+                      <p className="text-xs text-[#868686] uppercase">
                         {data.trait5 ? data.trait5 : "Trait 5"} &nbsp;
                       </p>
                       {data.value5 ? data.value5 : "Value 5"}
                     </div>
                     <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
-                      <p className="text-xs text-[#6c63ff] uppercase">
+                      <p className="text-xs text-[#868686] uppercase">
                         {data.trait6 ? data.trait6 : "Trait 6"} &nbsp;
                       </p>
                       {data.value6 ? data.value6 : "Value 6"}
@@ -323,36 +395,74 @@ const NFTPage = () => {
                 </div>
               </div>
             
-              <p className="text-[#868686] text-sm my-3 ">
+            <div className="flex flex-wrap">
+              <div className="text-[#868686] text-sm my-2 w-96 md:w-1/12 ">
                 {" "}
-                TAGS &nbsp;&nbsp;&nbsp;
-              </p>
+                TAGS 
+              </div>
               <div className=" flex items-center text-[#868686] text-sm h-fit ">
                 <div className="flex flex-wrap ">
-                  <span className=" text-md  text-white border px-3 py-1 rounded-full white-glassmorphism my-2">
-                    {data.style ? data.style : "#Tag 1"}
-                  </span>{" "}
+                <Link to={{ pathname: `/CollectionPage/${data.style}` }}>
+                  <button 
+                  id="style"
+                       value={data.style}
+                       onClick={(id) => handleCollection(id)}
+                  className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1">
+                    #{data.style ? data.style : "Style"}
+                  </button>{" "}
+               </Link>
                   &nbsp;&nbsp;
-                  <span className=" text-md  text-white border px-3 py-1 rounded-full white-glassmorphism my-2">
-                    {data.medium ? data.medium : "#Tag 2"}
-                  </span>{" "}
+                  <Link to={{ pathname: `/CollectionPage/${data.medium}` }}>
+                  <button 
+                  id="medium"
+                       value={data.medium}
+                       onClick={(id) => handleCollection(id)}
+                  className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1">
+                    #{data.medium ? data.medium : "Medium"}
+                  </button>{" "}
+               </Link>
                   &nbsp;&nbsp;
-                  <span className=" text-md  text-white border px-3 py-1 rounded-full white-glassmorphism my-2">
-                    {data.texture ? data.texture : "#Tag 3"}
-                  </span>{" "}
+                  <Link to={{ pathname: `/CollectionPage/${data.texture}` }}>
+                  <button 
+                  id="texture"
+                       value={data.texture}
+                       onClick={handleCollection}
+                  className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1">
+                    #{data.texture ? data.texture : "Texture"}
+                  </button>{" "}
+               </Link>
                   &nbsp;&nbsp;
-                  <span className=" text-md  text-white border px-3 py-1 rounded-full white-glassmorphism my-2">
-                    {data.artist ? data.artist : "#Tag 4"}
-                  </span>{" "}
+                  <Link to={{ pathname: `/CollectionPage/${data.artist}` }}>
+                  <button 
+                  id="artist"
+                       value={data.artist}
+                       onClick={handleCollection}
+                  className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1">
+                    #{data.artist ? data.artist : "Artist"}
+                  </button>{" "}
+               </Link>
                   &nbsp;&nbsp;
-                  <span className=" text-md capitalize text-white border px-3 py-1 rounded-full white-glassmorphism my-2">
-                    {data.colour ? data.colour : "#Tag 5"}
-                  </span>{" "}
+                  <Link to={{ pathname: `/CollectionPage/${data.colour}` }}>
+                  <button 
+                  id="colour"
+                       value={data.colour}
+                       onClick={handleCollection}
+                  className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1 ">
+                    #{data.colour ? data.colour : "Colour"}
+                  </button>{" "}
+               </Link>
                   &nbsp;&nbsp;
-                  <span className=" text-md  text-white border px-3 py-1 rounded-full white-glassmorphism my-2">
-                    {data.theme ? data.theme : "#Tag 6"}
-                  </span>{" "}
+                  <Link to={{ pathname: `/CollectionPage/${data.theme}` }}>
+                  <button 
+                  id="theme"
+                       value={data.theme}
+                       onClick={handleCollection}
+                  className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1">
+                    #{data.theme ? data.theme : "Theme"}
+                  </button>{" "}
+               </Link>
                   &nbsp;&nbsp;
+                </div>
                 </div>
               </div>
             </div>
@@ -514,7 +624,7 @@ const NFTPage = () => {
                   </a>
                 </div>
               </p>
-                <div className=" flex items-center justify-between w-full text-[#868686] text-lg   md:py-2 h-fit   ">
+                <div className=" grid grid-cols-2 xl:grid-cols-4 w-full text-[#868686] text-lg gap-3  md:py-2 h-fit   ">
                   {/* <p className="white-glassmorphism px-5 pt-3 w-full">
                     STATUS
                     <br />
@@ -523,20 +633,26 @@ const NFTPage = () => {
                     </p>
                   </p> */}
 
-                  <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 w-full">
-                      <p className="text-xs text-[#6c63ff]">
+                  <div className="bg-[darkgrey] bg-opacity-[0.1] text-white rounded-lg p-3 w-full">
+                      <p className="text-xs text-[#868686]">
                       STATUS&nbsp;
                       </p>
                       {data.listing ? data.listing : "Listed"}
                     </div>
-                    <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 w-full mx-3">
-                      <p className="text-xs text-[#6c63ff]">
+                    <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 w-full  text-white">
+                      <p className="text-xs text-[#868686]">
                       ROYALTY&nbsp;
                       </p>
                       {data.royalty ? data.royalty : "No Royalty"}
                     </div>
-                    <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 w-full">
-                      <p className="text-xs text-[#6c63ff]">
+                    <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 w-full text-white">
+                      <p className="text-xs text-[#868686]">
+                      CODE&nbsp;
+                      </p>
+                      {data.code ? data.code : "No Code"}
+                    </div>
+                    <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 w-full text-white">
+                      <p className="text-xs text-[#868686]">
                       VERIFIED&nbsp;
                       </p>
                       {data.seal ? data.seal : "None"}

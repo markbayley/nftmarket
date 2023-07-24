@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Link } from "react-router-dom";
 import { GetIpfsUrlFromPinata } from "../utils/utils";
 import { SiEthereum } from "react-icons/si";
 import { BsInfoCircle } from "react-icons/bs";
+import ethPlacer from "../images/eth.webp";
 
 function NFTTile(data) {
   // console.log("data", data)
@@ -16,45 +17,54 @@ function NFTTile(data) {
   // console.log("link", link)
 
   return (
-    <div className="cursor-pointer">
-      <div
-        className={
-          // data.data.subtitle.includes("Kyoto") ? "p-5 m-3  sm:w-96 md:w-[345px] flex flex-col justify-center items-center rounded-lg seal relative" :
-          // data.data.subtitle.includes("Summer") ?  "p-5 m-3  sm:w-96 md:w-[345px] flex flex-col justify-center items-center white-glassmorphism relative":
-          "p-5 my-2 hover:border-[#4c46b6] sm:w-96 lg:w-[345px] flex flex-col justify-center items-center white-glassmorphism relative"
-        }
-      >
-        <Link to={newTo}>
-          <img src={IPFSUrl ? IPFSUrl : data.data.image} alt="" />
-        </Link>
+    <div className=" hover:scale-[1.03] duration-300 backdrop-blur-[5px] p-5 cursor-pointer sm:w-96 lg:w-[350px] w-full white-glassmorphism">
 
-        <a href={link} target="_blank" rel="noopener noreferrer">
-          <div className="w-9 h-9 rounded-full border  seal flex justify-center items-center absolute top-7 left-7 eth-card group ">
-            <span className="absolute bottom-10 scale-0 transition-all rounded bg-[#6c63ff] p-2 text-xs group-hover:scale-100">
-              Etherscan&nbsp;Seal
-            </span>
-           <div className="" > <SiEthereum fontSize={21} /></div>
-          </div>
-        </a>
+      <a href={link} target="_blank" rel="noopener noreferrer">
+      <div className="w-10 h-10 rounded-full border-2 border-white flex justify-center items-center absolute top-7 left-7 eth-card  seal ">
+        <SiEthereum fontSize={21} color="#fff" />
+      </div>
+      </a>
 
-        {/* <Link to={link}  target="_blank" rel="noopener noreferrer" >
-            <div className="absolute top-7 right-7 ">
-            <BsInfoCircle fontSize={20} color="#fff" />
-            </div>
-            </Link> */}
-
-        <div className="title w-full  ">
-          <strong> {data.data.name}</strong> &nbsp;<em>{data.data.subtitle}</em>
-          &nbsp; &nbsp;
-          <div className="group  ">
-            <span className="absolute  bottom-12 right-1 scale-0 transition-all rounded bg-[#6c63ff] p-2 text-xs text-white group-hover:scale-100 ">
-             Metadata
-            </span>
-            <a href={data.data.metadata} target="_blank" rel="noopener noreferrer"> <BsInfoCircle fontSize={18} color="#868686" className="mt-1" /></a>
-          </div>
-        </div>
+      <Link to={newTo}>
+      <img src={data.data.image ? data.data.image : IPFSUrl} alt="thumbnail" />
+      </Link>
+      <div className="title">
+        <strong>{data.data.collection} </strong> &nbsp;
+        <em>'{data.data.name}'</em>
       </div>
     </div>
+
+    // <div className="cursor-pointer">
+    //   <div
+    //     className={
+    //       "p-4 my-2 scale-[1] hover:scale-[1.03] duration-300  sm:w-96 lg:w-[350px] flex flex-col justify-center items-center white-glassmorphism relative"
+    //     }
+    //   >
+    //     <Link to={newTo}>
+    //       <img src={ data.data.image ? data.data.image : IPFSUrl    } alt="thumbnail" />
+    //     </Link>
+
+    //     <a href={link} target="_blank" rel="noopener noreferrer">
+    //       <div className="w-10 h-10 rounded-full border  seal flex justify-center items-center absolute top-5 left-5 eth-card group ">
+    //         <span className="absolute bottom-10 scale-0 transition-all rounded bg-[#6c63ff] p-2 text-xs group-hover:scale-100">
+    //           Etherscan&nbsp;Seal
+    //         </span>
+    //        <div className="" > <SiEthereum fontSize={21} /></div>
+    //       </div>
+    //     </a>
+
+    //     {/* <Link to={link}  target="_blank" rel="noopener noreferrer" >
+    //         <div className="absolute top-7 right-7 ">
+    //         <BsInfoCircle fontSize={20} color="#fff" />
+    //         </div>
+    //         </Link> */}
+
+    //     <div className="title w-full  ">
+    //       <strong> {data.data.collection}</strong> &nbsp;<em>'{data.data.name}'</em>
+    //       &nbsp; &nbsp;
+    //     </div>
+    //   </div>
+    // </div>
   );
 }
 

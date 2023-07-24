@@ -15,7 +15,7 @@ import {
 import { TransactionContext } from "../context/TransactionContext";
 
 const Create = () => {
-  const { tab, handleTab } = useContext(TransactionContext);
+  const { tab, handleTab, activeKeywords, setActiveKeywords, fileURL, setFileURL } = useContext(TransactionContext);
 
   const [isChecked, setIsChecked] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -24,7 +24,7 @@ const Create = () => {
   const [isMinting, setIsMinting] = useState(false);
   const [mint, setMint] = useState(false);
 
-  const [activeKeywords, setActiveKeywords] = useState([]);
+ 
   const [powerPoints, setPowerPoints] = useState(null);
   const [metaData, setMetaData] = useState(null);
   const [transactionHash, setTransactionHash] = useState();
@@ -32,7 +32,7 @@ const Create = () => {
   const [dateCreated, setDateCreated] = useState();
 
   const [file, setFile] = useState(null);
-  const [fileURL, setFileURL] = useState(null);
+
   const ethers = require("ethers");
   const [message, updateMessage] = useState("");
   const location = useLocation();
@@ -332,17 +332,21 @@ const Create = () => {
     }
   }
 
+  console.log("activeKeywords", activeKeywords);
+
   return (
     <div className="items-center flex-col justify-center gap-x-2 md:p-5 fade-in mx-1 xl:mx-20">
       <div className="flex flex-row  place-items-center flex-wrap ">
         <div className="pt-2 pl-4  lg:w-1/2 w-full ">
-          <h1 className="text-4xl sm:text-5xl text-white text-gradient">
+          <h1 className="text-4xl sm:text-5xl text-gradient leading-tight font-light text-base">
             Create & Mint NFTs
           </h1>
-
-          <p className="text-left text-white font-light md:w-9/12  text-base py-2">
+          <h2 className="text-left mb-3 text-gradient font-light  leading-tight text-base text-lg ">
+          Generate an AI image or upload your own.
+        </h2>
+          {/* <h3 className="text-left text-white font-light text-base py-2">
             Generate an A.I. image or upload your own.
-          </p>
+          </h3> */}
         </div>{" "}
         <div className="flex lg:w-1/2 w-full justify-center lg:justify-end ">
           <TETabs className="lg:pr-4 ">

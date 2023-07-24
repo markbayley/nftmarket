@@ -25,29 +25,20 @@ const Welcome = () => {
     dummyData,
   } = useContext(TransactionContext);
 
-  const handleSubmit = (e) => {
-    const { addressTo, amount, keyword, message } = formData;
 
-    e.preventDefault();
-
-    if (!addressTo || !amount || !keyword || !message) return;
-
-    sendTransaction();
-  };
 
   return (
     <div className="flex w-full justify-center items-center fade-in">
       <div className="items-start flex-col justify-between md:p-10 p-4 ">
-        <h1 className="text-3xl sm:text-6xl text-white text-gradient py-1">
+        <h1 className="text-3xl sm:text-6xl text-gradient py-1">
           Create & Trade NFTs
         </h1>
-        <h2 className="text-left mb-3 text-white font-light md:w-12/12 w-11/12 text-base text-3xl sm:text-2xl ">
-          {/* Explore the crypto world. <br /> */}
+        <h2 className="text-left mb-3 text-gradient font-light  text-base text-3xl sm:text-2xl ">
           With Advanced AI Technology
         </h2>
 
         <div className="flex flex-wrap justify-start items-start flex-row cursor-pointer ">
-          <div className="cursor-pointer p-5 md:-mr-5 sm:w-96  w-full flex flex-col justify-center items-center white-glassmorphism relative z-0  -rotate-3 -md:rotate-6 ">
+          <div className=" scale-[0.95] hover:scale-[0.98] duration-300 cursor-pointer p-5 md:-mr-5 sm:w-96  w-full flex flex-col justify-center items-center white-glassmorphism relative z-0  -rotate-3 -md:rotate-6 ">
             <div className="w-10 h-10 rounded-full border-2 border-white flex justify-center items-center absolute top-7 left-7 eth-card  seal ">
               <SiEthereum fontSize={21} color="#fff" />
             </div>
@@ -62,7 +53,7 @@ const Welcome = () => {
           </div>
 
           <div
-            className="p-5 cursor-pointer sm:w-96 w-full flex flex-col justify-center items-center white-glassmorphism relative top-70 left-70 z-30
+            className="  scale-[0.95] hover:scale-[0.98] duration-300 backdrop-blur-[5px] p-5 cursor-pointer sm:w-96 w-full white-glassmorphism  z-30
             rotate-3 md:rotate-6 "
           >
             <div className="w-10 h-10 rounded-full border-2 border-white flex justify-center items-center absolute top-7 left-7 eth-card  seal ">
@@ -76,7 +67,7 @@ const Welcome = () => {
           </div>
 
           <div
-            className="p-5 sm:w-96 w-full flex flex-col justify-center items-center white-glassmorphism relative top-70 left-70 z-10 
+            className=" scale-[0.95] hover:scale-[0.98] duration-300 backdrop-blur-[5px] p-5 sm:w-96 w-full flex flex-col justify-center items-center white-glassmorphism relative top-70 left-70 z-10 
          -rotate-3"
           >
             <div className="w-10 h-10 rounded-full border-2 border-white flex justify-center items-center absolute top-7 left-7  seal ">

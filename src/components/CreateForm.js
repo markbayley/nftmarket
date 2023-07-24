@@ -141,10 +141,10 @@ const CreateForm = ({
                   onClick={handleChecked}
                   value={item}
                   className={`fade-in button ${
-                    activeKeywords.includes(item) ? "colourButton" : ""
+                    activeKeywords.includes(item) ?  "text-sm text-white border px-2 h-7 flex items-center rounded-full white-glassmorphism mt-1" : ""
                   }`}
                 >
-                  {item}
+                  #{item}
                 </button>
               ))}
             </div>
@@ -156,10 +156,10 @@ const CreateForm = ({
                   onClick={handleChecked}
                   value={item}
                   className={`fade-in button ${
-                    activeKeywords.includes(item) ? "colourButton" : ""
+                    activeKeywords.includes(item) ?  "text-sm text-white border px-2 h-7 flex items-center rounded-full white-glassmorphism mt-1" : ""
                   }`}
                 >
-                  {item}
+                  #{item}
                 </button>
               ))}
             </div>
@@ -200,10 +200,10 @@ const CreateForm = ({
                   onClick={handleChecked}
                   value={item}
                   className={`fade-in button ${
-                    activeKeywords.includes(item) ? "colourButton" : ""
+                    activeKeywords.includes(item) ? "text-sm text-white border px-2 h-7 flex items-center rounded-full white-glassmorphism mt-1" : ""
                   }`}
                 >
-                  {item}
+                  #{item}
                 </button>
               ))}
             </div>
@@ -214,10 +214,10 @@ const CreateForm = ({
                   onClick={handleChecked}
                   value={item}
                   className={`fade-in button ${
-                    activeKeywords.includes(item) ? "colourButton" : ""
+                    activeKeywords.includes(item) ?  "text-sm text-white border px-2 h-7 flex items-center rounded-full white-glassmorphism mt-1" : ""
                   }`}
                 >
-                  {item}
+                  #{item}
                 </button>
               ))}
             </div>
@@ -255,12 +255,12 @@ const CreateForm = ({
               {colourWords.slice(0, 5).map((item, index) => (
                 <button
                   style={{ backgroundColor: item }}
-                  className="colourButton fade-in"
+                  className="text-sm text-white border-none backdrop-brightness-50 px-2 h-7 flex items-center hover:bg-[#868686] rounded-full  mt-1 fade-in"
                   key={index}
                   onClick={handleChecked}
                   value={item}
                 >
-                  {item}
+                  #{item}
                 </button>
               ))}
             </div>
@@ -270,11 +270,14 @@ const CreateForm = ({
                   key={index}
                   onClick={handleChecked}
                   value={item}
-                  className={`fade-in button ${
-                    activeKeywords.includes(item) ? "colourButton" : ""
+                  // className={`fade-in button ${
+                  //   activeKeywords.includes(item) ? "colourButton" : ""
+                  // }`}
+                   className={`fade-in button ${
+                    activeKeywords.includes(item) ? "text-sm text-white border px-2 h-7 flex items-center rounded-full white-glassmorphism mt-1" : ""
                   }`}
                 >
-                  {item}
+                  #{item}
                 </button>
               ))}
             </div>

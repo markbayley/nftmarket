@@ -102,10 +102,10 @@ a {
   cursor: pointer;
 }
 
-/* a:hover {
+a:hover {
   color: var(--clr-blue);
 
-} */
+}
 
 
 /* ------------------------------------------------------ */
@@ -262,7 +262,7 @@ select + select {
 
 .title {
   margin: 10px 0px 0px 0px;
-  color: rgb(169, 169, 169);
+  color: #a9a9a9;
   text-transform: capitalize;
   display: flex;
   justify-content: center;
@@ -339,6 +339,9 @@ button:hover {
  .active-style{
   color: var(--clr-blue);
 }
+
+
+
 
 /* ------------------------------------------------------ */
 /* -- IMAGE -- */

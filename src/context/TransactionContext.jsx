@@ -35,6 +35,17 @@ const createMarketplaceContract = () => {
   return marketplaceContract;
 };
 
+const createMarketplaceContractReadOnly = () => {
+  const provider = new ethers.providers.JsonRpcProvider("https://eth-sepolia.g.alchemy.com/v2/m5b8iM8q6lK7PTdF4obKWhdO6QtK3hjC");
+  const marketplaceContract = new ethers.Contract(
+    marketplaceAddress,
+    marketplaceABI,
+    provider
+  );
+
+  return marketplaceContract;
+};
+
 export const TransactionsProvider = ({ children }) => {
 
   //-------CONNECTION
@@ -60,7 +71,7 @@ export const TransactionsProvider = ({ children }) => {
         setChecksumAddress(checksum);
 
         getAllTransactions();
-        getNFTData();
+        // getNFTData();
       } else {
         setError("No Account Found");
         setOpenError(true);
@@ -168,26 +179,27 @@ export const TransactionsProvider = ({ children }) => {
   const [fileURL, setFileURL] = useState(null, localStorage.getItem("fileURL"));
 
   console.log(localStorage);
+
+
   // //MARKETPLACE
   const [marketData, updateMarketData] = useState([]);
-
-
   const [filteredResults, setFilteredResults] = useState([]);
 
-  const handleCollection = (e) => {
-    let collection = e.target.value;
-    console.log(collection);
-    const results = marketData.filter((item) => item.name == collection);
-    setFilteredResults(results);
-  }
+
+  const [collection, setCollection] = useState('');
+  const [id, setId] = useState('');
+
 
   const getAllNFTs = async () => {
     const ethers = require("ethers");
 
     try {
-      if (ethereum) {
-        //Get providers and signers
-        const marketplaceContract = createMarketplaceContract();
+   
+        const marketplaceContract = createMarketplaceContractReadOnly(provider); 
+          //  !ethereum ? createMarketplaceContractReadOnly(provider) :
+          //  createMarketplaceContract();
+     
+       
         //Pull the deployed contract instance
         const transaction = await marketplaceContract.getAllNFTs();
        console.log("transactionGA", transaction)
@@ -211,7 +223,14 @@ export const TransactionsProvider = ({ children }) => {
               description: meta.description,
               collection: meta.collection,
               attributes: meta.attributes,
-              metadata: tokenURI
+              metadata: tokenURI,
+
+              style: meta.style,
+              medium: meta.medium,
+              artist: meta.artist,
+              colour: meta.colour,
+              theme: meta.theme,
+              texture: meta.texture,
             };
             return item;
           })
@@ -219,9 +238,9 @@ export const TransactionsProvider = ({ children }) => {
 
  
         updateMarketData(items);
-      } else {
-        console.log("Ethereum is not present GANFTs");
-      }
+      // } else {
+      //   console.log("Ethereum is not present GANFTs");
+      // }
     } catch (error) {
       console.log(error);
     }
@@ -239,10 +258,10 @@ export const TransactionsProvider = ({ children }) => {
     const ethers = require("ethers");
     let sumPrice = 0;
 
-    try {
-      if (ethereum) {
-
-        const marketplaceContract = createMarketplaceContract();
+    // try {
+      // if (ethereum) {
+        const marketplaceContract = createMarketplaceContractReadOnly(provider); 
+        // const marketplaceContract = createMarketplaceContract();
         const transaction = await marketplaceContract.getMyNFTs();
     
         const items = await Promise.all(
@@ -271,12 +290,13 @@ export const TransactionsProvider = ({ children }) => {
         updateWalletDataFetched(true)
         updateWalletNFTs(items);
         updateTotalPrice(sumPrice.toPrecision(3));
-      } else {
-        console.log("Ethereum is not present");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+      // } else {
+      //   console.log("Ethereum is not present");
+      // }
+    // } 
+    // catch (error) {
+    //   console.log(error);
+    // }
   };
 
    const params = useParams();
@@ -406,8 +426,24 @@ export const TransactionsProvider = ({ children }) => {
     }
   };
 
+  function handleCollection(e) {
+    let col = e.target.value;
+    setCollection(col);
+    let id = e.target.id;
+    setId(id);
+    console.log(col, id);
+   
+    const results= marketData.filter(item => {
+        return item[id] === col;  
+    });
+    setFilteredResults(results);
+    
+    console.log("results", results);
+}
+
   useEffect(() => {
     checkIfTransactionsExists();
+    getAllNFTs();
     getNFTData(tokenId);
   
   }, [transactionCount]);
@@ -430,10 +466,11 @@ export const TransactionsProvider = ({ children }) => {
 
         getAllNFTs,
         marketData,
-        handleCollection,
+   
         filteredResults,
 
         walletNFTs,
+        getNFTData,
 
        formParams,
        updateFormParams,
@@ -441,7 +478,7 @@ export const TransactionsProvider = ({ children }) => {
        profileParams,
        updateProfileParams,
        handleProfile,
-       getNFTData,
+      
     
        totalPrice,
        tokenId,
@@ -453,8 +490,15 @@ export const TransactionsProvider = ({ children }) => {
        setFileURL,
 
        tab,
-       handleTab
-
+       handleTab,
+     
+      createMarketplaceContractReadOnly,
+      setFilteredResults,
+      setCollection,
+      setId,
+      collection,
+      id, 
+      handleCollection
       }}
     >
       {children}

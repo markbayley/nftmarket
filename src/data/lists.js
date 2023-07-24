@@ -154,7 +154,7 @@ export const artists = [
       name: "Film Shot",
     },
     {
-      name: "Photograhy",
+      name: "Photography",
     },
     {
       name: "Watercolor",
@@ -202,10 +202,10 @@ export const artists = [
       name: "limegreen",
       color: "#32CD32",
     },
-    {
-      name: "greenyellow",
-      color: "#ADFF2F",
-    },
+    // {
+    //   name: "greenyellow",
+    //   color: "#ADFF2F",
+    // },
     {
       name: "yellow",
       color: "#FFFF00",
@@ -290,8 +290,8 @@ export const artists = [
       color: "#87CEEB",
     },
     {
-      name: "paleturquoise",
-      color: "#AFEEEE",
+      name: "turquoise",
+      color: "#40E0D0",
     },
     {
       name: "aquamarine",
@@ -309,10 +309,7 @@ export const artists = [
       name: "teal",
       color: "#008080",
     },
-    {
-      name: "darkcyan",
-      color: "#008B8B",
-    },
+ 
     {
       name: "olivedrab",
       color: "#6B8E23",
