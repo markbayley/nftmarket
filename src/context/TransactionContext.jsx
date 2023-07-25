@@ -37,13 +37,13 @@ const createMarketplaceContract = () => {
 
 const createMarketplaceContractReadOnly = () => {
   const provider = new ethers.providers.JsonRpcProvider("https://eth-sepolia.g.alchemy.com/v2/m5b8iM8q6lK7PTdF4obKWhdO6QtK3hjC");
-  const marketplaceContract = new ethers.Contract(
+  const marketplaceContractReadOnly = new ethers.Contract(
     marketplaceAddress,
     marketplaceABI,
     provider
   );
 
-  return marketplaceContract;
+  return marketplaceContractReadOnly;
 };
 
 export const TransactionsProvider = ({ children }) => {
@@ -59,6 +59,7 @@ export const TransactionsProvider = ({ children }) => {
 
    //---CHECK IF WALLET IS CONNECTED
    const checkIfWalletConnected = async () => {
+    console.log("1.Checking if wallet is connected");
     try {
       const accounts = await ethereum.request({
         method: "eth_accounts",
@@ -71,7 +72,8 @@ export const TransactionsProvider = ({ children }) => {
         setChecksumAddress(checksum);
 
         getAllTransactions();
-        // getNFTData();
+        getAllNFTs();
+     
       } else {
         setError("No Account Found");
         setOpenError(true);
@@ -89,9 +91,6 @@ export const TransactionsProvider = ({ children }) => {
     }
   };
 
-    
-
-  console.log("checksumAddress", checksumAddress)
 
   useEffect(() => {
     ethereum?.on("accountsChanged", checkIfWalletConnected) 
@@ -105,6 +104,7 @@ export const TransactionsProvider = ({ children }) => {
   }
 
   const connectWallet = async () => {
+    console.log("Connect Wallet")
     try {
       if (!ethereum) return console.log("Install");
 
@@ -113,7 +113,7 @@ export const TransactionsProvider = ({ children }) => {
       });
 
       setCurrentAccount(accounts[0]);
-
+      window.reload();
     } catch (error) {
       console.log(error);
 
@@ -129,9 +129,6 @@ export const TransactionsProvider = ({ children }) => {
     }
     setTab(value);
   };
-
-
-
 
 
   //CREATE
@@ -168,7 +165,7 @@ export const TransactionsProvider = ({ children }) => {
       bio: "",
       website: "",
       profileUrl: "",
-      address: currentAccount,
+      address: "",
     },
     localStorage.getItem("profileParams")
   );
@@ -178,31 +175,28 @@ export const TransactionsProvider = ({ children }) => {
   const [activeKeywords, setActiveKeywords] = useState([], localStorage.getItem("activeKeywords"));
   const [fileURL, setFileURL] = useState(null, localStorage.getItem("fileURL"));
 
-  console.log(localStorage);
+  
 
 
   // //MARKETPLACE
   const [marketData, updateMarketData] = useState([]);
-  const [filteredResults, setFilteredResults] = useState([]);
-
-
-  const [collection, setCollection] = useState('');
-  const [id, setId] = useState('');
+  const [walletNFTs, updateWalletNFTs] = useState([]);
+  const [totalPrice, updateTotalPrice] = useState("0");
 
 
   const getAllNFTs = async () => {
     const ethers = require("ethers");
-
+    console.log("2.Getting all NFTs")
     try {
    
-        const marketplaceContract = createMarketplaceContractReadOnly(provider); 
+        const marketplaceContract = createMarketplaceContract(); 
           //  !ethereum ? createMarketplaceContractReadOnly(provider) :
           //  createMarketplaceContract();
      
        
         //Pull the deployed contract instance
         const transaction = await marketplaceContract.getAllNFTs();
-       console.log("transactionGA", transaction)
+      
         //Fetch all the details of every NFT from the contract and display
         const items = await Promise.all(
           transaction.map(async (i) => {
@@ -235,9 +229,11 @@ export const TransactionsProvider = ({ children }) => {
             return item;
           })
         );
-
- 
+       
         updateMarketData(items);
+
+    
+       
       // } else {
       //   console.log("Ethereum is not present GANFTs");
       // }
@@ -250,58 +246,72 @@ export const TransactionsProvider = ({ children }) => {
 
 
   //PROFILE WALLET
-  const [walletNFTs, updateWalletNFTs] = useState([]);
-  const [totalPrice, updateTotalPrice] = useState("0");
- const [walletDataFetched, updateWalletDataFetched] = useState(false)
 
-  const getNFTData = async (tokenId) => {
-    const ethers = require("ethers");
-    let sumPrice = 0;
+  // const myNFTs = marketData.filter((item) => item.seller === checksumAddress);
+  // updateWalletNFTs(myNFTs);
 
-    // try {
-      // if (ethereum) {
-        const marketplaceContract = createMarketplaceContractReadOnly(provider); 
-        // const marketplaceContract = createMarketplaceContract();
-        const transaction = await marketplaceContract.getMyNFTs();
-    
-        const items = await Promise.all(
-          transaction.map(async (i) => {
-            const tokenURI = await marketplaceContract.tokenURI(i.tokenId);
-            let meta = await axios.get(tokenURI);
-            meta = meta.data;
 
-            let price = ethers.utils.formatUnits(i.price.toString(), "ether");
-            let item = {
-              price,
-              tokenId: i.tokenId.toNumber(),
-              seller: i.seller,
-              owner: i.owner,
-              image: meta.image,
-              name: meta.name,
-              description: meta.description,
-              collection: meta.collection,
-              attributes: meta.attributes,
-              metadata: tokenURI
-            };
-            sumPrice += Number(price);
-            return item;
-          })
-        );
-        updateWalletDataFetched(true)
-        updateWalletNFTs(items);
-        updateTotalPrice(sumPrice.toPrecision(3));
-      // } else {
-      //   console.log("Ethereum is not present");
-      // }
-    // } 
-    // catch (error) {
-    //   console.log(error);
-    // }
-  };
 
-   const params = useParams();
-   const tokenId = params.tokenId;
-   if (!walletDataFetched) getNFTData(tokenId);
+ 
+
+
+
+
+
+//  const getNFTData = async (tokenId) => {
+//   const ethers = require("ethers");
+//   let sumPrice = 0;
+//   //After adding your Hardhat network to your metamask, this code will get providers and signers
+//   // console.log("contractP", contract)
+//   try {
+//     if (ethereum) {
+//       //Pull the deployed contract instance
+//       const marketplaceContract = createMarketplaceContract();
+//       //create an NFT Token //get the transactions
+//       const transaction = await marketplaceContract.getMyNFTs();
+//       // console.log("transactionP", transaction)
+//       /*
+//        * Below function takes the metadata from tokenURI and the data returned by getMyNFTs() contract function
+//        * and creates an object of information that is to be displayed
+//        */
+//       const items = await Promise.all(
+//         transaction.map(async (i) => {
+//           const tokenURI = await marketplaceContract.tokenURI(i.tokenId);
+//           let meta = await axios.get(tokenURI);
+//           meta = meta.data;
+
+//           let price = ethers.utils.formatUnits(i.price.toString(), "ether");
+//           let item = {
+//             price,
+//             tokenId: i.tokenId.toNumber(),
+//             seller: i.seller,
+//             owner: i.owner,
+//             image: meta.image,
+//             name: meta.name,
+//             subtitle: meta.subtitle,
+//             description: meta.description,
+//             metadata: tokenURI,
+//           };
+//           sumPrice += Number(price);
+//           return item;
+//         })
+//       );
+
+//       updateWalletNFTs(items);
+//       updateWalletDataFetched(true);
+//       // updateWalletAddress(addr);
+//       updateTotalPrice(sumPrice.toPrecision(3));
+//     } else {
+//       console.log("Ethereum is not present");
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+//    const params = useParams();
+//    const tokenId = params.tokenId;
+//    if (!walletDataFetched) getNFTData(tokenId);
 
 
 
@@ -346,7 +356,7 @@ export const TransactionsProvider = ({ children }) => {
           })
         );
 
-        console.log("sendTransactions", structuredTransactions);
+        // console.log("sendTransactions", structuredTransactions);
 
         setTransactions(structuredTransactions);
       } else {
@@ -426,27 +436,38 @@ export const TransactionsProvider = ({ children }) => {
     }
   };
 
+  const [filteredResults, setFilteredResults] = useState([]);
+  const [collection, setCollection] = useState("");
+  const [id, setId] = useState('');
+  const [token, setToken] = useState('');
+  // const params = useParams();
+  // const tokenId = params?.tokenId
+
   function handleCollection(e) {
     let col = e.target.value;
     setCollection(col);
     let id = e.target.id;
+    let token = e.target.token;
     setId(id);
-    console.log(col, id);
-   
-    const results= marketData.filter(item => {
+    setToken(token);
+    if (col !== "") {
+    const results = marketData.filter(item => {
         return item[id] === col;  
     });
     setFilteredResults(results);
+  } else {
+    setFilteredResults([]);
+  }
     
-    console.log("results", results);
 }
 
   useEffect(() => {
     checkIfTransactionsExists();
     getAllNFTs();
-    getNFTData(tokenId);
+    getAllTransactions();
+    // getNFTData(tokenId);
   
-  }, [transactionCount]);
+  }, [transactionCount, currentAccount]);
 
   return (
     <TransactionContext.Provider
@@ -470,7 +491,7 @@ export const TransactionsProvider = ({ children }) => {
         filteredResults,
 
         walletNFTs,
-        getNFTData,
+        // getNFTData,
 
        formParams,
        updateFormParams,
@@ -481,7 +502,8 @@ export const TransactionsProvider = ({ children }) => {
       
     
        totalPrice,
-       tokenId,
+       //tokenId,
+       token,
        accountBalance,
 
        activeKeywords,

@@ -1,7 +1,8 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Footer, Navbar, Services, Welcome, Marketplace, Create, NFTPage, Wallet, Collections, FeaturedArtist } from "./components"
+import { Footer, Navbar, Services, Welcome, Marketplace, Create, NFTPage, Wallet, Collections } from "./components"
 import CollectionPage from "./components/CollectionPage";
+import CreatorPage from "./components/CreatorPage";
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
               <div className="">
                 <Welcome />
                 <Collections />
-                <FeaturedArtist />
+              
               </div>
             }
           />
@@ -31,12 +32,12 @@ function App() {
               </>
             }
           />
-          <Route path="/CollectionPage/:collectionName" element={<CollectionPage />} />
+          <Route path="/Trade/:collectionName" element={<Marketplace />} />
 
        
+          <Route path="/Trade/CreatorPage/:creatorAddress" element={<CreatorPage />} />
 
-
-          <Route path="/nftPage/:tokenId" element={<NFTPage />} />
+          <Route path="/Trade/Detail/:tokenId" element={<NFTPage />} />
 
           <Route
             path="/Wallet"

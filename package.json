@@ -19,13 +19,14 @@
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
+    "react-slick": "^0.29.0",
     "react-svg-blob": "^0.3.1",
     "tw-elements-react": "^1.0.0-alpha1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "predeploy" : "npm run build",
-    "deploy" : "gh-pages -d build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
@@ -71,6 +72,5 @@
     "stream-http": "^3.2.0",
     "tailwindcss": "^3.0.24",
     "url": "^0.11.0"
-    
   }
 }

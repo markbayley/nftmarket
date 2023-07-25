@@ -14,53 +14,154 @@ import {
   TETabsPane,
 } from "tw-elements-react";
 import { BiSearchAlt } from "react-icons/bi";
+import { FiFilter } from "react-icons/fi";
+import { ImPriceTag } from "react-icons/im";
+import { shortenAddress } from "../utils/shortenAddress";
 
 export default function Marketplace() {
-  const { getAllNFTs, marketData, tab, handleTab, ethereum, currentAccount } =
-    useContext(TransactionContext);
+  const {
+    marketData,
+    tab,
+    handleTab,
+    ethereum,
+    currentAccount,
+    collection,
+    id,
+    filteredResults,
+    handleCollection,
+  } = useContext(TransactionContext);
 
-  useEffect(() => {
-    getAllNFTs();
-  }, []);
-
-  const [filteredResults, setFilteredResults] = useState(marketData);
+  const [searchResults, setSearchResults] = useState([]);
   const [searchInput, setSearchInput] = useState("");
 
   const searchItems = (searchValue) => {
     setSearchInput(searchValue);
-    if (searchInput !== "") {
-      const filteredData = marketData.filter((item) => {
+    if (searchInput === "" && filteredResults.length === 0) {
+      setSearchResults(marketData);
+    } else if (searchInput === "" && filteredResults.length > 0) {
+      setSearchResults(filteredResults);
+    } else if (searchInput !== "" && filteredResults.length === 0) {
+      const searchedData = marketData.filter((item) => {
         return Object.values(item)
           .join("")
           .toLowerCase()
           .includes(searchInput.toLowerCase());
       });
-      setFilteredResults(filteredData);
+      setSearchResults(searchedData);
     } else {
-      setFilteredResults(marketData);
+      const result = searchResults.filter(
+        (val) => !filteredResults.includes(val)
+      );
+      setSearchResults(result);
     }
   };
 
-  console.log("marketData", marketData);
-  console.log("marketDataSold", marketDataSold);
+  useEffect(() => {
+    searchItems(searchInput);
+  }, [searchResults, collection]);
+
+  const ToggleButton = ({ onClick }) => {
+    return (
+      <div className="flex items-center  cursor-pointer text-gray-600 hover:text-amber-500">
+        {sorted ? (
+          <>
+            <ImPriceTag
+              onClick={onClick}
+              fontSize={21}
+              className="text-amber-500"
+            />
+
+            <button
+              className="flex items-center text-sm text-amber-500 border border-amber-500 px-3 h-7 rounded-full bg-transparent hover:text-gray-600 hover:border-gray-600 duration-300 hover:bg-transparent"
+              onClick={toggleSort}
+            >
+              #Highest Price
+            </button>
+          </>
+        ) : (
+          <ImPriceTag onClick={onClick} fontSize={21} />
+        )}
+      </div>
+    );
+  };
+
+  const [sorted, setSorted] = useState(false);
+  // Function to toggle and sort the array
+  const toggleSort = () => {
+    setSorted(!sorted);
+    if (!sorted) {
+      // If we are sorting, store the original order based on the index
+      setSearchResults([...searchResults]);
+    }
+  };
+  // Function to get the sorted products
+  const getSortedProducts = () => {
+    const sortedResults = [...searchResults];
+    sortedResults.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+    return sorted ? sortedResults : searchResults;
+  };
 
   return (
-    <div className="items-center flex-col justify-between gap-x-2 md:px-0 fade-in px-2  ">
-      <div className="flex flex-row flex-wrap md:px-10">
-        <div className="pt-2 pl-4  lg:w-1/3 w-full ">
-          <h1 className="text-4xl sm:text-5xl text-gradient">
-            NFT Exchange
+    <div className="items-center flex-col justify-between  md:px-0 fade-in px-2  ">
+      <div className="flex flex-row flex-wrap  items-center  md:px-[2%]">
+        <div className=" flex items-center justify-between flex-wrap lg:w-1/3 w-full p-4 ">
+          <h1 className="flex text-3xl sm:text-3xl text-gradient capitalize">
+            {/* {id || ""} */}
+            {/* {marketData.length} {filteredResults.length}  */}
+            {searchResults.length} NFTs
           </h1>
-          <p className="text-left text-white font-light text-base py-2">
-            Buy and sell your NFTs on our exchange.
-          </p>
+
+          <div className="flex mt-2 md:mt-0  ">
+
+            <div className="flex items-center  cursor-pointer text-gray-600 hover:text-amber-500">
+            <FiFilter
+              fontSize={26}
+              className={collection ? "text-amber-500" : "text-gray-600"}
+            />
+            {collection && (
+              <button
+                id=""
+                value=""
+                className="flex items-center text-sm text-amber-500 border border-amber-500 px-3 h-7 rounded-full bg-transparent hover:text-gray-600 hover:border-gray-600 duration-300 hover:bg-transparent"
+                onClick={(id) => handleCollection(id)}
+              >
+                #
+                {collection.length > 30
+                  ? shortenAddress(collection)
+                  : collection}
+              </button>
+            )}{" "}
+            </div>
+
+
+            <div className="flex items-center mx-2 cursor-pointer text-gray-600 hover:text-amber-500">
+              {sorted ? (
+                <>
+                  <ImPriceTag
+                    onClick={toggleSort}
+                    fontSize={21}
+                    className="text-amber-500"
+                  />
+              &nbsp;
+                  <button
+                    className="flex items-center text-sm text-amber-500 border border-amber-500 px-3 h-7 rounded-full bg-transparent hover:text-gray-600 hover:border-gray-600 duration-300 hover:bg-transparent"
+                    onClick={toggleSort}
+                  >
+                    #Price
+                  </button>
+                </>
+              ) : (
+                <ImPriceTag onClick={toggleSort} fontSize={21} />
+              )}
+            </div>
+          </div>
         </div>
 
         <div className="  w-full lg:w-1/3 m-3 lg:mx-0">
           <label className="relative block">
             <span className="sr-only">Search</span>
             <span className="absolute inset-y-0 right-4 flex items-center ">
-              <BiSearchAlt fontSize={26} color="grey" className="z-10" />
+              <BiSearchAlt fontSize={26} color="grey" className="" />
             </span>
             <input
               type="text"
@@ -101,39 +202,37 @@ export default function Marketplace() {
 
       <TETabsContent>
         <TETabsPane show={tab === "tab1"}>
-          <div className="flex flex-col  text-white text-center">
-            <div className="flex flex-wrap gap-3 justify-evenly md:px-10">
-              {[ ...filteredResults]
-                .reverse()
-                .map((value, index) => {
-                  return <NFTTile data={value} key={index}></NFTTile>;
-                })}
-            </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:mx-[3%]">
+            {getSortedProducts()
+              .reverse()
+              .map((value, index) => {
+                return (
+                  <div className="">
+                    <NFTTile data={value} key={index}></NFTTile>
+                  </div>
+                );
+              })}
           </div>
         </TETabsPane>
         <TETabsPane show={tab === "tab2"}>
-          <div className="flex flex-col place-items-center text-white ">
-            <div className="flex flex-wrap  text-center gap-x-4">
-              {marketData &&
-                [...marketDataSold].reverse().map((value, index) => {
-                  return <NFTTile data={value} key={index}></NFTTile>;
-                })}
-            </div>
+          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 md:mx-[3%]">
+            {marketData &&
+              [...marketDataSold].reverse().map((value, index) => {
+                return <NFTTile data={value} key={index}></NFTTile>;
+              })}
           </div>
         </TETabsPane>
         <TETabsPane show={tab === "tab3"}>
-          <div className="flex flex-col place-items-center text-white ">
-            <div className="flex flex-wrap  text-center gap-x-4">
-              {marketData &&
-                [...marketDataNew].reverse().map((value, index) => {
-                  return <NFTTile data={value} key={index}></NFTTile>;
-                })}
-            </div>
+          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 md:mx-[3%]">
+            {marketData &&
+              [...marketDataNew].reverse().map((value, index) => {
+                return <NFTTile data={value} key={index}></NFTTile>;
+              })}
           </div>
         </TETabsPane>
       </TETabsContent>
       <div className="flex flex-col flex-1 items-start justify-center w-full mf:mt-0 my-10 lg:px-7">
-        <div className="text-center  text-white font-light text-base w-full">
+        <div className="text-center text-white font-light text-base w-full">
           {!ethereum ? (
             "Install MetaMask and connect wallet to send ethereum and view your NFTs"
           ) : currentAccount !== "" ? (
@@ -145,16 +244,13 @@ export default function Marketplace() {
           )}
         </div>
       </div>
-      <div className="flex flex-col place-items-center  text-white text-center">
-            <div className="flex flex-wrap gap-x-4 justify-center">
+      {/* <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 md:mx-[3%]">
               {[...marketDataSale]
                 .reverse()
                 .map((value, index) => {
                   return <NFTTile data={value} key={index}></NFTTile>;
                 })}
-            </div>
-          </div>
-
+            </div> */}
     </div>
   );
 }

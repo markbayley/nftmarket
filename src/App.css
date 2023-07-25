@@ -108,6 +108,11 @@ a:hover {
 }
 
 
+
+
+
+
+
 /* ------------------------------------------------------ */
 /* -- FORM -- */
 .form {
@@ -247,7 +252,6 @@ select + select {
   opacity: 1;
   animation-name: fadeInOpacity;
   animation-iteration-count: 1;
-  animation-timing-function: ease-linear;
   animation-duration: 1s;
 }
 
@@ -547,4 +551,34 @@ button:hover {
   #mobile-menu {
     display: none;
   }
+}
+
+
+
+#slider-container article {
+  display: grid !important;
+  /* width: 20rem !important; */
+  margin: 0.5rem auto;
+}
+
+.slick-slider .slick-arrow:before {
+  color: #333;
+  font-size: 2rem;
+}
+
+.slick-slider .slick-dots button:before {
+  font-size: 1.5rem;
+  color: orange;
+}
+
+.slick-slider .slick-dots li.slick-active button::before {
+  color: teal;
+}
+.slick-slider .slick-dots {
+  margin-top: 5px !important;
+}
+
+.slick-slider .slick-dots li {
+  margin: 0 0.5rem;
+  height: 2px !important;
 }

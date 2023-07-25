@@ -132,6 +132,7 @@ body::-webkit-scrollbar-thumb {
 .text-gradient {
   background: rgb(255,255,255);
   background: linear-gradient(156deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 0%, rgba(213,213,213,1) 80%, rgba(210,210,210,1) 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

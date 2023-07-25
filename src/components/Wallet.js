@@ -38,7 +38,7 @@ const Wallet = () => {
   const {
     currentAccount,
     accountBalance,
-    walletNFTs,
+    marketData,
     handleChange,
     sendTransaction,
     formData,
@@ -50,10 +50,8 @@ const Wallet = () => {
     tab,
     handleTab,
     checksumAddress,
+    // walletNFTs,
   } = useContext(TransactionContext);
-
-  window.localStorage.setItem("profileParams", profileParams);
-
 
   //TRANSACTION
   const handleSubmitTransaction = (e) => {
@@ -63,12 +61,14 @@ const Wallet = () => {
     sendTransaction();
   };
 
-
+  window.localStorage.setItem("profileParams", profileParams);
   //PROFILE
   const handleSubmitProfile = (e) => {
-    const { user, country, bio, website, profileUrl } = profileParams;
+    const { user, country, bio, website, profileUrl, currentAccount } =
+      profileParams;
     e.preventDefault();
     console.log("profileParams", profileParams);
+    window.localStorage.setItem("profileParams", profileParams);
   };
 
   //PROFILE IMAGE
@@ -96,18 +96,19 @@ const Wallet = () => {
     });
   }
 
-  console.log("walletNFTs", walletNFTs)
+ 
+  const walletNFTs = marketData.filter((item) => item.seller === checksumAddress);
+console.log(walletNFTs)
 
   return (
     <div className="flex w-full justify-center items-center fade-in">
       <div className="flex-col justify-center items-start xl:w-2/3 mx-2 ">
         <div className="flex flex-wrap justify-between items-center my-5 ">
-  
           <div className="flex flex-col w-full justify-center md:w-1/2 pl-2">
             <h1 className="text-4xl sm:text-5xl text-white text-gradient">
               My Wallet
             </h1>
-            <p className="text-left text-white font-light text-base text-3xl sm:text-1xl py-1">
+            <p className="text-left text-white font-light text-md py-1">
               Fund your wallet to mint and trade NFTs.
             </p>
           </div>
@@ -142,9 +143,8 @@ const Wallet = () => {
         <TETabsContent>
           <TETabsPane show={tab === "tab1"}>
             <div className="flex flex-wrap justify-around items-center flex-row w-full white-glassmorphism md:p-5 ">
-
-                 {/* CARD */}
-                 <div className="w-full flex justify-end items-start flex-col rounded-xl seal eth-card h-48  md:w-96 md:h-56  m-2 md:m-0 p-5 ">
+              {/* CARD */}
+              <div className="w-full flex justify-end items-start flex-col rounded-xl seal eth-card h-48  md:w-96 md:h-56  m-2 md:m-0 p-5 ">
                 <div className="flex justify-between flex-col w-full h-full">
                   <div className="flex justify-between items-start">
                     <div className="w-10 h-10 rounded-full border border-white flex justify-center items-center eth-card seal  ">
@@ -157,8 +157,7 @@ const Wallet = () => {
                       {shortenAddress(checksumAddress)}
                     </p>
                     <p className="text-white font-semibold text-lg mt-1 tshade">
-                    
-                    {accountBalance} Ethereum 
+                      {accountBalance} Ethereum
                     </p>
                   </div>
                 </div>
@@ -202,15 +201,12 @@ const Wallet = () => {
                   </button>
                 )}
               </div>
-
-           
-         
             </div>
             <Transactions />
           </TETabsPane>
 
           <TETabsPane show={tab === "tab2"}>
-            <div className="flex justify-center flex-wrap  gap-x-4 ">
+          <div className="grid md:grid-cols-4 text-md md:text-xs gap-4">
               {[...walletNFTs].reverse().map((value, index) => {
                 return <NFTTile data={value} key={index}></NFTTile>;
               })}
@@ -304,6 +300,7 @@ const Wallet = () => {
                     updateProfileParams({
                       ...profileParams,
                       bio: e.target.value,
+                      address: currentAccount,
                     })
                   }
                   value={profileParams.bio}
@@ -339,11 +336,15 @@ const Wallet = () => {
 
         <div className="flex flex-col flex-1 items-start justify-center w-full mf:mt-0 mt-10 ">
           <p className="text-center  text-white font-light text-base w-full">
-            {!ethereum
-              ? "Install MetaMask and connect wallet to send ethereum and view your NFTs"
-              : currentAccount !== ""
-              ? ""
-              :  <div className="flex flex-wrap justify-around items-center flex-row w-full white-glassmorphism p-5 ">Connect MetaMask wallet to send ethereum and view your NFTs</div>}
+            {!ethereum ? (
+              "Install MetaMask and connect wallet to send ethereum and view your NFTs"
+            ) : currentAccount !== "" ? (
+              ""
+            ) : (
+              <div className="flex flex-wrap justify-around items-center flex-row w-full white-glassmorphism p-5 ">
+                Connect MetaMask wallet to send ethereum and view your NFTs
+              </div>
+            )}
 
             {/* {currentAccount !== "0x" ? (currentAccount.substring(0,5)+'...'+(currentAccount.substring(38,42))):""} */}
           </p>

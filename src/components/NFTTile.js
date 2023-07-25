@@ -8,7 +8,7 @@ function NFTTile(data) {
   // console.log("data", data)
 
   const newTo = {
-    pathname: "/nftPage/" + data.data.tokenId,
+    pathname: "/Trade/Detail/" + data.data.tokenId,
   };
 
   const IPFSUrl = GetIpfsUrlFromPinata(data.data.image);
@@ -17,19 +17,22 @@ function NFTTile(data) {
   // console.log("link", link)
 
   return (
-    <div className=" hover:scale-[1.03] duration-300 backdrop-blur-[5px] p-5 cursor-pointer sm:w-96 lg:w-[350px] w-full white-glassmorphism">
+    <div className="  backdrop-blur-[5px] p-[5%] cursor-pointer sm:w-96  w-full md:w-auto  white-glassmorphism shadow-lg hover:shadow-indigo-500/30 duration-300">
 
       <a href={link} target="_blank" rel="noopener noreferrer">
-      <div className="w-10 h-10 rounded-full border-2 border-white flex justify-center items-center absolute top-7 left-7 eth-card  seal ">
-        <SiEthereum fontSize={21} color="#fff" />
+      <div className="w-[2.2em] h-[2.2em] rounded-full border  flex justify-center items-center absolute top-[6%] left-[6%] eth-card group seal ">
+        <SiEthereum fontSize='1.2em' color="#fff" />
+        <span className="absolute bottom-10 scale-0 transition-all rounded bg-slate-900 p-2 text-xs group-hover:scale-100 ">
+                     Etherscan
+    </span>
       </div>
       </a>
 
       <Link to={newTo}>
       <img src={data.data.image ? data.data.image : IPFSUrl} alt="thumbnail" />
       </Link>
-      <div className="title">
-        <strong>{data.data.collection} </strong> &nbsp;
+      <div className="title antialiased hover:subpixel-antialiased">
+        <strong class>{data.data.collection} </strong> &nbsp;
         <em>'{data.data.name}'</em>
       </div>
     </div>

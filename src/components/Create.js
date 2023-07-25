@@ -129,7 +129,7 @@ const Create = () => {
     updateMessage("Generating AI Image...");
     const URL = `https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2`;
     const huggingKey = process.env.REACT_APP_HUGGING_FACE_API_KEY;
-
+    console.log(formParams.name, formParams.collection, formParams.description, activeKeywords)
     const response = await axios({
       url: URL,
       method: "POST",
@@ -138,6 +138,8 @@ const Create = () => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
+
+     
       data: JSON.stringify({
         inputs:
           formParams.name +

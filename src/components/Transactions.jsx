@@ -75,9 +75,7 @@ const TransactionsCard = ({
 const Transactions = () => {
   const { transactions, currentAccount, checksumAddress } = useContext(TransactionContext);
 
-  const [filteredTransactions, setFilteredTransactions] = useState(
-    transactions.filter((item) => item.addressTo == checksumAddress || item.addressFrom == checksumAddress)
-  );
+  const filteredTransactions = transactions.filter((item) => item.addressTo == checksumAddress || item.addressFrom == checksumAddress);
 
   return (
     <div className="flex w-full justify-start items-center  ">

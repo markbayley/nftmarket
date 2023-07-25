@@ -77,7 +77,7 @@ const Navbar = () => {
            : 
            <button
            type="button"
-           className="px-5 mx-3 nav-connected hover:bg-[#6c63ff] "
+           className="px-5 mx-3 nav-connected hover:bg-[#6c63ff]"
            onClick={connectWallet}
            onMouseEnter={() => setHover(true)}
            onMouseLeave={() => setHover(false)}

@@ -14,8 +14,8 @@ const Collections = () => {
   const { marketData, filteredResults, handleCollection, getAllNFTs } =
     useContext(TransactionContext);
 
-  console.log("marketData", marketData);
-  console.log("filteredResults", filteredResults);
+  // console.log("marketData", marketData);
+  // console.log("filteredResults", filteredResults);
 
 
   return (
@@ -38,7 +38,7 @@ const Collections = () => {
       <div className=" grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 px-4 gap-6  md:px-20 w-full ">
         {collections.map((collection, index) => {
           return (
-             <Link to={{ pathname: `/CollectionPage/${collection.name}` }} key={collection.id}>
+             <Link to={{ pathname: `/Trade/${collection.name}` }} key={collection.id}>
              <button 
              id="collection"
                   value={collection.name}

@@ -14,16 +14,26 @@ import {
   TETabsPane,
 } from "tw-elements-react";
 import Loader from "./Loader";
+import avatarImg from "../images/download.jpg";
 
 const NFTPage = () => {
-  const { ethereum, tab, handleTab, checksumAddress, createMarketplaceContractReadOnly, provider, handleCollection,  marketData, setFilteredResults, setCollection, setId } =
-    useContext(TransactionContext);
+  const {
+    ethereum,
+    tab,
+    handleTab,
+    checksumAddress,
+    createMarketplaceContractReadOnly,
+    provider,
+    handleCollection,
+    marketData,
+    setFilteredResults,
+    setCollection,
+    setId,
+  } = useContext(TransactionContext);
 
   const [data, updateData] = useState({});
   const [dataFetched, updateDataFetched] = useState(false);
   const [message, updateMessage] = useState("");
-
-  
 
   // const handleCollection = (e) => {
   //   let col = e.target.value;
@@ -36,90 +46,90 @@ const NFTPage = () => {
   //   console.log("results", results)
   // }
 
-//   function handleCollection(e) {
-//     let col = e.target.value;
-//     setCollection(col);
-//     let id = e.target.id;
-//     setId(id);
-//     console.log(col, id);
-   
-//     const results= marketData.filter(item => {
-//         return item[id] === col;  
-//     });
-//     setFilteredResults(results);
-    
-//     // Do something with the filtered data (e.g., display it on the page)
-//     console.log(results);
-// }
+  //   function handleCollection(e) {
+  //     let col = e.target.value;
+  //     setCollection(col);
+  //     let id = e.target.id;
+  //     setId(id);
+  //     console.log(col, id);
+
+  //     const results= marketData.filter(item => {
+  //         return item[id] === col;
+  //     });
+  //     setFilteredResults(results);
+
+  //     // Do something with the filtered data (e.g., display it on the page)
+  //     console.log(results);
+  // }
 
   async function getNFTToken(tokenId) {
     try {
       // if (provider) {
-        // const ethers = require("ethers");
-        //After adding your Hardhat network to your metamask, this code will get providers and signers
-        // const provider = new ethers.providers.Web3Provider(window.ethereum);
-        // const signer = provider.getSigner();
-        // const addr = await signer.getAddress();
-        // //Pull the deployed contract instance
-        // let contract = new ethers.Contract(
-        //   MarketplaceJSON.address,
-        //   MarketplaceJSON.abi,
-        //   signer
-        // );
-        const contract = createMarketplaceContractReadOnly(provider); 
-        // const marketplaceContract = createMarketplaceContract();
- 
-        //create an NFT Token
-        var tokenURI = await contract.tokenURI(tokenId);
-        const listedToken = await contract.getListedTokenForId(tokenId);
-        tokenURI = GetIpfsUrlFromPinata(tokenURI);
-        let meta = await axios.get(tokenURI);
-        meta = meta.data;
-        console.log(listedToken);
-        console.log("meta", meta);
-        console.log("tokenURI", tokenURI);
+      // const ethers = require("ethers");
+      //After adding your Hardhat network to your metamask, this code will get providers and signers
+      // const provider = new ethers.providers.Web3Provider(window.ethereum);
+      // const signer = provider.getSigner();
+      // const addr = await signer.getAddress();
+      // //Pull the deployed contract instance
+      // let contract = new ethers.Contract(
+      //   MarketplaceJSON.address,
+      //   MarketplaceJSON.abi,
+      //   signer
+      // );
+      const contract = createMarketplaceContractReadOnly(provider);
+      // const marketplaceContract = createMarketplaceContract();
 
-        let item = {
-          tokenId: tokenId,
-          seller: listedToken.seller,
-          owner: listedToken.owner,
+      //create an NFT Token
+      var tokenURI = await contract.tokenURI(tokenId);
+      const listedToken = await contract.getListedTokenForId(tokenId);
+      tokenURI = GetIpfsUrlFromPinata(tokenURI);
+      let meta = await axios.get(tokenURI);
+      meta = meta.data;
+      console.log(listedToken);
+      console.log("meta", meta);
+      console.log("tokenURI", tokenURI);
 
-          image: meta.image,
-          price: meta.price,
-          listing: meta.listing,
-          royalty: meta.royalty,
-          seal: meta.seal,
+      let item = {
+        tokenId: tokenId,
+        seller: listedToken.seller,
+        owner: listedToken.owner,
 
-          trait1: meta.attributes?.[0] && meta.attributes[0].trait_type,
-          value1: meta.attributes?.[0] && meta.attributes[0].value,
-          trait2: meta.attributes[1] && meta.attributes[1].trait_type,
-          value2: meta.attributes[1] && meta.attributes[1].value,
-          trait3: meta.attributes[2] && meta.attributes[2].trait_type,
-          value3: meta.attributes[2] && meta.attributes[2].value,
-          trait4: meta.attributes[3] && meta.attributes[3].trait_type,
-          value4: meta.attributes[3] && meta.attributes[3].value,
-          trait5: meta.attributes[4] && meta.attributes[4].trait_type,
-          value5: meta.attributes[4] && meta.attributes[4].value,
-          trait6: meta.attributes[5] && meta.attributes[5].trait_type,
-          value6: meta.attributes[5] && meta.attributes[5].value,
+        image: meta.image,
+        price: meta.price,
+        listing: meta.listing,
+        royalty: meta.royalty,
+        seal: meta.seal,
 
-          code: meta.image.substring(100, 104),
+        trait1: meta.attributes?.[0] && meta.attributes[0].trait_type,
+        value1: meta.attributes?.[0] && meta.attributes[0].value,
+        trait2: meta.attributes[1] && meta.attributes[1].trait_type,
+        value2: meta.attributes[1] && meta.attributes[1].value,
+        trait3: meta.attributes[2] && meta.attributes[2].trait_type,
+        value3: meta.attributes[2] && meta.attributes[2].value,
+        trait4: meta.attributes[3] && meta.attributes[3].trait_type,
+        value4: meta.attributes[3] && meta.attributes[3].value,
+        trait5: meta.attributes[4] && meta.attributes[4].trait_type,
+        value5: meta.attributes[4] && meta.attributes[4].value,
+        trait6: meta.attributes[5] && meta.attributes[5].trait_type,
+        value6: meta.attributes[5] && meta.attributes[5].value,
 
-          name: meta.name,
-          description: meta.description,
-          collection: meta.collection,
-          style: meta.style,
-          medium: meta.medium,
-          texture: meta.texture,
-          artist: meta.artist,
-          colour: meta.colour,
-          theme: meta.theme,
-          metadataURL: tokenURI,
-        };
+        code: meta.image.substring(100, 104),
 
-        console.log(item);
-        updateData(item);
-        updateDataFetched(true);
+        name: meta.name,
+        description: meta.description,
+        collection: meta.collection,
+        style: meta.style,
+        medium: meta.medium,
+        texture: meta.texture,
+        artist: meta.artist,
+        colour: meta.colour,
+        theme: meta.theme,
+        metadataURL: tokenURI,
+      };
+
+      console.log(item);
+      updateData(item);
+      updateDataFetched(true);
       // } else {
       //   console.log("Ethereum is not present NFT Page");
       // }
@@ -158,27 +168,33 @@ const NFTPage = () => {
 
   const params = useParams();
   const tokenId = params.tokenId;
+  console.log("tokenId", tokenId);
   if (!dataFetched) getNFTToken(tokenId);
   if (typeof data.image == "string")
     data.image = GetIpfsUrlFromPinata(data.image);
 
   console.log("Message", message);
 
+  const link = `https://sepolia.etherscan.io/address/${data.owner}`;
+
   return (
-    <div className="fade-in mx-2 my-3 lg:mx-20 ">
-      <div className="flex flex-row w-full  flex-wrap ">
-        <div className="pt-2 pl-2  lg:w-1/2 w-full ">
-          <p className="text-4xl sm:text-5xl text-gradient  ">
-            NFT Details
-          </p>
-          <p className="text-left text-white font-light text-base">View details and trade NFTs here
-          </p>
+    <div className=" mx-2 md:px-[5%] fade-in">
+      <div className="flex flex-row items-center flex-wrap ">
+        <div className="flex lg:w-1/2 w-full ">
+          <h1 className="text-3xl sm:text-3xl  text-gradient capitalize">
+            NFT Detail
+          </h1>
+          &nbsp; &nbsp;
+          <Link to={"/Trade"}>
+            <button
+              id="colour"
+              value={data.name}
+              className=" text-sm text-white border px-3 h-8 rounded-full white-glassmorphism  "
+            >
+              #{data.name}
+            </button>
+          </Link>
         </div>
-        {/* <div className="flex items-center">
-            <p className="text-left mt-3 text-white font-light md:w-9/12 w-11/12 text-base ">
-              Ready to buy this NFT?
-            </p>
-          </div> */}
 
         <div className="flex lg:w-1/2 w-full justify-center lg:justify-end ">
           <TETabs className="">
@@ -227,20 +243,29 @@ const NFTPage = () => {
             </div>
 
             <div className="text-lg w-full md:w-1/2 xl:w-3/5 px-2 md:p-5 rounded-lg ">
-              <div className="  flex justify-between items-start flex-nowrap  text-[#868686]  h-fit pb-3 ">
-                <div className="" >
-                  <p className=" text-3xl  text-gradient drop-shadow-x2 leading-tight ">
-                    <strong>{data.collection ? data.collection : "Title"} </strong>
+              <div className="  flex justify-between items-start flex-nowrap  text-white  h-fit pb-3 ">
+                <div className="">
+                  <p className=" text-3xl  drop-shadow-x2 leading-tight font-thin group relative">
+                    <strong>
+                      {data.collection ? data.collection : "Title"}{" "}
+                    </strong>
+                    <span className="absolute bottom-10 -right-5 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                      Etherscan
+                    </span>
+                    <a
+                      href={link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-2xl border px-3 rounded-full white-glassmorphism"
+                    >
+                      #{data.tokenId}
+                    </a>
                   </p>
-             
-                
-                  <span className=" text-2xl  font-extralight text-gradient py-2 italic leading-tight">
-                    '{data.name
-                      ? data.name
-                     
-                      : "Untitled"}'
-                  </span>
 
+                  <span className=" text-2xl font-extralight text-gradient py-2 italic leading-tight">
+                    '{data.name ? data.name : "Untitled"}'
+                  </span>
+                  {/* 
                   <div className=" flex items-center text-[#868686] text-sm h-fit mt-5">
                 <p>
                   TOKEN ID
@@ -253,35 +278,34 @@ const NFTPage = () => {
                   </p>
                   
                 </p>
-              </div>{" "}
-         
-                
+              </div>{" "} */}
                 </div>
-                    <div className=" flex items-center text-[#868686] text-sm h-fit mb-2 ">
-         
-              </div>{" "}
-
-                <Link to={{ pathname: `/CollectionPage/${data.name}` }} key={data.id} className=" ">
-             <button 
-             id="collection"
-                  value={data.name}
-                  onClick={(id) => handleCollection(id)}
-                  className="flex items-end rounded-full bg-cover bg-center border-transparent h-16 w-16 md:h-28 md:w-28 hover:scale-[1.02] " 
-                  style={{backgroundImage: `url(${data.image})`}} 
+                <div className=" flex items-center text-[#868686] text-sm h-fit mb-2 "></div>{" "}
+                <Link
+                  to={{ pathname: `/Trade/CreatorPage/${data.seller}` }}
+                  key={data.id}
                 >
-                 <div className="bg-yellow-600 py-1 px-2 rounded-full text-white text-sm hidden md:inline-block">Waldo&nbsp;Bluffs</div>
-             </button>{" "}
-          </Link>
-          {/* <p>
+                  <button
+                    id="seller"
+                    token={tokenId}
+                    value={data.seller}
+                    onClick={(id, token) => handleCollection(id, token)}
+                    className="flex items-end rounded-full bg-cover bg-center  border-2 h-16 w-16 md:h-24 md:w-24 hover:scale-[1.02] "
+                    style={{ backgroundImage: `url(${avatarImg})` }}
+                  >
+                    <div className="bg-yellow-600  px-2 rounded-full text-white text-sm hidden md:inline-block">
+                      Creator
+                    </div>
+                  </button>{" "}
+                </Link>
+                {/* <p>
                   <span className=" text-2xl  text-white border px-3 py-1 rounded-full white-glassmorphism">
                     #{data.tokenId}
                   </span>
                   &nbsp;&nbsp;
                 </p> */}
-        
                 {/* <p>COLLECTION&nbsp;&nbsp;<span className="text-md text-[#868686]">{data.subtitle}</span></p> */}
               </div>
-
 
               {/* <div className=" flex items-center text-[#868686] text-sm h-fit mb-2 ">
                 <p>
@@ -296,10 +320,6 @@ const NFTPage = () => {
                   
                 </p>
               </div>{" "} */}
-
-
-
-
 
               <div className=" w-full text-[#868686] text-sm  h-fit ">
                 DESCRIPTION{" "}
@@ -316,7 +336,7 @@ const NFTPage = () => {
                   <p className="flex text-[#868686] text-sm ">
                     ATTRIBUTES&nbsp;&nbsp;
                     <div className="group cursor-pointer relative">
-                      <span className="absolute bottom-8 scale-0 transition-all rounded bg-[#6c63ff]  p-2 text-xs text-white group-hover:scale-100">
+                      <span className="absolute bottom-7 scale-0 transition-all rounded bg-gray-900  p-2 text-xs text-white group-hover:scale-100">
                         Metadata
                       </span>
                       <a
@@ -329,7 +349,7 @@ const NFTPage = () => {
                       </a>
                     </div>
                   </p>
-                  <div className="grid grid-cols-2 xl:grid-cols-6 text-lg gap-3 pt-5 text-white text-lg ">
+                  <div className="grid grid-cols-2 lg:grid-cols-3  gap-3 pt-5 text-sm text-white  ">
                     {/* <div className="border rounded-lg p-3 ">
                   <p className="text-xs text-[#6c63ff]">CATEGORY &nbsp;</p>
                   {data.category}
@@ -347,7 +367,7 @@ const NFTPage = () => {
                     <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
                       <p className="text-xs text-[#868686] uppercase">
                         {data.trait2 ? data.trait2 : "Trait 2"} &nbsp;
-                     {/* { data.attributes.trait_type[1]  ? data.attributes.trait_type[1] : "Trait 2"} */}
+                        {/* { data.attributes.trait_type[1]  ? data.attributes.trait_type[1] : "Trait 2"} */}
                       </p>
                       {data.value2 ? data.value2 : "Value 2"}
                     </div>
@@ -394,75 +414,81 @@ const NFTPage = () => {
                   </div>
                 </div>
               </div>
-            
-            <div className="flex flex-wrap">
-              <div className="text-[#868686] text-sm my-2 w-96 md:w-1/12 ">
-                {" "}
-                TAGS 
-              </div>
-              <div className=" flex items-center text-[#868686] text-sm h-fit ">
-                <div className="flex flex-wrap ">
-                <Link to={{ pathname: `/CollectionPage/${data.style}` }}>
-                  <button 
-                  id="style"
-                       value={data.style}
-                       onClick={(id) => handleCollection(id)}
-                  className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1">
-                    #{data.style ? data.style : "Style"}
-                  </button>{" "}
-               </Link>
-                  &nbsp;&nbsp;
-                  <Link to={{ pathname: `/CollectionPage/${data.medium}` }}>
-                  <button 
-                  id="medium"
-                       value={data.medium}
-                       onClick={(id) => handleCollection(id)}
-                  className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1">
-                    #{data.medium ? data.medium : "Medium"}
-                  </button>{" "}
-               </Link>
-                  &nbsp;&nbsp;
-                  <Link to={{ pathname: `/CollectionPage/${data.texture}` }}>
-                  <button 
-                  id="texture"
-                       value={data.texture}
-                       onClick={handleCollection}
-                  className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1">
-                    #{data.texture ? data.texture : "Texture"}
-                  </button>{" "}
-               </Link>
-                  &nbsp;&nbsp;
-                  <Link to={{ pathname: `/CollectionPage/${data.artist}` }}>
-                  <button 
-                  id="artist"
-                       value={data.artist}
-                       onClick={handleCollection}
-                  className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1">
-                    #{data.artist ? data.artist : "Artist"}
-                  </button>{" "}
-               </Link>
-                  &nbsp;&nbsp;
-                  <Link to={{ pathname: `/CollectionPage/${data.colour}` }}>
-                  <button 
-                  id="colour"
-                       value={data.colour}
-                       onClick={handleCollection}
-                  className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1 ">
-                    #{data.colour ? data.colour : "Colour"}
-                  </button>{" "}
-               </Link>
-                  &nbsp;&nbsp;
-                  <Link to={{ pathname: `/CollectionPage/${data.theme}` }}>
-                  <button 
-                  id="theme"
-                       value={data.theme}
-                       onClick={handleCollection}
-                  className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1">
-                    #{data.theme ? data.theme : "Theme"}
-                  </button>{" "}
-               </Link>
-                  &nbsp;&nbsp;
+
+              <div className="flex flex-wrap">
+                <div className="text-[#868686] text-sm my-2 w-96 md:w-1/12 ">
+                  {" "}
+                  TAGS
                 </div>
+                <div className=" flex items-center text-[#868686] text-sm h-fit ">
+                  <div className="flex flex-wrap ">
+                    <Link to={{ pathname: `/Trade/${data.style}` }}>
+                      <button
+                        id="style"
+                        value={data.style}
+                        onClick={(id) => handleCollection(id)}
+                        className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1"
+                      >
+                        #{data.style ? data.style : "Style"}
+                      </button>{" "}
+                    </Link>
+                    &nbsp;&nbsp;
+                    <Link to={{ pathname: `/Trade/${data.medium}` }}>
+                      <button
+                        id="medium"
+                        value={data.medium}
+                        onClick={(id) => handleCollection(id)}
+                        className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1"
+                      >
+                        #{data.medium ? data.medium : "Medium"}
+                      </button>{" "}
+                    </Link>
+                    &nbsp;&nbsp;
+                    <Link to={{ pathname: `/Trade/${data.texture}` }}>
+                      <button
+                        id="texture"
+                        value={data.texture}
+                        onClick={handleCollection}
+                        className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1"
+                      >
+                        #{data.texture ? data.texture : "Texture"}
+                      </button>{" "}
+                    </Link>
+                    &nbsp;&nbsp;
+                    <Link to={{ pathname: `/Trade/${data.artist}` }}>
+                      <button
+                        id="artist"
+                        value={data.artist}
+                        onClick={handleCollection}
+                        className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1"
+                      >
+                        #{data.artist ? data.artist : "Artist"}
+                      </button>{" "}
+                    </Link>
+                    &nbsp;&nbsp;
+                    <Link to={{ pathname: `/Trade/${data.colour}` }}>
+                      <button
+                        id="colour"
+                        value={data.colour}
+                        onClick={handleCollection}
+                        className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1 "
+                      >
+                        #{data.colour ? data.colour : "Colour"}
+                      </button>{" "}
+                    </Link>
+                    &nbsp;&nbsp;
+                    <Link to={{ pathname: `/Trade/${data.theme}` }}>
+                      <button
+                        id="theme"
+                        value={data.theme}
+                        onClick={handleCollection}
+                        className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1"
+                      >
+                        #{data.theme ? data.theme : "Theme"}
+                      </button>{" "}
+                    </Link>
+                    &nbsp;&nbsp;
+                  </div>
                 </div>
               </div>
             </div>
@@ -498,7 +524,6 @@ const NFTPage = () => {
                   <span className=" text-2xl sm:text-3xl uppercase text-white">
                     {data.collection ? data.collection : "Collection"}
                   </span>
-                 
                 </p>
 
                 <p>
@@ -509,62 +534,55 @@ const NFTPage = () => {
                 </p>
                 {/* <p>COLLECTION&nbsp;&nbsp;<span className="text-md text-[#868686]">{data.subtitle}</span></p> */}
               </div>
-
               <div className=" flex items-center text-[#868686] text-sm h-fit mb-2 ">
                 <p>
                   NAME
                   <br />
                   <p className="text-lg text-white py-2">
-                    {data.name
-                      ? data.name
-                     
-                      : "Untitled"}
+                    {data.name ? data.name : "Untitled"}
                   </p>
                 </p>
               </div>{" "}
-
-           
-
               <div className=" text-[#868686] text-sm  mt-2 ">
                 <div className="white-glassmorphism py-5">
                   {checksumAddress !== data.seller ? (
-                         <div>
-                         <div className="check mt-3 gap-x-2.5"></div>
-                         <div className="flex justify-around items-center">
-                           <button
-                             className="activeButton text-white outline-none  font-bold py-2 px-10 my-5 rounded text-sm"
-                             onClick={() => buyNFT(tokenId)}
-                           >
-                             BUY
-                           </button>
-                           {/* <div className="text-1xl lg:text-3xl mx-2 text-white">
+                    <div>
+                      <div className="check mt-3 gap-x-2.5"></div>
+                      <div className="flex justify-around items-center">
+                        <button
+                          className="activeButton text-white outline-none  font-bold py-2 px-10 my-5 rounded text-sm"
+                          onClick={() => buyNFT(tokenId)}
+                        >
+                          BUY
+                        </button>
+                        {/* <div className="text-1xl lg:text-3xl mx-2 text-white">
                              {data.price}&nbsp;ETH
                            </div> */}
-                           <input
-                             className=" rounded outline-none text-white text-md border-none white-glassmorphism shadow-2xl px-2 text-center h-11 w-[120px] "
-                             type="number"
-                             placeholder="Price (ETH)"
-                             step="0.001"
-                             min="0.00"
-                             // value={formParams.price}
-                             // onChange={(e) =>
-                             //   updateFormParams({
-                             //     ...formParams,
-                             //     price: e.target.value,
-                             //   })
-                             // }
-                           ></input>
-                           {/* <button
+                        <input
+                          className=" rounded outline-none text-white text-md border-none white-glassmorphism shadow-2xl px-2 text-center h-11 w-[120px] "
+                          type="number"
+                          placeholder="Price (ETH)"
+                          step="0.001"
+                          min="0.00"
+                          // value={formParams.price}
+                          // onChange={(e) =>
+                          //   updateFormParams({
+                          //     ...formParams,
+                          //     price: e.target.value,
+                          //   })
+                          // }
+                        ></input>
+                        {/* <button
                              className="outline-none bg-[#F60C4B] hover:bg-[#F60C6d] border-[#F60C4B] text-white font-bold py-2 px-10 my-5 rounded text-sm"
                              onClick={() => buyNFT(tokenId)}
                            >
                              SELL
                            </button> */}
-                         </div>
-                         <div className="text-white text-center font-light text-sm ">
-                           Enter your buy price 
-                         </div>
-                       </div>
+                      </div>
+                      <div className="text-white text-center font-light text-sm ">
+                        Enter your buy price
+                      </div>
+                    </div>
                   ) : (
                     <div>
                       <div className="check mt-3 gap-x-2.5"></div>
@@ -600,30 +618,29 @@ const NFTPage = () => {
                         </button>
                       </div>
                       <div className="text-white text-center font-light text-sm ">
-                        Enter your sell price 
+                        Enter your sell price
                       </div>
                     </div>
                   )}
 
                   <div className="text-orange text-center mt-3">{message}</div>
                 </div>
-
                 <p className="flex text-[#868686] text-sm pt-5">
-                METADATA&nbsp;&nbsp;
-                <div className="group cursor-pointer relative mb-3">
-                  <span className="absolute bottom-8 scale-0 transition-all rounded bg-[#6c63ff]  p-2 text-xs text-white group-hover:scale-100">
-                    Metadata
-                  </span>
-                  <a
-                    href={data.metadataURL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {" "}
-                    <BiLinkExternal fontSize={20} className="" />
-                  </a>
-                </div>
-              </p>
+                  METADATA&nbsp;&nbsp;
+                  <div className="group cursor-pointer relative mb-3">
+                    <span className="absolute bottom-8 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                      Metadata
+                    </span>
+                    <a
+                      href={data.metadataURL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {" "}
+                      <BiLinkExternal fontSize={20} className="" />
+                    </a>
+                  </div>
+                </p>
                 <div className=" grid grid-cols-2 xl:grid-cols-4 w-full text-[#868686] text-lg gap-3  md:py-2 h-fit   ">
                   {/* <p className="white-glassmorphism px-5 pt-3 w-full">
                     STATUS
@@ -634,31 +651,22 @@ const NFTPage = () => {
                   </p> */}
 
                   <div className="bg-[darkgrey] bg-opacity-[0.1] text-white rounded-lg p-3 w-full">
-                      <p className="text-xs text-[#868686]">
-                      STATUS&nbsp;
-                      </p>
-                      {data.listing ? data.listing : "Listed"}
-                    </div>
-                    <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 w-full  text-white">
-                      <p className="text-xs text-[#868686]">
-                      ROYALTY&nbsp;
-                      </p>
-                      {data.royalty ? data.royalty : "No Royalty"}
-                    </div>
-                    <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 w-full text-white">
-                      <p className="text-xs text-[#868686]">
-                      CODE&nbsp;
-                      </p>
-                      {data.code ? data.code : "No Code"}
-                    </div>
-                    <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 w-full text-white">
-                      <p className="text-xs text-[#868686]">
-                      VERIFIED&nbsp;
-                      </p>
-                      {data.seal ? data.seal : "None"}
-                    </div>
-               
-                   
+                    <p className="text-xs text-[#868686]">STATUS&nbsp;</p>
+                    {data.listing ? data.listing : "Listed"}
+                  </div>
+                  <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 w-full  text-white">
+                    <p className="text-xs text-[#868686]">ROYALTY&nbsp;</p>
+                    {data.royalty ? data.royalty : "No Royalty"}
+                  </div>
+                  <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 w-full text-white">
+                    <p className="text-xs text-[#868686]">CODE&nbsp;</p>
+                    {data.code ? data.code : "No Code"}
+                  </div>
+                  <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 w-full text-white">
+                    <p className="text-xs text-[#868686]">VERIFIED&nbsp;</p>
+                    {data.seal ? data.seal : "None"}
+                  </div>
+
                   {/* <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 px-5 pt-3 w-full mx-3">
                     ROYALTY
                     <br />
@@ -685,16 +693,17 @@ const NFTPage = () => {
                   <p className="text-sm">
                     Contract
                     <a className="">
-                    &nbsp; &nbsp;&nbsp;{data.owner && shortenAddress(data.owner)}
+                      &nbsp; &nbsp;&nbsp;
+                      {data.owner && shortenAddress(data.owner)}
                     </a>
                   </p>
 
                   <p className="text-sm text-right ">
                     Seller{" "}
                     <a>
-                      &nbsp;&nbsp;{data.seller && shortenAddress(data.seller)}&nbsp;
+                      &nbsp;&nbsp;{data.seller && shortenAddress(data.seller)}
+                      &nbsp;
                     </a>
-               
                     <br />
                     {/* <span>{checksum && shortenAddress(checksum)}</span> */}
                   </p>

@@ -1,75 +1,70 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { TransactionContext } from "../context/TransactionContext";
 import NFTTile from "./NFTTile";
-import {
-  TETabs,
-  TETabsContent,
-  TETabsItem,
-  TETabsPane,
-} from "tw-elements-react";
-import { useParams } from "react-router";
+import { TETabs, TETabsItem } from "tw-elements-react";
 
 const CollectionPage = () => {
-  const { filteredResults, tab, handleTab, getAllNFTs, marketData, collection, id} = useContext(TransactionContext);
-
-
-    // const results = marketData.filter((item) =>  item.style == (collection));
-  
-
- 
-
-// console.log("results", results)
+  const {
+    filteredResults,
+    tab,
+    handleTab,
+    collection,
+    id,
+  } = useContext(TransactionContext);
 
   return (
-    <div className="items-center flex-col justify-between gap-2 md:p-5 fade-in px-2">
-    <div className="flex flex-row  place-items-center flex-wrap ">
-      <div className="pt-2 pl-4  lg:w-1/2 w-full ">
-        <h1 className="text-4xl sm:text-5xl  text-gradient">
-        #{collection} 
-        </h1>
-        <p className="text-left text-white font-light text-base py-2">
-          Viewing NFTs tagged with {id} #{collection} 
-        </p>
+    <div className="fade-in md:mx-[3%]">
+      <div className="flex flex-wrap">
+        <div className="flex w-full items-center lg:w-1/2 pl-4 pt-2 md:pt-0 ">
+          <h1 className="text-3xl text-gradient capitalize">
+            {id}
+          </h1>
+          &nbsp;&nbsp;
+          <button
+            id="colour"
+            value={collection}
+            className="flex items-center text-sm text-white border px-3 h-8 rounded-full white-glassmorphism"
+          >
+            #{collection}
+          </button>
+        </div>
+
+        <div className="flex justify-center lg:justify-end w-full lg:w-1/2">
+          <TETabs>
+            <TETabsItem
+              className="hover:bg-transparent"
+              onClick={() => handleTab("tab1")}
+              active={tab === "tab1"}
+            >
+              For Sale
+            </TETabsItem>
+            <TETabsItem
+              className="hover:bg-transparent"
+              onClick={() => handleTab("tab2")}
+              active={tab === "tab2"}
+            >
+              Just Sold
+            </TETabsItem>
+            <TETabsItem
+              className="hover:bg-transparent"
+              onClick={() => handleTab("tab3")}
+              active={tab === "tab3"}
+            >
+              Newest
+            </TETabsItem>
+          </TETabs>
+        </div>
       </div>
 
-
-      <div className="flex lg:w-1/2 w-full justify-center lg:justify-end ">
-        <TETabs className="">
-          <TETabsItem
-            className="hover:bg-transparent"
-            onClick={() => handleTab("tab1")}
-            active={tab === "tab1"}
-          >
-            For Sale
-          </TETabsItem>
-          <TETabsItem
-            className="hover:bg-transparent "
-            onClick={() => handleTab("tab2")}
-            active={tab === "tab2"}
-          >
-            Just Sold
-          </TETabsItem>
-          <TETabsItem
-            className="hover:bg-transparent"
-            onClick={() => handleTab("tab3")}
-            active={tab === "tab3"}
-          >
-            Newest
-          </TETabsItem>
-        </TETabs>
-      </div>
-    </div>
-
-    <div className="flex flex-col place-items-center  text-white text-center ">
-      <div className="flex flex-wrap gap-4 justify-center">
-        {[...filteredResults].reverse().map((value, index) => {
-          return <NFTTile data={value} key={index}></NFTTile>;
-        })}
-      </div>
-    </div>
-
+      <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 ">
+          {filteredResults.slice().reverse().map((data) => (
+            <NFTTile data={data} key={data.id} />
+          ))}
+        </div>
+      
     </div>
   );
 };
 
 export default CollectionPage;
+
