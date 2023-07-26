@@ -19,18 +19,18 @@ const Collections = () => {
 
 
   return (
-    <>
+    <div className="md:mt-12 md:mb-36 mb-8">
       <div className="flex w-full justify-start items-center fade-in ">
         <div className="flex mf:flex-row flex-col items-center justify-between md:px-20 py-5 px-4 ">
           <div className="flex-1 flex flex-col justify-start items-start w-half">
             <h1 className="text-white text-3xl sm:text-5xl py-2  ">
               Top Collections
-              {/* <br />
-          continue to improve */}
             </h1>
-            <p className="text-left my-2 text-white font-light  text-base">
-              View what others top artists have created.
-            </p>
+           
+            <h2 className="text-left mb-3 text-gradient text-lg ">
+           
+              View what our top artists have created
+            </h2>
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@ const Collections = () => {
              id="collection"
                   value={collection.name}
                   onClick={(id) => handleCollection(id)}
-                  className="flex items-end rounded-full h-auto bg-cover bg-center border-transparent hover:border-[#4c46b6] hover:scale-[1.05]" 
+                  className="flex items-end rounded-full h-auto bg-cover bg-center border-transparent shadow-xl shadow-indigo-500/30 duration-300 hover:scale-[1.03]" 
                   style={{backgroundImage: `url(${collection.image})`, height: "10rem", width: "10rem"}} 
                 >
                  <div className="bg-yellow-600 py-1 px-2 rounded-full text-white text-sm"> #{collection.id} {collection.name}</div>
@@ -52,7 +52,7 @@ const Collections = () => {
           );
         })}
       </div>
-    </>
+    </div>
   );
 };
 

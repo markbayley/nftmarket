@@ -108,9 +108,9 @@ console.log(walletNFTs)
             <h1 className="text-4xl sm:text-5xl text-white text-gradient">
               My Wallet
             </h1>
-            <p className="text-left text-white font-light text-md py-1">
-              Fund your wallet to mint and trade NFTs.
-            </p>
+            <h2 className="text-left mb-3 text-gradient text-lg  ">
+              Fund your wallet to mint and trade NFTs
+            </h2>
           </div>
 
           <div className="flex justify-center w-full md:w-1/2 md:justify-end">
@@ -195,7 +195,7 @@ console.log(walletNFTs)
                   <button
                     type="button"
                     onClick={handleSubmitTransaction}
-                    className="text-white w-full  border-[1px] p-2 border-[#6c63ff] hover:bg-[#6c63ff] rounded cursor-pointer"
+                    className="text-white w-full  border-[1px] p-2 border-[#6c63ff] hover:bg-[#6c63ff] rounded cursor-pointer shadow-lg shadow-indigo-500/30"
                   >
                     Send
                   </button>
@@ -324,7 +324,7 @@ console.log(walletNFTs)
                   <button
                     type="button"
                     onClick={handleSubmitProfile}
-                    className="text-white w-full  border-[1px] p-2 border-[#6c63ff] hover:bg-[#6c63ff] rounded cursor-pointer"
+                    className="text-white w-full  border-[1px] p-2 border-[#6c63ff] hover:bg-[#6c63ff] rounded cursor-pointer shadow-lg shadow-indigo-500/30"
                   >
                     Save
                   </button>

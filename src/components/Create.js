@@ -340,11 +340,11 @@ const Create = () => {
     <div className="items-center flex-col justify-center gap-x-2 md:p-5 fade-in mx-1 xl:mx-20">
       <div className="flex flex-row  place-items-center flex-wrap ">
         <div className="pt-2 pl-4  lg:w-1/2 w-full ">
-          <h1 className="text-4xl sm:text-5xl text-gradient leading-tight font-light text-base">
+          <h1 className="text-4xl sm:text-5xl text-gradient leading-tight ">
             Create & Mint NFTs
           </h1>
-          <h2 className="text-left mb-3 text-gradient font-light  leading-tight text-base text-lg ">
-          Generate an AI image or upload your own.
+          <h2 className="text-left mb-3 text-gradient text-lg  ">
+          Generate an image or upload your own
         </h2>
           {/* <h3 className="text-left text-white font-light text-base py-2">
             Generate an A.I. image or upload your own.

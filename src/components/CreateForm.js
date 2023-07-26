@@ -285,7 +285,7 @@ const CreateForm = ({
         </>
 
         {/* Buttons */}
-        <div className="flex w-full justify-end text-white gap-x-3 mt-5 ">
+        <div className="flex w-full justify-end text-white gap-x-3 mt-5 relative">
           {!isChecked ? (
             <button
               type="button"
@@ -299,11 +299,11 @@ const CreateForm = ({
                   : isCreating
                   ? "waitingButton md:w-1/2 w-full group"
                   : !formParams.name || !formParams.description
-                  ? "inactiveButton  md:w-1/2 w-full group"
-                  : "activeButton md:w-1/2 w-full group"
+                  ? "inactiveButton  md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 "
+                  : "activeButton md:w-1/2 w-full group "
               }
             >
-              <span className="absolute bottom-20  scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100 ">
+              <span className="absolute -bottom-10  scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100 ">
                 {isChecked
                   ? "Upload is selected..?"
                   : !formParams.name || !formParams.description
@@ -325,7 +325,7 @@ const CreateForm = ({
                   : isSaving
                   ? "waitingButton w-1/2"
                   : !fileURL
-                  ? "inactiveButton w-1/2"
+                  ? "inactiveButton w-1/2 shadow-lg shadow-indigo-500/30 duration-300"
                   : "activeButton w-1/2"
               }
             />

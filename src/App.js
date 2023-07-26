@@ -17,6 +17,7 @@ function App() {
               <div className="">
                 <Welcome />
                 <Collections />
+                <CreatorPage />
               
               </div>
             }

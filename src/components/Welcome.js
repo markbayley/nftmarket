@@ -9,6 +9,8 @@ import { shortenAddress } from "../utils/shortenAddress";
 import nftImage1 from "../images/futuristic-city.jpg";
 import nftImage2 from "../images/tokyo-haze.jpg";
 import nftImage3 from "../images/kyoto-girl.jpg";
+import { BiRightArrow, BiRightArrowAlt } from "react-icons/bi";
+import { Link } from "react-router-dom";
 
 // const companyCommonStyles = "min-h-[70px] sm:px-0 px-2 sm:min-w-[120px] flex justify-center items-center border-[0.5px] border-gray-400 text-sm font-light text-white";
 
@@ -33,7 +35,7 @@ const Welcome = () => {
         <h1 className="text-3xl sm:text-6xl text-gradient py-1">
           Create & Trade NFTs
         </h1>
-        <h2 className="text-left mb-3 text-gradient font-light  text-base text-3xl sm:text-2xl ">
+        <h2 className="text-left mb-3 text-gradient text-lg ">
           With Advanced AI Technology
         </h2>
 
@@ -42,9 +44,9 @@ const Welcome = () => {
             <div className="w-10 h-10 rounded-full border-2 border-white flex justify-center items-center absolute top-7 left-7 eth-card  seal ">
               <SiEthereum fontSize={21} color="#fff" />
             </div>
-            <div className="absolute top-7 right-7 ">
+            {/* <div className="absolute top-7 right-7 ">
               <BsInfoCircle fontSize={20} color="#fff" />
-            </div>
+            </div> */}
 
             <img src={nftImage1} alt="Futuristic City NFT" className="" />
             <div className="title">
@@ -76,15 +78,16 @@ const Welcome = () => {
 
             <img src={nftImage3} alt="Futuristic City NFT" />
             <div className="title">
-              <strong>Kyoto Life </strong> &nbsp;<em>'Dreams of Aftrelife'</em>
+              <strong>Kyoto Life </strong> &nbsp;<em>'Dreams of Afterlife'</em>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col flex-1 items-center justify-start w-full mf:mt-0 mt-10">
-          <p className="text-center my-3 text-white font-light md:w-12/12 w-11/12 text-base">
-            Learn about NFTs and how to get started below.
-          </p>
+        <div className="flex flex-col flex-1 items-center justify-start w-full mf:mt-0 mt-10 ">
+
+          <Link to={'/Create'} >
+          <button className="rounded-md text-md py-5 px-12 flex items-center font-thin bg-transparent shadow-lg shadow-indigo-500/30 duration-300">Get Started</button>
+       </Link>
         </div>
       </div>
     </div>

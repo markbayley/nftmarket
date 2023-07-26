@@ -13,7 +13,7 @@ import { shortenAddress } from "../utils/shortenAddress";
 const NavBarItem = ({ title, classprops, link}) => (
   <>
     <NavLink
-      className={({isActive}) => (isActive ? "active-style" : 'text-white')}
+      className={({isActive}) => (isActive ? "active-style " : 'text-white ')}
       to={link}
     >
       <li className={`mx-5 cursor-pointer   ${classprops}`}>{title}</li>

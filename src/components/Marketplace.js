@@ -104,12 +104,20 @@ export default function Marketplace() {
   return (
     <div className="items-center flex-col justify-between  md:px-0 fade-in px-2  ">
       <div className="flex flex-row flex-wrap  items-center  md:px-[2%]">
-        <div className=" flex items-center justify-between flex-wrap lg:w-1/3 w-full p-4 ">
-          <h1 className="flex text-3xl sm:text-3xl text-gradient capitalize">
+        <div className=" flex items-center justify-between flex-wrap lg:w-2/5 w-full p-4 ">
+        <h1 className="text-3xl sm:text-5xl  text-white capitalize ">
             {/* {id || ""} */}
             {/* {marketData.length} {filteredResults.length}  */}
-            {searchResults.length} NFTs
+            Trade NFTs
+            <h2 className="text-left text-gradient text-lg ">
+           
+           {searchResults.length} NFTs {searchResults.length < marketData.length ? "Filtered" : "Unfiltered" } { sorted ? "- Sorted by Price" : ""}
+    </h2>
           </h1>
+          {/* <h1 className="text-3xl md:text-5xl text-white capitalize py-2 ">
+                  Featured&nbsp;Profile
+                </h1> */}
+           
 
           <div className="flex mt-2 md:mt-0  ">
 
@@ -157,7 +165,7 @@ export default function Marketplace() {
           </div>
         </div>
 
-        <div className="  w-full lg:w-1/3 m-3 lg:mx-0">
+        <div className="  w-full lg:w-1/5 m-3 lg:mx-0">
           <label className="relative block">
             <span className="sr-only">Search</span>
             <span className="absolute inset-y-0 right-4 flex items-center ">
@@ -173,7 +181,7 @@ export default function Marketplace() {
           </label>
         </div>
 
-        <div className="flex lg:w-1/3 w-full justify-center lg:justify-end ">
+        <div className="flex lg:w-2/5 w-full justify-center lg:justify-end ">
           <TETabs className="">
             <TETabsItem
               className="hover:bg-transparent"

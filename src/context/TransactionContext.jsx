@@ -189,7 +189,7 @@ export const TransactionsProvider = ({ children }) => {
     console.log("2.Getting all NFTs")
     try {
    
-        const marketplaceContract = createMarketplaceContract(); 
+        const marketplaceContract = createMarketplaceContractReadOnly(provider); 
           //  !ethereum ? createMarketplaceContractReadOnly(provider) :
           //  createMarketplaceContract();
      
