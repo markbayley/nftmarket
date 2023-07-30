@@ -29,11 +29,16 @@ const NFTPage = () => {
     setFilteredResults,
     setCollection,
     setId,
+    formParams,
+    updateFormParams
   } = useContext(TransactionContext);
 
   const [data, updateData] = useState({});
   const [dataFetched, updateDataFetched] = useState(false);
   const [message, updateMessage] = useState("");
+
+
+  console.log(formParams.price)
 
   // const handleCollection = (e) => {
   //   let col = e.target.value;
@@ -85,9 +90,6 @@ const NFTPage = () => {
       tokenURI = GetIpfsUrlFromPinata(tokenURI);
       let meta = await axios.get(tokenURI);
       meta = meta.data;
-      console.log(listedToken);
-      console.log("meta", meta);
-      console.log("tokenURI", tokenURI);
 
       let item = {
         tokenId: tokenId,
@@ -102,16 +104,16 @@ const NFTPage = () => {
 
         trait1: meta.attributes?.[0] && meta.attributes[0].trait_type,
         value1: meta.attributes?.[0] && meta.attributes[0].value,
-        trait2: meta.attributes[1] && meta.attributes[1].trait_type,
-        value2: meta.attributes[1] && meta.attributes[1].value,
-        trait3: meta.attributes[2] && meta.attributes[2].trait_type,
-        value3: meta.attributes[2] && meta.attributes[2].value,
-        trait4: meta.attributes[3] && meta.attributes[3].trait_type,
-        value4: meta.attributes[3] && meta.attributes[3].value,
-        trait5: meta.attributes[4] && meta.attributes[4].trait_type,
-        value5: meta.attributes[4] && meta.attributes[4].value,
-        trait6: meta.attributes[5] && meta.attributes[5].trait_type,
-        value6: meta.attributes[5] && meta.attributes[5].value,
+        trait2: meta.attributes?.[1] && meta.attributes[1].trait_type,
+        value2: meta.attributes?.[1] && meta.attributes[1].value,
+        trait3: meta.attributes?.[2] && meta.attributes[2].trait_type,
+        value3: meta.attributes?.[2] && meta.attributes[2].value,
+        trait4: meta.attributes?.[3] && meta.attributes[3].trait_type,
+        value4: meta.attributes?.[3] && meta.attributes[3].value,
+        trait5: meta.attributes?.[4] && meta.attributes[4].trait_type,
+        value5: meta.attributes?.[4] && meta.attributes[4].value,
+        trait6: meta.attributes?.[5] && meta.attributes[5].trait_type,
+        value6: meta.attributes?.[5] && meta.attributes[5].value,
 
         code: meta.image.substring(100, 104),
 
@@ -156,6 +158,36 @@ const NFTPage = () => {
       //run the executeSale function
       let transaction = await contract.executeSale(tokenId, {
         value: salePrice,
+      });
+      await transaction.wait();
+
+      updateMessage("Success! Check your wallet");
+      // updateMessage("");
+    } catch (e) {
+      alert("Upload Error" + e);
+    }
+  }
+
+ 
+
+  async function listNFT(tokenId) {
+    try {
+      const ethers = require("ethers");
+      //After adding your Hardhat network to your metamask, this code will get providers and signers
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+
+      //Pull the deployed contract instance
+      let contract = new ethers.Contract(
+        MarketplaceJSON.address,
+        MarketplaceJSON.abi,
+        signer
+      );
+      const listPrice = ethers.utils.parseUnits(formParams.price, "ether");
+      updateMessage("Listing NFT... Please Wait");
+ 
+      let transaction = await contract.updateListPrice(tokenId, {
+        value: listPrice,
       });
       await transaction.wait();
 
@@ -602,17 +634,17 @@ const NFTPage = () => {
                           placeholder="Price (ETH)"
                           step="0.001"
                           min="0.00"
-                          // value={formParams.price}
-                          // onChange={(e) =>
-                          //   updateFormParams({
-                          //     ...formParams,
-                          //     price: e.target.value,
-                          //   })
-                          // }
+                          value={formParams.price}
+                          onChange={(e) =>
+                            updateFormParams({
+                              ...formParams,
+                              price: e.target.value,
+                            })
+                          }
                         ></input>
                         <button
                           className="outline-none bg-[#F60C4B] hover:bg-[#F60C6d] border-[#F60C4B] text-white font-bold py-2 px-10 my-5 rounded text-sm"
-                          onClick={() => buyNFT(tokenId)}
+                          onClick={() => listNFT(tokenId)}
                         >
                           SELL
                         </button>

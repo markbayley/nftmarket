@@ -16,7 +16,21 @@ import {
 import { BiSearchAlt } from "react-icons/bi";
 import { FiFilter } from "react-icons/fi";
 import { ImPriceTag } from "react-icons/im";
+import { BiSort } from "react-icons/bi";
+
+import {
+  artists,
+  styles,
+  mediums,
+  textures,
+  colours,
+  themes,
+} from "../data/lists.js";
+import { collections } from "../data/collections.js";
+
 import { shortenAddress } from "../utils/shortenAddress";
+
+import { TECollapse, TERipple } from "tw-elements-react";
 
 export default function Marketplace() {
   const {
@@ -60,182 +74,303 @@ export default function Marketplace() {
     searchItems(searchInput);
   }, [searchResults, collection]);
 
-  const ToggleButton = ({ onClick }) => {
-    return (
-      <div className="flex items-center  cursor-pointer text-gray-600 hover:text-amber-500">
-        {sorted ? (
-          <>
-            <ImPriceTag
-              onClick={onClick}
-              fontSize={21}
-              className="text-amber-500"
-            />
+  // const ToggleButton = ({ onClick }) => {
+  //   return (
+  //     <div className="flex items-center  cursor-pointer text-gray-600 hover:text-amber-500">
+  //       {sorted ? (
+  //         <>
+  //           <ImPriceTag
+  //             onClick={onClick}
+  //             fontSize={21}
+  //             className="text-amber-500"
+  //           />
 
-            <button
-              className="flex items-center text-sm text-amber-500 border border-amber-500 px-3 h-7 rounded-full bg-transparent hover:text-gray-600 hover:border-gray-600 duration-300 hover:bg-transparent"
-              onClick={toggleSort}
-            >
-              #Highest Price
-            </button>
-          </>
-        ) : (
-          <ImPriceTag onClick={onClick} fontSize={21} />
-        )}
-      </div>
-    );
-  };
+  //           <button
+  //             className="flex items-center text-sm text-amber-500 border border-amber-500 px-3 h-7 rounded-full bg-transparent hover:text-gray-600 hover:border-gray-600 duration-300 hover:bg-transparent"
+  //             onClick={toggleSort}
+  //           >
+  //             #Highest Price
+  //           </button>
+  //         </>
+  //       ) : (
+  //         <ImPriceTag onClick={onClick} fontSize={21} />
+  //       )}
+  //     </div>
+  //   );
+  // };
 
   const [sorted, setSorted] = useState(false);
+  const [newest, setNewest] = useState(true);
   // Function to toggle and sort the array
   const toggleSort = () => {
+    setNewest(!newest);
     setSorted(!sorted);
-    if (!sorted) {
-      // If we are sorting, store the original order based on the index
-      setSearchResults([...searchResults]);
-    }
   };
   // Function to get the sorted products
-  const getSortedProducts = () => {
-    const sortedResults = [...searchResults];
-    sortedResults.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-    return sorted ? sortedResults : searchResults;
+  const toggleNewest = () => {
+    setSorted(!sorted);
+    setNewest(!newest);
   };
+
+  const listedResults = searchResults
+    .filter((item) => item.listing !== "Unlisted" && item.listing !== "Auction")
+    .sort((a, b) => parseFloat(a.tokenId) - parseFloat(b.tokenId));
+  const listedSorted = searchResults
+    .filter((item) => item.listing !== "Unlisted" && item.listing !== "Auction")
+    .sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+  const listedNewest = searchResults
+    .filter((item) => item.listing !== "Unlisted" && item.listing !== "Auction")
+    .sort((a, b) => parseFloat(b.tokenId) - parseFloat(a.tokenId));
+  const getListedNFTs = () => {
+    return sorted ? listedSorted : listedNewest;
+  };
+
+  const auctionResults = searchResults
+    .filter((item) => item.listing === "Auction")
+    .sort((a, b) => parseFloat(a.tokenId) - parseFloat(b.tokenId));
+  const auctionSorted = searchResults
+    .filter((item) => item.listing === "Auction")
+    .sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+  const getAuctionedNFTs = () => {
+    return sorted ? auctionSorted : auctionResults;
+  };
+
+  const unlistedResults = searchResults
+    .filter((item) => item.listing === "Unlisted")
+    .sort((a, b) => parseFloat(a.tokenId) - parseFloat(b.tokenId));
+  const unlistedSorted = searchResults
+    .filter((item) => item.listing === "Unlisted")
+    .sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+  const getUnlistedNFTs = () => {
+    // const unlistedUnsorted = unlistedResults.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+    return sorted ? unlistedSorted : unlistedResults;
+  };
+
+  const [show, setShow] = useState(false);
+
+  const toggleShow = () => setShow(!show);
+
+  // console.log(id, collection)
 
   return (
     <div className="items-center flex-col justify-between  md:px-0 fade-in px-2  ">
-      <div className="flex flex-row flex-wrap  items-center  md:px-[2%]">
-        <div className=" flex items-center justify-between flex-wrap lg:w-2/5 w-full p-4 ">
-        <h1 className="text-3xl sm:text-5xl  text-white capitalize ">
-            {/* {id || ""} */}
-            {/* {marketData.length} {filteredResults.length}  */}
+      <div className="flex flex-row flex-wrap  items-center  md:px-[2%] md:pt-3">
+        <div className=" flex items-center justify-between flex-wrap  w-full  ">
+          <h1 className="text-3xl sm:text-5xl  text-white capitalize px-2 mt-2 lg:mt-0 lg:pl-5">
             Trade NFTs
-            <h2 className="text-left text-gradient text-lg ">
-           
-           {searchResults.length} NFTs {searchResults.length < marketData.length ? "Filtered" : "Unfiltered" } { sorted ? "- Sorted by Price" : ""}
-    </h2>
+            <p className="text-left text-gradient text-lg ">
+              {filteredResults.length === 0 && collection
+                ? filteredResults.length
+                : tab === "tab1"
+                ? listedResults.length
+                : tab === "tab2"
+                ? auctionResults.length
+                : unlistedResults.length}{" "}
+              NFTs{" "}
+              {
+              
+              collection
+                ? " Tagged '" + collection + "'"
+                : searchInput
+                ? " Tagged '" + searchInput + "'"
+                : ""}
+              {tab === "tab1"
+                ? " For Sale "
+                : tab === "tab2"
+                ? " Auctioned "
+                : " Unlisted "}{" "}
+              {collection ? "" : searchInput ? "" : "- Unfiltered "}
+            </p>
           </h1>
-          {/* <h1 className="text-3xl md:text-5xl text-white capitalize py-2 ">
-                  Featured&nbsp;Profile
-                </h1> */}
-           
 
           <div className="flex mt-2 md:mt-0  ">
-
-            <div className="flex items-center  cursor-pointer text-gray-600 hover:text-amber-500">
-            <FiFilter
-              fontSize={26}
-              className={collection ? "text-amber-500" : "text-gray-600"}
-            />
-            {collection && (
-              <button
-                id=""
-                value=""
-                className="flex items-center text-sm text-amber-500 border border-amber-500 px-3 h-7 rounded-full bg-transparent hover:text-gray-600 hover:border-gray-600 duration-300 hover:bg-transparent"
-                onClick={(id) => handleCollection(id)}
-              >
-                #
-                {collection.length > 30
-                  ? shortenAddress(collection)
-                  : collection}
-              </button>
-            )}{" "}
-            </div>
-
-
-            <div className="flex items-center mx-2 cursor-pointer text-gray-600 hover:text-amber-500">
-              {sorted ? (
+            <div className="flex items-center  cursor-pointer">
+              <FiFilter
+                fontSize={26}
+                className={collection ? "text-[#6c63ff] " : "text-gray-600"}
+              />
+              {collection ? (
+                <button
+                  id=""
+                  value=""
+                  className="hidden md:flex items-center text-sm text-[#6c63ff] border border-[#6c63ff] px-3 h-7 rounded-full bg-transparent hover:text-gray-600 hover:border-gray-600 duration-300 hover:bg-transparent"
+                  onClick={(id) => handleCollection(id)}
+                >
+                  #
+                  {collection.length > 30
+                    ? shortenAddress(collection)
+                    : collection}
+                </button>
+              ) : (
                 <>
-                  <ImPriceTag
-                    onClick={toggleSort}
-                    fontSize={21}
-                    className="text-amber-500"
+                  <TERipple rippleColor="light">
+                    <button
+                      id=""
+                      value=""
+                      className="hidden md:flex capitalize items-center text-sm text-gray-500 border border-gray-500 px-3 h-7 rounded-full bg-transparent hover:text-[#6c63ff] hover:border-[#6c63ff] duration-300 hover:bg-transparent"
+                      onClick={toggleShow}
+                    >
+                      #Unfiltered
+                    </button>
+                  </TERipple>
+                </>
+              )}{" "}
+            </div>
+            &nbsp; &nbsp;
+            <div className="flex items-center  cursor-pointer text-gray-600 hover:text-amber-500">
+              {newest ? (
+                <>
+                  <BiSort
+                    fontSize={26}
+                    className="text-[#6c63ff]"
+                    onClick={toggleNewest}
                   />
-              &nbsp;
                   <button
-                    className="flex items-center text-sm text-amber-500 border border-amber-500 px-3 h-7 rounded-full bg-transparent hover:text-gray-600 hover:border-gray-600 duration-300 hover:bg-transparent"
-                    onClick={toggleSort}
+                    className="hidden md:flex  items-center text-sm text-[#6c63ff] border border-[#6c63ff] px-3 h-7 rounded-full bg-transparent hover:text-gray-600 hover:border-gray-600 duration-300 hover:bg-transparent"
+                    onClick={toggleNewest}
                   >
-                    #Price
+                    Date
                   </button>
                 </>
               ) : (
-                <ImPriceTag onClick={toggleSort} fontSize={21} />
+                <>
+                  <BiSort
+                    fontSize={26}
+                    className="text-amber-500 "
+                    onClick={toggleNewest}
+                  />
+                  <button
+                    className="hidden md:flex  items-center text-sm text-amber-500 border border-amber-500 px-3 h-7 rounded-full bg-transparent hover:text-gray-600 hover:border-gray-600 duration-300 hover:bg-transparent"
+                    onClick={toggleSort}
+                  >
+                    Price
+                  </button>
+                </>
               )}
             </div>
           </div>
-        </div>
 
-        <div className="  w-full lg:w-1/5 m-3 lg:mx-0">
-          <label className="relative block">
-            <span className="sr-only">Search</span>
-            <span className="absolute inset-y-0 right-4 flex items-center ">
-              <BiSearchAlt fontSize={26} color="grey" className="" />
-            </span>
-            <input
-              type="text"
-              onChange={(e) => searchItems(e.target.value)}
-              className="w-full rounded-full outline-none py-3 pl-7 text-white border-none white-glassmorphism"
-              placeholder="Search NFTs..."
-              name="search"
-            />
-          </label>
-        </div>
+          <div className=" w-full lg:w-auto my-3 lg:mx-0">
+            <label className="relative block">
+              <span className="sr-only">Search</span>
+              <span className="absolute inset-y-0 right-4 flex items-center ">
+                <BiSearchAlt fontSize={26} color="grey" className="" />
+              </span>
+              <input
+                type="text"
+                onChange={(e) => searchItems(e.target.value)}
+                className="w-full rounded-full outline-none py-3 pl-7 text-white border-none white-glassmorphism min-w-[300px]"
+                placeholder="Search NFTs..."
+                name="search"
+              />
+            </label>
+          </div>
 
-        <div className="flex lg:w-2/5 w-full justify-center lg:justify-end ">
-          <TETabs className="">
-            <TETabsItem
-              className="hover:bg-transparent"
-              onClick={() => handleTab("tab1")}
-              active={tab === "tab1"}
-            >
-              For Sale
-            </TETabsItem>
-            <TETabsItem
-              className="hover:bg-transparent "
-              onClick={() => handleTab("tab2")}
-              active={tab === "tab2"}
-            >
-              Just Sold
-            </TETabsItem>
-            <TETabsItem
-              className="hover:bg-transparent"
-              onClick={() => handleTab("tab3")}
-              active={tab === "tab3"}
-            >
-              Newest
-            </TETabsItem>
-          </TETabs>
+          <div className="flex w-full xl:w-auto  justify-center xl:justify-end ">
+            <TETabs className="">
+              <TETabsItem
+                className="hover:bg-transparent"
+                onClick={() => handleTab("tab1")}
+                active={tab === "tab1"}
+              >
+                For Sale
+              </TETabsItem>
+              <TETabsItem
+                className="hover:bg-transparent"
+                onClick={() => handleTab("tab2")}
+                active={tab === "tab2"}
+              >
+                Auction
+              </TETabsItem>
+              <TETabsItem
+                className="hover:bg-transparent"
+                onClick={() => handleTab("tab3")}
+                active={tab === "tab3"}
+              >
+                Unlisted
+              </TETabsItem>
+            </TETabs>
+          </div>
         </div>
       </div>
+
+      <TECollapse show={show}>
+        <div className="block rounded-lg bg-transparent  shadow-lg mx-[3%]  ">
+          <div className=" flex flex-wrap gap-1">
+            {[...styles].slice(1, 9).map((item, index) => (
+              <button
+                id="style"
+                key={index}
+                value={item.name}
+                className="hidden md:flex  capitalize items-center text-sm text-gray-500 border border-gray-500 px-3 h-7 rounded-full bg-transparent hover:text-[#6c63ff] hover:border-[#6c63ff] duration-300 hover:bg-transparent"
+                onClick={(id) => (handleCollection(id), setShow(() => false))}
+              >
+                #{item.name}
+              </button>
+            ))}
+            {[...themes].slice(1, 9).map((item, index) => (
+              <button
+                id="theme"
+                key={index}
+                value={item.name}
+                className="hidden md:flex  capitalize items-center text-sm text-gray-500 border border-gray-500 px-3 h-7 rounded-full bg-transparent hover:text-[#6c63ff] hover:border-[#6c63ff] duration-300 hover:bg-transparent"
+                onClick={(id) => (handleCollection(id), setShow(() => false))}
+              >
+                #{item.name}
+              </button>
+            ))}
+
+            {[...mediums].slice(1, 9).map((item, index) => (
+              <button
+                id="medium"
+                key={index}
+                value={item.name}
+                className="hidden md:flex  capitalize items-center text-sm text-gray-500 border border-gray-500 px-3 h-7 rounded-full bg-transparent hover:text-[#6c63ff] hover:border-[#6c63ff] duration-300 hover:bg-transparent"
+                onClick={(id) => (handleCollection(id), setShow(() => false))}
+              >
+                #{item.name}
+              </button>
+            ))}
+
+            {[...collections].map((item, index) => (
+              <button
+                id="collection"
+                key={index}
+                value={item.name}
+                className="hidden md:flex  capitalize items-center text-sm text-gray-500 border border-gray-500 px-3 h-7 rounded-full bg-transparent hover:text-[#6c63ff] hover:border-[#6c63ff] duration-300 hover:bg-transparent"
+                onClick={(id) => (handleCollection(id), setShow(false))}
+              >
+                #{item.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      </TECollapse>
 
       <TETabsContent>
         <TETabsPane show={tab === "tab1"}>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:mx-[3%]">
-            {getSortedProducts()
-              .reverse()
-              .map((value, index) => {
-                return (
-                  <div className="">
-                    <NFTTile data={value} key={index}></NFTTile>
-                  </div>
-                );
-              })}
+            {getListedNFTs().map((value, tokenId) => {
+              return (
+                <div className="">
+                  <NFTTile data={value} key={tokenId}></NFTTile>
+                </div>
+              );
+            })}
           </div>
         </TETabsPane>
         <TETabsPane show={tab === "tab2"}>
           <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 md:mx-[3%]">
-            {marketData &&
-              [...marketDataSold].reverse().map((value, index) => {
-                return <NFTTile data={value} key={index}></NFTTile>;
-              })}
+            {getAuctionedNFTs().map((value, tokenId) => {
+              return <NFTTile data={value} key={tokenId}></NFTTile>;
+            })}
           </div>
         </TETabsPane>
         <TETabsPane show={tab === "tab3"}>
           <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 md:mx-[3%]">
-            {marketData &&
-              [...marketDataNew].reverse().map((value, index) => {
-                return <NFTTile data={value} key={index}></NFTTile>;
-              })}
+            {getUnlistedNFTs().map((value, tokenId) => {
+              return <NFTTile data={value} key={tokenId}></NFTTile>;
+            })}
           </div>
         </TETabsPane>
       </TETabsContent>

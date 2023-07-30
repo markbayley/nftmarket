@@ -38,13 +38,13 @@ const CreatorPage = () => {
   console.log(filteredResults, marketData);
 
   return (
-    <div className="mx-2 lg:mx-[15%]">
-      <div className="flex  justify-start items-center py-3">
+    <div className="mx-2 lg:mx-[15%] pb-10">
+      <div className="flex  justify-start items-center ">
         <div className="flex mf:flex-row flex-col items-center justify-between ">
           <div className="flex-1 flex flex-col justify-start items-center py-2 ">
             <div className="flex flex-wrap w-full">
               <div className="w-full items-center pl-2 pt-2 md:pt-0">
-                <h1 className="text-3xl md:text-5xl text-white capitalize py-2 ">
+                <h1 className="text-3xl md:text-5xl text-white capitalize  ">
                   Featured&nbsp;Profile
                 </h1>
                 <h2 className="text-left mb-3 text-gradient text-lg ">
@@ -123,13 +123,13 @@ const CreatorPage = () => {
           </div>
         </div>
 
-        <div class="w-full ">
+        <div className="w-full ">
           <Slider {...settings}>
             {marketData
               .slice(marketData.length - 7)
               .reverse()
               .map((data) => (
-                <NFTTile data={data} key={data.id} />
+                <NFTTile data={data} key={data.tokenId} />
               ))}
           </Slider>
         </div>

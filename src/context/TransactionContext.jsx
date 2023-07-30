@@ -196,7 +196,7 @@ export const TransactionsProvider = ({ children }) => {
        
         //Pull the deployed contract instance
         const transaction = await marketplaceContract.getAllNFTs();
-      
+      console.log("transaction" , transaction)
         //Fetch all the details of every NFT from the contract and display
         const items = await Promise.all(
           transaction.map(async (i) => {
@@ -225,6 +225,8 @@ export const TransactionsProvider = ({ children }) => {
               colour: meta.colour,
               theme: meta.theme,
               texture: meta.texture,
+
+              listing: meta.listing,
             };
             return item;
           })
@@ -455,6 +457,7 @@ export const TransactionsProvider = ({ children }) => {
         return item[id] === col;  
     });
     setFilteredResults(results);
+    console.log("results", results);
   } else {
     setFilteredResults([]);
   }
@@ -513,6 +516,7 @@ export const TransactionsProvider = ({ children }) => {
 
        tab,
        handleTab,
+       setTab,
      
       createMarketplaceContractReadOnly,
       setFilteredResults,

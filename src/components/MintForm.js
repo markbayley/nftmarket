@@ -49,7 +49,7 @@ const MintForm = ({
         <div className=" h-[22rem] ">
 
 
-          {showMore ? (
+          {!showMore ? (
             // First Three Traits
             <div>
               <div className="flex w-full mb-3 sm:flex-wrap justify-between gap-x-2.5 ">
@@ -236,11 +236,11 @@ const MintForm = ({
           <div className="flex w-full justify-between items-center text-white py-1">
             {" "}
    
-             <button className={!showMore ? "activeButton" : "disabledButton" }> <BsFillArrowLeftCircleFill size="30"    onClick={handleShow} /></button>
+             <button  onClick={handleShow} className={showMore ? "activeButton" : "inactiveButton bg-transparent text-[#868686]" }> <BsFillArrowLeftCircleFill size="30"   /></button>
         
-           { showMore ? "Click right to enter more traits" : "Click left to go back" }
+           { !showMore ? "Click right to enter more traits" : "Click left to go back" }
         
-             <button className={showMore ? "activeButton" : "disabledButton" } ><BsFillArrowRightCircleFill size="30"  onClick={handleShow} /></button> 
+             <button onClick={handleShow}  className={!showMore ? "activeButton" : "inactiveButton bg-transparent text-[#868686]" } ><BsFillArrowRightCircleFill size="30"  /></button> 
           
           </div>
 
@@ -291,7 +291,7 @@ const MintForm = ({
             <input
               className=" rounded outline-none text-white border-none white-glassmorphism shadow-2xl px-2  w-[50%] "
               type="number"
-              placeholder="Price (ETH)"
+              placeholder={ formParams.listing === "Listed For Sale" ? "Sale Price (ETH)" : formParams.listing === "Auction" ? "Floor Price (ETH)" : "No Price Required" }
               step="0.001"
               min="0.00"
               value={formParams.price}
@@ -302,6 +302,8 @@ const MintForm = ({
                 })
               }
             ></input>
+
+
           </div>
         </div>
 

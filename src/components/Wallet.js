@@ -280,7 +280,7 @@ console.log(walletNFTs)
                   <p className=" text-[#868686] font-light tshade ">
                     {shortenAddress(checksumAddress)}
                   </p>
-                  <div></div>
+             
                 </div>
               </div>
               <div className="p-2 md:p-7  sm:w-96  w-full flex flex-col justify-center items-center ">
@@ -335,7 +335,7 @@ console.log(walletNFTs)
         </TETabsContent>
 
         <div className="flex flex-col flex-1 items-start justify-center w-full mf:mt-0 mt-10 ">
-          <p className="text-center  text-white font-light text-base w-full">
+          <div className="text-center  text-white font-light text-base w-full">
             {!ethereum ? (
               "Install MetaMask and connect wallet to send ethereum and view your NFTs"
             ) : currentAccount !== "" ? (
@@ -347,7 +347,7 @@ console.log(walletNFTs)
             )}
 
             {/* {currentAccount !== "0x" ? (currentAccount.substring(0,5)+'...'+(currentAccount.substring(38,42))):""} */}
-          </p>
+          </div>
         </div>
       </div>
     </div>

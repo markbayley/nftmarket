@@ -61,6 +61,19 @@ const CreateForm = ({
       <div className=" flex flex-col justify-start items-start   ">
         <>
           <div className="flex w-full mb-2  justify-between gap-x-2.5 ">
+          <input
+              className="w-full  xl:w-[48%] rounded-sm outline-none  text-white border-none white-glassmorphism"
+              type="text"
+              placeholder="NFT Collection..."
+              id="collection"
+              onChange={(e) =>
+                updateFormParams({
+                  ...formParams,
+                  collection: e.target.value,
+                })
+              }
+              value={formParams.collection}
+            ></input>
             <input
               className="w-full  xl:w-[48%] rounded-sm  outline-none  text-white border-none white-glassmorphism"
               required
@@ -75,19 +88,7 @@ const CreateForm = ({
               }
               value={formParams.name}
             ></input>
-            <input
-              className="w-full  xl:w-[48%] rounded-sm outline-none  text-white border-none white-glassmorphism"
-              type="text"
-              placeholder="NFT Collection..."
-              id="collection"
-              onChange={(e) =>
-                updateFormParams({
-                  ...formParams,
-                  collection: e.target.value,
-                })
-              }
-              value={formParams.collection}
-            ></input>
+        
           </div>
 
           <textarea
@@ -119,15 +120,17 @@ const CreateForm = ({
               ))}
             </select>
 
+          
+
             <select
-              id="artist"
+              id="theme"
               onChange={(id) => handleForm(id)}
               value=""
-              className="text-white outline-none blue-glassmorphism w-half  rounded bg-[#273057] shadow-2xl border-none"
+              className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#273057] shadow-2xl border-none "
             >
-              {artists.map((artist, index) => (
-                <option key={index} value={artist.name}>
-                  {artist.name}
+              {themes.map((theme, index) => (
+                <option key={index} value={theme.name}>
+                  {theme.name}
                 </option>
               ))}
             </select>
@@ -141,7 +144,7 @@ const CreateForm = ({
                   onClick={handleChecked}
                   value={item}
                   className={`fade-in button ${
-                    activeKeywords.includes(item) ?  "text-sm text-white border px-2 h-7 flex items-center rounded-full white-glassmorphism mt-1" : ""
+                    activeKeywords.includes(item) ?  "text-sm text-[#6c63ff] border-[#6c63ff] bg-transparent hover:bg-transparent hover:text-gray-600 hover:border-gray-600 px-2 h-7 flex items-center rounded-full mt-1" : ""
                   }`}
                 >
                   #{item}
@@ -149,14 +152,19 @@ const CreateForm = ({
               ))}
             </div>
 
-            <div className=" tabs">
-              {artistWords.slice(0, 4).map((item, index) => (
+         
+
+            <div className="tabs">
+              {themeWords.slice(0, 4).map((item, index) => (
                 <button
                   key={index}
                   onClick={handleChecked}
                   value={item}
-                  className={`fade-in button ${
-                    activeKeywords.includes(item) ?  "text-sm text-white border px-2 h-7 flex items-center rounded-full white-glassmorphism mt-1" : ""
+                  // className={`fade-in button ${
+                  //   activeKeywords.includes(item) ? "colourButton" : ""
+                  // }`}
+                   className={`fade-in button ${
+                    activeKeywords.includes(item) ? "text-sm text-[#6c63ff] border-[#6c63ff] bg-transparent hover:bg-transparent hover:text-gray-600 hover:border-gray-600 px-2 h-7 flex items-center rounded-full mt-1" : ""
                   }`}
                 >
                   #{item}
@@ -200,7 +208,7 @@ const CreateForm = ({
                   onClick={handleChecked}
                   value={item}
                   className={`fade-in button ${
-                    activeKeywords.includes(item) ? "text-sm text-white border px-2 h-7 flex items-center rounded-full white-glassmorphism mt-1" : ""
+                    activeKeywords.includes(item) ? "text-sm text-[#6c63ff] border-[#6c63ff] bg-transparent hover:bg-transparent hover:text-gray-600 hover:border-gray-600 px-2 h-7 flex items-center rounded-full  mt-1" : ""
                   }`}
                 >
                   #{item}
@@ -214,7 +222,7 @@ const CreateForm = ({
                   onClick={handleChecked}
                   value={item}
                   className={`fade-in button ${
-                    activeKeywords.includes(item) ?  "text-sm text-white border px-2 h-7 flex items-center rounded-full white-glassmorphism mt-1" : ""
+                    activeKeywords.includes(item) ?  "text-sm text-[#6c63ff] border-[#6c63ff] bg-transparent hover:bg-transparent hover:text-gray-600 hover:border-gray-600 px-2 h-7 flex items-center rounded-full mt-1" : ""
                   }`}
                 >
                   #{item}
@@ -237,14 +245,14 @@ const CreateForm = ({
               ))}
             </select>
             <select
-              id="theme"
+              id="artist"
               onChange={(id) => handleForm(id)}
               value=""
-              className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#273057] shadow-2xl border-none "
+              className="text-white outline-none blue-glassmorphism w-half  rounded bg-[#273057] shadow-2xl border-none"
             >
-              {themes.map((theme, index) => (
-                <option key={index} value={theme.name}>
-                  {theme.name}
+              {artists.map((artist, index) => (
+                <option key={index} value={artist.name}>
+                  {artist.name}
                 </option>
               ))}
             </select>
@@ -264,17 +272,14 @@ const CreateForm = ({
                 </button>
               ))}
             </div>
-            <div className="tabs">
-              {themeWords.slice(0, 4).map((item, index) => (
+            <div className=" tabs">
+              {artistWords.slice(0, 4).map((item, index) => (
                 <button
                   key={index}
                   onClick={handleChecked}
                   value={item}
-                  // className={`fade-in button ${
-                  //   activeKeywords.includes(item) ? "colourButton" : ""
-                  // }`}
-                   className={`fade-in button ${
-                    activeKeywords.includes(item) ? "text-sm text-white border px-2 h-7 flex items-center rounded-full white-glassmorphism mt-1" : ""
+                  className={`fade-in button ${
+                    activeKeywords.includes(item) ?  "text-sm text-[#6c63ff] border-[#6c63ff] bg-transparent hover:bg-transparent hover:text-gray-600 hover:border-gray-600 px-2 h-7 flex items-center rounded-full  mt-1" : ""
                   }`}
                 >
                   #{item}

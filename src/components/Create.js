@@ -15,7 +15,7 @@ import {
 import { TransactionContext } from "../context/TransactionContext";
 
 const Create = () => {
-  const { tab, handleTab, activeKeywords, setActiveKeywords, fileURL, setFileURL } = useContext(TransactionContext);
+  const { tab, handleTab, activeKeywords, setActiveKeywords, fileURL, setFileURL, setTab } = useContext(TransactionContext);
 
   const [isChecked, setIsChecked] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -46,6 +46,10 @@ const Create = () => {
   //   formParams.subtitle,
   //   formParams.description,
   // ]);
+
+  useEffect(() => {
+        setTab('tab1')
+  }, []);
 
   const [formParams, updateFormParams] = useState({
     name: "",

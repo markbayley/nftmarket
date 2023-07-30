@@ -17,7 +17,7 @@ function NFTTile(data) {
   // console.log("link", link)
 
   return (
-    <div className="  backdrop-blur-[5px] p-[5%] cursor-pointer sm:w-96  w-full md:w-auto  white-glassmorphism shadow-lg hover:shadow-indigo-500/30 duration-300">
+    <div  className="  backdrop-blur-[5px] p-[5%] cursor-pointer sm:w-96  w-full md:w-auto  white-glassmorphism shadow-lg hover:shadow-indigo-500/30 duration-300">
 
       <a href={link} target="_blank" rel="noopener noreferrer">
       <div className="w-[2.2em] h-[2.2em] rounded-full border  flex justify-center items-center absolute top-[6%] left-[6%] eth-card group seal ">
@@ -32,7 +32,7 @@ function NFTTile(data) {
       <img src={data.data.image ? data.data.image : IPFSUrl} alt="thumbnail" />
       </Link>
       <div className="title antialiased hover:subpixel-antialiased">
-        <strong class>{data.data.collection} </strong> &nbsp;
+        <strong >{data.data.collection} </strong> &nbsp;
         <em>'{data.data.name}'</em>
       </div>
     </div>
