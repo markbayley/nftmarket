@@ -10,7 +10,7 @@ import { BsShieldFillCheck } from "react-icons/bs";
 import { BiSearchAlt } from "react-icons/bi";
 import { RiHeart2Fill } from "react-icons/ri";
 
-const CreatorPage = () => {
+const FeaturePage = () => {
   var settings = {
     dots: true,
     infinite: true,
@@ -34,8 +34,11 @@ const CreatorPage = () => {
   const creatorAddress = params.creatorAddress;
 
   //   console.log("creatorAddress", creatorAddress, token);
+  const creatorNFTs = marketData.filter(
+    (item) => item[id] === creatorAddress
+  );
 
-  console.log(filteredResults, marketData);
+  // console.log(filteredResults, marketData);
 
   return (
     <div className="mx-2 lg:mx-[15%] pb-10">
@@ -51,17 +54,6 @@ const CreatorPage = () => {
            
          Each week we feature a talented AI artist
          </h2>
-                {/* &nbsp;&nbsp;
-                <button
-                  id="colour"
-                  // value={collection}
-                  className="flex items-center text-sm text-white border px-3 h-8 rounded-full white-glassmorphism"
-                >
-                  #
-                  {creatorAddress
-                    ? shortenAddress(creatorAddress)
-                    : "0x123...aBcD"}
-                </button> */}
               </div>
             </div>
           </div>
@@ -75,17 +67,18 @@ const CreatorPage = () => {
        <BiSearchAlt fontSize={32} className="text-yellow-700 absolute right-10" />
        <RiHeart2Fill fontSize={32} className="text-red-700 absolute right-20" />
        </div> 
-          <button
-            id="seller"
-            className="flex items-end rounded-full bg-cover bg-center border-transparent h-16 w-16 md:h-32 md:w-32 hover:scale-[1.02] "
+          <a
+            id={id}
+            className="flex items-end rounded-full bg-cover bg-center  h-16 w-16 md:h-32 md:w-32  border-2 bg-transparent"
             style={{
-              backgroundImage: `url(${profileParams.profileUrl || profileImg})`,
+              backgroundImage: `url("https://robohash.org/${creatorAddress}.png?set=set3")`,
             }}
           >
-            <div className="bg-yellow-600 py-1 px-2 rounded-full text-white text-sm hidden md:inline-block">
-              {creatorAddress ? shortenAddress(creatorAddress) : "0x123...aBcD"}
+            <div className={ id === "seller" ? "bg-red-500 py-1 px-3 rounded-full text-white text-sm hidden md:inline-block capitalize" : "bg-amber-500 py-1 px-3 rounded-full text-white text-sm hidden md:inline-block capitalize" }>
+               {/* { creatorAddress && creatorAddress.length > 20  ?  shortenAddress(creatorAddress) : "0x123...aBcD" }  */}
+            {id || "Profile"}
             </div>
-          </button>{" "}
+          </a>{" "}
 
          
           <div className=" flex flex-col flex-1">
@@ -114,8 +107,8 @@ const CreatorPage = () => {
               <h3 className=" text-white text-md py-3">
                 {profileParams.website || "Website URL"}
               </h3>
-              <a href="" className="mt-3  text-sm pr-4">
-                {creatorAddress
+              <a href="" className="mt-3  text-md pr-4">
+                {creatorAddress && creatorAddress.length > 20
                   ? shortenAddress(creatorAddress)
                   : "0x123...aBcD"}
               </a>
@@ -125,8 +118,8 @@ const CreatorPage = () => {
 
         <div className="w-full ">
           <Slider {...settings}>
-            {marketData
-              .slice(marketData.length - 7)
+            {creatorNFTs
+              .slice(creatorNFTs.length - 7)
               .reverse()
               .map((data) => (
                 <NFTTile data={data} key={data.tokenId} />
@@ -138,4 +131,4 @@ const CreatorPage = () => {
   );
 };
 
-export default CreatorPage;
+export default FeaturePage;

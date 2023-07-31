@@ -6,12 +6,15 @@ import App from "./App";
 
 
 import { TransactionsProvider } from "./context/TransactionContext";
+import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
+    <BrowserRouter>
     <TransactionsProvider>
       <App />
     </TransactionsProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );

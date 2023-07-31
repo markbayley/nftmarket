@@ -25,6 +25,7 @@ const CreateImage = ({
   hashLink,
   metaData,
   mint,
+  setTab,tab
 }) => {
   const [basicActive, setBasicActive] = useState("tab1");
 
@@ -42,7 +43,7 @@ const CreateImage = ({
   }
 
   return (
-    <div className="mainimage md:mr-4 ">
+    <div className="w-full lg:w-1/3 aspect-square  md:mr-7 ">
       {/* // Create */}
       <TETabsContent>
         <TETabsPane show={basicActive === "tab1"}>
@@ -54,7 +55,7 @@ const CreateImage = ({
                   <img
                     src={fileURL}
                     alt="AI thumbnail"
-                    className="rounded md:w-[22rem] md:h-[22rem] rounded-lg "
+                    className="  rounded-lg "
                   />
                   {hashLink && formParams.seal === "Yes" && (
                     <Link
@@ -93,13 +94,11 @@ const CreateImage = ({
               </div>
             ) : (
               // No Image Created
-              <div className="  rounded-lg  border-[#4F4B4B]  md:w-[22rem] md:h-[22rem] seal">
+              <div className="flex items-center justify-center  w-full  rounded-lg  border-[#4F4B4B]  aspect-square  seal border-2 cursor-help">
                 <label
                   htmlFor=""
-                  className="flex items-center justify-center w-full h-full cursor-help
-                       "
-                >
-                  <div className="flex flex-col items-center  py-24 px-10">
+                  className=" ">
+                  <div className="flex flex-col items-center  ">
                     <img
                       src={createSvg}
                       alt="create-svg"
@@ -110,7 +109,7 @@ const CreateImage = ({
                       <span className="font-semibold">CREATE</span>&nbsp;button 
                     </p>
                     <p className="text-xs text-white ">
-                      TITLE & DESCRIPTION (MIN. REQUIRED)
+                      COLLECTION, TITLE & DESCRIPTION REQUIRED
                     </p>
                   </div>
                 </label>
@@ -128,7 +127,7 @@ const CreateImage = ({
                 <img
                   src={fileURL}
                   alt="upload"
-                  className="rounded md:w-[22rem] md:h-[22rem] rounded border-dashed border-[#6c63ff] border "
+                  className="rounded border-dashed border-[#6c63ff] border "
                 />
                 {hashLink && formParams.seal === "Yes" && (
                   <>
@@ -167,14 +166,14 @@ const CreateImage = ({
               </div>
             ) : (
               //No Image Uploaded
-              <div className="border-[#6c63ff] border-dashed rounded-lg md:w-[22rem] md:h-[22rem] seal">
+              <div className="flex items-center justify-center  w-full rounded-lg  border-[#4F4B4B]  aspect-square  seal border-2 cursor-help">
                 <label
                   htmlFor="dropzone-file"
                   className="flex  items-center justify-center w-full h-full
                  cursor-move   bg-opacity-10 
                  bg-[#273057] hover:bg-opacity-70  "
                 >
-                  <div className="flex flex-col items-center justify-center py-24 px-10">
+                  <div className="flex flex-col items-center justify-center">
                     <img
                       src={uploadSvg}
                       alt="upload-svg"
@@ -204,23 +203,24 @@ const CreateImage = ({
         </TETabsPane>
       </TETabsContent>
       { message &&
-      <div className="message group">
+      <div className="message group relative">
         {message}&nbsp;&nbsp;
-        {metaData && (
-          <Link to={metaData} target="_blank" rel="noopener noreferrer">
-            <span className="absolute bottom-32 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+        {/* {metaData && ( */}
+          <Link to="/Trade" >
+            {/* <span className="absolute bottom-12 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
               View Data
-            </span>
-            <BsInfoCircle fontSize={20} color="#fff" />
+            </span> */}
+            {/* <BsInfoCircle fontSize={18} color="#fff" /> */}
+            View
           </Link>
-        )}
+        {/* )} */}
       </div>
-}
+ } 
 
       {/* Toggle */}
 
       {/* { !mint && */}
-      <TETabs className="pl-4">
+      <TETabs className="flex justify-center">
         <TETabsItem
           className="hover:bg-transparent "
           onClick={() => (handleBasicClick("tab1"), setIsChecked(() => false))}

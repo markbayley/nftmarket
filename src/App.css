@@ -386,7 +386,7 @@ button:hover {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  flex-basis: 350px;
+  /* flex-basis: 350px; */
   /* margin-top: 35px; */
 
 }

@@ -111,7 +111,7 @@ const CreateForm = ({
               id="style"
               onChange={(id) => handleForm(id)}
               value=""
-              className="text-white outline-none  w-half  rounded bg-[#273057] shadow-2xl border-none"
+              className="text-white outline-none  w-half  rounded bg-[#273057] shadow-2xl border-none "
             >
               {styles.map((style, index) => (
                 <option key={index} value={style.name}>
@@ -308,7 +308,7 @@ const CreateForm = ({
                   : "activeButton md:w-1/2 w-full group "
               }
             >
-              <span className="absolute -bottom-10  scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100 ">
+              <span className="absolute -bottom-12  scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100 ">
                 {isChecked
                   ? "Upload is selected..?"
                   : !formParams.name || !formParams.description

@@ -46,7 +46,7 @@ const MintForm = ({
   return (
     <form className="">
       <div className="  ">
-        <div className=" h-[22rem] ">
+        <div className=" ">
 
 
           {!showMore ? (
@@ -308,7 +308,7 @@ const MintForm = ({
         </div>
 
         {/* Buttons */}
-        <div className="flex w-full justify-end text-white gap-x-3 mt-5 ">
+        <div className="flex w-full justify-end text-white gap-x-3 mt-5 relative">
           {/* <button
             onChange={(e) => OnUploadFile(e)}
             type="button"
@@ -344,7 +344,7 @@ const MintForm = ({
                 : "activeButton md:w-1/2 w-full group"
             }
           >
-            <span className="absolute bottom-20  scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100 ">
+            <span className="absolute -bottom-12  scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100 ">
               {!fileURL
                 ? "Create or upload image to mint..."
                 : !formParams.price

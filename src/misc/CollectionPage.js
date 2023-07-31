@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { TransactionContext } from "../context/TransactionContext";
-import NFTTile from "./NFTTile";
+import NFTTile from "../components/NFTTile";
 import { TETabs, TETabsItem } from "tw-elements-react";
 
 const CollectionPage = () => {

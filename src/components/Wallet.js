@@ -96,13 +96,14 @@ const Wallet = () => {
     });
   }
 
- 
-  const walletNFTs = marketData.filter((item) => item.seller === checksumAddress);
-console.log(walletNFTs)
+  const walletNFTs = marketData.filter(
+    (item) => item.seller === checksumAddress
+  );
+  console.log(walletNFTs);
 
   return (
     <div className="flex w-full justify-center items-center fade-in">
-      <div className="flex-col justify-center items-start xl:w-2/3 mx-2 ">
+      <div className="flex-col justify-center items-start xl:w-3/4 mx-2  lg:mx-[5%]">
         <div className="flex flex-wrap justify-between items-center my-5 ">
           <div className="flex flex-col w-full justify-center md:w-1/2 pl-2">
             <h1 className="text-4xl sm:text-5xl text-white text-gradient">
@@ -142,9 +143,9 @@ console.log(walletNFTs)
 
         <TETabsContent>
           <TETabsPane show={tab === "tab1"}>
-            <div className="flex flex-wrap justify-around items-center flex-row w-full white-glassmorphism md:p-5 ">
+            <div className="flex flex-wrap justify-around items-center flex-row w-auto white-glassmorphism md:p-7 ">
               {/* CARD */}
-              <div className="w-full flex justify-end items-start flex-col rounded-xl seal eth-card h-48  md:w-96 md:h-56  m-2 md:m-0 p-5 ">
+              <div className=" flex justify-end items-start flex-col rounded-xl seal eth-card w-full  aspect-[10/6] mb-2 max-w-[390px] m-2 md:m-0 p-5 ">
                 <div className="flex justify-between flex-col w-full h-full">
                   <div className="flex justify-between items-start">
                     <div className="w-10 h-10 rounded-full border border-white flex justify-center items-center eth-card seal  ">
@@ -154,7 +155,7 @@ console.log(walletNFTs)
                   </div>
                   <div>
                     <p className=" text-white font-light tshade ">
-                      {shortenAddress(checksumAddress)}
+                      {checksumAddress ? shortenAddress(checksumAddress) : "0x123...aBcD"}
                     </p>
                     <p className="text-white font-semibold text-lg mt-1 tshade">
                       {accountBalance} Ethereum
@@ -164,7 +165,7 @@ console.log(walletNFTs)
               </div>
 
               {/* SEND FORM */}
-              <div className="p-2 sm:w-96  w-full flex flex-col justify-center items-center  ">
+              <div className=" md:w-96  w-full flex flex-col justify-center items-center px-2 md:px-0 md:py-2 max-w-[410px]">
                 <Input
                   placeholder="Address To"
                   name="addressTo"
@@ -195,7 +196,7 @@ console.log(walletNFTs)
                   <button
                     type="button"
                     onClick={handleSubmitTransaction}
-                    className="text-white w-full  border-[1px] p-2 border-[#6c63ff] hover:bg-[#6c63ff] rounded cursor-pointer shadow-lg shadow-indigo-500/30"
+                    className="text-white w-full border-[1px] mb-2 p-2 h-12 border-[#6c63ff] hover:bg-[#6c63ff] rounded cursor-pointer shadow-lg shadow-indigo-500/30"
                   >
                     Send
                   </button>
@@ -206,7 +207,7 @@ console.log(walletNFTs)
           </TETabsPane>
 
           <TETabsPane show={tab === "tab2"}>
-          <div className="grid md:grid-cols-4 text-md md:text-xs gap-4">
+            <div className="grid md:grid-cols-4 text-md md:text-xs gap-4">
               {[...walletNFTs].reverse().map((value, index) => {
                 return <NFTTile data={value} key={index}></NFTTile>;
               })}
@@ -222,37 +223,57 @@ console.log(walletNFTs)
             <div className="flex flex-wrap justify-evenly items-start flex-row w-full white-glassmorphism">
               <div className="p-3 md:p-7 sm:w-96 h-96  lg:h-96 lg:mx-0 lg:mt-0 flex justify-end items-start flex-col rounded-xl">
                 <div className="flex justify-between flex-col w-full h-full">
+                  {/* <button
+                    style={{
+                      backgroundImage: profileParams.profileUrl
+                        ? profileParams.profileUrl
+                        : `url( "https://robohash.org/${currentAccount}.png?set=set3" `,
+                    }}
+                    alt="profile photo"
+                    className="rounded-full object-cover w-32 h-32 bg-cover bg-center "
+                    value={currentAccount}
+                    onChange={(e) => uploadLocally(e)}
+                  >
+                    <div className="bg-yellow-600  px-2 rounded-full text-white text-sm hidden md:inline-block">
+                      Creator
+                    </div>
+                  </button>{" "} */}
+                  
                   <div className="flex justify-between items-start ">
-                    <div className="w-32 h-32 rounded-full border border-white flex justify-center items-center">
+                    <div className="w-32 h-32 rounded-full border border-white flex justify-center items-start ">
                       <label
                         htmlFor="dropzone-file"
                         className="flex items-center justify-center w-full h-full cursor-move bg-opacity-10 bg-[#273057] hover:bg-opacity-70"
                       >
-                        <div className="flex flex-col items-center justify-center ">
-                          <img
-                            src={
-                              profileParams.profileUrl
-                                ? profileParams.profileUrl
-                                : profileJpg
-                            }
-                            alt="profile photo"
-                            className="rounded-full object-cover w-32 h-32 "
-                          />
-
-                          <input
+                        <div className="flex flex-col items-start justify-end relative">
+                        <input
                             id="dropzone-file"
                             type="file"
-                            className="hidden"
-                            // onChange={(e) => uploadLocally(e)}
-                            // onClick={() => setIsChecked(true)}
+                            className="hidden z-10"
                             onChange={(e) => uploadLocally(e)}
                           />
+                          <button
+                           style={{ backgroundImage:
+                              profileParams.profileUrl
+                                ? profileParams.profileUrl
+                                : `url( "https://robohash.org/${checksumAddress}.png?set=set3" ` }}
+                            
+                            alt="profile photo"
+                            className="rounded-full object-cover w-32 h-32 bg-cover bg-center "
+                          >
+                            </button>
+                            <div className="bg-indigo-500  px-3 py-1 rounded-full text-white text-sm hidden md:inline-block absolute bottom-2">
+                            {/* {checksumAddress ? shortenAddress(checksumAddress) : "0x123...aBcD"} */}
+                            Profile
+                    </div>
+                        
                         </div>
                       </label>
                     </div>
-
                     <BsInfoCircle fontSize={17} color="#fff" />
                   </div>
+
+
                   <div className="flex align-center">
                     <p className="text-white font-semibold tshade">
                       {profileParams.user ? profileParams.user : "Name"},
@@ -271,16 +292,14 @@ console.log(walletNFTs)
                       ? profileParams.bio
                       : "Write a brief bio describing your interests and creative influences as well as how you became interested in blockchain and NFTs."}
                   </p>
-
                   <p className=" text-white font-light tshade ">
                     {profileParams.website
                       ? profileParams.website
                       : "Website URL"}
                   </p>
                   <p className=" text-[#868686] font-light tshade ">
-                    {shortenAddress(checksumAddress)}
+                    {checksumAddress ? shortenAddress(checksumAddress) : "0x123...aBcD"}
                   </p>
-             
                 </div>
               </div>
               <div className="p-2 md:p-7  sm:w-96  w-full flex flex-col justify-center items-center ">

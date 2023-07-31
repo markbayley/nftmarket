@@ -15,7 +15,7 @@ import {
 import { TransactionContext } from "../context/TransactionContext";
 
 const Create = () => {
-  const { tab, handleTab, activeKeywords, setActiveKeywords, fileURL, setFileURL, setTab } = useContext(TransactionContext);
+  const { tab, handleTab, activeKeywords, setActiveKeywords, fileURL, setFileURL, setTab, currentAccount, checksumAddress } = useContext(TransactionContext);
 
   const [isChecked, setIsChecked] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -47,9 +47,9 @@ const Create = () => {
   //   formParams.description,
   // ]);
 
-  useEffect(() => {
-        setTab('tab1')
-  }, []);
+  // useEffect(() => {
+  //       setTab('tab1')
+  // }, []);
 
   const [formParams, updateFormParams] = useState({
     name: "",
@@ -253,6 +253,7 @@ const Create = () => {
       name,
       collection,
       description,
+      creator: checksumAddress,
       theme,
       artist,
       colour,
@@ -333,6 +334,7 @@ const Create = () => {
 
       // updateFormParams({ name: "", description: "", price: "" });
       // window.location.replace("/Wallet");
+      setTab('tab2')
     } catch (e) {
       updateMessage("Upload error" + e);
     }
@@ -341,21 +343,19 @@ const Create = () => {
   console.log("activeKeywords", activeKeywords);
 
   return (
-    <div className="items-center flex-col justify-center gap-x-2 md:p-5 fade-in mx-1 xl:mx-20">
-      <div className="flex flex-row  place-items-center flex-wrap ">
-        <div className="pt-2 pl-4  lg:w-1/2 w-full ">
-          <h1 className="text-4xl sm:text-5xl text-gradient leading-tight ">
+    <div className="fade-in lg:px-[5%] px-2">
+      <div className="flex flex-row place-items-center justify-between flex-wrap w-full p-3">
+       <div>
+          <h1 className="text-3xl sm:text-5xl text-white leading-tight text-gradient">
             Create & Mint NFTs
           </h1>
-          <h2 className="text-left mb-3 text-gradient text-lg  ">
+          <h2 className="text-left text-gradient text-lg">
           Generate an image or upload your own
         </h2>
-          {/* <h3 className="text-left text-white font-light text-base py-2">
-            Generate an A.I. image or upload your own.
-          </h3> */}
-        </div>{" "}
+        </div>
+      
         <div className="flex lg:w-1/2 w-full justify-center lg:justify-end ">
-          <TETabs className="lg:pr-4 ">
+          <TETabs className=" ">
             <TETabsItem
               className="hover:bg-transparent"
               onClick={() => (handleTab("tab1"), setMint(() => false))}
@@ -366,7 +366,7 @@ const Create = () => {
             </TETabsItem>
 
             <TETabsItem
-              className="hover:bg-transparent mx-5"
+              className="hover:bg-transparent "
               onClick={() => (handleTab("tab2"), setMint(() => true))}
               active={tab === "tab2"}
            
@@ -376,7 +376,7 @@ const Create = () => {
           </TETabs>
         </div>
       </div>
-      <div className="form white-glassmorphism md:py-5 px-1">
+      <div className="form white-glassmorphism md:py-5 md:px-[2%] px-1 border-2">
         <CreateImage
           isUploading={isUploading}
           isCreating={isCreating}

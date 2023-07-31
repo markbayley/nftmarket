@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { GetIpfsUrlFromPinata } from "../utils/utils";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { contractABI, contractAddress } from "../utils/constants";
 import { generatorABI, generatorAddress } from "../utils/constants";
 import { marketplaceABI, marketplaceAddress } from "../utils/constants";
@@ -97,7 +97,7 @@ export const TransactionsProvider = ({ children }) => {
     return () => {
      ethereum?.removeListener("accountsChanged", checkIfWalletConnected);
     };
-  }, []);
+  }, [currentAccount]);
 
   window.onload = function() {
     checkIfWalletConnected();
@@ -111,9 +111,9 @@ export const TransactionsProvider = ({ children }) => {
       const accounts = await ethereum.request({
         method: "eth_requestAccounts",
       });
-
+      checkIfWalletConnected();
       setCurrentAccount(accounts[0]);
-      window.reload();
+      // window.reload();
     } catch (error) {
       console.log(error);
 
@@ -129,6 +129,13 @@ export const TransactionsProvider = ({ children }) => {
     }
     setTab(value);
   };
+
+  let location = useLocation();
+
+  useEffect(() => {
+    setTab('tab1');
+  }, [location]);
+
 
 
   //CREATE
@@ -175,11 +182,11 @@ export const TransactionsProvider = ({ children }) => {
   const [activeKeywords, setActiveKeywords] = useState([], localStorage.getItem("activeKeywords"));
   const [fileURL, setFileURL] = useState(null, localStorage.getItem("fileURL"));
 
-  
+
 
 
   // //MARKETPLACE
-  const [marketData, updateMarketData] = useState([]);
+  const [marketData, updateMarketData] = useState([], localStorage.getItem("marketData"));
   const [walletNFTs, updateWalletNFTs] = useState([]);
   const [totalPrice, updateTotalPrice] = useState("0");
 
@@ -196,7 +203,7 @@ export const TransactionsProvider = ({ children }) => {
        
         //Pull the deployed contract instance
         const transaction = await marketplaceContract.getAllNFTs();
-      console.log("transaction" , transaction)
+      // console.log("transaction" , transaction)
         //Fetch all the details of every NFT from the contract and display
         const items = await Promise.all(
           transaction.map(async (i) => {
@@ -227,6 +234,7 @@ export const TransactionsProvider = ({ children }) => {
               texture: meta.texture,
 
               listing: meta.listing,
+              creator: meta.creator,
             };
             return item;
           })
@@ -244,76 +252,6 @@ export const TransactionsProvider = ({ children }) => {
     }
   };
 
-
-
-
-  //PROFILE WALLET
-
-  // const myNFTs = marketData.filter((item) => item.seller === checksumAddress);
-  // updateWalletNFTs(myNFTs);
-
-
-
- 
-
-
-
-
-
-//  const getNFTData = async (tokenId) => {
-//   const ethers = require("ethers");
-//   let sumPrice = 0;
-//   //After adding your Hardhat network to your metamask, this code will get providers and signers
-//   // console.log("contractP", contract)
-//   try {
-//     if (ethereum) {
-//       //Pull the deployed contract instance
-//       const marketplaceContract = createMarketplaceContract();
-//       //create an NFT Token //get the transactions
-//       const transaction = await marketplaceContract.getMyNFTs();
-//       // console.log("transactionP", transaction)
-//       /*
-//        * Below function takes the metadata from tokenURI and the data returned by getMyNFTs() contract function
-//        * and creates an object of information that is to be displayed
-//        */
-//       const items = await Promise.all(
-//         transaction.map(async (i) => {
-//           const tokenURI = await marketplaceContract.tokenURI(i.tokenId);
-//           let meta = await axios.get(tokenURI);
-//           meta = meta.data;
-
-//           let price = ethers.utils.formatUnits(i.price.toString(), "ether");
-//           let item = {
-//             price,
-//             tokenId: i.tokenId.toNumber(),
-//             seller: i.seller,
-//             owner: i.owner,
-//             image: meta.image,
-//             name: meta.name,
-//             subtitle: meta.subtitle,
-//             description: meta.description,
-//             metadata: tokenURI,
-//           };
-//           sumPrice += Number(price);
-//           return item;
-//         })
-//       );
-
-//       updateWalletNFTs(items);
-//       updateWalletDataFetched(true);
-//       // updateWalletAddress(addr);
-//       updateTotalPrice(sumPrice.toPrecision(3));
-//     } else {
-//       console.log("Ethereum is not present");
-//     }
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-//    const params = useParams();
-//    const tokenId = params.tokenId;
-//    if (!walletDataFetched) getNFTData(tokenId);
 
 
 
@@ -438,7 +376,7 @@ export const TransactionsProvider = ({ children }) => {
     }
   };
 
-  const [filteredResults, setFilteredResults] = useState([]);
+  const [filteredResults, setFilteredResults] = useState(marketData);
   const [collection, setCollection] = useState("");
   const [id, setId] = useState('');
   const [token, setToken] = useState('');
@@ -460,16 +398,39 @@ export const TransactionsProvider = ({ children }) => {
     console.log("results", results);
   } else {
     setFilteredResults([]);
-  }
-    
+  }   
 }
+
+// function handleCollection(id, col, token) {
+//   setCollection(col);
+//   setId(id);
+//   setToken(token);
+
+//   if (col !== "") {
+//     const results = marketData.filter(item => {
+//       return item[id] === col;  
+//     });
+//     setFilteredResults(results);
+//     console.log("results", results);
+//   } else {
+//     setFilteredResults([]);
+//   }
+// }
+
+const [favorites, setFavorites] = useState([], localStorage.getItem("favorites"));
+// const [hearted, setHearted] = useState(false);
+
+  // const handleFavorite = (e) => {
+  //   setHearted(!hearted);
+  //   let token = e.target.id
+  //   setFavorites((prevArray => [...prevArray, token])) 
+  // };
+  // console.log("favorites", favorites);
 
   useEffect(() => {
     checkIfTransactionsExists();
     getAllNFTs();
     getAllTransactions();
-    // getNFTData(tokenId);
-  
   }, [transactionCount, currentAccount]);
 
   return (
@@ -524,7 +485,12 @@ export const TransactionsProvider = ({ children }) => {
       setId,
       collection,
       id, 
-      handleCollection
+      handleCollection,
+      favorites,
+      setFavorites,
+      //handleFavorite,
+      //hearted,
+      //setHearted
       }}
     >
       {children}

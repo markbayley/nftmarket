@@ -1,13 +1,22 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Footer, Navbar, Services, Welcome, Marketplace, Create, NFTPage, Wallet, Collections } from "./components"
-import CollectionPage from "./components/CollectionPage";
-import CreatorPage from "./components/CreatorPage";
+import { Routes, Route } from "react-router-dom";
+import {
+  Footer,
+  Navbar,
+  Services,
+  Welcome,
+  Marketplace,
+  Create,
+  NFTPage,
+  Wallet,
+  Collections,
+  FeaturePage
+} from "./components";
+
 
 function App() {
   return (
     <div className="app min-h-screen">
-      <BrowserRouter>
       <div className="min-h-screen">
         <Navbar />
         <Routes>
@@ -17,8 +26,7 @@ function App() {
               <div className="">
                 <Welcome />
                 <Collections />
-                <CreatorPage />
-              
+                <FeaturePage />
               </div>
             }
           />
@@ -29,14 +37,16 @@ function App() {
             path="/Trade"
             element={
               <>
-                <Marketplace /> 
+                <Marketplace />
               </>
             }
           />
           <Route path="/Trade/:collectionName" element={<Marketplace />} />
 
-       
-          <Route path="/Trade/CreatorPage/:creatorAddress" element={<CreatorPage />} />
+          <Route
+            path="/Trade/FeaturePage/:creatorAddress"
+            element={<FeaturePage />}
+          />
 
           <Route path="/Trade/Detail/:tokenId" element={<NFTPage />} />
 
@@ -45,7 +55,6 @@ function App() {
             element={
               <>
                 <Wallet />
-             
               </>
             }
           />
@@ -58,8 +67,8 @@ function App() {
             }
           />
         </Routes>
-        </div>
-      </BrowserRouter>
+      </div>
+
       <Footer />
     </div>
   );
