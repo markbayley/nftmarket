@@ -13,9 +13,20 @@ import {
   TETabsPane,
 } from "tw-elements-react";
 import { TransactionContext } from "../context/TransactionContext";
+import SubMenu from "./SubMenu";
 
 const Create = () => {
-  const { tab, handleTab, activeKeywords, setActiveKeywords, fileURL, setFileURL, setTab, currentAccount, checksumAddress } = useContext(TransactionContext);
+  const {
+    tab,
+    handleTab,
+    activeKeywords,
+    setActiveKeywords,
+    fileURL,
+    setFileURL,
+    setTab,
+    currentAccount,
+    checksumAddress,
+  } = useContext(TransactionContext);
 
   const [isChecked, setIsChecked] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -24,7 +35,6 @@ const Create = () => {
   const [isMinting, setIsMinting] = useState(false);
   const [mint, setMint] = useState(false);
 
- 
   const [powerPoints, setPowerPoints] = useState(null);
   const [metaData, setMetaData] = useState(null);
   const [transactionHash, setTransactionHash] = useState();
@@ -62,7 +72,7 @@ const Create = () => {
     medium: "",
     texture: "",
     seal: "Yes",
-    listed:"",
+    listed: "",
     price: "",
     royalty: "",
     trait1: "",
@@ -128,12 +138,16 @@ const Create = () => {
 
   //CREATING
   async function OnCreateFile() {
-
     setIsCreating(true);
     updateMessage("Generating AI Image...");
     const URL = `https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2`;
     const huggingKey = process.env.REACT_APP_HUGGING_FACE_API_KEY;
-    console.log(formParams.name, formParams.collection, formParams.description, activeKeywords)
+    console.log(
+      formParams.name,
+      formParams.collection,
+      formParams.description,
+      activeKeywords
+    );
     const response = await axios({
       url: URL,
       method: "POST",
@@ -143,7 +157,6 @@ const Create = () => {
         "Content-Type": "application/json",
       },
 
-     
       data: JSON.stringify({
         inputs:
           formParams.name +
@@ -299,7 +312,7 @@ const Create = () => {
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
- 
+
       let contract = new ethers.Contract(
         Marketplace.address,
         Marketplace.abi,
@@ -334,7 +347,7 @@ const Create = () => {
 
       // updateFormParams({ name: "", description: "", price: "" });
       // window.location.replace("/Wallet");
-      setTab('tab2')
+      setTab("tab2");
     } catch (e) {
       updateMessage("Upload error" + e);
     }
@@ -344,38 +357,16 @@ const Create = () => {
 
   return (
     <div className="fade-in lg:px-[5%] px-2">
-      <div className="flex flex-row place-items-center justify-between flex-wrap w-full p-3">
-       <div>
-          <h1 className="text-3xl sm:text-5xl text-white leading-tight text-gradient">
-            Create & Mint NFTs
-          </h1>
-          <h2 className="text-left text-gradient text-lg">
-          Generate an image or upload your own
-        </h2>
-        </div>
-      
-        <div className="flex lg:w-1/2 w-full justify-center lg:justify-end ">
-          <TETabs className=" ">
-            <TETabsItem
-              className="hover:bg-transparent"
-              onClick={() => (handleTab("tab1"), setMint(() => false))}
-              active={tab === "tab1"}
-             
-            >
-              Create
-            </TETabsItem>
+      <SubMenu
+        title="Create & Mint NFTs"
+        subtitle="Generate an image or upload your own"
+        tab1="Create"
+        tab2="Mint"
+        setMint={setMint}
+        handleTab={handleTab}
+        tab={tab}
+      />
 
-            <TETabsItem
-              className="hover:bg-transparent "
-              onClick={() => (handleTab("tab2"), setMint(() => true))}
-              active={tab === "tab2"}
-           
-            >
-              Mint
-            </TETabsItem>
-          </TETabs>
-        </div>
-      </div>
       <div className="form white-glassmorphism md:py-5 md:px-[2%] px-1 border-2">
         <CreateImage
           isUploading={isUploading}

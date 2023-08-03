@@ -15,6 +15,7 @@ import {
   TETabsPane,
 } from "tw-elements-react";
 import { styles, mediums, themes } from "../data/lists.js";
+import Loader from "./Loader";
 
 export default function Marketplace() {
   const {
@@ -147,47 +148,63 @@ export default function Marketplace() {
 
   return (
     <div className="fade-in md:px-[3%] px-2">
-      {/* SUBNAV */}
-      <div className="flex flex-row place-items-center justify-between flex-wrap w-full p-2">
+      <div className="flex flex-row place-items-center justify-between flex-wrap w-full py-3">
         {/* HEADING */}
         <div>
           <h1 className="text-3xl sm:text-5xl text-white leading-tight text-gradient ">
             Trade NFTs
           </h1>
-          {/* SUBHEADING */}
-          <h2 className="text-left text-gradient text-lg  w-full">
-            {
-              // filteredResults && collection
-              //   ? filteredResults.length
-              //   :
-              tab === "tab1"
-                ? listedResults?.length
-                : tab === "tab2"
-                ? auctionResults?.length
-                : unlistedResults?.length
-            }{" "}
-            NFTs{" "}
-            {collection.length > 20
-              ? " Tagged '" + shortenAddress(collection) + "'"
-              : collection
-              ? " Tagged '" + collection + "'"
-              : searchInput
-              ? " Tagged '" + searchInput + "'"
-              : ""}
-            {tab === "tab1"
-              ? " For Sale " + ` `
-              : tab === "tab2"
-              ? " Auctioned " + " "
-              : " Unlisted"}
-            {/* { !sorted ? "- Sorted By Date" : "- Sorted By Price"}
-                { showFavorites ? " - Favorited" : ""} */}
-            {collection ? "" : searchInput ? "" : " - Unfiltered"}
-          </h2>
+         
+          <div className="text-white flex items-center text-gradient">
+              {tab == "tab1"
+                ? "Displaying " +
+                  (showFavorites
+                    ? getFavoriteListed()?.length
+                    : listedResults?.length) +
+                  " FOR SALE results "
+                : tab == "tab2"
+                ? "Displaying " +
+                  (showFavorites
+                    ? getFavoriteAuction()?.length
+                    : auctionResults?.length) +
+                  " AUCTION results "
+                : "Displaying " +
+                  (showFavorites
+                    ? getFavoriteUnlisted()?.length
+                    : unlistedResults?.length) +
+                  " UNLISTED results "}
+              {searchInput || showFavorites || collection
+                ? "- Filtered"
+                : "- Unfiltered"}
+              &nbsp;
+      </div>
+      {/* <div className="text-white flex items-center">
+              {collection && (
+                <>
+                  <FiFilter fontSize={16} className="text-[#E4A11B]" />#
+                  {collection}
+                </>
+              )}
+              &nbsp;
+              {showFavorites && (
+                <>
+                  <MdFavorite fontSize={18} className="text-[#ff3366]" />
+                  Favorites
+                </>
+              )}
+              &nbsp;
+              {searchInput && (
+                <>
+                  <BiSearchAlt fontSize={20} color="grey" />
+                  {searchInput}
+                </>
+              )}
+            </div> */}
         </div>
 
-        {/* FILTER/SORT/FAVORITE */}
+        {/* MENU BUTTONS */}
         <div className="flex md:mb-0 py-2">
-          {/* FILTER */}
+          {/* Filter */}
           <div className="flex items-center  cursor-pointer">
             <FiFilter
               fontSize={26}
@@ -211,7 +228,7 @@ export default function Marketplace() {
                   <button
                     id=""
                     value=""
-                    className="flex items-center text-md text-neutral-500  border px-3 h-8 rounded-full white-glassmorphism hover:text-[#6c63ff]  hover:bg-transparent"
+                    className="flex items-center text-md text-neutral-500  border px-3 h-8 rounded-full white-glassmorphism hover:text-[#E4A11B]   hover:bg-transparent"
                     onClick={toggleShowTags}
                   >
                     #Filter
@@ -221,7 +238,7 @@ export default function Marketplace() {
             )}{" "}
           </div>
           &nbsp; &nbsp;
-          {/* SORT */}
+          {/* Sort */}
           <div className="flex items-center  cursor-pointer text-neutral-500 hover:text-[#E4A11B]">
             {newest ? (
               <>
@@ -241,11 +258,11 @@ export default function Marketplace() {
               <>
                 <BiSort
                   fontSize={26}
-                  className="text-[#E4A11B]"
+                  className="text-[#6c63ff]"
                   onClick={toggleNewest}
                 />
                 <button
-                  className="flex items-center text-md text-[#E4A11B]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500 hover:bg-transparent"
+                  className="flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500 hover:bg-transparent"
                   onClick={toggleSort}
                 >
                   Price
@@ -254,8 +271,8 @@ export default function Marketplace() {
             )}
           </div>
           &nbsp; &nbsp;
-          {/* FAVORITE */}
-          <div className="flex items-center  cursor-pointer text-neutral-500 hover:text-[#ff3366]">
+          {/* Favorite */}
+          <div className="flex items-center  cursor-pointer text-[#ff3366]">
             {showFavorites ? (
               <>
                 <MdFavorite
@@ -265,7 +282,7 @@ export default function Marketplace() {
                 />
                 &nbsp;
                 <button
-                  className="flex items-center text-md text-[#ff3366]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500 hover:bg-transparent"
+                  className="flex items-center text-md text-[#ff3366]  px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500 hover:bg-transparent"
                   onClick={toggleShowFavorites}
                 >
                   Favs
@@ -340,8 +357,6 @@ export default function Marketplace() {
 
       {/* HASHTAGS */}
       <TECollapse show={showTags}>
-        {/* <Tags handleCollection={handleCollection}/> */}
-
         <div className="block rounded-lg bg-transparent text-neutral-500 shadow-lg  ">
           <div className=" flex flex-wrap gap-1 ">
             {[...styles].slice(1, 9).map((item, index) => (
@@ -349,7 +364,7 @@ export default function Marketplace() {
                 id="style"
                 key={index}
                 value={item.name}
-                className="hidden md:flex  capitalize items-center text-md text-gray-500 border border-gray-500 px-3 h-7 rounded-full bg-transparent hover:text-[#6c63ff] hover:border-[#6c63ff] duration-300 hover:bg-transparent"
+                className="flex items-center text-md text-neutral-500  border px-3 h-7 rounded-full white-glassmorphism hover:text-[#E4A11B]  hover:bg-transparent"
                 onClick={(id) => (
                   handleCollection(id), setShowTags(() => false)
                 )}
@@ -362,7 +377,7 @@ export default function Marketplace() {
                 id="theme"
                 key={index}
                 value={item.name}
-                className="hidden md:flex  capitalize items-center text-md text-gray-500 border border-gray-500 px-3 h-7 rounded-full bg-transparent hover:text-[#6c63ff] hover:border-[#6c63ff] duration-300 hover:bg-transparent"
+                className="flex items-center text-md text-neutral-500  border px-3 h-7 rounded-full white-glassmorphism hover:text-[#E4A11B]  hover:bg-transparent"
                 onClick={(id) => (
                   handleCollection(id), setShowTags(() => false)
                 )}
@@ -376,7 +391,7 @@ export default function Marketplace() {
                 id="medium"
                 key={index}
                 value={item.name}
-                className="hidden md:flex  capitalize items-center text-md text-gray-500 border border-gray-500 px-3 h-7 rounded-full bg-transparent hover:text-[#6c63ff] hover:border-[#6c63ff] duration-300 hover:bg-transparent"
+                className="flex items-center text-md text-neutral-500  border px-3 h-7 rounded-full white-glassmorphism hover:text-[#E4A11B]  hover:bg-transparent"
                 onClick={(id) => (
                   handleCollection(id), setShowTags(() => false)
                 )}
@@ -390,7 +405,7 @@ export default function Marketplace() {
                 id="collection"
                 key={index}
                 value={item.name}
-                className="flex items-center text-md text-neutral-500  border px-3 h-7 rounded-full white-glassmorphism hover:text-[#6c63ff] hover:bg-transparent"
+                className="flex items-center text-md text-neutral-500  border px-3 h-7 rounded-full white-glassmorphism hover:text-[#E4A11B]  hover:bg-transparent"
                 onClick={(id) => (
                   handleCollection(id), setShowTags(() => false)
                 )}
@@ -405,6 +420,7 @@ export default function Marketplace() {
       {/*TAB GALLERIES */}
       <TETabsContent>
         <TETabsPane show={tab === "tab1"}>
+          {/* Listed */}
           {showFavorites ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
               {getFavoriteListed().map((value, tokenId) => {
@@ -420,6 +436,7 @@ export default function Marketplace() {
           )}
         </TETabsPane>
         <TETabsPane show={tab === "tab2"}>
+          {/* Auction */}
           {showFavorites ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
               {getFavoriteAuction().map((value, tokenId) => {
@@ -435,6 +452,7 @@ export default function Marketplace() {
           )}
         </TETabsPane>
         <TETabsPane show={tab === "tab3"}>
+          {/* Unlisted */}
           {showFavorites ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
               {getFavoriteUnlisted().map((value, tokenId) => {
@@ -450,17 +468,62 @@ export default function Marketplace() {
           )}
         </TETabsPane>
       </TETabsContent>
-
+      {/* <Loader /> */}
+      {listedResults ? "" : <Loader />}
       {/* NOTIFICATIONS */}
       <div className="flex flex-col flex-1 items-start justify-center w-full mf:mt-0 my-7">
         <div className="text-center text-white font-light text-base w-full">
           {!ethereum ? (
-            "Install MetaMask and connect wallet to send ethereum and view your NFTs"
+            <div className="flex flex-wrap justify-around items-center flex-row w-full white-glassmorphism p-5 ">
+              Install MetaMask and connect wallet to trade NFTs
+            </div>
           ) : currentAccount !== "" ? (
-            ""
+            <div className="flex flex-wrap justify-center items-center flex-row w-full white-glassmorphism p-5 ">
+              {tab == "tab1"
+                ? "Displaying " +
+                  (showFavorites
+                    ? getFavoriteListed()?.length
+                    : listedResults?.length) +
+                  " FOR SALE results. "
+                : tab == "tab2"
+                ? "Displaying " +
+                  (showFavorites
+                    ? getFavoriteAuction()?.length
+                    : auctionResults?.length) +
+                  " AUCTION results. "
+                : "Displaying " +
+                  (showFavorites
+                    ? getFavoriteUnlisted()?.length
+                    : unlistedResults?.length) +
+                  " UNLISTED results. "}
+              {searchInput || showFavorites || collection
+                ? "Filtered by"
+                : "No search filters applied. "}
+              &nbsp;
+              {collection && (
+                <>
+                  <FiFilter fontSize={16} className="text-[#E4A11B]" />#
+                  {collection}
+                </>
+              )}
+              &nbsp;
+              {showFavorites && (
+                <>
+                  <MdFavorite fontSize={18} className="text-[#ff3366]" />
+                  Favorites
+                </>
+              )}
+              &nbsp;
+              {searchInput && (
+                <>
+                  <BiSearchAlt fontSize={20} color="grey" />
+                  '{searchInput}'
+                </>
+              )}
+            </div>
           ) : (
             <div className="flex flex-wrap justify-around items-center flex-row w-full white-glassmorphism p-5 ">
-              Connect your MetaMask wallet to view and trade NFTs
+              Connect your MetaMask wallet to trade NFTs
             </div>
           )}
         </div>

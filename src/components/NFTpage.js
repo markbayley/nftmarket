@@ -14,6 +14,9 @@ import {
   TETabsPane,
 } from "tw-elements-react";
 import Loader from "./Loader";
+import { MdFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
+import { GiAerialSignal, GiBrain, GiFigurehead, GiFist, GiHeartPlus, GiSewedShell, GiStoneAxe } from "react-icons/gi"
+import SubMenu from "./SubMenu";
 
 const NFTPage = () => {
   const {
@@ -26,6 +29,7 @@ const NFTPage = () => {
     currentAccount,
     formParams,
     updateFormParams,
+    favorites
   } = useContext(TransactionContext);
 
   const [data, updateData] = useState({});
@@ -162,9 +166,11 @@ const NFTPage = () => {
 
   const link = `https://sepolia.etherscan.io/address/${data.owner}`;
 
+  console.log(parseInt(data.tokenId))
+
   return (
     <div className=" mx-2 md:px-[5%] fade-in">
-      <div className="flex flex-row items-center flex-wrap ">
+      {/* <div className="flex flex-row items-center flex-wrap ">
         <div className="flex lg:w-1/2 w-full ">
           <h1 className="text-3xl sm:text-3xl  text-gradient capitalize">
             NFT Detail
@@ -199,7 +205,17 @@ const NFTPage = () => {
             </TETabsItem>
           </TETabs>
         </div>
-      </div>
+      </div> */}
+
+      <SubMenu
+        title="NFT Detail"
+        subtitle="Discover more about this NFT or trade"
+        tab1="Details"
+        tab2="Trade"
+        handleTab={handleTab}
+        tab={tab}
+        data={data}
+      />
 
       <TETabsContent>
         <TETabsPane show={tab === "tab1"}>
@@ -243,13 +259,30 @@ const NFTPage = () => {
                       rel="noopener noreferrer"
                       className="text-2xl border px-3 rounded-full white-glassmorphism"
                     >
-                      #{data.tokenId}
+                      #{data.tokenId}  
                     </a>
+                 
                   </p>
-
+                 
                   <span className=" text-2xl font-extralight text-gradient py-2 italic leading-tight">
                     '{data.name ? data.name : "Untitled"}'
                   </span>
+               
+                  <div
+                
+        // token={data.data.tokenId}
+        // onClick={(e) => toggleFavorite(e)}
+        className=" text-white ">  
+        { favorites.includes(parseInt(data.tokenId))?
+   
+          <MdFavorite fontSize="1.8em" color="#ff3366" className="drop-shadow"/>
+      
+         : 
+          <MdOutlineFavoriteBorder fontSize="1.8em" color="#ff3366" className="drop-shadow"/>
+     
+        }
+      </div>
+                  {/* <MdFavorite fontSize={24} className="text-[#ff3366]" /> */}
                 </div>
                 <div className=" flex items-center text-[#868686] text-sm h-fit mb-2 "></div>{" "}
                 <Link
@@ -276,8 +309,9 @@ const NFTPage = () => {
                     </div>
                   </div>{" "}
                 </Link>
+              
               </div>
-
+            
               <div className=" w-full text-[#868686] text-sm  h-fit ">
                 DESCRIPTION{" "}
                 <div className=" text-lg  pt-3 text-white">
@@ -306,49 +340,93 @@ const NFTPage = () => {
                       </a>
                     </div>
                   </div>
+
+
                   <div className="grid grid-cols-2 lg:grid-cols-3  gap-3 pt-5 text-sm text-white">
-                    <div className=" bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
+
+
+                    <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
+                      <div>
                       <p className="text-xs text-[#868686] uppercase">
                         {data.trait1 ? data.trait1 : "Trait 1"} &nbsp;
                       </p>
                       {data.value1 ? data.value1 : "Value 1"}
+                      </div>
+                      {/* <div
+                    id="creator"
+                    token={tokenId}
+                    value={data.creator}
+                    onClick={(id, token) => handleCollection(id, token)}
+                    className="flex items-end rounded-md bg-cover bg-center bg-indigo-500 h-10 w-10  shadow-xl shadow-indigo-500/30 duration-300 hover:shadow-indigo-500/50 "
+                    style={{backgroundImage: `url( "https://source.unsplash.com/random?symbol+${data.value1}" `}}>
+                  </div>{" "} */}
+                    <GiFigurehead fontSize="2.4em" color="orange" className="drop-shadow"/>
+                 
+                  {/* <GiAerialSignal fontSize="2.4em" color="#ff3366" className="drop-shadow"/> */}
                     </div>
-                    <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
+                    
+                    <div className="flex justify-between  bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
+                    <div>
                       <p className="text-xs text-[#868686] uppercase">
                         {data.trait2 ? data.trait2 : "Trait 2"} &nbsp;
                       </p>
                       {data.value2 ? data.value2 : "Value 2"}
+                      </div>
+                      <GiSewedShell fontSize="2.4em" color="orange" className="drop-shadow"/>
                     </div>
-                    <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
+
+                    <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
+                      <div>
                       <p className="text-xs text-[#868686] uppercase">
                         {data.trait3 ? data.trait3 : "Trait 3"} &nbsp;
                       </p>
                       {data.value3 ? data.value3 : "Value 3"}
+                      </div>
+                      <GiStoneAxe fontSize="2.4em" color="orange" className="drop-shadow"/>
                     </div>
-                    <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
+
+
+
+                    <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
+                      <div>
                       <p className="text-xs text-[#868686] uppercase">
                         {data.trait4 ? data.trait4 : "Trait 4"} &nbsp;
                       </p>
+                    
                       {data.value4 ? data.value4 : "Value 4"}
+                      </div>
+                      <GiFist fontSize="2.4em" color="orange" className="drop-shadow"/>
                     </div>
-                    <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
+
+                    <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
+                      <div>
                       <p className="text-xs text-[#868686] uppercase">
                         {data.trait5 ? data.trait5 : "Trait 5"} &nbsp;
                       </p>
+                     
                       {data.value5 ? data.value5 : "Value 5"}
+                      </div>
+                      <GiHeartPlus fontSize="2.4em" color="orange" className="drop-shadow"/>
+                    
                     </div>
-                    <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
+
+                    <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
+                    <div>
                       <p className="text-xs text-[#868686] uppercase">
                         {data.trait6 ? data.trait6 : "Trait 6"} &nbsp;
                       </p>
+                   
                       {data.value6 ? data.value6 : "Value 6"}
+                      </div>
+                      <GiBrain fontSize="2.4em" color="orange" className="drop-shadow"/>
                     </div>
+                  
                   </div>
                 </div>
               </div>
 
               <div className="flex flex-wrap">
-                <div className="text-[#868686] text-sm my-2 w-96 md:w-1/12 ">
+                <div className="text-[#868686] text-sm my-2 w-96 md:w-11 ">
                   {" "}
                   TAGS
                 </div>

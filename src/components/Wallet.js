@@ -14,6 +14,7 @@ import {
 import NFTTile from "./NFTTile";
 import profileJpg from "../images/profile.jpg";
 import Transactions from "./Transactions";
+import SubMenu from "./SubMenu";
 
 const Input = ({
   placeholder,
@@ -104,7 +105,18 @@ const Wallet = () => {
   return (
     <div className="flex w-full justify-center items-center fade-in">
       <div className="flex-col justify-center items-start xl:w-3/4 mx-2  lg:mx-[5%]">
-        <div className="flex flex-wrap justify-between items-center my-5 ">
+
+
+      <SubMenu
+        title="My Wallet"
+        subtitle="Fund your wallet to mint and trade NFTs"
+        tab1="Transfer"
+        tab2="My NFTs"
+        tab3="Profile"
+        handleTab={handleTab}
+        tab={tab}
+      />
+        {/* <div className="flex flex-wrap justify-between items-center my-5 ">
           <div className="flex flex-col w-full justify-center md:w-1/2 pl-2">
             <h1 className="text-4xl sm:text-5xl text-white text-gradient">
               My Wallet
@@ -139,7 +151,7 @@ const Wallet = () => {
               </TETabsItem>
             </TETabs>
           </div>
-        </div>
+        </div> */}
 
         <TETabsContent>
           <TETabsPane show={tab === "tab1"}>
