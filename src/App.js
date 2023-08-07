@@ -44,7 +44,7 @@ function App() {
           <Route path="/Trade/:collectionName" element={<Marketplace />} />
 
           <Route
-            path="/Trade/FeaturePage/:creatorAddress"
+            path="/Trade/Profile/:creatorAddress"
             element={<FeaturePage />}
           />
 

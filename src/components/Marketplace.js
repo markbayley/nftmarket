@@ -148,7 +148,7 @@ export default function Marketplace() {
 
   return (
     <div className="fade-in md:px-[3%] px-2">
-      <div className="flex flex-row place-items-center justify-between flex-wrap w-full py-3">
+      <div className="flex flex-row place-items-center justify-between flex-wrap w-full pt-3 pl-2">
         {/* HEADING */}
         <div>
           <h1 className="text-3xl sm:text-5xl text-white leading-tight text-gradient ">
@@ -214,7 +214,7 @@ export default function Marketplace() {
               <button
                 id=""
                 value=""
-                className="flex items-center text-md text-[#E4A11B]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500 hover:bg-transparent"
+                className="flex items-center whitespace-nowrap text-[#E4A11B] text-md border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500 hover:bg-transparent"
                 onClick={(id) => handleCollection(id)}
               >
                 #
@@ -228,7 +228,7 @@ export default function Marketplace() {
                   <button
                     id=""
                     value=""
-                    className="flex items-center text-md text-neutral-500  border px-3 h-8 rounded-full white-glassmorphism hover:text-[#E4A11B]   hover:bg-transparent"
+                    className="flex items-center text-neutral-500  border px-3 h-8 rounded-full white-glassmorphism hover:text-[#E4A11B]   hover:bg-transparent"
                     onClick={toggleShowTags}
                   >
                     #Filter
@@ -248,7 +248,7 @@ export default function Marketplace() {
                   onClick={toggleNewest}
                 />
                 <button
-                  className="flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500 hover:bg-transparent"
+                  className="flex items-center text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500 hover:bg-transparent"
                   onClick={toggleNewest}
                 >
                   Date
@@ -328,7 +328,7 @@ export default function Marketplace() {
         <div className="flex w-full xl:w-auto justify-center xl:justify-end">
           <TETabs className="">
             <TETabsItem
-              className="hover:bg-transparent hover:text-[#E4A11B] text-[16px] mt-0"
+              className="hover:bg-transparent hover:text-[#E4A11B] text-[16px] mt-0 px-[14px]"
               onClick={() => handleTab("tab1")}
               active={tab === "tab1"}
               color="warning"
@@ -336,7 +336,7 @@ export default function Marketplace() {
               For Sale
             </TETabsItem>
             <TETabsItem
-              className="hover:bg-transparent hover:text-[#E4A11B] text-[16px] mt-0"
+              className="hover:bg-transparent hover:text-[#E4A11B] text-[16px] mt-0 px-[2em]"
               onClick={() => handleTab("tab2")}
               active={tab === "tab2"}
               color="warning"
@@ -344,7 +344,7 @@ export default function Marketplace() {
               Auction
             </TETabsItem>
             <TETabsItem
-              className="hover:bg-transparent hover:text-[#E4A11B] text-[16px] mt-0"
+              className="hover:bg-transparent hover:text-[#E4A11B] text-[16px] mt-0 px-[14px]"
               onClick={() => handleTab("tab3")}
               active={tab === "tab3"}
               color="warning"

@@ -45,14 +45,14 @@ const MintForm = ({
 
   return (
     <form className="">
-      <div className="  ">
-        <div className=" ">
+    <div className="  ">
+    <div>
 
 
           {!showMore ? (
             // First Three Traits
             <div>
-              <div className="flex w-full mb-3 sm:flex-wrap justify-between gap-x-2.5 ">
+              <div className="flex w-full mb-3  justify-between gap-x-2.5 ">
                 <input
                   className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
                   type="text"
@@ -142,7 +142,7 @@ const MintForm = ({
           ) : (
             <div >
               {/* Second Three Traits */}
-              <div className="flex w-full  mb-3 sm:flex-wrap justify-between gap-x-2.5 ">
+              <div className="flex w-full  mb-3  justify-between gap-x-2.5 ">
                 <input
                   className="w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
                   type="text"

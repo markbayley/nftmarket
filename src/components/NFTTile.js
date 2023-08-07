@@ -8,8 +8,8 @@ import { TransactionContext } from "../context/TransactionContext";
 const NFTTile = (data) => {
   const { favorites, setFavorites } = useContext(TransactionContext);
 
-  const IPFSUrl = GetIpfsUrlFromPinata(data.data.image);
-  const link = `https://sepolia.etherscan.io/address/${data.data.owner}`;
+  const IPFSUrl = GetIpfsUrlFromPinata(data?.data?.image);
+  const link = `https://sepolia.etherscan.io/address/${data?.data?.owner}`;
 
   window.localStorage.setItem("favorites", favorites);
 
@@ -36,10 +36,10 @@ const NFTTile = (data) => {
       }
     };
 
-    console.log("favorites", favorites)
+    // console.log("favorites", favorites)
  
   return (
-    <div className="  backdrop-blur-[5px] p-[5%] cursor-pointer sm:w-96  w-full md:w-auto  white-glassmorphism shadow-lg hover:shadow-indigo-500/30 duration-200">
+    <div className=" backdrop-blur-[5px] p-[5%] cursor-pointer sm:w-96  w-full md:w-auto  white-glassmorphism shadow-lg hover:shadow-indigo-500/30 duration-200">
       {/* ETHERSCAN */}
       <Link to={link} target="_blank" rel="noopener noreferrer">
         <div className="w-[1.7em] h-[1.7em] rounded-full border-2  flex justify-center items-center absolute top-[6.5%] left-[6.7%] eth-card group seal hover:scale-[1.1] duration-300">
@@ -73,10 +73,13 @@ const NFTTile = (data) => {
 
       {/* IMAGE */}
       <Link to={{ pathname: `/Trade/Detail/` + data.data.tokenId }} className="z-0">
+        {/* <div className="border-2 border-b-neutral-700 border-t-neutral-900 border-l-neutral-800 border-r-neutral-700"> */}
         <img
-          src={IPFSUrl}
+          src={IPFSUrl} 
           alt="thumbnail"
+          className=""
         />
+        {/* </div> */}
       </Link>
 
       {/* TITLE */}

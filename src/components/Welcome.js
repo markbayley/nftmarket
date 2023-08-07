@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { SiEthereum } from "react-icons/si";
 import nftImage1 from "../images/futuristic-city.jpg";
 import nftImage2 from "../images/tokyo-haze.jpg";
 import nftImage3 from "../images/kyoto-girl.jpg";
 import { Link } from "react-router-dom";
+import { TransactionContext } from "../context/TransactionContext";
 
 const flexCenter = "flex justify-center items-center";
 
 const Welcome = () => {
+
+    const {
+      marketData,
+    } = useContext(TransactionContext);
+
   return (
     <div className={`{fade-in ${flexCenter}`}>
       <div className="items-start flex-col justify-between md:p-10 p-4">
@@ -74,6 +80,7 @@ const Welcome = () => {
         </div>
 
         {/* BUTTON */}
+        { marketData &&
         <div className="flex flex-col flex-1 items-center justify-start w-full mf:mt-0 mt-10 ">
           <Link to={"/Create"}>
             <button className="rounded-md text-md py-5 px-12 flex items-center font-thin bg-transparent shadow-lg shadow-indigo-500/30 duration-300">
@@ -81,6 +88,7 @@ const Welcome = () => {
             </button>
           </Link>
         </div>
+        }
       </div>
     </div>
   );

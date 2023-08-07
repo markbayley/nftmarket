@@ -43,7 +43,7 @@ const CreateImage = ({
   }
 
   return (
-    <div className="w-full lg:w-1/3 aspect-square  md:mr-7 ">
+    <div className="w-full  aspect-square ">
       {/* // Create */}
       <TETabsContent>
         <TETabsPane show={basicActive === "tab1"}>
@@ -75,7 +75,7 @@ const CreateImage = ({
               </>
             ) : // In Progress Creating
             isCreating || isMinting ? (
-              <div className="spinner">
+              <div className="flex items-center justify-center  w-full aspect-square">
                 <div className="animate-spin rounded-full h-20 w-20 border-b-2 border-yellow-700 absolute"></div>
                 {fileURL ? (
                   <img
@@ -155,7 +155,7 @@ const CreateImage = ({
               </div>
             ) : isUploading || isMinting ? (
               // In Progress Uploading
-              <div className="spinner">
+              <div className="flex items-center justify-center  w-full aspect-square rounded-lg border border-dashed border-[#6c63ff]">
                 <div className="animate-spin rounded-full h-20 w-20 border-b-2 border-yellow-700 absolute"></div>
                 <img
                   src={uploadSvg}
@@ -206,13 +206,13 @@ const CreateImage = ({
       <div className="message group relative">
         {message}&nbsp;&nbsp;
         {/* {metaData && ( */}
-          <Link to="/Trade" >
-            {/* <span className="absolute bottom-12 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+          {/* <Link to="/Trade" >
+            <span className="absolute bottom-12 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
               View Data
-            </span> */}
-            {/* <BsInfoCircle fontSize={18} color="#fff" /> */}
+            </span>
+            <BsInfoCircle fontSize={18} color="#fff" />
             View
-          </Link>
+          </Link> */}
         {/* )} */}
       </div>
  } 
@@ -220,7 +220,7 @@ const CreateImage = ({
       {/* Toggle */}
 
       {/* { !mint && */}
-      <TETabs className="flex justify-center">
+      {/* <TETabs className="flex justify-center">
         <TETabsItem
           className="hover:bg-transparent "
           onClick={() => (handleBasicClick("tab1"), setIsChecked(() => false))}
@@ -236,7 +236,7 @@ const CreateImage = ({
         >
           Upload Image
         </TETabsItem>
-      </TETabs>
+      </TETabs> */}
 {/* } */}
     </div>
   );

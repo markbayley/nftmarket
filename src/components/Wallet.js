@@ -104,12 +104,12 @@ const Wallet = () => {
 
   return (
     <div className="flex w-full justify-center items-center fade-in">
-      <div className="flex-col justify-center items-start xl:w-3/4 mx-2  lg:mx-[5%]">
+      <div className="flex-col justify-center items-start md:w-3/4 mx-2 ">
 
 
       <SubMenu
         title="My Wallet"
-        subtitle="Fund your wallet to mint and trade NFTs"
+        subtitle="Fund your wallet to mint NFTs"
         tab1="Transfer"
         tab2="My NFTs"
         tab3="Profile"
@@ -157,7 +157,7 @@ const Wallet = () => {
           <TETabsPane show={tab === "tab1"}>
             <div className="flex flex-wrap justify-around items-center flex-row w-auto white-glassmorphism md:p-7 ">
               {/* CARD */}
-              <div className=" flex justify-end items-start flex-col rounded-xl seal eth-card w-full  aspect-[10/6] mb-2 max-w-[390px] m-2 md:m-0 p-5 ">
+              <div className=" flex justify-end items-start flex-col rounded-xl seal eth-card w-full  aspect-[10/6] mb-2 max-w-[385px] m-2 md:m-0 p-5 ">
                 <div className="flex justify-between flex-col w-full h-full">
                   <div className="flex justify-between items-start">
                     <div className="w-10 h-10 rounded-full border border-white flex justify-center items-center eth-card seal  ">
@@ -208,7 +208,7 @@ const Wallet = () => {
                   <button
                     type="button"
                     onClick={handleSubmitTransaction}
-                    className="text-white w-full border-[1px] mb-2 p-2 h-12 border-[#6c63ff] hover:bg-[#6c63ff] rounded cursor-pointer shadow-lg shadow-indigo-500/30"
+                    className="text-white w-full border-[1px] mb-2 lg:mb-0 p-2 h-12 border-[#6c63ff] hover:bg-[#6c63ff] rounded cursor-pointer shadow-lg shadow-indigo-500/30"
                   >
                     Send
                   </button>

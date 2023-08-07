@@ -26,6 +26,8 @@ const Create = () => {
     setTab,
     currentAccount,
     checksumAddress,
+    marketData, 
+    getAllNFTs
   } = useContext(TransactionContext);
 
   const [isChecked, setIsChecked] = useState(false);
@@ -136,27 +138,35 @@ const Create = () => {
     }
   }
 
+  const fill = "From the collection '" + formParams.collection + "' this artwork entitled '" + formParams.name + "' was created using a digital " + formParams.medium + 
+  " medium in a captivating " + formParams?.style + " style. The piece's " + formParams.theme + " theme is combined with subtle " + formParams.texture + " textures, " 
+  + formParams.colour + " colours and " + formParams.artist + " influences." + formParams.description
+
   //CREATING
-  async function OnCreateFile() {
+  async function OnCreateFile(e) {
     setIsCreating(true);
     updateMessage("Generating AI Image...");
+
+    updateFormParams({
+      ...formParams,
+      description: e.target.value,
+    })
+
+    // updateFormParams({
+    //   ...formParams,
+    //   description: fill,
+    // })
+
     const URL = `https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2`;
-    const huggingKey = process.env.REACT_APP_HUGGING_FACE_API_KEY;
-    console.log(
-      formParams.name,
-      formParams.collection,
-      formParams.description,
-      activeKeywords
-    );
+
     const response = await axios({
       url: URL,
       method: "POST",
       headers: {
-        Authorization: `Bearer ${huggingKey}`,
+        Authorization: `Bearer ${process.env.REACT_APP_HUGGING_FACE_API_KEY}`,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-
       data: JSON.stringify({
         inputs:
           formParams.name +
@@ -172,54 +182,49 @@ const Create = () => {
     });
 
     const type = response.headers["content-type"];
-    const data = response.data; //arrayBuffer
-    const base64data = Buffer.from(data).toString("base64"); //raw string
-    const file = `data:${type};base64,` + base64data; //formatted string
+    const data = response.data;
 
-    console.log("fileRAW", file); //data:image/jpeg;base64,/9j/4A
-
-    const image = file;
-    const svgimg = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "image"
-    );
-    svgimg.setAttribute("width", "100");
-    svgimg.setAttribute("height", "100");
-    svgimg.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", image);
-    setSvgFile(svgimg);
-    // document.getElementById("mySvg").appendChild(svgimg);
-
-    console.log("svgFile 00000000000", svgimg); //<image width="500" height="500" src="data:image/jpeg;base64,/9j/4A
+    const base64data = Buffer.from(data).toString("base64");
+    const file = `data:${type};base64,` + base64data;
 
     const filePinata = new File([data], "image.jpeg", { type: "image/jpeg" });
     setFile(filePinata);
 
-    console.log("fileAFTERP", file); ////data:image/jpeg;base64,/9j/4A
-    // const filePinata = file;
-    console.log("filePinata", filePinata); //File lastModified: 16886072340 lastModifiedDate:Thu
-    //check for file extension
+    console.log("fileAFTERP", file); 
+
+    console.log("filePinata", filePinata);
+
     setFileURL(file);
     updateMessage("Image Created...");
     setIsCreating(false);
-    // return data;
-    // };
 
     try {
-      //upload the file to IPFS
-      // disableButton();
       updateMessage("Storing image..!");
       const response = await uploadFileToIPFS(filePinata);
       if (response.success === true) {
-        // enableButton();
+  
         updateMessage("Image created..!");
-        console.log("Image created: ", response.pinataURL); //https://magenta-realistic-haddock-479.mypinata.cl
+        console.log("Image created: ", response.pinataURL); 
         setFileURL(response.pinataURL);
       }
     } catch (e) {
       setIsCreating(false);
       updateMessage("Install MetaMask to mint NFTs");
     }
+
+    // setImage(img);
+    updateMessage("Image Created...Mint?");
+    setTab("tab2");
+    setIsCreating(false);
+    return data;
+
+
   }
+
+
+
+
+
 
   //This function uploads the metadata to IPFS
   async function uploadMetadataToIPFS() {
@@ -344,10 +349,10 @@ const Create = () => {
 
       updateMessage("Successfully listed your NFT!");
       setIsMinting(false);
-
+      getAllNFTs();
       // updateFormParams({ name: "", description: "", price: "" });
       // window.location.replace("/Wallet");
-      setTab("tab2");
+   setTab("tab3")
     } catch (e) {
       updateMessage("Upload error" + e);
     }
@@ -358,16 +363,19 @@ const Create = () => {
   return (
     <div className="fade-in lg:px-[5%] px-2">
       <SubMenu
-        title="Create & Mint NFTs"
-        subtitle="Generate an image or upload your own"
+        title={ tab === "tab1" ? "Create NFTs" : "Mint NFTs"}
+        subtitle={ tab === "tab1" ? "Generate an image or upload your own" : "Mint your NFT to the blockchain" }
         tab1="Create"
         tab2="Mint"
+        tab3="View"
         setMint={setMint}
         handleTab={handleTab}
         tab={tab}
+        data={marketData}
+        checksumAddress={checksumAddress}
       />
 
-      <div className="form white-glassmorphism md:py-5 md:px-[2%] px-1 border-2">
+      <div className="form white-glassmorphism md:py-5 md:px-[2%] gap-x-6 px-1 border-2 mt-2">
         <CreateImage
           isUploading={isUploading}
           isCreating={isCreating}
@@ -404,6 +412,7 @@ const Create = () => {
               isChecked={isChecked}
               OnUploadFile={OnUploadFile}
               transactionHash={transactionHash}
+              fill={fill}
             />
           </TETabsPane>
 

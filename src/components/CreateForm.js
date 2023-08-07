@@ -29,6 +29,7 @@ const CreateForm = ({
   isChecked,
   transactionHash,
   mint,
+  fill
 }) => {
   const styleWords = activeKeywords.filter((word) =>
     styles.some((style) => style.name === word)
@@ -55,6 +56,8 @@ const CreateForm = ({
   );
 
   console.log("formParams", formParams);
+
+
 
   return (
     <form className="">
@@ -91,27 +94,14 @@ const CreateForm = ({
         
           </div>
 
-          <textarea
-            required
-            onChange={(e) =>
-              updateFormParams({
-                ...formParams,
-                description: e.target.value,
-              })
-            }
-            value={formParams.description}
-            id="description"
-            rows="4"
-            className=" mt-1 mb-3 block py-1.5 px-2.5 w-full text-white rounded border border-[#6c63ff] focus:ring-blue-500 focus:border-blue-500 white-glassmorphism "
-            placeholder="NFT Description..."
-          ></textarea>
+       
 
           <div className="check ">
             <select
               id="style"
               onChange={(id) => handleForm(id)}
               value=""
-              className="text-white outline-none  w-half  rounded bg-[#273057] shadow-2xl border-none "
+              className="text-white outline-none  w-half  rounded bg-[#313751] shadow-2xl border-none "
             >
               {styles.map((style, index) => (
                 <option key={index} value={style.name}>
@@ -126,7 +116,7 @@ const CreateForm = ({
               id="theme"
               onChange={(id) => handleForm(id)}
               value=""
-              className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#273057] shadow-2xl border-none "
+              className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#313751] shadow-2xl border-none "
             >
               {themes.map((theme, index) => (
                 <option key={index} value={theme.name}>
@@ -137,40 +127,7 @@ const CreateForm = ({
           </div>
 
           <div className="check">
-            <div className="tabs">
-              {styleWords.slice(0, 4).map((item, index) => (
-                <button
-                  key={index}
-                  onClick={handleChecked}
-                  value={item}
-                  className={`fade-in button ${
-                    activeKeywords.includes(item) ?  "text-sm text-[#6c63ff] border-[#6c63ff] bg-transparent hover:bg-transparent hover:text-gray-600 hover:border-gray-600 px-2 h-7 flex items-center rounded-full mt-1" : ""
-                  }`}
-                >
-                  #{item}
-                </button>
-              ))}
-            </div>
-
-         
-
-            <div className="tabs">
-              {themeWords.slice(0, 4).map((item, index) => (
-                <button
-                  key={index}
-                  onClick={handleChecked}
-                  value={item}
-                  // className={`fade-in button ${
-                  //   activeKeywords.includes(item) ? "colourButton" : ""
-                  // }`}
-                   className={`fade-in button ${
-                    activeKeywords.includes(item) ? "text-sm text-[#6c63ff] border-[#6c63ff] bg-transparent hover:bg-transparent hover:text-gray-600 hover:border-gray-600 px-2 h-7 flex items-center rounded-full mt-1" : ""
-                  }`}
-                >
-                  #{item}
-                </button>
-              ))}
-            </div>
+  
           </div>
 
           <div className="check mt-3">
@@ -178,7 +135,7 @@ const CreateForm = ({
               id="medium"
               onChange={(id) => handleForm(id)}
               value=""
-              className="text-white outline-none blue-glassmorphism w-half rounded  bg-[#273057] shadow-2xl border-none"
+              className="text-white outline-none blue-glassmorphism w-half rounded  bg-[#313751] shadow-2xl border-none"
             >
               {mediums.map((medium, index) => (
                 <option key={index} value={medium.name}>
@@ -190,7 +147,7 @@ const CreateForm = ({
               id="texture"
               onChange={(id) => handleForm(id)}
               value=""
-              className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#273057] shadow-2xl border-none"
+              className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#313751] shadow-2xl border-none"
             >
               {textures.map((texture, index) => (
                 <option key={index} value={texture.name}>
@@ -201,15 +158,103 @@ const CreateForm = ({
           </div>
 
           <div className="check">
-            <div className=" tabs">
+            {/* <div className=" tabs">
               {mediumWords.slice(0, 4).map((item, index) => (
                 <button
                   key={index}
                   onClick={handleChecked}
                   value={item}
                   className={`fade-in button ${
-                    activeKeywords.includes(item) ? "text-sm text-[#6c63ff] border-[#6c63ff] bg-transparent hover:bg-transparent hover:text-gray-600 hover:border-gray-600 px-2 h-7 flex items-center rounded-full  mt-1" : ""
+                    activeKeywords.includes(item) ? "flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2" : ""
                   }`}
+                >
+                  #{item}
+                </button>
+              ))}
+            </div> */}
+            {/* <div className="tabs">
+              {textureWords.slice(0, 4).map((item, index) => (
+                <button
+                  key={index}
+                  onClick={handleChecked}
+                  value={item}
+                  className={`fade-in button ${
+                    activeKeywords.includes(item) ? "flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2" : ""
+                  }`}
+                >
+                  #{item}
+                </button>
+              ))}
+            </div> */}
+          </div>
+
+          <div className="check mt-3 ">
+            <select
+              id="colour"
+              onChange={(id) => handleForm(id)}
+              value=""
+              className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#313751] shadow-2xl border-none"
+            >
+              {colours.map((colour, index) => (
+                <option key={index} value={colour.name}>
+                  {colour.name}
+                </option>
+              ))}
+            </select>
+            <select
+              id="artist"
+              onChange={(id) => handleForm(id)}
+              value=""
+              className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#313751] shadow-2xl border-none"
+            >
+              {artists.map((artist, index) => (
+                <option key={index} value={artist.name}>
+                  {artist.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex flex-wrap gap-x-2 py-1">
+          <div className="tabs">
+              {styleWords.slice(0, 4).map((item, index) => (
+                <button
+                  key={index}
+                  onClick={handleChecked}
+                  value={item}
+                  className={`fade-in button ${
+                    activeKeywords.includes(item) ?  "flex items-center text-md text-[#6c63ff]   border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2" : ""
+                  }`}
+                >
+                  #{item}
+                </button>
+              ))}
+            </div>
+            <div className="tabs">
+              {themeWords.slice(0, 4).map((item, index) => (
+                <button
+                  key={index}
+                  onClick={handleChecked}
+                  value={item}
+                  // className={`fade-in button ${
+                  //   activeKeywords.includes(item) ? "colourButton" : ""
+                  // }`}
+                   className={`fade-in button ${
+                    activeKeywords.includes(item) ? "flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2" : ""
+                  }`}
+                >
+                  #{item}
+                </button>
+              ))}
+            </div>
+            <div className=" tabs">
+              {colourWords.slice(0, 5).map((item, index) => (
+                <button
+                  style={{ backgroundColor: item }}
+                  className="text-md text-white border-none brightness-100 hover:brightness-50 px-3 h-8 mt-2 flex items-center  rounded-full  fade-in"
+                  key={index}
+                  onClick={handleChecked}
+                  value={item}
                 >
                   #{item}
                 </button>
@@ -222,51 +267,22 @@ const CreateForm = ({
                   onClick={handleChecked}
                   value={item}
                   className={`fade-in button ${
-                    activeKeywords.includes(item) ?  "text-sm text-[#6c63ff] border-[#6c63ff] bg-transparent hover:bg-transparent hover:text-gray-600 hover:border-gray-600 px-2 h-7 flex items-center rounded-full mt-1" : ""
+                    activeKeywords.includes(item) ? "flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2" : ""
                   }`}
                 >
                   #{item}
                 </button>
               ))}
             </div>
-          </div>
-
-          <div className="check mt-3 ">
-            <select
-              id="colour"
-              onChange={(id) => handleForm(id)}
-              value=""
-              className="text-white outline-none blue-glassmorphism rounded  bg-[#273057] shadow-2xl border-none  "
-            >
-              {colours.map((colour, index) => (
-                <option key={index} value={colour.name}>
-                  {colour.name}
-                </option>
-              ))}
-            </select>
-            <select
-              id="artist"
-              onChange={(id) => handleForm(id)}
-              value=""
-              className="text-white outline-none blue-glassmorphism w-half  rounded bg-[#273057] shadow-2xl border-none"
-            >
-              {artists.map((artist, index) => (
-                <option key={index} value={artist.name}>
-                  {artist.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="check">
             <div className=" tabs">
-              {colourWords.slice(0, 5).map((item, index) => (
+              {mediumWords.slice(0, 4).map((item, index) => (
                 <button
-                  style={{ backgroundColor: item }}
-                  className="text-sm text-white border-none backdrop-brightness-50 px-2 h-7 flex items-center hover:bg-[#868686] rounded-full  mt-1 fade-in"
                   key={index}
                   onClick={handleChecked}
                   value={item}
+                  className={`fade-in button ${
+                    activeKeywords.includes(item) ? "flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2" : ""
+                  }`}
                 >
                   #{item}
                 </button>
@@ -279,14 +295,50 @@ const CreateForm = ({
                   onClick={handleChecked}
                   value={item}
                   className={`fade-in button ${
-                    activeKeywords.includes(item) ?  "text-sm text-[#6c63ff] border-[#6c63ff] bg-transparent hover:bg-transparent hover:text-gray-600 hover:border-gray-600 px-2 h-7 flex items-center rounded-full  mt-1" : ""
+                    activeKeywords.includes(item) ?  "flex items-center text-md text-[#6c63ff]   border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2" : ""
                   }`}
                 >
                   #{item}
                 </button>
               ))}
             </div>
+       
           </div>
+
+          <div className="check text-white leading-tight mt-4 mb-2 max-w-[800px]">
+          {formParams.description}
+        { !isCreating ?  "Fill in the fields and click 'Create'. An auto generated description will appear here." : "'" + formParams.description + "'"}
+        
+            {/* <button className="bg-transparent h-7 flex items-center" value={fill} onClick={(e) => 
+            (
+              e.preventDefault(),
+              updateFormParams({
+                ...formParams,
+                description: e.target.value,
+                })
+
+            )
+
+               } >
+
+            write a description</button> */}
+
+          </div>
+        
+          <textarea
+            required
+            onChange={(e) =>
+              updateFormParams({
+                ...formParams,
+                description: e.target.value,
+              })
+            }
+            value={formParams.description}
+            id="description"
+            rows="3"
+            className=" mt-1 mb-3 block py-1.5 px-2.5 w-full text-white rounded border border-[#6c63ff] focus:ring-blue-500 focus:border-blue-500 white-glassmorphism "
+            placeholder="NFT Description..."
+          ></textarea>
         </>
 
         {/* Buttons */}
@@ -294,8 +346,9 @@ const CreateForm = ({
           {!isChecked ? (
             <button
               type="button"
+         
               onClick={OnCreateFile}
-              value={isCreating ? "Creating..." : "Create"}
+              value={fill}
               className={
                 isChecked
                   ? "disabledButton md:w-1/2 w-full group"

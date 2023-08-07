@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { BsShieldFillCheck } from "react-icons/bs";
 import { BiSearchAlt } from "react-icons/bi";
 import { RiHeart2Fill } from "react-icons/ri";
+import SubMenu from "./SubMenu";
 
 const FeaturePage = () => {
   var settings = {
@@ -28,6 +29,8 @@ const FeaturePage = () => {
     id,
     token,
     marketData,
+    handleTab,
+    tab
   } = useContext(TransactionContext);
 
   const params = useParams();
@@ -35,14 +38,15 @@ const FeaturePage = () => {
 
   //   console.log("creatorAddress", creatorAddress, token);
   const creatorNFTs = marketData.filter(
-    (item) => item[id] === creatorAddress
+    (item) => item[id] && shortenAddress(item[id]) === creatorAddress
   );
 
   // console.log(filteredResults, marketData);
-
+const backLink = creatorNFTs.length.toString()
+console.log("backLink", backLink)
   return (
     <div className="mx-2 lg:mx-[15%] pb-10">
-      <div className="flex  justify-start items-center ">
+      {/* <div className="flex  justify-start items-center ">
         <div className="flex mf:flex-row flex-col items-center justify-between ">
           <div className="flex-1 flex flex-col justify-start items-center py-2 ">
             <div className="flex flex-wrap w-full">
@@ -58,9 +62,21 @@ const FeaturePage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+        <SubMenu
+        title="Profile"
+        subtitle="Featuring our talented AI artists"
+        tab1="Profile"
+        tab2="Back"
+        // tab3="Market"
+        handleTab={handleTab}
+        tab={tab}
+        backLink={backLink}
+        // data={data}
+      />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 ">
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 mt-2">
         <div className="flex flex-col  justify-start items-start white-glassmorphism p-5 h-auto cursor-pointer hover:shadow-xl mb-4 md:mb-0">
 
        <div className="relative w-full"><BsShieldFillCheck fontSize={28} className="text-blue-700 absolute right-0" />

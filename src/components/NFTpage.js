@@ -14,9 +14,13 @@ import {
   TETabsPane,
 } from "tw-elements-react";
 import Loader from "./Loader";
-import { MdFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
+import { MdFavorite, MdOutlineFavoriteBorder, MdOutlinePercent, MdQrCode2 } from "react-icons/md";
 import { GiAerialSignal, GiBrain, GiFigurehead, GiFist, GiHeartPlus, GiSewedShell, GiStoneAxe } from "react-icons/gi"
 import SubMenu from "./SubMenu";
+import NFTTile from "./NFTTile";
+import { SiEthereum } from "react-icons/si";
+import { MdSell } from "react-icons/md";
+
 
 const NFTPage = () => {
   const {
@@ -29,7 +33,8 @@ const NFTPage = () => {
     currentAccount,
     formParams,
     updateFormParams,
-    favorites
+    favorites,
+    marketData
   } = useContext(TransactionContext);
 
   const [data, updateData] = useState({});
@@ -160,16 +165,25 @@ const NFTPage = () => {
   const params = useParams();
   const tokenId = params.tokenId;
 
+  console.log("MDtokenId", marketData[tokenId])
+
   if (!dataFetched) getNFTToken(tokenId);
   if (typeof data.image == "string")
     data.image = GetIpfsUrlFromPinata(data.image);
 
   const link = `https://sepolia.etherscan.io/address/${data.owner}`;
 
-  console.log(parseInt(data.tokenId))
+  const tokenid = parseInt(tokenId)-1
+  console.log('tid', tokenid, tokenId)
+
+
+  console.log('data', data)
+  console.log('marketData', marketData)
+
+  const [loaded, setLoaded] = useState(false);
 
   return (
-    <div className=" mx-2 md:px-[5%] fade-in">
+    <div className=" mx-2 lg:px-[5%] fade-in">
       {/* <div className="flex flex-row items-center flex-wrap ">
         <div className="flex lg:w-1/2 w-full ">
           <h1 className="text-3xl sm:text-3xl  text-gradient capitalize">
@@ -210,11 +224,13 @@ const NFTPage = () => {
       <SubMenu
         title="NFT Detail"
         subtitle="Discover more about this NFT or trade"
-        tab1="Details"
+        tab1="View"
         tab2="Trade"
+        tab3="Market"
         handleTab={handleTab}
         tab={tab}
         data={data}
+        tokenId={tokenId}
       />
 
       <TETabsContent>
@@ -222,13 +238,22 @@ const NFTPage = () => {
           <div className="flex flex-wrap w-full justify-center flex-col md:flex-row white-glassmorphism  ">
             <div className="text-lg w-full md:w-1/2 xl:w-2/5 aspect-square   rounded-lg  ">
               <div className="rounded-xl   p-2 md:py-6 md:pl-6 h-fit mb-2">
-                {data.image ? (
+                {/* {marketData ? (
+                  // <img
+                  //   src={marketData[tokenid].image}
+                  //   alt="Detailed image"
+                  //   className="rounded-lg"
+                  // />
+                  // <NFTTile data={marketData[tokenid]} key={tokenId}></NFTTile>
+                  // <Link to={{ pathname: `/Trade/Detail/` + data.data.tokenId }} className="z-0">
                   <img
-                    src={data.image}
-                    alt="Detailed image"
+                    src={marketData[tokenid].image} 
+                    alt="thumbnail"
                     className="rounded-lg"
                   />
+                // </Link>
                 ) : (
+            
                   <div className="w-full h-full aspect-square rounded-lg seal ">
                     <label className="flex  items-center justify-center w-full h-full">
                       <div className="flex flex-col items-center justify-center ">
@@ -239,14 +264,38 @@ const NFTPage = () => {
                       </div>
                     </label>
                   </div>
-                )}
+                )} */}
+
+                    
+      {loaded ? null : (
+          <div className="w-full h-full aspect-square rounded-lg seal ">
+          <label className="flex  items-center justify-center w-full h-full">
+            <div className="flex flex-col items-center justify-center ">
+              <Loader />
+              <p className="text-sm text-white ">
+                LOADING NFT DATA...
+              </p>
+            </div>
+          </label>
+        </div>
+      )}
+      <img
+        style={loaded ? {} : { display: 'none' }}
+        src={marketData[tokenid].image}
+        onLoad={() => setLoaded(true)}
+        alt="thumbnail"
+        className="rounded-lg "
+      />
+  
+
+    
               </div>
             </div>
 
             <div className="text-lg w-full md:w-1/2 xl:w-3/5 px-2 md:p-5 rounded-lg ">
               <div className="  flex justify-between items-start flex-nowrap  text-white  h-fit pb-3">
                 <div className="">
-                  <p className=" text-3xl  drop-shadow-x2 leading-tight font-thin group relative">
+                  <p className=" text-2xl md:text-3x1  drop-shadow-x2 leading-tight font-thin group relative">
                     <strong>
                       {data.collection ? data.collection : "Title"}{" "}
                     </strong>
@@ -259,7 +308,8 @@ const NFTPage = () => {
                       rel="noopener noreferrer"
                       className="text-2xl border px-3 rounded-full white-glassmorphism"
                     >
-                      #{data.tokenId}  
+                      {/* #{data.tokenId}   */}
+                      #{marketData[tokenid].tokenId}
                     </a>
                  
                   </p>
@@ -286,7 +336,7 @@ const NFTPage = () => {
                 </div>
                 <div className=" flex items-center text-[#868686] text-sm h-fit mb-2 "></div>{" "}
                 <Link
-                  to={{ pathname: `/Trade/FeaturePage/${data.creator}` }}
+                  to={{ pathname: `/Trade/Profile/${data.creator && shortenAddress(data.creator)}` }}
                   key={data.id}
                 >
                   <div
@@ -315,11 +365,12 @@ const NFTPage = () => {
               <div className=" w-full text-[#868686] text-sm  h-fit ">
                 DESCRIPTION{" "}
                 <div className=" text-lg  pt-3 text-white">
-                  {data.description} Lorem ipsum dolor sit amet, consectetur
+                  {data.description} 
+                  {/* Lorem ipsum dolor sit amet, consectetur
                   adipiscing elit, sed do eiusmod tempor incididunt ut labore et
                   dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
                   exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                  consequat.
+                  consequat. */}
                 </div>
               </div>
               <div className="  text-white rounded-lg py-5 ">
@@ -425,8 +476,8 @@ const NFTPage = () => {
                 </div>
               </div>
 
-              <div className="flex flex-wrap">
-                <div className="text-[#868686] text-sm my-2 w-96 md:w-11 ">
+              <div className="flex flex-wrap mt-2">
+                <div className="text-[#868686] text-sm mt-3 w-96 md:w-11 ">
                   {" "}
                   TAGS
                 </div>
@@ -532,7 +583,7 @@ const NFTPage = () => {
             <div className="text-lg w-full md:w-1/2 xl:w-3/5 px-2 md:p-5 rounded-lg ">
               <div className="  flex justify-between items-start flex-nowrap  text-white  h-fit pb-3">
                 <div className="">
-                  <p className=" text-3xl  drop-shadow-x2 leading-tight font-thin group relative">
+                  <p className="text-2xl md:text-3x1  drop-shadow-x2 leading-tight font-thin group relative">
                     <strong>
                       {data.collection ? data.collection : "Title"}{" "}
                     </strong>
@@ -549,13 +600,17 @@ const NFTPage = () => {
                     </a>
                   </p>
 
-                  <span className=" text-2xl font-extralight text-gradient py-2 italic leading-tight">
+                  <span className=" text-2xl font-extralight text-gradient py-2 italic leading-tight ">
                     '{data.name ? data.name : "Untitled"}'
                   </span>
+
+                  <div className="w-7 h-7 rounded-full border border-white flex justify-center items-center eth-card seal mt-1">
+                      <SiEthereum fontSize={16} color="#fff" />
+                    </div>
                 </div>
                 <div className=" flex items-center text-[#868686] text-sm h-fit mb-2 "></div>{" "}
                 <Link
-                  to={{ pathname: `/Trade/FeaturePage/${data.seller}` }}
+                  to={{ pathname: `/Trade/Profile/${ data.seller && shortenAddress(data.seller)}` }}
                   key={data.id}
                 >
                   <div
@@ -575,27 +630,35 @@ const NFTPage = () => {
                   </div>{" "}
                 </Link>
               </div>
-              <div className=" flex items-center text-[#868686] text-sm h-fit mb-5 ">
-                TRADE
-              </div>{" "}
+
+              <div className=" w-full text-[#868686] text-sm  h-fit ">
+                TRADE{" "}
+                <div className=" text-lg  pt-3 text-white">
+                  Make an offer on this NFT above {data.price} ETH.
+                </div>
+              </div>
+
+
+
+         
               <div className=" text-[#868686] text-sm  mt-2 ">
-                <div className="white-glassmorphism py-5">
+                <div className="white-glassmorphism ">
                   {checksumAddress !== data.seller ? (
                     <div>
                       <div className="check mt-3 gap-x-2.5"></div>
                       <div className="flex justify-around items-center">
                         <button
-                          className="activeButton text-white outline-none  font-bold py-2 px-10 my-5 rounded text-sm"
+                          className="activeButton text-white outline-none  font-semibold py-2 px-10 my-5 rounded text-[15px]"
                           onClick={() => buyNFT(tokenId)}
                         >
                           BUY
                         </button>
                         <input
-                          className=" rounded outline-none text-white text-md border-none white-glassmorphism shadow-2xl px-2 text-center h-11 w-[120px] "
+                          className=" rounded outline-none text-white text-[15px] font-semibold border-none white-glassmorphism shadow-2xl px-2 text-center h-11 w-[120px] "
                           type="number"
                           placeholder="Price (ETH)"
                           step="0.001"
-                          min="0.00"
+                          min={data.price}
                           // value={formParams.price}
                           // onChange={(e) =>
                           //   updateFormParams({
@@ -605,7 +668,7 @@ const NFTPage = () => {
                           // }
                         ></input>
                       </div>
-                      <div className="text-white text-center font-light text-sm ">
+                      <div className="text-white text-center text-md ">
                         {currentAccount
                           ? "Enter your buy price"
                           : "Connect your MetaMask account to trade"}
@@ -636,7 +699,7 @@ const NFTPage = () => {
                           SELL
                         </button>
                       </div>
-                      <div className="text-white text-center font-light text-sm ">
+                      <div className="text-white text-center  text-lg ">
                         {currentAccount
                           ? "Enter your sell price"
                           : "Connect your MetaMask account to trade"}
@@ -662,23 +725,49 @@ const NFTPage = () => {
                     </a>
                   </div>
                 </div>
-                <div className=" grid grid-cols-2 xl:grid-cols-4 w-full text-[#868686] text-lg gap-3  md:py-2 h-fit ">
-                  <div className="bg-[darkgrey] bg-opacity-[0.1] text-white rounded-lg p-3 w-full">
-                    <p className="text-xs text-[#868686]">STATUS&nbsp;</p>
-                    {data.listing ? data.listing : "Listed"}
-                  </div>
-                  <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 w-full  text-white">
-                    <p className="text-xs text-[#868686]">ROYALTY&nbsp;</p>
-                    {data.royalty ? data.royalty : "No Royalty"}
-                  </div>
-                  <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 w-full text-white">
-                    <p className="text-xs text-[#868686]">CODE&nbsp;</p>
-                    {data.code ? data.code : "No Code"}
-                  </div>
-                  <div className="bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 w-full text-white">
-                    <p className="text-xs text-[#868686]">VERIFIED&nbsp;</p>
-                    {data.seal ? data.seal : "None"}
-                  </div>
+                <div className=" grid grid-cols-2 xl:grid-cols-4 w-full text-white text-md gap-3  md:py-2 h-fit ">
+                
+                <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
+                    <div>
+                      <p className="text-xs text-[#868686] uppercase">
+                        {"Status"} &nbsp;
+                      </p>
+                   
+                      {data.listing ? data.listing : "N/A"}
+                      </div>
+                      <MdSell fontSize="2.4em" color="orange" className="drop-shadow"/>
+                    </div>
+                 
+                  <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
+                    <div>
+                      <p className="text-xs text-[#868686] uppercase">
+                        {"Royalty"} &nbsp;
+                      </p>
+                   
+                      {data.royalty ? data.royalty: "N/A"}
+                      </div>
+                      <MdOutlinePercent fontSize="2.4em" color="orange" className="drop-shadow"/>
+                    </div>
+
+                  <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
+                    <div>
+                      <p className="text-xs text-[#868686] uppercase">
+                        {"Code"} &nbsp;
+                      </p>
+                      {data.code ? data.code : "N/A"}
+                      </div>
+                      <MdQrCode2 fontSize="2.4em" color="orange" className="drop-shadow"/>
+                    </div>
+            
+                     <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
+                    <div>
+                      <p className="text-xs text-[#868686] uppercase">
+                        {"Seal"} &nbsp;
+                      </p>
+                      {data.seal ? data.seal : "N/A"}
+                      </div>
+                      <SiEthereum fontSize="2.4em" color="orange" className="drop-shadow"/>
+                    </div>
                 </div>
                 <br />
                 CONTRACT
