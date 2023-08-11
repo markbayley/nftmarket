@@ -13,6 +13,7 @@ import {
   BsFillArrowRightCircleFill,
   BsFillArrowLeftCircleFill,
 } from "react-icons/bs";
+import { traits1, traits2, traits3 } from "../data/traits.js";
 
 const MintForm = ({
   isUploading,
@@ -33,6 +34,7 @@ const MintForm = ({
   isChecked,
   transactionHash,
   mint,
+  message
 }) => {
   console.log("formParams", formParams);
 
@@ -40,19 +42,106 @@ const MintForm = ({
 
   const handleShow = (e) => {
     e.preventDefault();
-       setShowMore(!showMore);
-  }
+    setShowMore(!showMore);
+  };
 
   return (
     <form className="">
-    <div className="  ">
-    <div>
-
+      <div className="max-w-2/3  ">
+        <div>
+          <p className="pb-3 text-[#868686] text-sm uppercase">ATTRIBUTES</p>
 
           {!showMore ? (
             // First Three Traits
             <div>
-              <div className="flex w-full mb-3  justify-between gap-x-2.5 ">
+              <div className="check  gap-x-2.5">
+                <select
+                  id="trait1"
+                  onChange={(id) => handleForm(id)}
+                  value={traits1.name}
+                  className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#273057] shadow-2xl border-none"
+                >
+                  {traits1.map((trait, index) => (
+                    <option key={index} value={trait.name}>
+                      {trait.name}
+                    </option>
+                  ))}
+                </select>
+
+                <input
+                  className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
+                  type="text"
+                  placeholder="Trait 1 Value..."
+                  id="value1"
+                  onChange={(e) =>
+                    updateFormParams({
+                      ...formParams,
+                      value1: e.target.value,
+                    })
+                  }
+                  value={formParams.value1}
+                ></input>
+              </div>
+
+              <div className="check mt-3 gap-x-2.5">
+                <select
+                  id="trait2"
+                  onChange={(id) => handleForm(id)}
+                  value={traits2.name}
+                  className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#273057] shadow-2xl border-none"
+                >
+                  {traits2.map((trait, index) => (
+                    <option key={index} value={trait.name}>
+                      {trait.name}
+                    </option>
+                  ))}
+                </select>
+
+                <input
+                  className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
+                  type="text"
+                  placeholder="Trait 2 Value..."
+                  id="value2"
+                  onChange={(e) =>
+                    updateFormParams({
+                      ...formParams,
+                      value2: e.target.value,
+                    })
+                  }
+                  value={formParams.value2}
+                ></input>
+              </div>
+
+              <div className="check mt-3 gap-x-2.5">
+                <select
+                  id="trait3"
+                  onChange={(id) => handleForm(id)}
+                  value={traits3.name}
+                  className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#273057] shadow-2xl border-none"
+                >
+                  {traits3.map((trait, index) => (
+                    <option key={index} value={trait.name}>
+                      {trait.name}
+                    </option>
+                  ))}
+                </select>
+
+                <input
+                  className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
+                  type="text"
+                  placeholder="Trait 3 Value..."
+                  id="value3"
+                  onChange={(e) =>
+                    updateFormParams({
+                      ...formParams,
+                      value3: e.target.value,
+                    })
+                  }
+                  value={formParams.value3}
+                ></input>
+              </div>
+
+              {/* <div className="flex w-full mb-3  justify-between gap-x-2.5 ">
                 <input
                   className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
                   type="text"
@@ -108,9 +197,9 @@ const MintForm = ({
                   }
                   value={formParams.value2}
                 ></input>
-              </div>
+              </div> 
 
-              <div className="flex w-full my-3 sm:flex-wrap justify-between gap-x-2.5 ">
+            <div className="flex w-full my-3 sm:flex-wrap justify-between gap-x-2.5 ">
                 <input
                   className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
                   type="text"
@@ -137,10 +226,10 @@ const MintForm = ({
                   }
                   value={formParams.value3}
                 ></input>
-              </div>
+              </div> */}
             </div>
           ) : (
-            <div >
+            <div>
               {/* Second Three Traits */}
               <div className="flex w-full  mb-3  justify-between gap-x-2.5 ">
                 <input
@@ -171,7 +260,7 @@ const MintForm = ({
                 ></input>
               </div>
 
-              <div className="flex w-full my-2 sm:flex-wrap justify-between gap-x-2.5 ">
+              <div className="flex w-full my-2  justify-between gap-x-2.5 ">
                 <input
                   className="w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
                   type="text"
@@ -201,7 +290,7 @@ const MintForm = ({
                 ></input>
               </div>
 
-              <div className="flex w-full  my-3 sm:flex-wrap justify-between gap-x-2.5 ">
+              <div className="flex w-full  mt-3  justify-between gap-x-2.5 ">
                 <input
                   className="w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
                   type="text"
@@ -232,18 +321,67 @@ const MintForm = ({
             </div>
           )}
 
-         {/* Add More Traits */}
-          <div className="flex w-full justify-between items-center text-white py-1">
+          {/* Add More Traits */}
+          <div className="flex w-full justify-between items-center  text-white py-3">
             {" "}
-   
-             <button  onClick={handleShow} className={showMore ? "activeButton" : "inactiveButton bg-transparent text-[#868686]" }> <BsFillArrowLeftCircleFill size="30"   /></button>
-        
-           { !showMore ? "Click right to enter more traits" : "Click left to go back" }
-        
-             <button onClick={handleShow}  className={!showMore ? "activeButton" : "inactiveButton bg-transparent text-[#868686]" } ><BsFillArrowRightCircleFill size="30"  /></button> 
-          
+            <button
+              onClick={handleShow}
+              className={
+                showMore
+                  ? "activeButton h-9"
+                  : "inactiveButton bg-transparent text-[#868686] h-9"
+              }
+            >
+              {" "}
+              <BsFillArrowLeftCircleFill size="24" />
+            </button>
+            {!showMore
+              ? "Click right to enter more traits"
+              : "Click left to go back"}
+            <button
+              onClick={handleShow}
+              className={
+                !showMore
+                  ? "activeButton h-9"
+                  : "inactiveButton bg-transparent text-[#868686] h-9"
+              }
+            >
+              <BsFillArrowRightCircleFill size="24" />
+            </button>
           </div>
 
+          <p className="pt-3 text-[#868686] text-sm uppercase">
+            LiSTING DETAILS
+          </p>
+
+          {/* <div className="flex w-full mb-3  justify-between gap-x-2.5 ]">
+                <input
+                  className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
+                  type="text"
+                  placeholder="Nature..."
+                  value={formParams.trait1}
+                  id="trait1"
+                  onChange={(e) =>
+                    updateFormParams({
+                      ...formParams,
+                      trait1: e.target.value,
+                    })
+                  }
+                ></input>
+                <input
+                  className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
+                  type="text"
+                  placeholder="Personality Trait..."
+                  id="value1"
+                  onChange={(e) =>
+                    updateFormParams({
+                      ...formParams,
+                      value1: e.target.value,
+                    })
+                  }
+                  value={formParams.value1}
+                ></input>
+              </div> */}
 
           <div className="check mt-3 ">
             <select
@@ -291,7 +429,13 @@ const MintForm = ({
             <input
               className=" rounded outline-none text-white border-none white-glassmorphism shadow-2xl px-2  w-[50%] "
               type="number"
-              placeholder={ formParams.listing === "Listed For Sale" ? "Sale Price (ETH)" : formParams.listing === "Auction" ? "Floor Price (ETH)" : "No Price Required" }
+              placeholder={
+                formParams.listing === "Listed For Sale"
+                  ? "Sale Price (ETH)"
+                  : formParams.listing === "Auction"
+                  ? "Floor Price (ETH)"
+                  : "No Price Required"
+              }
               step="0.001"
               min="0.00"
               value={formParams.price}
@@ -302,13 +446,13 @@ const MintForm = ({
                 })
               }
             ></input>
-
-
           </div>
         </div>
 
+   
+
         {/* Buttons */}
-        <div className="flex w-full justify-end text-white gap-x-3 mt-5 relative">
+        <div className="flex w-full justify-end text-white gap-x-3 mt-14 relative">
           {/* <button
             onChange={(e) => OnUploadFile(e)}
             type="button"
@@ -327,6 +471,10 @@ const MintForm = ({
           >
             Save
           </button> */}
+
+<div className="message group relative text-white w-1/2 h-9 flex items-center ">
+        {message}
+      </div>
 
           <button
             onClick={listNFT}

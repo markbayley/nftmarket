@@ -30,7 +30,7 @@ export default function Marketplace() {
     favorites,
   } = useContext(TransactionContext);
 
-  window.localStorage.setItem("marketData", marketData);
+  // window.localStorage.setItem("marketData", marketData);
 
   // SEARCH
   const [searchResults, setSearchResults] = useState(marketData);
@@ -57,6 +57,21 @@ export default function Marketplace() {
       setSearchResults(result);
     }
   };
+
+
+
+
+
+   // ALL NFTS
+//    const allResults = searchResults
+//    .sort((a, b) => parseFloat(a.tokenId) - parseFloat(b.tokenId));
+//  const allSorted = allResults
+//    .sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+//  const allNewest = allResults
+//    .sort((a, b) => parseFloat(b.tokenId) - parseFloat(a.tokenId));
+//  const getAllResults = () => {
+//    return sorted ? allSorted : allNewest;
+//  };
 
   // LISTED
   const listedResults = searchResults
@@ -101,6 +116,12 @@ export default function Marketplace() {
   };
 
   // FAVORITES
+  // const getFavoriteAll = () => {
+  //   const favoriteAll = allResults.filter((item) =>
+  //     favorites.includes(item.tokenId)
+  //   );
+  //   return favoriteAll;
+  // };
   const getFavoriteListed = () => {
     const favoriteListed = listedResults.filter((item) =>
       favorites.includes(item.tokenId)
@@ -144,7 +165,44 @@ export default function Marketplace() {
     searchItems(searchInput);
   }, [searchInput, collection]);
 
-  console.log("localStorage", localStorage);
+  // console.log("localStorage", localStorage);
+  // console.log("marketData", marketData);
+  // console.log("listed", listedResults, listedNewest.length, listedSorted.length, searchResults.length);
+
+// // Filter items with a defined "collection" property
+// const filteredMarketData = marketData.filter(item => item.collection !== undefined);
+// // Create a Set to keep track of unique collection values
+// const uniqueCollections = new Set();
+// filteredMarketData.forEach(item => {
+//   uniqueCollections.add(item.collection);
+// });
+// // Convert Set to an array of unique collection values
+// const uniqueCollectionValues = Array.from(uniqueCollections);
+
+// console.log(uniqueCollectionValues);
+
+function extractUniqueValuesWithProperty(dataArray, properties) {
+  const uniqueValues = new Set();
+
+  properties.forEach(property => {
+    dataArray.forEach(item => {
+      if (item[property] !== undefined && item[property] !== "") {
+        if (Array.isArray(item[property])) {
+          item[property].forEach(value => uniqueValues.add(JSON.stringify({ property, value })));
+        } else {
+          uniqueValues.add(JSON.stringify({ property, value: item[property] }));
+        }
+      }
+    });
+  });
+
+  return Array.from(uniqueValues).map(item => JSON.parse(item));
+}
+
+const propertiesToExtract = ['collection', 'theme', 'style', 'medium', 'texture', 'artist'];
+
+const uniqueValuesWithProperty = extractUniqueValuesWithProperty(marketData, propertiesToExtract);
+
 
   return (
     <div className="fade-in md:px-[3%] px-2">
@@ -152,14 +210,16 @@ export default function Marketplace() {
         {/* HEADING */}
         <div>
           <h1 className="text-3xl sm:text-5xl text-white leading-tight text-gradient ">
-            Trade NFTs
+            Trade NFTs   
           </h1>
-         
+         {/* {filteredResults?.length} */}
           <div className="text-white flex items-center text-gradient">
               {tab == "tab1"
                 ? "Displaying " +
                   (showFavorites
                     ? getFavoriteListed()?.length
+                    // : collection && filteredResults?.length === 0 ? filteredResults?.length
+
                     : listedResults?.length) +
                   " FOR SALE results "
                 : tab == "tab2"
@@ -173,9 +233,11 @@ export default function Marketplace() {
                     ? getFavoriteUnlisted()?.length
                     : unlistedResults?.length) +
                   " UNLISTED results "}
-              {searchInput || showFavorites || collection
-                ? "- Filtered"
-                : "- Unfiltered"}
+              { collection
+                ? "- Filtered" :
+                showFavorites ? " - Favorites" :
+                searchInput ? " - Search" :
+                "- Unfiltered"}
               &nbsp;
       </div>
       {/* <div className="text-white flex items-center">
@@ -327,8 +389,16 @@ export default function Marketplace() {
         {/* TABS */}
         <div className="flex w-full xl:w-auto justify-center xl:justify-end">
           <TETabs className="">
+          {/* <TETabsItem
+              className="hover:bg-transparent hover:text-[#E4A11B] text-[16px] mt-0 "
+              onClick={() => handleTab("tab0")}
+              active={tab === "tab0"}
+              color="warning"
+            >
+              All NFTS
+            </TETabsItem> */}
             <TETabsItem
-              className="hover:bg-transparent hover:text-[#E4A11B] text-[16px] mt-0 px-[14px]"
+              className="hover:bg-transparent hover:text-[#E4A11B] text-[16px] mt-0 "
               onClick={() => handleTab("tab1")}
               active={tab === "tab1"}
               color="warning"
@@ -336,7 +406,7 @@ export default function Marketplace() {
               For Sale
             </TETabsItem>
             <TETabsItem
-              className="hover:bg-transparent hover:text-[#E4A11B] text-[16px] mt-0 px-[2em]"
+              className="hover:bg-transparent hover:text-[#E4A11B] text-[16px] mt-0 "
               onClick={() => handleTab("tab2")}
               active={tab === "tab2"}
               color="warning"
@@ -344,7 +414,7 @@ export default function Marketplace() {
               Auction
             </TETabsItem>
             <TETabsItem
-              className="hover:bg-transparent hover:text-[#E4A11B] text-[16px] mt-0 px-[14px]"
+              className="hover:bg-transparent hover:text-[#E4A11B] text-[16px] mt-0 "
               onClick={() => handleTab("tab3")}
               active={tab === "tab3"}
               color="warning"
@@ -356,23 +426,23 @@ export default function Marketplace() {
       </div>
 
       {/* HASHTAGS */}
-      <TECollapse show={showTags}>
-        <div className="block rounded-lg bg-transparent text-neutral-500 shadow-lg  ">
+      <TECollapse show={showTags} className="z-50">
+        <div className="block rounded-lg bg-transparent text-neutral-500 shadow-lg  z-50">
           <div className=" flex flex-wrap gap-1 ">
-            {[...styles].slice(1, 9).map((item, index) => (
-              <button
-                id="style"
-                key={index}
-                value={item.name}
-                className="flex items-center text-md text-neutral-500  border px-3 h-7 rounded-full white-glassmorphism hover:text-[#E4A11B]  hover:bg-transparent"
-                onClick={(id) => (
-                  handleCollection(id), setShowTags(() => false)
-                )}
-              >
-                #{item.name}
-              </button>
-            ))}
-            {[...themes].slice(1, 9).map((item, index) => (
+          {uniqueValuesWithProperty.map((item, index) => (
+    <button
+      id={item.property}
+      key={index}
+      value={item.value}
+      className="flex items-center text-md text-neutral-500 border px-3 h-7 rounded-full white-glassmorphism hover:text-[#E4A11B] hover:bg-transparent"
+      onClick={(id) => (
+        handleCollection(id), setShowTags(false)
+      )}
+    >
+      #{item.value}
+    </button>
+  ))}
+            {/* {[...themes].slice(1, 9).map((item, index) => (
               <button
                 id="theme"
                 key={index}
@@ -384,9 +454,9 @@ export default function Marketplace() {
               >
                 #{item.name}
               </button>
-            ))}
+            ))} */}
 
-            {[...mediums].slice(1, 5).map((item, index) => (
+            {/* {[...mediums].slice(1, 5).map((item, index) => (
               <button
                 id="medium"
                 key={index}
@@ -398,9 +468,9 @@ export default function Marketplace() {
               >
                 #{item.name}
               </button>
-            ))}
+            ))} */}
 
-            {[...collections].map((item, index) => (
+            {/* {[...collections].map((item, index) => (
               <button
                 id="collection"
                 key={index}
@@ -412,13 +482,31 @@ export default function Marketplace() {
               >
                 #{item.name}
               </button>
-            ))}
+            ))} */}
           </div>
         </div>
       </TECollapse>
 
       {/*TAB GALLERIES */}
       <TETabsContent>
+
+      {/* <TETabsPane show={tab === "tab0"}>
+          {showFavorites ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
+              {getFavoriteAll().map((value, tokenId) => {
+                return <NFTTile data={value} key={tokenId}></NFTTile>;
+              })}
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
+              {getAllResults().map((value, tokenId) => {
+                return <NFTTile data={value} key={tokenId}></NFTTile>;
+              })}
+            </div>
+          )}
+        </TETabsPane> */}
+
+
         <TETabsPane show={tab === "tab1"}>
           {/* Listed */}
           {showFavorites ? (

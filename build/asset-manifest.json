@@ -1,21 +1,24 @@
 {
   "files": {
-    "main.css": "/nftmarket/static/css/main.b70ad9a8.css",
-    "main.js": "/nftmarket/static/js/main.2349db4f.js",
-    "static/media/cards.png": "/nftmarket/static/media/cards.39f11f9154fda2dd0239.png",
-    "static/media/tile.jpeg": "/nftmarket/static/media/tile.d490ae250fe4f4d142b0.jpeg",
+    "main.css": "/nftmarket/static/css/main.638b678d.css",
+    "main.js": "/nftmarket/static/js/main.e61795c2.js",
+    "static/media/kyoto-girl.jpg": "/nftmarket/static/media/kyoto-girl.6b87e2739cff8d7511d0.jpg",
     "static/media/futuristic-city.jpg": "/nftmarket/static/media/futuristic-city.1c971f9c3cc893d3ed1a.jpg",
+    "static/media/laughing-panda.jpg": "/nftmarket/static/media/laughing-panda.42286bd6357bb0defa84.jpg",
+    "static/media/download.jpg": "/nftmarket/static/media/download.d70737e1afc160c7630e.jpg",
+    "static/media/tokyo-dreams.jpg": "/nftmarket/static/media/tokyo-dreams.026a07c3646e66e73c5c.jpg",
     "static/media/tokyo-haze.jpg": "/nftmarket/static/media/tokyo-haze.3c20d66d8a70c2bc97ad.jpg",
     "static/media/inblocklogolight.png": "/nftmarket/static/media/inblocklogolight.ce6796b5883951647e96.png",
+    "static/media/profile.jpg": "/nftmarket/static/media/profile.cb3a859d67e478d10c9f.jpg",
     "static/media/full_logo.png": "/nftmarket/static/media/full_logo.4ff31c2779193816cee4.png",
     "static/media/create.svg": "/nftmarket/static/media/create.16924aa94ba2b88a632d09e042b8ddee.svg",
     "index.html": "/nftmarket/index.html",
     "static/media/upload.svg": "/nftmarket/static/media/upload.d12083c78be99778edbf6c98cd374daf.svg",
-    "main.b70ad9a8.css.map": "/nftmarket/static/css/main.b70ad9a8.css.map",
-    "main.2349db4f.js.map": "/nftmarket/static/js/main.2349db4f.js.map"
+    "main.638b678d.css.map": "/nftmarket/static/css/main.638b678d.css.map",
+    "main.e61795c2.js.map": "/nftmarket/static/js/main.e61795c2.js.map"
   },
   "entrypoints": [
-    "static/css/main.b70ad9a8.css",
-    "static/js/main.2349db4f.js"
+    "static/css/main.638b678d.css",
+    "static/js/main.e61795c2.js"
   ]
 }

@@ -81,7 +81,7 @@ const CreateImage = ({
                   <img
                     src={fileURL}
                     alt="AI thumbnail"
-                    className="overlay loading"
+                    className="overlay loading animate-ping"
                   />
                 ) : (
                   <img
@@ -104,12 +104,12 @@ const CreateImage = ({
                       alt="create-svg"
                       style={{ width: "40px", height: "40px" }}
                     />
-                    <p className="mb-2 text-sm text-white pt-3">
+                    {/* <p className="mb-2 text-sm text-white pt-3">
                       Fill in fields and click the{" "}
                       <span className="font-semibold">CREATE</span>&nbsp;button 
-                    </p>
-                    <p className="text-xs text-white ">
-                      COLLECTION, TITLE & DESCRIPTION REQUIRED
+                    </p> */}
+                    <p className="text-xs text-white py-2">
+                      COLLECTION & TITLE REQUIRED
                     </p>
                   </div>
                 </label>
@@ -202,25 +202,12 @@ const CreateImage = ({
           </div>
         </TETabsPane>
       </TETabsContent>
-      { message &&
-      <div className="message group relative">
-        {message}&nbsp;&nbsp;
-        {/* {metaData && ( */}
-          {/* <Link to="/Trade" >
-            <span className="absolute bottom-12 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
-              View Data
-            </span>
-            <BsInfoCircle fontSize={18} color="#fff" />
-            View
-          </Link> */}
-        {/* )} */}
-      </div>
- } 
+
 
       {/* Toggle */}
 
-      {/* { !mint && */}
-      {/* <TETabs className="flex justify-center">
+      {/* { !mint &&
+      <TETabs className="flex justify-center">
         <TETabsItem
           className="hover:bg-transparent "
           onClick={() => (handleBasicClick("tab1"), setIsChecked(() => false))}
@@ -236,8 +223,8 @@ const CreateImage = ({
         >
           Upload Image
         </TETabsItem>
-      </TETabs> */}
-{/* } */}
+      </TETabs>
+ }  */}
     </div>
   );
 };

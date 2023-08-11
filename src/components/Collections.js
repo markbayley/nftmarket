@@ -34,11 +34,11 @@ const Collections = () => {
                 id="collection"
                 value={collection.name}
                 onClick={(id) => handleCollection(id)}
-                className="flex items-end rounded-full h-auto bg-cover bg-center border-transparent hover:border-indigo-500 shadow-xl shadow-indigo-500/25 duration-300 hover:shadow-indigo-500/50"
+                className="flex items-end rounded-full h-[9.5em] w-[9.5em] md:h-[12em] md:w-[12em] bg-cover bg-center border-transparent hover:border-indigo-500 shadow-xl hover:border-2 hover:scale-[1.15] shadow-indigo-500/25 duration-200 hover:shadow-indigo-500/50"
                 style={{
                   backgroundImage: `url(${collection.image})`,
-                  height: "10rem",
-                  width: "10rem",
+                  // height: "10em",
+                  // width: "10em",
                 }}
               >
                 <span className="pointer-events-none bg-yellow-600 py-1 px-2 rounded-full text-white text-sm">

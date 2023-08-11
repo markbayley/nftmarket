@@ -14,6 +14,7 @@ import {
 } from "tw-elements-react";
 import { TransactionContext } from "../context/TransactionContext";
 import SubMenu from "./SubMenu";
+import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 
 const Create = () => {
   const {
@@ -74,20 +75,20 @@ const Create = () => {
     medium: "",
     texture: "",
     seal: "Yes",
-    listed: "",
+    listing: "Listed For Sale",
     price: "",
-    royalty: "",
-    trait1: "",
+    royalty: "No Royalties",
+    trait1: "Trait",
     value1: "",
-    trait2: "",
+    trait2: "Trait",
     value2: "",
-    trait3: "",
+    trait3: "Trait",
     value3: "",
-    trait4: "",
+    trait4: "Trait",
     value4: "",
-    trait5: "",
+    trait5: "Trait",
     value5: "",
-    trait6: "",
+    trait6: "Trait",
     value6: "",
   });
 
@@ -138,19 +139,19 @@ const Create = () => {
     }
   }
 
-  const fill = "From the collection '" + formParams.collection + "' this artwork entitled '" + formParams.name + "' was created using a digital " + formParams.medium + 
-  " medium in a captivating " + formParams?.style + " style. The piece's " + formParams.theme + " theme is combined with subtle " + formParams.texture + " textures, " 
-  + formParams.colour + " colours and " + formParams.artist + " influences." + formParams.description
+  const fill = "From the collection '" + formParams.collection + "' this artwork entitled '" + formParams.name + "' was made using a digital " + formParams.medium + 
+  " medium in a creative " + formParams?.style + " style. The " + formParams.theme + " theme combines with subtle " + formParams.texture + " textures, " 
+  + formParams.colour + " colors and " + formParams.artist + " influences." + formParams.description
 
   //CREATING
   async function OnCreateFile(e) {
     setIsCreating(true);
     updateMessage("Generating AI Image...");
 
-    updateFormParams({
-      ...formParams,
-      description: e.target.value,
-    })
+    // updateFormParams({
+    //   ...formParams,
+    //   description: e.target.value,
+    // })
 
     // updateFormParams({
     //   ...formParams,
@@ -190,9 +191,9 @@ const Create = () => {
     const filePinata = new File([data], "image.jpeg", { type: "image/jpeg" });
     setFile(filePinata);
 
-    console.log("fileAFTERP", file); 
+    // console.log("fileAFTERP", file); 
 
-    console.log("filePinata", filePinata);
+    // console.log("filePinata", filePinata);
 
     setFileURL(file);
     updateMessage("Image Created...");
@@ -213,9 +214,14 @@ const Create = () => {
     }
 
     // setImage(img);
-    updateMessage("Image Created...Mint?");
-    setTab("tab2");
+    updateMessage("Success! Enter details to mint NFT");
+    // setTab("tab2");
     setIsCreating(false);
+    // updateFormParams({
+    //   ...formParams,
+    //   description: "",
+    // })
+   
     return data;
 
 
@@ -267,6 +273,12 @@ const Create = () => {
       return -1;
     }
 
+
+    const date = `${new Date().getDate()}/${
+      new Date().getMonth() + 1
+    }/${new Date().getFullYear()}`;
+    setDateCreated(date);
+
     const nftJSON = {
       name,
       collection,
@@ -290,7 +302,17 @@ const Create = () => {
         { trait_type: trait5, value: value5 },
         { trait_type: trait6, value: value6 },
       ],
+      hashtags: [
+        { style: style },
+        { theme: theme },
+        { colour: colour },
+        { texture: texture },
+        { medium: medium },
+        { artist: artist },
+      ],
       image: fileURL,
+      tags: activeKeywords,
+      date: date
     };
 
     try {
@@ -300,7 +322,7 @@ const Create = () => {
         return response.pinataURL;
       }
     } catch (e) {
-      updateMessage("error uploading JSON metadata:", e);
+      updateMessage("Error storing metadata. Try again");
     }
   }
   async function listNFT(e) {
@@ -342,37 +364,41 @@ const Create = () => {
       const powerPoints = transaction.hash.slice(64, 66);
       setPowerPoints(powerPoints);
 
-      const date = `${new Date().getDate()}/${
-        new Date().getMonth() + 1
-      }/${new Date().getFullYear()}`;
-      setDateCreated(date);
+     
 
       updateMessage("Successfully listed your NFT!");
       setIsMinting(false);
-      getAllNFTs();
-      // updateFormParams({ name: "", description: "", price: "" });
-      // window.location.replace("/Wallet");
-   setTab("tab3")
+      setActiveKeywords([])
+      await getAllNFTs();
+
+      console.log("marketData", marketData)
+      console.log("marketData.length", marketData.length)
+      console.log("marketData[marketData.length].tokenId", marketData[marketData.length].tokenId )
+      window.location.replace(`/Trade/Detail/${marketData && marketData[marketData.length].tokenId}`);
+  //  setTab("tab3")
     } catch (e) {
-      updateMessage("Upload error" + e);
+      updateMessage("Connect MetaMask wallet to mint NFT.");
     }
   }
 
+  const index = parseInt(marketData.length)
+  console.log("marketData[marketData.length]", marketData[index] )
   console.log("activeKeywords", activeKeywords);
 
   return (
     <div className="fade-in lg:px-[5%] px-2">
       <SubMenu
         title={ tab === "tab1" ? "Create NFTs" : "Mint NFTs"}
-        subtitle={ tab === "tab1" ? "Generate an image or upload your own" : "Mint your NFT to the blockchain" }
+        subtitle={ tab === "tab1" ? "Generate an image or upload one" : "Mint your NFT to the blockchain" }
         tab1="Create"
         tab2="Mint"
-        tab3="View"
+        tab3={<MdOutlineKeyboardDoubleArrowRight fontSize={20} />}
         setMint={setMint}
         handleTab={handleTab}
         tab={tab}
         data={marketData}
         checksumAddress={checksumAddress}
+        formParams={formParams}
       />
 
       <div className="form white-glassmorphism md:py-5 md:px-[2%] gap-x-6 px-1 border-2 mt-2">
@@ -413,6 +439,7 @@ const Create = () => {
               OnUploadFile={OnUploadFile}
               transactionHash={transactionHash}
               fill={fill}
+              message={message}
             />
           </TETabsPane>
 
@@ -435,9 +462,17 @@ const Create = () => {
               isChecked={isChecked}
               OnUploadFile={OnUploadFile}
               transactionHash={transactionHash}
+              message={message}
             />
           </TETabsPane>
+
+          <TETabsPane show={tab === "tab3"}>
+
+
+          </TETabsPane>
+
         </TETabsContent>
+   
       </div>
     </div>
   );

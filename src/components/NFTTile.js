@@ -6,7 +6,7 @@ import { useContext, useState } from "react";
 import { TransactionContext } from "../context/TransactionContext";
 
 const NFTTile = (data) => {
-  const { favorites, setFavorites } = useContext(TransactionContext);
+  const { favorites, setFavorites, handleCollection } = useContext(TransactionContext);
 
   const IPFSUrl = GetIpfsUrlFromPinata(data?.data?.image);
   const link = `https://sepolia.etherscan.io/address/${data?.data?.owner}`;
@@ -39,15 +39,17 @@ const NFTTile = (data) => {
     // console.log("favorites", favorites)
  
   return (
-    <div className=" backdrop-blur-[5px] p-[5%] cursor-pointer sm:w-96  w-full md:w-auto  white-glassmorphism shadow-lg hover:shadow-indigo-500/30 duration-200">
+    <div className=" backdrop-blur-[5px] p-[5%] cursor-pointer sm:w-96  w-full md:w-auto  white-glassmorphism shadow-lg hover:shadow-indigo-500/30 duration-200 z-10">
       {/* ETHERSCAN */}
-      <Link to={link} target="_blank" rel="noopener noreferrer">
+      <Link to={link} target="_blank" rel="noopener noreferrer" className="z-50">
+        {data.data.seal === "Yes" &&
         <div className="w-[1.7em] h-[1.7em] rounded-full border-2  flex justify-center items-center absolute top-[6.5%] left-[6.7%] eth-card group seal hover:scale-[1.1] duration-300">
           <SiEthereum fontSize="1em" color="#fff" />
-          <span className="absolute bottom-10 scale-0 transition-all rounded bg-gray-900 p-2 text-xs group-hover:scale-100 shadow-lg shadow-indigo-500/50 duration-200">
+          <span className="absolute bottom-10 scale-0 transition-all rounded bg-gray-900 p-2 text-xs group-hover:scale-100 shadow-lg shadow-indigo-500/50 duration-200 z-50">
             Token&nbsp;#{data.data.tokenId} {data.data.price}&nbsp;ETH
           </span>
         </div>
+}
       </Link>
 
       {/* FAVORITE */}
@@ -72,7 +74,7 @@ const NFTTile = (data) => {
 
 
       {/* IMAGE */}
-      <Link to={{ pathname: `/Trade/Detail/` + data.data.tokenId }} className="z-0">
+      <Link to={{ pathname: `/Trade/Detail/` + data.data.tokenId }} className="z-0" >
         {/* <div className="border-2 border-b-neutral-700 border-t-neutral-900 border-l-neutral-800 border-r-neutral-700"> */}
         <img
           src={IPFSUrl} 

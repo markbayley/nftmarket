@@ -151,7 +151,7 @@ export const TransactionsProvider = ({ children }) => {
     texture: "",
     royalty: "",
     seal: "",
-    listed: "",
+    listing: "",
     price: "",
  
 
@@ -186,7 +186,7 @@ export const TransactionsProvider = ({ children }) => {
 
 
   // //MARKETPLACE
-  const [marketData, updateMarketData] = useState([], localStorage.getItem("marketData"));
+  const [marketData, updateMarketData] = useState([]);
   const [walletNFTs, updateWalletNFTs] = useState([]);
   const [totalPrice, updateTotalPrice] = useState("0");
 
@@ -226,15 +226,18 @@ export const TransactionsProvider = ({ children }) => {
               attributes: meta.attributes,
               metadata: tokenURI,
 
+              hashtags: meta.hashtags,
               style: meta.style,
               medium: meta.medium,
               artist: meta.artist,
               colour: meta.colour,
               theme: meta.theme,
               texture: meta.texture,
+              tags: meta.tags,
 
               listing: meta.listing,
               creator: meta.creator,
+              seal: meta.seal,
             };
             return item;
           })

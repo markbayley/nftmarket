@@ -30,7 +30,8 @@ const FeaturePage = () => {
     token,
     marketData,
     handleTab,
-    tab
+    tab,
+    collection
   } = useContext(TransactionContext);
 
   const params = useParams();
@@ -38,12 +39,14 @@ const FeaturePage = () => {
 
   //   console.log("creatorAddress", creatorAddress, token);
   const creatorNFTs = marketData.filter(
-    (item) => item[id] && shortenAddress(item[id]) === creatorAddress
+    (item) => item[id] && shortenAddress(item[id]) === creatorAddress || "0x8d0...Ba2B"
   );
 
   // console.log(filteredResults, marketData);
 const backLink = creatorNFTs.length.toString()
 console.log("backLink", backLink)
+
+console.log("creatorAddress", creatorAddress)
   return (
     <div className="mx-2 lg:mx-[15%] pb-10">
       {/* <div className="flex  justify-start items-center ">
@@ -65,7 +68,7 @@ console.log("backLink", backLink)
       </div> */}
         <SubMenu
         title="Profile"
-        subtitle="Featuring our talented AI artists"
+        subtitle="Featuring NFT artists and collectors"
         tab1="Profile"
         tab2="Back"
         // tab3="Market"
@@ -73,6 +76,8 @@ console.log("backLink", backLink)
         tab={tab}
         backLink={backLink}
         // data={data}
+        id={id}
+        creatorAddress={creatorAddress}
       />
 
 
@@ -124,8 +129,8 @@ console.log("backLink", backLink)
                 {profileParams.website || "Website URL"}
               </h3>
               <a href="" className="mt-3  text-md pr-4">
-                {creatorAddress && creatorAddress.length > 20
-                  ? shortenAddress(creatorAddress)
+                {creatorAddress ?
+                   shortenAddress(creatorAddress)
                   : "0x123...aBcD"}
               </a>
             </div>
@@ -135,7 +140,7 @@ console.log("backLink", backLink)
         <div className="w-full ">
           <Slider {...settings}>
             {creatorNFTs
-              .slice(creatorNFTs.length - 7)
+              .slice(creatorNFTs.length - 8)
               .reverse()
               .map((data) => (
                 <NFTTile data={data} key={data.tokenId} />

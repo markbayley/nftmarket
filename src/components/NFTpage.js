@@ -6,7 +6,7 @@ import { GetIpfsUrlFromPinata } from "../utils/utils";
 import { shortenAddress } from "../utils/shortenAddress";
 import { TransactionContext } from "../context/TransactionContext";
 import { BsInfoCircle } from "react-icons/bs";
-import { BiLinkExternal } from "react-icons/bi";
+import { BiCurrentLocation, BiLinkExternal } from "react-icons/bi";
 import {
   TETabs,
   TETabsContent,
@@ -14,13 +14,44 @@ import {
   TETabsPane,
 } from "tw-elements-react";
 import Loader from "./Loader";
-import { MdFavorite, MdOutlineFavoriteBorder, MdOutlinePercent, MdQrCode2 } from "react-icons/md";
-import { GiAerialSignal, GiBrain, GiFigurehead, GiFist, GiHeartPlus, GiSewedShell, GiStoneAxe } from "react-icons/gi"
+import {
+  MdFavorite,
+  MdOutlineFavoriteBorder,
+  MdOutlineKeyboardDoubleArrowLeft,
+  MdOutlineKeyboardDoubleArrowRight,
+  MdOutlinePercent,
+  MdQrCode2,
+} from "react-icons/md";
+import {
+  GiAbstract013,
+  GiAbstract039,
+  GiAbstract066,
+  GiAbstract069,
+  GiAbstract083,
+  GiAbstract103,
+  GiAerialSignal,
+  GiBrain,
+  GiChaingun,
+  GiCloudRing,
+  GiCrackedSaber,
+  GiCrystalEye,
+  GiCrystalWand,
+  GiCurlyWing,
+  GiDwennimmen,
+  GiFigurehead,
+  GiFist,
+  GiFleshyMass,
+  GiHeartPlus,
+  GiLaserGun,
+  GiMazeCornea,
+  GiSewedShell,
+  GiStoneAxe,
+} from "react-icons/gi";
 import SubMenu from "./SubMenu";
 import NFTTile from "./NFTTile";
 import { SiEthereum } from "react-icons/si";
 import { MdSell } from "react-icons/md";
-
+import Slider from "react-slick";
 
 const NFTPage = () => {
   const {
@@ -34,7 +65,9 @@ const NFTPage = () => {
     formParams,
     updateFormParams,
     favorites,
-    marketData
+    marketData,
+    id,
+    collection,
   } = useContext(TransactionContext);
 
   const [data, updateData] = useState({});
@@ -165,7 +198,7 @@ const NFTPage = () => {
   const params = useParams();
   const tokenId = params.tokenId;
 
-  console.log("MDtokenId", marketData[tokenId])
+  console.log("MDtokenId", marketData[tokenId]);
 
   if (!dataFetched) getNFTToken(tokenId);
   if (typeof data.image == "string")
@@ -173,14 +206,19 @@ const NFTPage = () => {
 
   const link = `https://sepolia.etherscan.io/address/${data.owner}`;
 
-  const tokenid = parseInt(tokenId)-1
-  console.log('tid', tokenid, tokenId)
+  const tokenid = parseInt(tokenId) - 1;
+  console.log("tid", tokenid, tokenId);
 
-
-  console.log('data', data)
-  console.log('marketData', marketData)
+  console.log("data", data);
+  console.log("marketData", marketData);
 
   const [loaded, setLoaded] = useState(false);
+
+  const collectionNFTs = marketData.filter(
+    (item) => item.collection === data.collection
+  );
+
+  console.log("collectionNFTS", collection, collectionNFTs);
 
   return (
     <div className=" mx-2 lg:px-[5%] fade-in">
@@ -224,9 +262,10 @@ const NFTPage = () => {
       <SubMenu
         title="NFT Detail"
         subtitle="Discover more about this NFT or trade"
+        tab0="Exchange"
         tab1="View"
         tab2="Trade"
-        tab3="Market"
+        tab3={<MdOutlineKeyboardDoubleArrowRight fontSize={20} />}
         handleTab={handleTab}
         tab={tab}
         data={data}
@@ -266,29 +305,25 @@ const NFTPage = () => {
                   </div>
                 )} */}
 
-                    
-      {loaded ? null : (
-          <div className="w-full h-full aspect-square rounded-lg seal ">
-          <label className="flex  items-center justify-center w-full h-full">
-            <div className="flex flex-col items-center justify-center ">
-              <Loader />
-              <p className="text-sm text-white ">
-                LOADING NFT DATA...
-              </p>
-            </div>
-          </label>
-        </div>
-      )}
-      <img
-        style={loaded ? {} : { display: 'none' }}
-        src={marketData[tokenid].image}
-        onLoad={() => setLoaded(true)}
-        alt="thumbnail"
-        className="rounded-lg "
-      />
-  
-
-    
+                {loaded ? null : (
+                  <div className="w-full h-full aspect-square rounded-lg seal ">
+                    <label className="flex  items-center justify-center w-full h-full">
+                      <div className="flex flex-col items-center justify-center ">
+                        <Loader />
+                        <p className="text-sm text-white ">
+                          LOADING NFT DATA...
+                        </p>
+                      </div>
+                    </label>
+                  </div>
+                )}
+                <img
+                  style={loaded ? {} : { display: "none" }}
+                  src={marketData[tokenid]?.image || data?.image}
+                  onLoad={() => setLoaded(true)}
+                  alt="thumbnail"
+                  className="rounded-lg "
+                />
               </div>
             </div>
 
@@ -297,7 +332,7 @@ const NFTPage = () => {
                 <div className="">
                   <p className=" text-2xl md:text-3x1  drop-shadow-x2 leading-tight font-thin group relative">
                     <strong>
-                      {data.collection ? data.collection : "Title"}{" "}
+                      {marketData[tokenid]?.collection || data?.collection || "Token"}{" "}
                     </strong>
                     <span className="absolute bottom-10 -right-5 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
                       Etherscan
@@ -308,35 +343,43 @@ const NFTPage = () => {
                       rel="noopener noreferrer"
                       className="text-2xl border px-3 rounded-full white-glassmorphism"
                     >
-                      {/* #{data.tokenId}   */}
-                      #{marketData[tokenid].tokenId}
+                      #{marketData[tokenid]?.tokenId || data?.tokenId}
+                      {/* #{marketData[tokenid].tokenId} */}
                     </a>
-                 
                   </p>
-                 
+
                   <span className=" text-2xl font-extralight text-gradient py-2 italic leading-tight">
-                    '{data.name ? data.name : "Untitled"}'
+                    '{marketData[tokenid]?.name || data?.name || "Untitled"}'
                   </span>
-               
+
                   <div
-                
-        // token={data.data.tokenId}
-        // onClick={(e) => toggleFavorite(e)}
-        className=" text-white ">  
-        { favorites.includes(parseInt(data.tokenId))?
-   
-          <MdFavorite fontSize="1.8em" color="#ff3366" className="drop-shadow"/>
-      
-         : 
-          <MdOutlineFavoriteBorder fontSize="1.8em" color="#ff3366" className="drop-shadow"/>
-     
-        }
-      </div>
+                    // token={data.data.tokenId}
+                    // onClick={(e) => toggleFavorite(e)}
+                    className=" text-white "
+                  >
+                    {favorites.includes(parseInt(data.tokenId)) ? (
+                      <MdFavorite
+                        fontSize="1.8em"
+                        color="#ff3366"
+                        className="drop-shadow"
+                      />
+                    ) : (
+                      <MdOutlineFavoriteBorder
+                        fontSize="1.8em"
+                        color="#ff3366"
+                        className="drop-shadow"
+                      />
+                    )}
+                  </div>
                   {/* <MdFavorite fontSize={24} className="text-[#ff3366]" /> */}
                 </div>
                 <div className=" flex items-center text-[#868686] text-sm h-fit mb-2 "></div>{" "}
                 <Link
-                  to={{ pathname: `/Trade/Profile/${data.creator && shortenAddress(data.creator)}` }}
+                  to={{
+                    pathname: `/Trade/Profile/${
+                      data.creator && shortenAddress(data.creator)
+                    }`,
+                  }}
                   key={data.id}
                 >
                   <div
@@ -359,13 +402,12 @@ const NFTPage = () => {
                     </div>
                   </div>{" "}
                 </Link>
-              
               </div>
-            
+
               <div className=" w-full text-[#868686] text-sm  h-fit ">
                 DESCRIPTION{" "}
                 <div className=" text-lg  pt-3 text-white">
-                  {data.description} 
+                  {marketData[tokenid]?.description || data?.description}
                   {/* Lorem ipsum dolor sit amet, consectetur
                   adipiscing elit, sed do eiusmod tempor incididunt ut labore et
                   dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
@@ -392,16 +434,14 @@ const NFTPage = () => {
                     </div>
                   </div>
 
-
                   <div className="grid grid-cols-2 lg:grid-cols-3  gap-3 pt-5 text-sm text-white">
-
-
+                    {/* Trait 1 */}
                     <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
                       <div>
-                      <p className="text-xs text-[#868686] uppercase">
-                        {data.trait1 ? data.trait1 : "Trait 1"} &nbsp;
-                      </p>
-                      {data.value1 ? data.value1 : "Value 1"}
+                        <p className="text-xs text-[#868686] uppercase">
+                          {data.trait1 ? data.trait1 : "Trait 1"} &nbsp;
+                        </p>
+                        {data.value1 ? data.value1 : "Value 1"}
                       </div>
                       {/* <div
                     id="creator"
@@ -411,67 +451,205 @@ const NFTPage = () => {
                     className="flex items-end rounded-md bg-cover bg-center bg-indigo-500 h-10 w-10  shadow-xl shadow-indigo-500/30 duration-300 hover:shadow-indigo-500/50 "
                     style={{backgroundImage: `url( "https://source.unsplash.com/random?symbol+${data.value1}" `}}>
                   </div>{" "} */}
-                    <GiFigurehead fontSize="2.4em" color="orange" className="drop-shadow"/>
-                 
-                  {/* <GiAerialSignal fontSize="2.4em" color="#ff3366" className="drop-shadow"/> */}
+                      {data?.value1?.includes("e") ? (
+                        <GiFigurehead
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      ) : data?.value1?.includes("t") ? (
+                        <GiMazeCornea
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      ) : (
+                        <GiCurlyWing
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      )}
+
+                      {/* <GiAerialSignal fontSize="2.4em" color="#ff3366" className="drop-shadow"/> */}
                     </div>
-                    
+                    {/* Trait 2 */}
                     <div className="flex justify-between  bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
-                    <div>
-                      <p className="text-xs text-[#868686] uppercase">
-                        {data.trait2 ? data.trait2 : "Trait 2"} &nbsp;
-                      </p>
-                      {data.value2 ? data.value2 : "Value 2"}
+                      <div>
+                        <p className="text-xs text-[#868686] uppercase">
+                          {data.trait2 ? data.trait2 : "Trait 2"} &nbsp;
+                        </p>
+                        {data.value2 ? data.value2 : "Value 2"}
                       </div>
-                      <GiSewedShell fontSize="2.4em" color="orange" className="drop-shadow"/>
+                      {data.trait2 === "Location" ||
+                      "Zone" ||
+                      "District" ||
+                      "Place" ||
+                      "Country" ||
+                      "City" ||
+                      "Venue" ||
+                      "Street" ||
+                      "Season" ? (
+                        <GiAbstract103
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      ) : data?.value2?.includes("a") ? (
+                        <GiCrystalWand
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      ) : data?.value2?.includes("s") ? (
+                        <GiSewedShell
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      ) : (
+                        <GiAbstract066
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      )}
                     </div>
-
+                    {/* Trait 3 */}
                     <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
                       <div>
-                      <p className="text-xs text-[#868686] uppercase">
-                        {data.trait3 ? data.trait3 : "Trait 3"} &nbsp;
-                      </p>
-                      {data.value3 ? data.value3 : "Value 3"}
+                        <p className="text-xs text-[#868686] uppercase">
+                          {data.trait3 ? data.trait3 : "Trait 3"} &nbsp;
+                        </p>
+                        {data.value3 ? data.value3 : "Value 3"}
                       </div>
-                      <GiStoneAxe fontSize="2.4em" color="orange" className="drop-shadow"/>
+                      {data?.value3?.includes("e") ? (
+                        <GiCloudRing
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      ) : data?.value3?.includes("t") ? (
+                        <GiLaserGun
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      ) : (
+                        <GiChaingun
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      )}
                     </div>
 
-
-
+                    {/* Trait 4 */}
                     <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
                       <div>
-                      <p className="text-xs text-[#868686] uppercase">
-                        {data.trait4 ? data.trait4 : "Trait 4"} &nbsp;
-                      </p>
-                    
-                      {data.value4 ? data.value4 : "Value 4"}
-                      </div>
-                      <GiFist fontSize="2.4em" color="orange" className="drop-shadow"/>
-                    </div>
+                        <p className="text-xs text-[#868686] uppercase">
+                          {data.trait4 ? data.trait4 : "Trait 4"} &nbsp;
+                        </p>
 
+                        {data.value4 ? data.value4 : "Value 4"}
+                      </div>
+                      {data.trait4 === "Strength" ? (
+                        <GiFist
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      ) : data?.value4?.includes("t") ? (
+                        <GiFleshyMass
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      ) : data?.value4?.includes("o") ? (
+                        <GiChaingun
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      ) : (
+                        <GiAbstract039
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      )}
+                    </div>
+                    {/* Trait 5 */}
                     <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
                       <div>
-                      <p className="text-xs text-[#868686] uppercase">
-                        {data.trait5 ? data.trait5 : "Trait 5"} &nbsp;
-                      </p>
-                     
-                      {data.value5 ? data.value5 : "Value 5"}
-                      </div>
-                      <GiHeartPlus fontSize="2.4em" color="orange" className="drop-shadow"/>
-                    
-                    </div>
+                        <p className="text-xs text-[#868686] uppercase">
+                          {data.trait5 ? data.trait5 : "Trait 5"} &nbsp;
+                        </p>
 
-                    <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
-                    <div>
-                      <p className="text-xs text-[#868686] uppercase">
-                        {data.trait6 ? data.trait6 : "Trait 6"} &nbsp;
-                      </p>
-                   
-                      {data.value6 ? data.value6 : "Value 6"}
+                        {data.value5 ? data.value5 : "Value 5"}
                       </div>
-                      <GiBrain fontSize="2.4em" color="orange" className="drop-shadow"/>
+                      {data.trait5 === "Health" ? (
+                        <GiHeartPlus
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      ) : data?.value5?.includes("e") ? (
+                        <GiAbstract083
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      ) : data?.value5?.includes("r") ? (
+                        <GiAbstract013
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      ) : (
+                        <GiCrackedSaber
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      )}
                     </div>
-                  
+                    {/* Trait 6 */}
+                    <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
+                      <div>
+                        <p className="text-xs text-[#868686] uppercase">
+                          {data.trait6 ? data.trait6 : "Trait 6"} &nbsp;
+                        </p>
+
+                        {data.value6 ? data.value6 : "Value 6"}
+                      </div>
+
+                      {data.trait6 === "Intelligence" ? (
+                        <GiBrain
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      ) : data?.value6?.includes("p") ? (
+                        <GiDwennimmen
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      ) : data?.value6?.includes("s") ? (
+                        <GiCrystalEye
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      ) : (
+                        <GiAbstract069
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -605,12 +783,16 @@ const NFTPage = () => {
                   </span>
 
                   <div className="w-7 h-7 rounded-full border border-white flex justify-center items-center eth-card seal mt-1">
-                      <SiEthereum fontSize={16} color="#fff" />
-                    </div>
+                    <SiEthereum fontSize={16} color="#fff" />
+                  </div>
                 </div>
                 <div className=" flex items-center text-[#868686] text-sm h-fit mb-2 "></div>{" "}
                 <Link
-                  to={{ pathname: `/Trade/Profile/${ data.seller && shortenAddress(data.seller)}` }}
+                  to={{
+                    pathname: `/Trade/Profile/${
+                      data.seller && shortenAddress(data.seller)
+                    }`,
+                  }}
                   key={data.id}
                 >
                   <div
@@ -638,9 +820,6 @@ const NFTPage = () => {
                 </div>
               </div>
 
-
-
-         
               <div className=" text-[#868686] text-sm  mt-2 ">
                 <div className="white-glassmorphism ">
                   {checksumAddress !== data.seller ? (
@@ -726,28 +905,35 @@ const NFTPage = () => {
                   </div>
                 </div>
                 <div className=" grid grid-cols-2 xl:grid-cols-4 w-full text-white text-md gap-3  md:py-2 h-fit ">
-                
-                <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
+                  <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
                     <div>
                       <p className="text-xs text-[#868686] uppercase">
                         {"Status"} &nbsp;
                       </p>
-                   
+
                       {data.listing ? data.listing : "N/A"}
-                      </div>
-                      <MdSell fontSize="2.4em" color="orange" className="drop-shadow"/>
                     </div>
-                 
+                    <MdSell
+                      fontSize="2.4em"
+                      color="orange"
+                      className="drop-shadow"
+                    />
+                  </div>
+
                   <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
                     <div>
                       <p className="text-xs text-[#868686] uppercase">
                         {"Royalty"} &nbsp;
                       </p>
-                   
-                      {data.royalty ? data.royalty: "N/A"}
-                      </div>
-                      <MdOutlinePercent fontSize="2.4em" color="orange" className="drop-shadow"/>
+
+                      {data.royalty ? data.royalty : "N/A"}
                     </div>
+                    <MdOutlinePercent
+                      fontSize="2.4em"
+                      color="orange"
+                      className="drop-shadow"
+                    />
+                  </div>
 
                   <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
                     <div>
@@ -755,19 +941,27 @@ const NFTPage = () => {
                         {"Code"} &nbsp;
                       </p>
                       {data.code ? data.code : "N/A"}
-                      </div>
-                      <MdQrCode2 fontSize="2.4em" color="orange" className="drop-shadow"/>
                     </div>
-            
-                     <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
+                    <MdQrCode2
+                      fontSize="2.4em"
+                      color="orange"
+                      className="drop-shadow"
+                    />
+                  </div>
+
+                  <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
                     <div>
                       <p className="text-xs text-[#868686] uppercase">
                         {"Seal"} &nbsp;
                       </p>
                       {data.seal ? data.seal : "N/A"}
-                      </div>
-                      <SiEthereum fontSize="2.4em" color="orange" className="drop-shadow"/>
                     </div>
+                    <SiEthereum
+                      fontSize="2.4em"
+                      color="orange"
+                      className="drop-shadow"
+                    />
+                  </div>
                 </div>
                 <br />
                 CONTRACT
@@ -795,6 +989,28 @@ const NFTPage = () => {
           </div>
         </TETabsPane>
       </TETabsContent>
+
+      <div className="w-full py-5 pl-2">
+        <div className=" whitespace-nowrap">
+          <h1 className="text-2xl sm:text-3xl text-white leading-tight text-gradient">
+            Explore Collection
+            <h2 className="text-left text-gradient text-lg">
+              Click on any image to view details.
+            </h2>
+          </h1>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {/* <Slider {...settings}> */}
+        {collectionNFTs
+          // .slice(collectionNFTs.length - 8)
+          .reverse()
+          .map((data) => (
+            <NFTTile data={data} key={data.tokenId} />
+          ))}
+        {/* </Slider> */}
+      </div>
     </div>
   );
 };

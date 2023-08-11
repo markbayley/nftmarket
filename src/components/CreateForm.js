@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   artists,
   styles,
@@ -29,7 +29,8 @@ const CreateForm = ({
   isChecked,
   transactionHash,
   mint,
-  fill
+  fill,
+  message
 }) => {
   const styleWords = activeKeywords.filter((word) =>
     styles.some((style) => style.name === word)
@@ -57,15 +58,43 @@ const CreateForm = ({
 
   console.log("formParams", formParams);
 
+  // const handleSelector = (ids) => {
+  //   const selectorWords = activeKeywords.filter((word) =>
+  //   ids.some((id) => id.name === word)
+  // );
+  // return selectorWords
+  // }
 
+  // const ids = [ 'styles', 'mediums']
+
+  // const results = handleSelector(ids)
+
+  const [ autoDescription, setAutoDescription ] = useState(false)
+
+  const handleDescription = (e) => {
+    if(formParams.description ) {
+    e.preventDefault();
+    updateFormParams({
+      ...formParams,
+    description: ""
+  })
+}
+else {
+    updateFormParams({
+      ...formParams,
+    description: e.target.value
+    })
+  }
+
+  }
 
   return (
     <form className="">
       <div className=" flex flex-col justify-start items-start   ">
         <>
-          <div className="flex w-full mb-2  justify-between gap-x-2.5 ">
-          <input
-              className="w-full  xl:w-[48%] rounded-sm outline-none  text-white border-none white-glassmorphism"
+          <div className="flex w-full mb-3  justify-between gap-x-2.5 ">
+            <input
+              className="w-full  xl:w-[48%] rounded-sm outline-none  text-white border-none white-glassmorphism select:bg-red-500"
               type="text"
               placeholder="NFT Collection..."
               id="collection"
@@ -91,11 +120,10 @@ const CreateForm = ({
               }
               value={formParams.name}
             ></input>
-        
           </div>
-
-       
-
+          <p className="pb-3 text-[#868686] text-sm uppercase">
+          INPUTS
+            </p>
           <div className="check ">
             <select
               id="style"
@@ -109,8 +137,6 @@ const CreateForm = ({
                 </option>
               ))}
             </select>
-
-          
 
             <select
               id="theme"
@@ -126,9 +152,7 @@ const CreateForm = ({
             </select>
           </div>
 
-          <div className="check">
-  
-          </div>
+          <div className="check"></div>
 
           <div className="check mt-3">
             <select
@@ -216,14 +240,16 @@ const CreateForm = ({
           </div>
 
           <div className="flex flex-wrap gap-x-2 py-1">
-          <div className="tabs">
+            <div className="tabs">
               {styleWords.slice(0, 4).map((item, index) => (
                 <button
                   key={index}
                   onClick={handleChecked}
                   value={item}
                   className={`fade-in button ${
-                    activeKeywords.includes(item) ?  "flex items-center text-md text-[#6c63ff]   border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2" : ""
+                    activeKeywords.includes(item)
+                      ? "flex items-center text-md text-[#6c63ff]   border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2"
+                      : ""
                   }`}
                 >
                   #{item}
@@ -239,8 +265,10 @@ const CreateForm = ({
                   // className={`fade-in button ${
                   //   activeKeywords.includes(item) ? "colourButton" : ""
                   // }`}
-                   className={`fade-in button ${
-                    activeKeywords.includes(item) ? "flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2" : ""
+                  className={`fade-in button ${
+                    activeKeywords.includes(item)
+                      ? "flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2"
+                      : ""
                   }`}
                 >
                   #{item}
@@ -267,7 +295,9 @@ const CreateForm = ({
                   onClick={handleChecked}
                   value={item}
                   className={`fade-in button ${
-                    activeKeywords.includes(item) ? "flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2" : ""
+                    activeKeywords.includes(item)
+                      ? "flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2"
+                      : ""
                   }`}
                 >
                   #{item}
@@ -281,7 +311,9 @@ const CreateForm = ({
                   onClick={handleChecked}
                   value={item}
                   className={`fade-in button ${
-                    activeKeywords.includes(item) ? "flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2" : ""
+                    activeKeywords.includes(item)
+                      ? "flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2"
+                      : ""
                   }`}
                 >
                   #{item}
@@ -295,79 +327,82 @@ const CreateForm = ({
                   onClick={handleChecked}
                   value={item}
                   className={`fade-in button ${
-                    activeKeywords.includes(item) ?  "flex items-center text-md text-[#6c63ff]   border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2" : ""
+                    activeKeywords.includes(item)
+                      ? "flex items-center text-md text-[#6c63ff]   border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2"
+                      : ""
                   }`}
                 >
                   #{item}
                 </button>
               ))}
             </div>
-       
           </div>
 
-          <div className="check text-white leading-tight mt-4 mb-2 max-w-[800px]">
-          {formParams.description}
-        { !isCreating ?  "Fill in the fields and click 'Create'. An auto generated description will appear here." : "'" + formParams.description + "'"}
-        
-            {/* <button className="bg-transparent h-7 flex items-center" value={fill} onClick={(e) => 
-            (
-              e.preventDefault(),
-              updateFormParams({
-                ...formParams,
-                description: e.target.value,
-                })
+          <div className=" text-white leading-tight  mb-2  w-full">
+            <div className="py-3 text-[#868686] text-sm uppercase">
+              {" "}
+              {!formParams.description && formParams.collection && formParams.name
+                ? <p>Write a description or  <button className=" text-indigo-500 h-6 px-0 bg-transparent border-none hover:bg-transparent " value={fill} onClick={(e) => handleDescription(e)}
+                
+                 >AUTO GENERATE</button>  one.</p>
+                : <><p>DESCRIPTION<button className=" text-indigo-500 h-6 px-0 bg-transparent border-none hover:bg-transparent " value={fill} onClick={(e) => handleDescription(e)}
+             > &nbsp;&nbsp;CLEAR</button></p></> }
+            </div>
 
-            )
-
-               } >
-
-            write a description</button> */}
-
+            {!autoDescription ? (
+              <textarea
+                required
+                onChange={(e) =>
+                  updateFormParams({
+                    ...formParams,
+                    description: e.target.value,
+                  })
+                }
+                value={formParams.description}
+                id="description"
+                rows="4"
+                className=" mb-3 block py-1.5 px-2.5 w-full text-white rounded border border-[#6c63ff] focus:ring-blue-500 focus:border-blue-500 white-glassmorphism "
+                placeholder="NFT Description..."
+              ></textarea>
+            ) : (
+              <p>{formParams.description}</p>
+            )}
           </div>
-        
-          <textarea
-            required
-            onChange={(e) =>
-              updateFormParams({
-                ...formParams,
-                description: e.target.value,
-              })
-            }
-            value={formParams.description}
-            id="description"
-            rows="3"
-            className=" mt-1 mb-3 block py-1.5 px-2.5 w-full text-white rounded border border-[#6c63ff] focus:ring-blue-500 focus:border-blue-500 white-glassmorphism "
-            placeholder="NFT Description..."
-          ></textarea>
         </>
-
+    
         {/* Buttons */}
-        <div className="flex w-full justify-end text-white gap-x-3 mt-5 relative">
+        <div className="flex w-full justify-end text-white gap-x-3 mt-1 relative">
+    
+      <div className="message group relative text-white w-1/2 h-9 flex items-center ">
+        {message}
+      </div>
+     
           {!isChecked ? (
             <button
               type="button"
-         
               onClick={OnCreateFile}
-              value={fill}
+             value="Create"
               className={
-                isChecked
-                  ? "disabledButton md:w-1/2 w-full group"
-                  : isMinting
-                  ? "inactiveButton md:w-1/2 w-full group"
-                  : isCreating
-                  ? "waitingButton md:w-1/2 w-full group"
-                  : !formParams.name || !formParams.description
-                  ? "inactiveButton  md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 "
-                  : "activeButton md:w-1/2 w-full group "
+                formParams.name && formParams.collection && formParams.description
+                  ? "activeButton md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 "
+                  : "disabledButton md:w-1/2 w-full group"
+                // ? "disabledButton md:w-1/2 w-full group"
+                // : isMinting
+                // ? "inactiveButton md:w-1/2 w-full group"
+                // : isCreating
+                // ? "waitingButton md:w-1/2 w-full group"
+                // : !formParams.name || !formParams.collection
+                // ? "inactiveButton  md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 "
+                // : "activeButton md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 "
               }
             >
-              <span className="absolute -bottom-12  scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100 ">
+              {/* <span className="absolute -bottom-12  scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100 ">
                 {isChecked
                   ? "Upload is selected..?"
-                  : !formParams.name || !formParams.description
+                  : !formParams.name || !formParams.collection
                   ? "Enter title & description..."
                   : "Ready to create image..."}
-              </span>
+              </span>*/}
               Create
             </button>
           ) : (
