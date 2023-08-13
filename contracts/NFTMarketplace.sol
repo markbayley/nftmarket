@@ -122,7 +122,7 @@ contract NFTMarketplace is ERC721URIStorage {
             "Only item owner can perform this operation"
         );
         require(
-            msg.value == price,
+            msg.value == listPrice,
             "Price must be equal to listing price"
         );
         idToListedToken[tokenId].currentlyListed = true;

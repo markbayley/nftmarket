@@ -27,7 +27,7 @@ const Collections = () => {
         {collections.map((collection, index) => {
           return (
             <Link
-              to={{ pathname: `/Trade/${collection.name}` }}
+              to={{ pathname: `/Explore/${collection.name}` }}
               key={collection.id}
             >
               <button

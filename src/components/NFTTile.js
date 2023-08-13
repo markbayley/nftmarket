@@ -4,6 +4,7 @@ import { SiEthereum } from "react-icons/si";
 import { MdOutlineFavoriteBorder, MdFavorite } from "react-icons/md";
 import { useContext, useState } from "react";
 import { TransactionContext } from "../context/TransactionContext";
+import Loader from "./Loader";
 
 const NFTTile = (data) => {
   const { favorites, setFavorites, handleCollection } = useContext(TransactionContext);
@@ -43,7 +44,7 @@ const NFTTile = (data) => {
       {/* ETHERSCAN */}
       <Link to={link} target="_blank" rel="noopener noreferrer" className="z-50">
         {data.data.seal === "Yes" &&
-        <div className="w-[1.7em] h-[1.7em] rounded-full border-2  flex justify-center items-center absolute top-[6.5%] left-[6.7%] eth-card group seal hover:scale-[1.1] duration-300">
+        <div className="w-[2em] h-[2em] rounded-full border  flex justify-center items-center absolute top-[6.5%] left-[6.7%] eth-card group seal hover:scale-[1.1] duration-300">
           <SiEthereum fontSize="1em" color="#fff" />
           <span className="absolute bottom-10 scale-0 transition-all rounded bg-gray-900 p-2 text-xs group-hover:scale-100 shadow-lg shadow-indigo-500/50 duration-200 z-50">
             Token&nbsp;#{data.data.tokenId} {data.data.price}&nbsp;ETH
@@ -64,31 +65,42 @@ const NFTTile = (data) => {
          {/* <span class="inline-flex items-center justify-center w-4 h-4 text-[10px] text-[#ff3366] font-bold bg-white rounded-full absolute right-0 z-10">
          2
        </span> */}
-          <MdFavorite fontSize="2em" color="#ff3366" className="drop-shadow"/>
+          <MdFavorite fontSize="2.2em" color="#ff3366" className="drop-shadow"/>
           </div>
          : 
-          <MdOutlineFavoriteBorder fontSize="2em" color="#ff3366" className="drop-shadow"/>
+          <MdOutlineFavoriteBorder fontSize="2.2em" color="#ff3366" className="drop-shadow"/>
      
         }
       </div>
 
 
       {/* IMAGE */}
-      <Link to={{ pathname: `/Trade/Detail/` + data.data.tokenId }} className="z-0" >
+      <Link to={{ pathname: `/Explore/Detail/` + data.data.tokenId }} className="z-0" >
+      
         {/* <div className="border-2 border-b-neutral-700 border-t-neutral-900 border-l-neutral-800 border-r-neutral-700"> */}
+        {data?.data?.image  ?
         <img
-          src={IPFSUrl} 
+          src={data?.data?.image } 
           alt="thumbnail"
           className=""
         />
+        :
+       <Loader /> 
+        }
         {/* </div> */}
       </Link>
-
+    
       {/* TITLE */}
-      <div className="title">
-        <strong>{data.data.collection} </strong> &nbsp;
+      <div className="flex justify-center text-[#868686] pt-3">
+        <strong>{data.data.collection}&nbsp; </strong>&nbsp;
         <em>'{data.data.name}'</em>
       </div>
+      <div className=" flex w-full text-[#868686] justify-around text-xs pt-1">
+        <span className="border border-indigo-500 px-2 rounded">{data.data.price}ETH</span>
+        <span className="border border-teal-700 px-2 rounded">{data.data.listing}</span>
+        <span className="border border-amber-600 px-2 rounded">#{data.data.tokenId}</span>
+        </div>
+  
     </div>
   );
 };

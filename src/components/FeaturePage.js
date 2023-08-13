@@ -138,7 +138,7 @@ console.log("creatorAddress", creatorAddress)
         </div>
 
         <div className="w-full ">
-          <Slider {...settings}>
+          <Slider {...settings} >
             {creatorNFTs
               .slice(creatorNFTs.length - 8)
               .reverse()

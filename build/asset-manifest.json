@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/nftmarket/static/css/main.638b678d.css",
-    "main.js": "/nftmarket/static/js/main.e61795c2.js",
+    "main.css": "/nftmarket/static/css/main.0f08e828.css",
+    "main.js": "/nftmarket/static/js/main.d1edc516.js",
     "static/media/kyoto-girl.jpg": "/nftmarket/static/media/kyoto-girl.6b87e2739cff8d7511d0.jpg",
     "static/media/futuristic-city.jpg": "/nftmarket/static/media/futuristic-city.1c971f9c3cc893d3ed1a.jpg",
     "static/media/laughing-panda.jpg": "/nftmarket/static/media/laughing-panda.42286bd6357bb0defa84.jpg",
@@ -14,11 +14,11 @@
     "static/media/create.svg": "/nftmarket/static/media/create.16924aa94ba2b88a632d09e042b8ddee.svg",
     "index.html": "/nftmarket/index.html",
     "static/media/upload.svg": "/nftmarket/static/media/upload.d12083c78be99778edbf6c98cd374daf.svg",
-    "main.638b678d.css.map": "/nftmarket/static/css/main.638b678d.css.map",
-    "main.e61795c2.js.map": "/nftmarket/static/js/main.e61795c2.js.map"
+    "main.0f08e828.css.map": "/nftmarket/static/css/main.0f08e828.css.map",
+    "main.d1edc516.js.map": "/nftmarket/static/js/main.d1edc516.js.map"
   },
   "entrypoints": [
-    "static/css/main.638b678d.css",
-    "static/js/main.e61795c2.js"
+    "static/css/main.0f08e828.css",
+    "static/js/main.d1edc516.js"
   ]
 }

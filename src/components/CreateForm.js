@@ -56,7 +56,7 @@ const CreateForm = ({
     mediums.some((medium) => medium.name === word)
   );
 
-  console.log("formParams", formParams);
+  // console.log("formParams", formParams);
 
   // const handleSelector = (ids) => {
   //   const selectorWords = activeKeywords.filter((word) =>
@@ -94,6 +94,7 @@ else {
         <>
           <div className="flex w-full mb-3  justify-between gap-x-2.5 ">
             <input
+              required
               className="w-full  xl:w-[48%] rounded-sm outline-none  text-white border-none white-glassmorphism select:bg-red-500"
               type="text"
               placeholder="NFT Collection..."
@@ -256,15 +257,13 @@ else {
                 </button>
               ))}
             </div>
-            <div className="tabs">
-              {themeWords.slice(0, 4).map((item, index) => (
+          
+            <div className=" tabs">
+              {mediumWords.slice(0, 4).map((item, index) => (
                 <button
                   key={index}
                   onClick={handleChecked}
                   value={item}
-                  // className={`fade-in button ${
-                  //   activeKeywords.includes(item) ? "colourButton" : ""
-                  // }`}
                   className={`fade-in button ${
                     activeKeywords.includes(item)
                       ? "flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2"
@@ -289,6 +288,25 @@ else {
               ))}
             </div>
             <div className="tabs">
+              {themeWords.slice(0, 4).map((item, index) => (
+                <button
+                  key={index}
+                  onClick={handleChecked}
+                  value={item}
+                  // className={`fade-in button ${
+                  //   activeKeywords.includes(item) ? "colourButton" : ""
+                  // }`}
+                  className={`fade-in button ${
+                    activeKeywords.includes(item)
+                      ? "flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2"
+                      : ""
+                  }`}
+                >
+                  #{item}
+                </button>
+              ))}
+            </div>
+            <div className="tabs">
               {textureWords.slice(0, 4).map((item, index) => (
                 <button
                   key={index}
@@ -304,22 +322,7 @@ else {
                 </button>
               ))}
             </div>
-            <div className=" tabs">
-              {mediumWords.slice(0, 4).map((item, index) => (
-                <button
-                  key={index}
-                  onClick={handleChecked}
-                  value={item}
-                  className={`fade-in button ${
-                    activeKeywords.includes(item)
-                      ? "flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2"
-                      : ""
-                  }`}
-                >
-                  #{item}
-                </button>
-              ))}
-            </div>
+         
             <div className=" tabs">
               {artistWords.slice(0, 4).map((item, index) => (
                 <button
@@ -373,9 +376,9 @@ else {
         {/* Buttons */}
         <div className="flex w-full justify-end text-white gap-x-3 mt-1 relative">
     
-      <div className="message group relative text-white w-1/2 h-9 flex items-center ">
+      {/* <div className="message group relative text-white w-1/2 h-9 flex items-center ">
         {message}
-      </div>
+      </div> */}
      
           {!isChecked ? (
             <button
@@ -385,7 +388,7 @@ else {
               className={
                 formParams.name && formParams.collection && formParams.description
                   ? "activeButton md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 "
-                  : "disabledButton md:w-1/2 w-full group"
+                  : "inactiveButton md:w-1/2 w-full group shadow-lg shadow-indigo-500/30"
                 // ? "disabledButton md:w-1/2 w-full group"
                 // : isMinting
                 // ? "inactiveButton md:w-1/2 w-full group"
@@ -403,7 +406,7 @@ else {
                   ? "Enter title & description..."
                   : "Ready to create image..."}
               </span>*/}
-              Create
+              Generate
             </button>
           ) : (
             <input
@@ -419,7 +422,7 @@ else {
                   ? "waitingButton w-1/2"
                   : !fileURL
                   ? "inactiveButton w-1/2 shadow-lg shadow-indigo-500/30 duration-300"
-                  : "activeButton w-1/2"
+                  : "activeButton w-1/2 rounded"
               }
             />
           )}

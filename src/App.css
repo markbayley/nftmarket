@@ -1,3 +1,6 @@
+
+
+
 :root {
   --clr-white: #ffffff;
   --clr-black: #202020;
@@ -338,7 +341,7 @@ button:hover {
 }
 
  .active-style{
-  color: var(--clr-blue);
+  /* color: var(--clr-blue); */
 }
 
 
@@ -445,13 +448,17 @@ button:hover {
   font-size: 1.2em;
 }
 
-
+.spin {
+  opacity: 1;
+  animation: spin 1s infinite ;
+  z-index: 50;
+}
 
 @keyframes spin {
-  from {
+  0% {
     transform: rotate(0deg);
   }
-  to {
+  100% {
     transform: rotate(360deg);
   }
 }
@@ -478,32 +485,33 @@ button:hover {
 
 
 .drift-left {
-  animation: drift-left 50s infinite;
+  animation: drift-left 3s;
 }
 @keyframes drift-left {
-  0%,100% {
+  0% {
     scale: 0.3;
     transform: rotateX(0.1turn) rotateY(1.5turn);  
   }
-  30% {
-   scale: 0.97;
+  100% {
+   scale: 1;
    transform: rotateX(0.0turn) rotateY(-0.1turn);
-   transform: translate(0, -65px);
+   transform: translate(0);
   }
 }
 
 .drift-center {
-  animation: drift-center 60s infinite;
+  animation: drift-center 3s;
 }
 @keyframes drift-center {
-  0%,100% {
+  0% {
     scale: 0.6;
     
     transform: rotateX(-.10turn) rotateY(-.20turn);
   }
-  50% {
+  100% {
    scale: 1;
    transform: rotateX(-10deg) rotateY(10deg); 
+   transform: translate(0);
 
   }
 }
@@ -511,8 +519,8 @@ button:hover {
 
 
 
-.drift-right {
-  animation: drift-right 1s ease-in-out;
+/* .drift-right {
+  animation: drift-right 7s ease-in-out;
 }
 @keyframes drift-right {
 
@@ -520,7 +528,7 @@ button:hover {
    transform:  rotateY(180deg);
 
   }
-}
+} */
 
 
 /* ------------------------------------------------------ */

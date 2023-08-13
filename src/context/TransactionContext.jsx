@@ -203,7 +203,7 @@ export const TransactionsProvider = ({ children }) => {
        
         //Pull the deployed contract instance
         const transaction = await marketplaceContract.getAllNFTs();
-      // console.log("transaction" , transaction)
+       console.log("transaction" , transaction)
         //Fetch all the details of every NFT from the contract and display
         const items = await Promise.all(
           transaction.map(async (i) => {
@@ -436,6 +436,9 @@ const [favorites, setFavorites] = useState([], localStorage.getItem("favorites")
     getAllTransactions();
   }, [transactionCount, currentAccount]);
 
+
+  const [ progress, setProgress ] = useState('')
+
   return (
     <TransactionContext.Provider
       value={{
@@ -494,6 +497,8 @@ const [favorites, setFavorites] = useState([], localStorage.getItem("favorites")
       //handleFavorite,
       //hearted,
       //setHearted
+      progress,
+      setProgress
       }}
     >
       {children}

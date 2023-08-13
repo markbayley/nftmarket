@@ -10,15 +10,15 @@ import inblockLogo from "../images/inblocklogolight.png";
 import { TransactionContext } from "../context/TransactionContext";
 import { shortenAddress } from "../utils/shortenAddress";
 
-const NavBarItem = ({ title, classprops, link}) => (
-  <>
+const NavBarItem = ({ title, classprops, link }) => (
+  <div    >
     <NavLink
-      className={({isActive}) => (isActive ? "active-style " : 'text-white ')}
+      className={({isActive}) => (isActive ? " text-indigo-500" : 'text-white ')}
       to={link}
     >
       <li className={`mx-5 cursor-pointer   ${classprops}`}>{title}</li>
     </NavLink>
-  </>
+  </div>
 );
 
 const Navbar = () => {
@@ -46,8 +46,44 @@ const Navbar = () => {
        <img src={inblockLogo} alt="logo" className="w-28 cursor-pointer" />
       </Link>
 
+      <div className="flex md:hidden">
+        {!ethereum ? 
+             <a target="_blank" href="https://metamask.io/">
+             <button 
+               type="button"
+               className=" nav-install"
+               onClick={connectWallet}
+             >
+            Install
+             </button>
+           </a>
+           : currentAccount === "" ? 
+            <button
+              type="button"
+              className=" nav-connect bg-yellow-600 hover:bg-[#6c63ff]  "
+              onClick={connectWallet}
+            >
+              Connect
+            </button>
+           : 
+           <button
+           type="button"
+           className="  nav-connected hover:bg-[#6c63ff]"
+           onClick={connectWallet}
+           onMouseEnter={() => setHover(true)}
+           onMouseLeave={() => setHover(false)}
+         >
+            {currentAccount !== "" && isHovering ? shortenAddress(checksumAddress) :
+            "Connected"} 
+         </button>
+         
+          }
+
+
+        </div>
+
       <ul className="text-white md:flex hidden list-none flex-row justify-between items-center flex-initial">
-        {["Create", "Trade", "Wallet", "Help"].map((item, index) => (
+        {["Create", "Explore", "Wallet", "Help"].map((item, index) => (
           <NavBarItem
             key={item + index}
             title={item}
@@ -115,20 +151,37 @@ const Navbar = () => {
             <li className="text-xl w-full my-2">
               <AiOutlineClose onClick={() => setToggleMenu(false)} />
             </li>
-            {["Create", "Trade", "Wallet", "Help"].map(
+
+            <li onClick={() => setToggleMenu(false)}>
+            {["Create", "Explore", "Wallet", "Help"].map(
               (item, index) => (
                 <NavBarItem
                   classprops="my-2 text-lg"
                   key={item + index}
                   title={item}
                   link={"/" + item}
+              
+                 
+                
                 />
               )
             )}
+            </li>
+          
+     
+
+
+
+
           </ul>
         )}
+
+
+        
      
       </div>
+
+      
     </nav>
   );
 };

@@ -56,6 +56,7 @@ import Slider from "react-slick";
 const NFTPage = () => {
   const {
     tab,
+    setTab,
     handleTab,
     checksumAddress,
     createMarketplaceContractReadOnly,
@@ -68,6 +69,8 @@ const NFTPage = () => {
     marketData,
     id,
     collection,
+    progress,
+    setProgress
   } = useContext(TransactionContext);
 
   const [data, updateData] = useState({});
@@ -131,6 +134,7 @@ const NFTPage = () => {
       console.log(item);
       updateData(item);
       updateDataFetched(true);
+      setProgress('Viewed');
       // } else {
       //   console.log("Ethereum is not present NFT Page");
       // }
@@ -161,11 +165,15 @@ const NFTPage = () => {
       await transaction.wait();
 
       updateMessage("Success! Check your wallet");
+      setProgress('Traded');
       // updateMessage("");
     } catch (e) {
       alert("Upload Error" + e);
     }
   }
+
+  const [price, setPrice] = useState('"');
+  console.log("price", price)
 
   async function listNFT(tokenId) {
     try {
@@ -180,14 +188,14 @@ const NFTPage = () => {
         MarketplaceJSON.abi,
         signer
       );
-      const listPrice = ethers.utils.parseUnits(formParams.price, "ether");
+      const listPrice = ethers.utils.parseUnits(price, "ether");
       updateMessage("Listing NFT... Please Wait");
 
       let transaction = await contract.updateListPrice(tokenId, {
         value: listPrice,
       });
       await transaction.wait();
-
+ console.log("updateListPrice", transaction)
       updateMessage("Success! Check your wallet");
       // updateMessage("");
     } catch (e) {
@@ -260,16 +268,18 @@ const NFTPage = () => {
       </div> */}
 
       <SubMenu
-        title="NFT Detail"
-        subtitle="Discover more about this NFT or trade"
-        tab0="Exchange"
+        title="View NFT"
+        subtitle="Discover more or trade this NFT"
+        tab0={<MdOutlineKeyboardDoubleArrowLeft fontSize={20} />}
         tab1="View"
         tab2="Trade"
-        tab3={<MdOutlineKeyboardDoubleArrowRight fontSize={20} />}
+        //tab3={<MdOutlineKeyboardDoubleArrowRight fontSize={20} />}
         handleTab={handleTab}
         tab={tab}
+        setTab={setTab}
         data={data}
         tokenId={tokenId}
+        progress={progress}
       />
 
       <TETabsContent>
@@ -277,6 +287,23 @@ const NFTPage = () => {
           <div className="flex flex-wrap w-full justify-center flex-col md:flex-row white-glassmorphism  ">
             <div className="text-lg w-full md:w-1/2 xl:w-2/5 aspect-square   rounded-lg  ">
               <div className="rounded-xl   p-2 md:py-6 md:pl-6 h-fit mb-2">
+              {/* <img
+                  src={ data.image || marketData[tokenid].image ||     
+                     <div className="w-full h-full aspect-square rounded-lg seal ">
+                  <label className="flex  items-center justify-center w-full h-full">
+                    <div className="flex flex-col items-center justify-center ">
+                      <Loader />
+                      <p className="text-sm text-white ">
+                        LOADING NFT DATA...
+                      </p>
+                    </div>
+                  </label>
+                </div>}
+                    alt="Detailed image"
+                    className="rounded-lg"
+                 
+                  /> */}
+
                 {/* {marketData ? (
                   // <img
                   //   src={marketData[tokenid].image}
@@ -317,13 +344,16 @@ const NFTPage = () => {
                     </label>
                   </div>
                 )}
+
+
                 <img
                   style={loaded ? {} : { display: "none" }}
-                  src={marketData[tokenid]?.image || data?.image}
+                  src={ data.image}
                   onLoad={() => setLoaded(true)}
                   alt="thumbnail"
                   className="rounded-lg "
                 />
+               
               </div>
             </div>
 
@@ -332,7 +362,7 @@ const NFTPage = () => {
                 <div className="">
                   <p className=" text-2xl md:text-3x1  drop-shadow-x2 leading-tight font-thin group relative">
                     <strong>
-                      {marketData[tokenid]?.collection || data?.collection || "Token"}{" "}
+                      { data?.collection || "Token"}{" "}
                     </strong>
                     <span className="absolute bottom-10 -right-5 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
                       Etherscan
@@ -343,13 +373,13 @@ const NFTPage = () => {
                       rel="noopener noreferrer"
                       className="text-2xl border px-3 rounded-full white-glassmorphism"
                     >
-                      #{marketData[tokenid]?.tokenId || data?.tokenId}
+                      #{ data?.tokenId}
                       {/* #{marketData[tokenid].tokenId} */}
                     </a>
                   </p>
 
                   <span className=" text-2xl font-extralight text-gradient py-2 italic leading-tight">
-                    '{marketData[tokenid]?.name || data?.name || "Untitled"}'
+                    '{ data?.name || "Untitled"}'
                   </span>
 
                   <div
@@ -376,7 +406,7 @@ const NFTPage = () => {
                 <div className=" flex items-center text-[#868686] text-sm h-fit mb-2 "></div>{" "}
                 <Link
                   to={{
-                    pathname: `/Trade/Profile/${
+                    pathname: `/Explore/Profile/${
                       data.creator && shortenAddress(data.creator)
                     }`,
                   }}
@@ -407,7 +437,7 @@ const NFTPage = () => {
               <div className=" w-full text-[#868686] text-sm  h-fit ">
                 DESCRIPTION{" "}
                 <div className=" text-lg  pt-3 text-white">
-                  {marketData[tokenid]?.description || data?.description}
+                  { data?.description}
                   {/* Lorem ipsum dolor sit amet, consectetur
                   adipiscing elit, sed do eiusmod tempor incididunt ut labore et
                   dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
@@ -661,7 +691,7 @@ const NFTPage = () => {
                 </div>
                 <div className=" flex items-center text-[#868686] text-sm h-fit ">
                   <div className="flex flex-wrap ">
-                    <Link to={{ pathname: `/Trade/${data.style}` }}>
+                    <Link to={{ pathname: `/Explore/${data.style}` }}>
                       <button
                         id="style"
                         value={data.style}
@@ -672,7 +702,7 @@ const NFTPage = () => {
                       </button>{" "}
                     </Link>
                     &nbsp;&nbsp;
-                    <Link to={{ pathname: `/Trade/${data.medium}` }}>
+                    <Link to={{ pathname: `/Explore/${data.medium}` }}>
                       <button
                         id="medium"
                         value={data.medium}
@@ -683,7 +713,7 @@ const NFTPage = () => {
                       </button>{" "}
                     </Link>
                     &nbsp;&nbsp;
-                    <Link to={{ pathname: `/Trade/${data.texture}` }}>
+                    <Link to={{ pathname: `/Explore/${data.texture}` }}>
                       <button
                         id="texture"
                         value={data.texture}
@@ -694,7 +724,7 @@ const NFTPage = () => {
                       </button>{" "}
                     </Link>
                     &nbsp;&nbsp;
-                    <Link to={{ pathname: `/Trade/${data.artist}` }}>
+                    <Link to={{ pathname: `/Explore/${data.artist}` }}>
                       <button
                         id="artist"
                         value={data.artist}
@@ -705,7 +735,7 @@ const NFTPage = () => {
                       </button>{" "}
                     </Link>
                     &nbsp;&nbsp;
-                    <Link to={{ pathname: `/Trade/${data.colour}` }}>
+                    <Link to={{ pathname: `/Explore/${data.colour}` }}>
                       <button
                         id="colour"
                         value={data.colour}
@@ -716,7 +746,7 @@ const NFTPage = () => {
                       </button>{" "}
                     </Link>
                     &nbsp;&nbsp;
-                    <Link to={{ pathname: `/Trade/${data.theme}` }}>
+                    <Link to={{ pathname: `/Explore/${data.theme}` }}>
                       <button
                         id="theme"
                         value={data.theme}
@@ -739,7 +769,7 @@ const NFTPage = () => {
               <div className="rounded-xl p-2 md:py-6 md:pl-6 h-fit mb-2">
                 {data.image ? (
                   <img
-                    src={data.image}
+                  src={marketData[tokenid]?.image || data?.image}
                     alt="Detailed image"
                     className="rounded-lg"
                   />
@@ -863,13 +893,14 @@ const NFTPage = () => {
                           placeholder="Price (ETH)"
                           step="0.001"
                           min="0.00"
-                          value={formParams.price}
-                          onChange={(e) =>
-                            updateFormParams({
-                              ...formParams,
-                              price: e.target.value,
-                            })
-                          }
+                          value={price}
+                          onChange={(e) => setPrice(e.target.value)}
+                          // onChange={(e) =>
+                          //   updateFormParams({
+                          //     ...formParams,
+                          //     price: e.target.value,
+                          //   })
+                          // }
                         ></input>
                         <button
                           className="outline-none bg-[#F60C4B] hover:bg-[#F60C6d] border-[#F60C4B] text-white font-bold py-2 px-10 my-5 rounded text-sm"

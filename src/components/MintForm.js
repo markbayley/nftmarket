@@ -14,6 +14,7 @@ import {
   BsFillArrowLeftCircleFill,
 } from "react-icons/bs";
 import { traits1, traits2, traits3 } from "../data/traits.js";
+import { MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos } from "react-icons/md";
 
 const MintForm = ({
   isUploading,
@@ -36,7 +37,7 @@ const MintForm = ({
   mint,
   message
 }) => {
-  console.log("formParams", formParams);
+  // console.log("formParams", formParams);
 
   const [showMore, setShowMore] = useState(false);
 
@@ -59,7 +60,7 @@ const MintForm = ({
                   id="trait1"
                   onChange={(id) => handleForm(id)}
                   value={traits1.name}
-                  className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#273057] shadow-2xl border-none"
+                  className="text-white outline-none  w-half  rounded  bg-[#313751] shadow-2xl border-none "
                 >
                   {traits1.map((trait, index) => (
                     <option key={index} value={trait.name}>
@@ -88,7 +89,7 @@ const MintForm = ({
                   id="trait2"
                   onChange={(id) => handleForm(id)}
                   value={traits2.name}
-                  className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#273057] shadow-2xl border-none"
+                  className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#313751] shadow-2xl border-none"
                 >
                   {traits2.map((trait, index) => (
                     <option key={index} value={trait.name}>
@@ -117,7 +118,7 @@ const MintForm = ({
                   id="trait3"
                   onChange={(id) => handleForm(id)}
                   value={traits3.name}
-                  className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#273057] shadow-2xl border-none"
+                  className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#313751] shadow-2xl border-none"
                 >
                   {traits3.map((trait, index) => (
                     <option key={index} value={trait.name}>
@@ -328,12 +329,12 @@ const MintForm = ({
               onClick={handleShow}
               className={
                 showMore
-                  ? "activeButton h-9"
-                  : "inactiveButton bg-transparent text-[#868686] h-9"
+                  ? "bg-indigo-500 h-9 border-none"
+                  : "bg-transparent bg-neutral-700  border-none h-9"
               }
             >
               {" "}
-              <BsFillArrowLeftCircleFill size="24" />
+              <MdOutlineArrowBackIosNew size="24" />
             </button>
             {!showMore
               ? "Click right to enter more traits"
@@ -342,11 +343,11 @@ const MintForm = ({
               onClick={handleShow}
               className={
                 !showMore
-                  ? "activeButton h-9"
-                  : "inactiveButton bg-transparent text-[#868686] h-9"
+                  ? "bg-indigo-500 h-9 border-none"
+                  : "bg-transparent bg-neutral-700  border-none h-9"
               }
             >
-              <BsFillArrowRightCircleFill size="24" />
+              <MdOutlineArrowForwardIos size="24" />
             </button>
           </div>
 
@@ -355,7 +356,7 @@ const MintForm = ({
           </p>
 
           {/* <div className="flex w-full mb-3  justify-between gap-x-2.5 ]">
-                <input
+                <input5
                   className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
                   type="text"
                   placeholder="Nature..."
@@ -388,7 +389,7 @@ const MintForm = ({
               id="royalty"
               onChange={(id) => handleForm(id)}
               value={royalty.name}
-              className="text-white outline-none blue-glassmorphism w-half rounded  bg-[#273057] shadow-2xl border-none"
+              className="text-white outline-none blue-glassmorphism w-half rounded  bg-[#313751] shadow-2xl border-none"
             >
               {royalty.map((royalty, index) => (
                 <option key={index} value={royalty.name}>
@@ -400,7 +401,7 @@ const MintForm = ({
               id="listing"
               onChange={(id) => handleForm(id)}
               value={listing.name}
-              className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#273057] shadow-2xl border-none"
+              className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#313751] shadow-2xl border-none"
             >
               {listing.map((listing, index) => (
                 <option key={index} value={listing.name}>
@@ -420,7 +421,7 @@ const MintForm = ({
                 })
               }
               defaultValue={"Yes"}
-              className="text-white outline-none white-glassmorphism w-half  rounded  bg-[#273057] shadow-2xl border-none  w-[50%] "
+              className="text-white outline-none white-glassmorphism w-half  rounded  bg-[#313751] shadow-2xl border-none  w-[50%] "
             >
               <option value="Yes">Authentication Seal</option>
               <option value="No">Don't Add A Seal</option>
@@ -472,9 +473,9 @@ const MintForm = ({
             Save
           </button> */}
 
-<div className="message group relative text-white w-1/2 h-9 flex items-center ">
+{/* <div className="message group relative text-white w-1/2 h-9 flex items-center ">
         {message}
-      </div>
+      </div> */}
 
           <button
             onClick={listNFT}

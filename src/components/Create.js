@@ -28,7 +28,9 @@ const Create = () => {
     currentAccount,
     checksumAddress,
     marketData, 
-    getAllNFTs
+    getAllNFTs,
+    progress,
+    setProgress,
   } = useContext(TransactionContext);
 
   const [isChecked, setIsChecked] = useState(false);
@@ -197,6 +199,7 @@ const Create = () => {
 
     setFileURL(file);
     updateMessage("Image Created...");
+    setProgress('Created');
     setIsCreating(false);
 
     try {
@@ -367,6 +370,7 @@ const Create = () => {
      
 
       updateMessage("Successfully listed your NFT!");
+      setProgress('Minted');
       setIsMinting(false);
       setActiveKeywords([])
       await getAllNFTs();
@@ -374,16 +378,16 @@ const Create = () => {
       console.log("marketData", marketData)
       console.log("marketData.length", marketData.length)
       console.log("marketData[marketData.length].tokenId", marketData[marketData.length].tokenId )
-      window.location.replace(`/Trade/Detail/${marketData && marketData[marketData.length].tokenId}`);
+      // window.location.replace(`/Trade/Detail/${marketData && marketData[marketData.length].tokenId}`);
   //  setTab("tab3")
     } catch (e) {
-      updateMessage("Connect MetaMask wallet to mint NFT.");
+      updateMessage("Connect MetaMask wallet to mint NFT.", e);
     }
   }
 
   const index = parseInt(marketData.length)
   console.log("marketData[marketData.length]", marketData[index] )
-  console.log("activeKeywords", activeKeywords);
+  // console.log("activeKeywords", activeKeywords);
 
   return (
     <div className="fade-in lg:px-[5%] px-2">
@@ -392,20 +396,25 @@ const Create = () => {
         subtitle={ tab === "tab1" ? "Generate an image or upload one" : "Mint your NFT to the blockchain" }
         tab1="Create"
         tab2="Mint"
-        tab3={<MdOutlineKeyboardDoubleArrowRight fontSize={20} />}
+        //tab3="View"
+         tab3={<MdOutlineKeyboardDoubleArrowRight fontSize={20} />}
         setMint={setMint}
         handleTab={handleTab}
         tab={tab}
         data={marketData}
         checksumAddress={checksumAddress}
         formParams={formParams}
+        setIsChecked={setIsChecked}
+        isChecked={isChecked}
+        marketData={marketData}
+        progress={progress}
       />
 
-      <div className="form white-glassmorphism md:py-5 md:px-[2%] gap-x-6 px-1 border-2 mt-2">
+      <div className="form  md:py-5 md:px-[2%] gap-x-6 px-1 white-glassmorphism rounded-lg mt-2">
         <CreateImage
           isUploading={isUploading}
           isCreating={isCreating}
-          isMinting={isMinting}
+          isMinting={isMinting} 
           formParams={formParams}
           fileURL={fileURL}
           message={message}
@@ -417,6 +426,7 @@ const Create = () => {
           setIsUploading={setIsUploading}
           metaData={metaData}
           mint={mint}
+          isChecked={isChecked}
         />
         <TETabsContent>
           <TETabsPane show={tab === "tab1"}>

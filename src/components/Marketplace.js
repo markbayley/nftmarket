@@ -1,21 +1,17 @@
 import { useContext, useEffect, useState } from "react";
 import { TransactionContext } from "../context/TransactionContext";
 import NFTTile from "./NFTTile";
-import { BiSearchAlt } from "react-icons/bi";
-import { FiFilter } from "react-icons/fi";
-import { BiSort } from "react-icons/bi";
-import { MdOutlineFavoriteBorder, MdFavorite } from "react-icons/md";
 import { shortenAddress } from "../utils/shortenAddress";
-import { TECollapse, TERipple } from "tw-elements-react";
-import { collections } from "../data/collections.js";
+import { TECollapse } from "tw-elements-react";
 import {
-  TETabs,
   TETabsContent,
-  TETabsItem,
   TETabsPane,
 } from "tw-elements-react";
-import { styles, mediums, themes } from "../data/lists.js";
 import Loader from "./Loader";
+import { BiSearchAlt, BiSort, BiFilterAlt } from "react-icons/bi";
+import {
+  MdFavorite,
+} from "react-icons/md";
 
 export default function Marketplace() {
   const {
@@ -58,314 +54,208 @@ export default function Marketplace() {
     }
   };
 
-
-
-
-
-   // ALL NFTS
-//    const allResults = searchResults
-//    .sort((a, b) => parseFloat(a.tokenId) - parseFloat(b.tokenId));
-//  const allSorted = allResults
-//    .sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-//  const allNewest = allResults
-//    .sort((a, b) => parseFloat(b.tokenId) - parseFloat(a.tokenId));
-//  const getAllResults = () => {
-//    return sorted ? allSorted : allNewest;
-//  };
-
-  // LISTED
-  const listedResults = searchResults
-    .filter((item) => item.listing !== "Unlisted" && item.listing !== "Auction")
-    .sort((a, b) => parseFloat(a.tokenId) - parseFloat(b.tokenId));
-  const listedSorted = searchResults
-    .filter((item) => item.listing !== "Unlisted" && item.listing !== "Auction")
-    .sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-  const listedNewest = searchResults
-    .filter((item) => item.listing !== "Unlisted" && item.listing !== "Auction")
-    .sort((a, b) => parseFloat(b.tokenId) - parseFloat(a.tokenId));
-  const getListedNFTs = () => {
-    return sorted ? listedSorted : listedNewest;
+  //FILTER/SORT
+  const sortDate = (array) => {
+    return array.sort((a, b) => parseFloat(b.tokenId) - parseFloat(a.tokenId));
   };
 
-  // AUCTION
-  const auctionResults = searchResults
-    .filter((item) => item.listing === "Auction")
-    .sort((a, b) => parseFloat(a.tokenId) - parseFloat(b.tokenId));
-  const auctionSorted = searchResults
-    .filter((item) => item.listing === "Auction")
-    .sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-  const auctionNewest = searchResults
-    .filter((item) => item.listing === "Auction")
-    .sort((a, b) => parseFloat(b.tokenId) - parseFloat(a.tokenId));
-  const getAuctionedNFTs = () => {
-    return sorted ? auctionSorted : auctionNewest;
+  const sortPrice = (array) => {
+    return array.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
   };
 
-  // UNLISTED
-  const unlistedResults = searchResults
-    .filter((item) => item.listing === "Unlisted")
-    .sort((a, b) => parseFloat(a.tokenId) - parseFloat(b.tokenId));
-  const unlistedSorted = searchResults
-    .filter((item) => item.listing === "Unlisted")
-    .sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-  const unlistedNewest = searchResults
-    .filter((item) => item.listing === "Unlisted")
-    .sort((a, b) => parseFloat(b.tokenId) - parseFloat(a.tokenId));
-  const getUnlistedNFTs = () => {
-    return sorted ? unlistedSorted : unlistedNewest;
-  };
+  function getTerms(tab) {
+    console.log("tab", tab);
+    switch (tab) {
+      case "tab1":
+        return ["Unlisted", "Auction", "Listed For Sale", undefined];
+      case "tab2":
+        return ["Listed For Sale"];
+      case "tab3":
+        return ["Auction"];
+      default:
+        return ["Unlisted"];
+    }
+  }
 
-  // FAVORITES
-  // const getFavoriteAll = () => {
-  //   const favoriteAll = allResults.filter((item) =>
-  //     favorites.includes(item.tokenId)
-  //   );
-  //   return favoriteAll;
-  // };
-  const getFavoriteListed = () => {
-    const favoriteListed = listedResults.filter((item) =>
-      favorites.includes(item.tokenId)
-    );
-    return favoriteListed;
-  };
-  const getFavoriteAuction = () => {
-    const favoriteAuction = auctionResults.filter((item) =>
-      favorites.includes(item.tokenId)
-    );
-    return favoriteAuction;
-  };
-  const getFavoriteUnlisted = () => {
-    const favoriteUnlisted = unlistedResults.filter((item) =>
-      favorites.includes(item.tokenId)
-    );
-    return favoriteUnlisted;
+  function filterArray(array) {
+    const terms = getTerms(tab);
+    return array.filter((item) => terms.includes(item.listing));
+  }
+
+  const getResults = () => {
+    return sorted && showFavorites
+      ? filterArray(
+          sortPrice(
+            searchResults.filter((item) => favorites.includes(item.tokenId))
+          )
+        )
+      : showFavorites
+      ? filterArray(
+          sortDate(
+            searchResults.filter((item) => favorites.includes(item.tokenId))
+          )
+        )
+      : sorted
+      ? filterArray(sortPrice(searchResults))
+      : filterArray(sortDate(searchResults));
   };
 
   // TOGGLES
-  const [showTags, setShowTags] = useState(false);
-  const toggleShowTags = () => setShowTags(!showTags);
-
   const [sorted, setSorted] = useState(false);
   const [newest, setNewest] = useState(true);
-
+  
   const toggleSort = () => {
-    setNewest(!newest);
-    setSorted(!sorted);
-  };
-
-  const toggleNewest = () => {
-    setSorted(!sorted);
-    setNewest(!newest);
+    setSorted(prevSorted => !prevSorted);
+    setNewest(prevNewest => !prevNewest);
   };
 
   const [showFavorites, setShowFavorites] = useState(false);
   const toggleShowFavorites = () => setShowFavorites(!showFavorites);
 
+  const [showTags, setShowTags] = useState(false);
+  const toggleShowTags = () => setShowTags(!showTags);
+
   useEffect(() => {
     searchItems(searchInput);
   }, [searchInput, collection]);
 
-  // console.log("localStorage", localStorage);
-  // console.log("marketData", marketData);
-  // console.log("listed", listedResults, listedNewest.length, listedSorted.length, searchResults.length);
+  //TAGS
+  function extractUniqueValuesWithProperty(dataArray, properties) {
+    const uniqueValues = new Set();
 
-// // Filter items with a defined "collection" property
-// const filteredMarketData = marketData.filter(item => item.collection !== undefined);
-// // Create a Set to keep track of unique collection values
-// const uniqueCollections = new Set();
-// filteredMarketData.forEach(item => {
-//   uniqueCollections.add(item.collection);
-// });
-// // Convert Set to an array of unique collection values
-// const uniqueCollectionValues = Array.from(uniqueCollections);
-
-// console.log(uniqueCollectionValues);
-
-function extractUniqueValuesWithProperty(dataArray, properties) {
-  const uniqueValues = new Set();
-
-  properties.forEach(property => {
-    dataArray.forEach(item => {
-      if (item[property] !== undefined && item[property] !== "") {
-        if (Array.isArray(item[property])) {
-          item[property].forEach(value => uniqueValues.add(JSON.stringify({ property, value })));
-        } else {
-          uniqueValues.add(JSON.stringify({ property, value: item[property] }));
+    properties.forEach((property) => {
+      dataArray.forEach((item) => {
+        if (item[property] !== undefined && item[property] !== "") {
+          if (Array.isArray(item[property])) {
+            item[property].forEach((value) =>
+              uniqueValues.add(JSON.stringify({ property, value }))
+            );
+          } else {
+            uniqueValues.add(
+              JSON.stringify({ property, value: item[property] })
+            );
+          }
         }
-      }
+      });
     });
-  });
 
-  return Array.from(uniqueValues).map(item => JSON.parse(item));
-}
+    return Array.from(uniqueValues).map((item) => JSON.parse(item));
+  }
 
-const propertiesToExtract = ['collection', 'theme', 'style', 'medium', 'texture', 'artist'];
+  const propertiesToExtract = [
+    "collection",
+    "theme",
+    "style",
+    "medium",
+    "texture",
+    "artist",
+  ];
 
-const uniqueValuesWithProperty = extractUniqueValuesWithProperty(marketData, propertiesToExtract);
+  const uniqueValuesWithProperty = extractUniqueValuesWithProperty(
+    marketData,
+    propertiesToExtract
+  );
 
+  const resultLength = getResults(getTerms(tab)).length;
 
   return (
     <div className="fade-in md:px-[3%] px-2">
-      <div className="flex flex-row place-items-center justify-between flex-wrap w-full pt-3 pl-2">
+      <div className="flex flex-row place-items-center justify-between flex-wrap w-full pt-3 pb-1 lg:pl-2">
         {/* HEADING */}
         <div>
           <h1 className="text-3xl sm:text-5xl text-white leading-tight text-gradient ">
-            Trade NFTs   
+            Explore NFTs
           </h1>
-         {/* {filteredResults?.length} */}
-          <div className="text-white flex items-center text-gradient">
-              {tab == "tab1"
-                ? "Displaying " +
-                  (showFavorites
-                    ? getFavoriteListed()?.length
-                    // : collection && filteredResults?.length === 0 ? filteredResults?.length
 
-                    : listedResults?.length) +
-                  " FOR SALE results "
-                : tab == "tab2"
-                ? "Displaying " +
-                  (showFavorites
-                    ? getFavoriteAuction()?.length
-                    : auctionResults?.length) +
-                  " AUCTION results "
-                : "Displaying " +
-                  (showFavorites
-                    ? getFavoriteUnlisted()?.length
-                    : unlistedResults?.length) +
-                  " UNLISTED results "}
-              { collection
-                ? "- Filtered" :
-                showFavorites ? " - Favorites" :
-                searchInput ? " - Search" :
-                "- Unfiltered"}
-              &nbsp;
-      </div>
-      {/* <div className="text-white flex items-center">
-              {collection && (
-                <>
-                  <FiFilter fontSize={16} className="text-[#E4A11B]" />#
-                  {collection}
-                </>
-              )}
-              &nbsp;
-              {showFavorites && (
-                <>
-                  <MdFavorite fontSize={18} className="text-[#ff3366]" />
-                  Favorites
-                </>
-              )}
-              &nbsp;
-              {searchInput && (
-                <>
-                  <BiSearchAlt fontSize={20} color="grey" />
-                  {searchInput}
-                </>
-              )}
-            </div> */}
+          <div className="text-white flex items-center text-gradient ">
+            {tab == "tab1"
+              ? " ALL NFT Results "
+              : tab == "tab2"
+              ? " " + resultLength + " FOR SALE Results "
+              : tab == "tab3"
+              ? " " + resultLength + " AUCTION Results "
+              : " " + resultLength + " UNLISTED Results "}
+            {collection && showFavorites
+              ? "- Filtered Favorites"
+              : collection
+              ? "- Filtered"
+              : showFavorites
+              ? " Favorites"
+              : searchInput
+              ? " Search"
+              : " Unfiltered"}
+            &nbsp;
+            {newest ? "By Date" : "By Price"}
+          </div>
         </div>
 
         {/* MENU BUTTONS */}
-        <div className="flex md:mb-0 py-2">
+        <div className="flex md:mb-0 py-2  ">
+
           {/* Filter */}
-          <div className="flex items-center  cursor-pointer">
-            <FiFilter
-              fontSize={26}
-              className={collection ? "text-[#E4A11B] " : "text-gray-600"}
-            />
-            {collection ? (
+          <div className="flex items-center   cursor-pointer">
               <button
                 id=""
                 value=""
-                className="flex items-center whitespace-nowrap text-[#E4A11B] text-md border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500 hover:bg-transparent"
-                onClick={(id) => handleCollection(id)}
+                className={ collection ? "flex items-center whitespace-nowrap bg-transparent text-amber-500  border border-amber-500 px-3 h-10 rounded-full white-glassmorphism hover:text-neutral-500 hover:bg-transparent"
+                : "flex items-center text-white  border px-3 h-10 rounded-full white-glassmorphism hover:text-[#E4A11B] hover:brightness-110  hover:bg-transparent" }
+                onClick={collection ? (id) => handleCollection(id) : toggleShowTags }
               >
-                #
+                <BiFilterAlt 
+                  fontSize={22}
+                  className={collection ? "text-amber-500 " : "text-white"}
+                />
+                &nbsp;#
                 {collection.length > 30
                   ? shortenAddress(collection)
-                  : collection}
+                  : collection || "Filter"}
+                &nbsp;
               </button>
-            ) : (
-              <>
-                <TERipple rippleColor="light">
-                  <button
-                    id=""
-                    value=""
-                    className="flex items-center text-neutral-500  border px-3 h-8 rounded-full white-glassmorphism hover:text-[#E4A11B]   hover:bg-transparent"
-                    onClick={toggleShowTags}
-                  >
-                    #Filter
-                  </button>
-                </TERipple>
-              </>
-            )}{" "}
           </div>
           &nbsp; &nbsp;
+
           {/* Sort */}
-          <div className="flex items-center  cursor-pointer text-neutral-500 hover:text-[#E4A11B]">
-            {newest ? (
-              <>
-                <BiSort
-                  fontSize={26}
-                  className="text-[#6c63ff]"
-                  onClick={toggleNewest}
-                />
+          <div className="flex items-center  cursor-pointer text-white ">
                 <button
-                  className="flex items-center text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500 hover:bg-transparent"
-                  onClick={toggleNewest}
-                >
-                  Date
-                </button>
-              </>
-            ) : (
-              <>
-                <BiSort
-                  fontSize={26}
-                  className="text-[#6c63ff]"
-                  onClick={toggleNewest}
-                />
-                <button
-                  className="flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500 hover:bg-transparent"
                   onClick={toggleSort}
+                  className="flex items-center bg-[#6c63ff] text-white px-3 h-10 rounded-full border-none  hover:brightness-125"
                 >
-                  Price
+                  <BiSort fontSize={20} />
+                  <p className="hidden lg:flex"> &nbsp;{ newest ? "Date" : "Price" }&nbsp; </p>
                 </button>
-              </>
-            )}
           </div>
           &nbsp; &nbsp;
+
           {/* Favorite */}
-          <div className="flex items-center  cursor-pointer text-[#ff3366]">
-            {showFavorites ? (
-              <>
-                <MdFavorite
-                  fontSize={26}
-                  className="text-[#ff3366]"
-                  onClick={toggleShowFavorites}
-                />
-                &nbsp;
+          <div className="flex items-center  cursor-pointer text-white">
                 <button
-                  className="flex items-center text-md text-[#ff3366]  px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500 hover:bg-transparent"
+                  className={ showFavorites ? "flex items-center  bg-[#ff3366]  px-3 h-10 rounded-full  hover:bg-[#ff3366] border-none hover:brightness-125"
+                  : "flex items-center white-glassmorphism  border px-3 h-10 rounded-full  hover:bg-[#ff3366] hover:brightness-125" }
                   onClick={toggleShowFavorites}
                 >
-                  Favs
+                  <MdFavorite
+                    fontSize={22}
+                    className=""
+             
+                  />
+                  <p className="hidden lg:flex"> &nbsp;Favs&nbsp; </p>
                 </button>
-              </>
-            ) : (
-              <>
-                <MdFavorite
-                  fontSize={26}
-                  className="text-neutral-500"
-                  onClick={toggleShowFavorites}
-                />
-                &nbsp;
-                <button
-                  className="flex items-center text-md text-neutral-500  border px-3 h-8 rounded-full white-glassmorphism hover:text-[#ff3366] hover:bg-transparent"
-                  onClick={toggleShowFavorites}
-                >
-                  Favs
-                </button>
-              </>
-            )}
+          </div>
+          &nbsp; &nbsp;
+
+          {/* Listing */}
+          <div className="flex items-center  cursor-pointer text-white">
+            <select
+              style={{ minWidth: "5vw", padding: "9px " }}
+              className="flex items-center  outline-none   bg-teal-600 shadow-2xl border-none  rounded-full hover:brightness-125 "
+              onChange={(e) => handleTab(e.target.value)}
+            >
+              {/* <MdOutlinePlaylistAddCheck fontSize={26} color="#fff"/> */}
+              <option value="tab1">&nbsp;&nbsp;All NFTs</option>
+              <option value="tab2">&nbsp;&nbsp;For Sale</option>
+              <option value="tab3">&nbsp;&nbsp;Auction</option>
+              <option value="tab4">&nbsp;&nbsp;Unlisted</option>
+            </select>
           </div>
         </div>
 
@@ -385,179 +275,64 @@ const uniqueValuesWithProperty = extractUniqueValuesWithProperty(marketData, pro
             />
           </label>
         </div>
-
-        {/* TABS */}
-        <div className="flex w-full xl:w-auto justify-center xl:justify-end">
-          <TETabs className="">
-          {/* <TETabsItem
-              className="hover:bg-transparent hover:text-[#E4A11B] text-[16px] mt-0 "
-              onClick={() => handleTab("tab0")}
-              active={tab === "tab0"}
-              color="warning"
-            >
-              All NFTS
-            </TETabsItem> */}
-            <TETabsItem
-              className="hover:bg-transparent hover:text-[#E4A11B] text-[16px] mt-0 "
-              onClick={() => handleTab("tab1")}
-              active={tab === "tab1"}
-              color="warning"
-            >
-              For Sale
-            </TETabsItem>
-            <TETabsItem
-              className="hover:bg-transparent hover:text-[#E4A11B] text-[16px] mt-0 "
-              onClick={() => handleTab("tab2")}
-              active={tab === "tab2"}
-              color="warning"
-            >
-              Auction
-            </TETabsItem>
-            <TETabsItem
-              className="hover:bg-transparent hover:text-[#E4A11B] text-[16px] mt-0 "
-              onClick={() => handleTab("tab3")}
-              active={tab === "tab3"}
-              color="warning"
-            >
-              Unlisted
-            </TETabsItem>
-          </TETabs>
-        </div>
       </div>
 
       {/* HASHTAGS */}
       <TECollapse show={showTags} className="z-50">
         <div className="block rounded-lg bg-transparent text-neutral-500 shadow-lg  z-50">
           <div className=" flex flex-wrap gap-1 ">
-          {uniqueValuesWithProperty.map((item, index) => (
-    <button
-      id={item.property}
-      key={index}
-      value={item.value}
-      className="flex items-center text-md text-neutral-500 border px-3 h-7 rounded-full white-glassmorphism hover:text-[#E4A11B] hover:bg-transparent"
-      onClick={(id) => (
-        handleCollection(id), setShowTags(false)
-      )}
-    >
-      #{item.value}
-    </button>
-  ))}
-            {/* {[...themes].slice(1, 9).map((item, index) => (
+            {uniqueValuesWithProperty.map((item, index) => (
               <button
-                id="theme"
+                id={item.property}
                 key={index}
-                value={item.name}
-                className="flex items-center text-md text-neutral-500  border px-3 h-7 rounded-full white-glassmorphism hover:text-[#E4A11B]  hover:bg-transparent"
-                onClick={(id) => (
-                  handleCollection(id), setShowTags(() => false)
-                )}
+                value={item.value}
+                className="flex items-center text-md text-neutral-500 border px-3 h-7 rounded-full white-glassmorphism hover:text-[#E4A11B] hover:bg-transparent"
+                onClick={(id) => (handleCollection(id), setShowTags(false))}
               >
-                #{item.name}
+                #{item.value}
               </button>
-            ))} */}
-
-            {/* {[...mediums].slice(1, 5).map((item, index) => (
-              <button
-                id="medium"
-                key={index}
-                value={item.name}
-                className="flex items-center text-md text-neutral-500  border px-3 h-7 rounded-full white-glassmorphism hover:text-[#E4A11B]  hover:bg-transparent"
-                onClick={(id) => (
-                  handleCollection(id), setShowTags(() => false)
-                )}
-              >
-                #{item.name}
-              </button>
-            ))} */}
-
-            {/* {[...collections].map((item, index) => (
-              <button
-                id="collection"
-                key={index}
-                value={item.name}
-                className="flex items-center text-md text-neutral-500  border px-3 h-7 rounded-full white-glassmorphism hover:text-[#E4A11B]  hover:bg-transparent"
-                onClick={(id) => (
-                  handleCollection(id), setShowTags(() => false)
-                )}
-              >
-                #{item.name}
-              </button>
-            ))} */}
+            ))}
           </div>
         </div>
       </TECollapse>
 
       {/*TAB GALLERIES */}
       <TETabsContent>
-
-      {/* <TETabsPane show={tab === "tab0"}>
-          {showFavorites ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
-              {getFavoriteAll().map((value, tokenId) => {
-                return <NFTTile data={value} key={tokenId}></NFTTile>;
-              })}
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
-              {getAllResults().map((value, tokenId) => {
-                return <NFTTile data={value} key={tokenId}></NFTTile>;
-              })}
-            </div>
-          )}
-        </TETabsPane> */}
-
-
         <TETabsPane show={tab === "tab1"}>
-          {/* Listed */}
-          {showFavorites ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
-              {getFavoriteListed().map((value, tokenId) => {
-                return <NFTTile data={value} key={tokenId}></NFTTile>;
-              })}
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
-              {getListedNFTs().map((value, tokenId) => {
-                return <NFTTile data={value} key={tokenId}></NFTTile>;
-              })}
-            </div>
-          )}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
+            {getResults(getTerms(tab)).map((value, tokenId) => {
+              return <NFTTile data={value} key={tokenId}></NFTTile>;
+            })}
+          </div>
         </TETabsPane>
+
         <TETabsPane show={tab === "tab2"}>
-          {/* Auction */}
-          {showFavorites ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
-              {getFavoriteAuction().map((value, tokenId) => {
-                return <NFTTile data={value} key={tokenId}></NFTTile>;
-              })}
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 ">
-              {getAuctionedNFTs().map((value, tokenId) => {
-                return <NFTTile data={value} key={tokenId}></NFTTile>;
-              })}
-            </div>
-          )}
+          {/* Listed */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
+            {getResults(getTerms(tab)).map((value, tokenId) => {
+              return <NFTTile data={value} key={tokenId}></NFTTile>;
+            })}
+          </div>
         </TETabsPane>
         <TETabsPane show={tab === "tab3"}>
+          {/* Auction */}
+          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 ">
+            {getResults(getTerms(tab)).map((value, tokenId) => {
+              return <NFTTile data={value} key={tokenId}></NFTTile>;
+            })}
+          </div>
+        </TETabsPane>
+        <TETabsPane show={tab === "tab4"}>
           {/* Unlisted */}
-          {showFavorites ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
-              {getFavoriteUnlisted().map((value, tokenId) => {
-                return <NFTTile data={value} key={tokenId}></NFTTile>;
-              })}
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4  ">
-              {getUnlistedNFTs().map((value, tokenId) => {
-                return <NFTTile data={value} key={tokenId}></NFTTile>;
-              })}
-            </div>
-          )}
+          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4  ">
+            {getResults(getTerms(tab)).map((value, tokenId) => {
+              return <NFTTile data={value} key={tokenId}></NFTTile>;
+            })}
+          </div>
         </TETabsPane>
       </TETabsContent>
       {/* <Loader /> */}
-      {listedResults ? "" : <Loader />}
+      {resultLength ? "" : <Loader />}
       {/* NOTIFICATIONS */}
       <div className="flex flex-col flex-1 items-start justify-center w-full mf:mt-0 my-7">
         <div className="text-center text-white font-light text-base w-full">
@@ -568,29 +343,17 @@ const uniqueValuesWithProperty = extractUniqueValuesWithProperty(marketData, pro
           ) : currentAccount !== "" ? (
             <div className="flex flex-wrap justify-center items-center flex-row w-full white-glassmorphism p-5 ">
               {tab == "tab1"
-                ? "Displaying " +
-                  (showFavorites
-                    ? getFavoriteListed()?.length
-                    : listedResults?.length) +
-                  " FOR SALE results. "
+                ? "Displaying " + resultLength + " FOR SALE results. "
                 : tab == "tab2"
-                ? "Displaying " +
-                  (showFavorites
-                    ? getFavoriteAuction()?.length
-                    : auctionResults?.length) +
-                  " AUCTION results. "
-                : "Displaying " +
-                  (showFavorites
-                    ? getFavoriteUnlisted()?.length
-                    : unlistedResults?.length) +
-                  " UNLISTED results. "}
+                ? "Displaying " + resultLength + " AUCTION results. "
+                : "Displaying " + resultLength + " UNLISTED results. "}
               {searchInput || showFavorites || collection
                 ? "Filtered by"
                 : "No search filters applied. "}
               &nbsp;
               {collection && (
                 <>
-                  <FiFilter fontSize={16} className="text-[#E4A11B]" />#
+                  <BiFilterAlt  fontSize={18} className="text-[#E4A11B]" />#
                   {collection}
                 </>
               )}
@@ -604,8 +367,7 @@ const uniqueValuesWithProperty = extractUniqueValuesWithProperty(marketData, pro
               &nbsp;
               {searchInput && (
                 <>
-                  <BiSearchAlt fontSize={20} color="grey" />
-                  '{searchInput}'
+                  <BiSearchAlt fontSize={20} color="grey" />'{searchInput}'
                 </>
               )}
             </div>

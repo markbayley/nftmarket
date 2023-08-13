@@ -34,21 +34,21 @@ function App() {
           <Route path="/Create" element={<Create />} />
 
           <Route
-            path="/Trade"
+            path="/Explore"
             element={
               <>
                 <Marketplace />
               </>
             }
           />
-          <Route path="/Trade/:collectionName" element={<Marketplace />} />
+          <Route path="/Explore/:collectionName" element={<Marketplace />} />
 
           <Route
-            path="/Trade/Profile/:creatorAddress"
+            path="/Explore/Profile/:creatorAddress"
             element={<FeaturePage />}
           />
 
-          <Route path="/Trade/Detail/:tokenId" element={<NFTPage />} />
+          <Route path="/Explore/Detail/:tokenId" element={<NFTPage />} />
 
           <Route
             path="/Wallet"

@@ -11,6 +11,7 @@ import {
 } from "tw-elements-react";
 import createSvg from "../images/create.svg";
 import uploadSvg from "../images/upload.svg";
+import Loader from "./Loader";
 
 
 const CreateImage = ({
@@ -25,7 +26,8 @@ const CreateImage = ({
   hashLink,
   metaData,
   mint,
-  setTab,tab
+  setTab,tab,
+  isChecked
 }) => {
   const [basicActive, setBasicActive] = useState("tab1");
 
@@ -44,10 +46,17 @@ const CreateImage = ({
 
   return (
     <div className="w-full  aspect-square ">
-      {/* // Create */}
+      {/* // Create */}   
       <TETabsContent>
+
         <TETabsPane show={basicActive === "tab1"}>
-          <div className="image border-[#6c63ff] border rounded-lg ">
+          <div className="image border-[#6c63ff] border rounded-lg relative">
+            {   message && 
+          <div className="flex w-full h-full justify-center items-center absolute text-md text-white z-50">
+        
+                <p className="border blue-glassmorphism p-3">{message}</p>
+                    </div>
+}
             {/* Stable Creating*/}
             {!isCreating && !isMinting && fileURL ? (
               <>
@@ -75,9 +84,25 @@ const CreateImage = ({
               </>
             ) : // In Progress Creating
             isCreating || isMinting ? (
-              <div className="flex items-center justify-center  w-full aspect-square">
-                <div className="animate-spin rounded-full h-20 w-20 border-b-2 border-yellow-700 absolute"></div>
-                {fileURL ? (
+              <div className="flex items-center justify-center relative w-full aspect-square">
+                <div className="animate-spin rounded-full h-20 w-20 border-b-2 border-yellow-600 absolute">     </div>
+                {/* <Loader /> */}  
+               
+                { fileURL && isMinting ?
+       
+                    <img
+                    src={fileURL}
+                    alt="AI thumbnail"
+                    className="animate-pulse"
+                  />
+       
+                :    <img
+                src={createSvg}
+                alt="create-svg"
+                style={{ width: "40px", height: "40px" }}
+              />}
+             
+                {/* {fileURL ? (
                   <img
                     src={fileURL}
                     alt="AI thumbnail"
@@ -90,32 +115,68 @@ const CreateImage = ({
                     className="overlay loading"
                     style={{ width: "40px", height: "40px" }}
                   />
-                )}
+                )} */}
               </div>
-            ) : (
+            ) : 
+              !isChecked ?
               // No Image Created
-              <div className="flex items-center justify-center  w-full  rounded-lg  border-[#4F4B4B]  aspect-square  seal border-2 cursor-help">
+              <div className="flex items-center justify-center  w-full  rounded-lg  border-teal-500  aspect-square  seal border-2 cursor-help fade-in ">
                 <label
                   htmlFor=""
                   className=" ">
-                  <div className="flex flex-col items-center  ">
+                  <div className="flex flex-col items-center ">
                     <img
                       src={createSvg}
                       alt="create-svg"
-                      style={{ width: "40px", height: "40px" }}
+                      style={{ width: "40px", height: "40px", opacity: "0.7" }}
                     />
                     {/* <p className="mb-2 text-sm text-white pt-3">
                       Fill in fields and click the{" "}
                       <span className="font-semibold">CREATE</span>&nbsp;button 
                     </p> */}
-                    <p className="text-xs text-white py-2">
-                      COLLECTION & TITLE REQUIRED
+                    <p className="text-sm text-white py-2 uppercase">
+                      Collection and Title Required
                     </p>
                   </div>
                 </label>
               </div>
-            )}
+              :
+                 //No Image Uploaded
+                 <div className="flex items-center justify-center  w-full rounded-lg  border-amber-500  aspect-square  seal border-2 cursor-help ">
+                 <label
+                   htmlFor="dropzone-file"
+                   className="flex  items-center justify-center w-full h-full
+                  cursor-move   bg-opacity-10 
+                  bg-[#273057] hover:bg-opacity-40  fade-in"
+                 >
+                   <div className="flex flex-col items-center justify-center ">
+                     <img
+                       src={uploadSvg}
+                       alt="upload-svg"
+                       style={{ width: "40px", height: "40px" }}
+                     />
+                     <p className="mb-2 text-sm text-white pt-3 uppercase">
+                       Drag and drop or tap to{" "}
+                       <span className="font-semibold">UPLOAD</span>
+                     </p>
+                     <p className="text-xs text-white ">
+                       SVG, PNG, JPG or GIF (MAX. 800x800px)
+                     </p>
+                     <input
+                       id="dropzone-file"
+                       type="file"
+                       className="hidden"
+                       // onChange={(e) => uploadLocally(e)}
+                       // onClick={() => setIsChecked(true)}
+                       onChange={(e) => OnUploadFile(e)}
+                     />
+                   </div>
+                 </label>
+               </div>
+}
+            
           </div>
+          
         </TETabsPane>
 
         {/* //Upload */}
@@ -201,6 +262,7 @@ const CreateImage = ({
             )}
           </div>
         </TETabsPane>
+
       </TETabsContent>
 
 
