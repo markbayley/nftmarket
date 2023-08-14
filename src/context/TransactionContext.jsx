@@ -183,7 +183,7 @@ export const TransactionsProvider = ({ children }) => {
   const [fileURL, setFileURL] = useState(null, localStorage.getItem("fileURL"));
 
 
-
+ const [ topCollections, setTopCollections] = useState([], localStorage.getItem("topCollections"));
 
   // //MARKETPLACE
   const [marketData, updateMarketData] = useState([]);
@@ -439,6 +439,10 @@ const [favorites, setFavorites] = useState([], localStorage.getItem("favorites")
 
   const [ progress, setProgress ] = useState('')
 
+  const [message, updateMessage] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+
   return (
     <TransactionContext.Provider
       value={{
@@ -498,7 +502,13 @@ const [favorites, setFavorites] = useState([], localStorage.getItem("favorites")
       //hearted,
       //setHearted
       progress,
-      setProgress
+      setProgress,
+
+      setTopCollections,
+
+      message, updateMessage,
+      isUploading, setIsUploading,
+      isChecked, setIsChecked,
       }}
     >
       {children}

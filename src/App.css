@@ -582,10 +582,11 @@ button:hover {
 }
 
 .slick-slider .slick-dots li {
-  margin: 0 0.5rem;
+  margin: 0 .5rem ;
   height: 2px !important;
 }
 
-ul.slick-dots {
-  margin-top: -25px !important;
-}
+/* .slick-dots {
+  bottom: 10px;
+} */
+

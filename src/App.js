@@ -20,11 +20,23 @@ function App() {
       <div className="min-h-screen">
         <Navbar />
         <Routes>
-          <Route
+          {/* <Route
             path="/nftmarket"
             element={
               <div className="">
                 <Welcome />
+                <Services />
+                <Collections />
+                <FeaturePage />
+              </div>
+            }
+          /> */}
+            <Route
+            path="/Home"
+            element={
+              <div className="">
+                 <Welcome />
+                <Services />
                 <Collections />
                 <FeaturePage />
               </div>
@@ -58,14 +70,7 @@ function App() {
               </>
             }
           />
-          <Route
-            path="/Help"
-            element={
-              <div className="">
-                <Services />
-              </div>
-            }
-          />
+        
         </Routes>
       </div>
 

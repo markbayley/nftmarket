@@ -1,41 +1,20 @@
 import React, { useState } from "react";
 import {
-  artists,
-  styles,
-  mediums,
-  textures,
-  colours,
-  themes,
   royalty,
   listing,
 } from "../data/lists.js";
-import {
-  BsFillArrowRightCircleFill,
-  BsFillArrowLeftCircleFill,
-} from "react-icons/bs";
 import { traits1, traits2, traits3 } from "../data/traits.js";
 import { MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos } from "react-icons/md";
 
 const MintForm = ({
-  isUploading,
   isCreating,
   isMinting,
   formParams,
   fileURL,
-  OnCreateFile,
-  OnUploadFile,
-  file,
-  activeKeywords,
-  handleChecked,
   handleForm,
   updateFormParams,
   listNFT,
-  setIsSaving,
-  isSaving,
-  isChecked,
   transactionHash,
-  mint,
-  message
 }) => {
   // console.log("formParams", formParams);
 

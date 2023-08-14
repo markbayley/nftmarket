@@ -1,15 +1,13 @@
 import React, { useContext } from "react";
-import { SiEthereum } from "react-icons/si";
 import nftImage1 from "../images/futuristic-city.jpg";
 import nftImage2 from "../images/tokyo-haze.jpg";
 import nftImage3 from "../images/kyoto-girl.jpg";
 import { Link } from "react-router-dom";
 import { TransactionContext } from "../context/TransactionContext";
-import { MdLocationDisabled, MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
-import Loader from "./Loader";
+import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
+import { SiEthereum } from "react-icons/si";
 
 const flexCenter = "flex justify-center items-center";
-
 
 const Welcome = () => {
 

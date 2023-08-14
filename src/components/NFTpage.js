@@ -1,57 +1,31 @@
+import { useContext, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import MarketplaceJSON from "../abis/Marketplace.json";
 import axios from "axios";
-import { useContext, useState } from "react";
+import SubMenu from "./SubMenu";
+import NFTTile from "./NFTTile";
+import Loader from "./Loader";
 import { GetIpfsUrlFromPinata } from "../utils/utils";
+import { RandomIcons } from "../data/icons"
 import { shortenAddress } from "../utils/shortenAddress";
 import { TransactionContext } from "../context/TransactionContext";
-import { BsInfoCircle } from "react-icons/bs";
-import { BiCurrentLocation, BiLinkExternal } from "react-icons/bi";
 import {
-  TETabs,
   TETabsContent,
-  TETabsItem,
   TETabsPane,
 } from "tw-elements-react";
-import Loader from "./Loader";
+
+import {  BiLinkExternal, BiFilterAlt } from "react-icons/bi";
 import {
   MdFavorite,
   MdOutlineFavoriteBorder,
   MdOutlineKeyboardDoubleArrowLeft,
-  MdOutlineKeyboardDoubleArrowRight,
   MdOutlinePercent,
   MdQrCode2,
+  MdSell
 } from "react-icons/md";
-import {
-  GiAbstract013,
-  GiAbstract039,
-  GiAbstract066,
-  GiAbstract069,
-  GiAbstract083,
-  GiAbstract103,
-  GiAerialSignal,
-  GiBrain,
-  GiChaingun,
-  GiCloudRing,
-  GiCrackedSaber,
-  GiCrystalEye,
-  GiCrystalWand,
-  GiCurlyWing,
-  GiDwennimmen,
-  GiFigurehead,
-  GiFist,
-  GiFleshyMass,
-  GiHeartPlus,
-  GiLaserGun,
-  GiMazeCornea,
-  GiSewedShell,
-  GiStoneAxe,
-} from "react-icons/gi";
-import SubMenu from "./SubMenu";
-import NFTTile from "./NFTTile";
 import { SiEthereum } from "react-icons/si";
-import { MdSell } from "react-icons/md";
-import Slider from "react-slick";
+
+
 
 const NFTPage = () => {
   const {
@@ -63,29 +37,25 @@ const NFTPage = () => {
     provider,
     handleCollection,
     currentAccount,
-    formParams,
-    updateFormParams,
     favorites,
     marketData,
-    id,
     collection,
     progress,
-    setProgress
+    setProgress,
   } = useContext(TransactionContext);
 
   const [data, updateData] = useState({});
   const [dataFetched, updateDataFetched] = useState(false);
   const [message, updateMessage] = useState("");
 
-  console.log(formParams.price);
+
 
   async function getNFTToken(tokenId) {
     try {
       const contract = createMarketplaceContractReadOnly(provider);
       // const marketplaceContract = createMarketplaceContract();
-
-      //create an NFT Token
       var tokenURI = await contract.tokenURI(tokenId);
+      console.log("tokenURI", tokenURI);
       const listedToken = await contract.getListedTokenForId(tokenId);
       tokenURI = GetIpfsUrlFromPinata(tokenURI);
       let meta = await axios.get(tokenURI);
@@ -95,28 +65,38 @@ const NFTPage = () => {
         tokenId: tokenId,
         seller: listedToken.seller,
         owner: listedToken.owner,
-
         image: meta.image,
         price: meta.price,
         listing: meta.listing,
         royalty: meta.royalty,
         seal: meta.seal,
-
-        trait1: meta.attributes?.[0] && meta.attributes[0].trait_type,
-        value1: meta.attributes?.[0] && meta.attributes[0].value,
-        trait2: meta.attributes?.[1] && meta.attributes[1].trait_type,
-        value2: meta.attributes?.[1] && meta.attributes[1].value,
-        trait3: meta.attributes?.[2] && meta.attributes[2].trait_type,
-        value3: meta.attributes?.[2] && meta.attributes[2].value,
-        trait4: meta.attributes?.[3] && meta.attributes[3].trait_type,
-        value4: meta.attributes?.[3] && meta.attributes[3].value,
-        trait5: meta.attributes?.[4] && meta.attributes[4].trait_type,
-        value5: meta.attributes?.[4] && meta.attributes[4].value,
-        trait6: meta.attributes?.[5] && meta.attributes[5].trait_type,
-        value6: meta.attributes?.[5] && meta.attributes[5].value,
-
+        attributes: [
+          {
+            trait: meta.attributes?.[0] && meta.attributes[0].trait_type,
+            value: meta.attributes?.[0] && meta.attributes[0].value,
+          },
+          {
+            trait: meta.attributes?.[1] && meta.attributes[1].trait_type,
+            value: meta.attributes?.[1] && meta.attributes[1].value,
+          },
+          {
+            trait: meta.attributes?.[2] && meta.attributes[2].trait_type,
+            value: meta.attributes?.[2] && meta.attributes[2].value,
+          },
+          {
+            trait: meta.attributes?.[3] && meta.attributes[3].trait_type,
+            value: meta.attributes?.[3] && meta.attributes[3].value,
+          },
+          {
+            trait: meta.attributes?.[4] && meta.attributes[4].trait_type,
+            value: meta.attributes?.[4] && meta.attributes[4].value,
+          },
+          {
+            trait: meta.attributes?.[5] && meta.attributes[5].trait_type,
+            value: meta.attributes?.[5] && meta.attributes[5].value,
+          },
+        ],
         code: meta.image.substring(100, 104),
-
         name: meta.name,
         description: meta.description,
         collection: meta.collection,
@@ -127,14 +107,12 @@ const NFTPage = () => {
         colour: meta.colour,
         theme: meta.theme,
         metadataURL: tokenURI,
-
         creator: meta.creator,
       };
 
-      console.log(item);
       updateData(item);
       updateDataFetched(true);
-      setProgress('Viewed');
+      setProgress("Viewed");
       // } else {
       //   console.log("Ethereum is not present NFT Page");
       // }
@@ -165,15 +143,15 @@ const NFTPage = () => {
       await transaction.wait();
 
       updateMessage("Success! Check your wallet");
-      setProgress('Traded');
+      setProgress("Traded");
       // updateMessage("");
     } catch (e) {
       alert("Upload Error" + e);
     }
   }
 
-  const [price, setPrice] = useState('"');
-  console.log("price", price)
+  const [price, setPrice] = useState();
+ 
 
   async function listNFT(tokenId) {
     try {
@@ -195,7 +173,7 @@ const NFTPage = () => {
         value: listPrice,
       });
       await transaction.wait();
- console.log("updateListPrice", transaction)
+      console.log("updateListPrice", transaction);
       updateMessage("Success! Check your wallet");
       // updateMessage("");
     } catch (e) {
@@ -206,7 +184,10 @@ const NFTPage = () => {
   const params = useParams();
   const tokenId = params.tokenId;
 
-  console.log("MDtokenId", marketData[tokenId]);
+
+  const tokenData = marketData[marketData.length - tokenId]
+
+  const attributesArray = tokenData?.attributes || data?.attributes;
 
   if (!dataFetched) getNFTToken(tokenId);
   if (typeof data.image == "string")
@@ -214,66 +195,29 @@ const NFTPage = () => {
 
   const link = `https://sepolia.etherscan.io/address/${data.owner}`;
 
-  const tokenid = parseInt(tokenId) - 1;
-  console.log("tid", tokenid, tokenId);
-
-  console.log("data", data);
-  console.log("marketData", marketData);
-
   const [loaded, setLoaded] = useState(false);
 
   const collectionNFTs = marketData.filter(
-    (item) => item.collection === data.collection
+    (item) => item.collection === tokenData.collection
   );
 
-  console.log("collectionNFTS", collection, collectionNFTs);
+  const tagsArray = [
+    { id: "style", value:  tokenData?.style },
+    { id: "theme", value: tokenData?.theme },
+    { id: "artist", value: tokenData?.artist },
+    { id: "medium", value: tokenData?.medium },
+    { id: "texture", value: tokenData?.texture },
+    { id: "colour", value: tokenData?.colour },
+  ];
 
   return (
     <div className=" mx-2 lg:px-[5%] fade-in">
-      {/* <div className="flex flex-row items-center flex-wrap ">
-        <div className="flex lg:w-1/2 w-full ">
-          <h1 className="text-3xl sm:text-3xl  text-gradient capitalize">
-            NFT Detail
-          </h1>
-          &nbsp; &nbsp;
-          <Link to={"/Trade"}>
-            <button
-              id="colour"
-              value={data.name}
-              className=" text-sm text-white border px-3 h-8 rounded-full white-glassmorphism  "
-            >
-              #{data.name}
-            </button>
-          </Link>
-        </div>
-
-        <div className="flex lg:w-1/2 w-full justify-center lg:justify-end ">
-          <TETabs className="">
-            <TETabsItem
-              className="hover:bg-transparent"
-              onClick={() => handleTab("tab1")}
-              active={tab === "tab1"}
-            >
-              Details
-            </TETabsItem>
-            <TETabsItem
-              className="hover:bg-transparent "
-              onClick={() => handleTab("tab2")}
-              active={tab === "tab2"}
-            >
-              Trade
-            </TETabsItem>
-          </TETabs>
-        </div>
-      </div> */}
-
       <SubMenu
         title="View NFT"
         subtitle="Discover more or trade this NFT"
         tab0={<MdOutlineKeyboardDoubleArrowLeft fontSize={20} />}
         tab1="View"
         tab2="Trade"
-        //tab3={<MdOutlineKeyboardDoubleArrowRight fontSize={20} />}
         handleTab={handleTab}
         tab={tab}
         setTab={setTab}
@@ -283,11 +227,13 @@ const NFTPage = () => {
       />
 
       <TETabsContent>
+        {/* VIEW PANEL */}
         <TETabsPane show={tab === "tab1"}>
           <div className="flex flex-wrap w-full justify-center flex-col md:flex-row white-glassmorphism  ">
             <div className="text-lg w-full md:w-1/2 xl:w-2/5 aspect-square   rounded-lg  ">
+              {/* IMAGE */}
               <div className="rounded-xl   p-2 md:py-6 md:pl-6 h-fit mb-2">
-              {/* <img
+                {/* <img
                   src={ data.image || marketData[tokenid].image ||     
                      <div className="w-full h-full aspect-square rounded-lg seal ">
                   <label className="flex  items-center justify-center w-full h-full">
@@ -332,7 +278,14 @@ const NFTPage = () => {
                   </div>
                 )} */}
 
-                {loaded ? null : (
+                <img
+                  src={tokenData?.image || data?.image}
+               
+                  alt="thumbnail"
+                  className="rounded-lg "
+                />
+
+                {/* {loaded ? null : (
                   <div className="w-full h-full aspect-square rounded-lg seal ">
                     <label className="flex  items-center justify-center w-full h-full">
                       <div className="flex flex-col items-center justify-center ">
@@ -345,27 +298,25 @@ const NFTPage = () => {
                   </div>
                 )}
 
-
                 <img
                   style={loaded ? {} : { display: "none" }}
-                  src={ data.image}
+                  src={marketData[tokenId]?.image || data?.image}
                   onLoad={() => setLoaded(true)}
                   alt="thumbnail"
                   className="rounded-lg "
-                />
-               
+                /> */}
               </div>
             </div>
 
-            <div className="text-lg w-full md:w-1/2 xl:w-3/5 px-2 md:p-5 rounded-lg ">
+            {/* NFT DETAILS */}
+            <div className="text-lg w-full md:w-1/2 xl:w-3/5 px-2 md:p-5 rounded-lg">
               <div className="  flex justify-between items-start flex-nowrap  text-white  h-fit pb-3">
+                {/* TITLE */}
                 <div className="">
                   <p className=" text-2xl md:text-3x1  drop-shadow-x2 leading-tight font-thin group relative">
-                    <strong>
-                      { data?.collection || "Token"}{" "}
-                    </strong>
+                    <strong>{tokenData?.collection || data?.collection || "Token"} </strong>
                     <span className="absolute bottom-10 -right-5 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
-                      Etherscan
+                      Etherscan Link
                     </span>
                     <a
                       href={link}
@@ -373,13 +324,13 @@ const NFTPage = () => {
                       rel="noopener noreferrer"
                       className="text-2xl border px-3 rounded-full white-glassmorphism"
                     >
-                      #{ data?.tokenId}
+                      #{tokenData?.tokenId || data?.tokenId}
                       {/* #{marketData[tokenid].tokenId} */}
                     </a>
                   </p>
 
                   <span className=" text-2xl font-extralight text-gradient py-2 italic leading-tight">
-                    '{ data?.name || "Untitled"}'
+                    '{tokenData?.name || data?.name || "Untitled"}'
                   </span>
 
                   <div
@@ -401,9 +352,9 @@ const NFTPage = () => {
                       />
                     )}
                   </div>
-                  {/* <MdFavorite fontSize={24} className="text-[#ff3366]" /> */}
                 </div>
-                <div className=" flex items-center text-[#868686] text-sm h-fit mb-2 "></div>{" "}
+
+                {/* CREATOR */}
                 <Link
                   to={{
                     pathname: `/Explore/Profile/${
@@ -417,7 +368,7 @@ const NFTPage = () => {
                     token={tokenId}
                     value={data.creator}
                     onClick={(id, token) => handleCollection(id, token)}
-                    className="flex items-end rounded-full bg-cover bg-center  border-2 h-16 w-16 md:h-24 md:w-24 hover:scale-[1.02] shadow-xl shadow-indigo-500/30 duration-300 hover:shadow-indigo-500/50 border-indigo-500"
+                    className="flex group relative items-end rounded-full bg-cover bg-center  border-2 h-16 w-16 md:h-24 md:w-24 hover:scale-[1.02] shadow-xl shadow-indigo-500/30 duration-300 hover:shadow-indigo-500/50 hover:border-teal-400 border-teal-500"
                     style={{
                       backgroundImage: `url( "https://robohash.org/${
                         data.creator
@@ -426,35 +377,36 @@ const NFTPage = () => {
                       }.png?set=set3" `,
                     }}
                   >
-                    <div className="bg-amber-500  px-2 py-1 rounded-full text-white text-xs hidden md:inline-block">
+                    <div className="bg-teal-500  px-2 py-1 rounded-full text-white text-xs hidden md:inline-block">
                       {/* {data.creator ? shortenAddress(data.creator)  : "0x123...aBcD"} */}
                       Creator
                     </div>
+                    <span className="absolute bottom-24 -right-5 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                      View Profile?
+                    </span>
                   </div>{" "}
                 </Link>
               </div>
 
+              {/* DESCRIPTION */}
               <div className=" w-full text-[#868686] text-sm  h-fit ">
                 DESCRIPTION{" "}
                 <div className=" text-lg  pt-3 text-white">
-                  { data?.description}
-                  {/* Lorem ipsum dolor sit amet, consectetur
-                  adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                  dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                  consequat. */}
+                  {tokenData?.description || data?.description}
                 </div>
               </div>
+
+              {/* ATTRIBUTES */}
               <div className="  text-white rounded-lg py-5 ">
                 <div className="">
                   <div className="flex text-[#868686] text-sm ">
                     ATTRIBUTES&nbsp;&nbsp;
                     <div className="group cursor-pointer relative">
-                      <span className="absolute bottom-7 scale-0 transition-all rounded bg-gray-900  p-2 text-xs text-white group-hover:scale-100">
+                      <span className="absolute flex bottom-7 scale-0 transition-all rounded bg-gray-900  p-2 text-xs text-white group-hover:scale-100">
                         Metadata
                       </span>
                       <a
-                        href={data.metadataURL}
+                        href={tokenData?.metadataURL || data.metadataURL}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -465,225 +417,26 @@ const NFTPage = () => {
                   </div>
 
                   <div className="grid grid-cols-2 lg:grid-cols-3  gap-3 pt-5 text-sm text-white">
-                    {/* Trait 1 */}
-                    <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
-                      <div>
-                        <p className="text-xs text-[#868686] uppercase">
-                          {data.trait1 ? data.trait1 : "Trait 1"} &nbsp;
-                        </p>
-                        {data.value1 ? data.value1 : "Value 1"}
+                    {attributesArray?.map((item) => (
+                      <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
+                        <div>
+                          <p className="text-xs text-[#868686] uppercase">
+                            {item.trait ? item.trait : "Trait 1"} &nbsp;
+                          </p>
+                          {item.value ? item.value : "Value 1"}
+                        </div>
+                        <RandomIcons
+                          fontSize="2.4em"
+                          color="orange"
+                          className="drop-shadow"
+                        />
                       </div>
-                      {/* <div
-                    id="creator"
-                    token={tokenId}
-                    value={data.creator}
-                    onClick={(id, token) => handleCollection(id, token)}
-                    className="flex items-end rounded-md bg-cover bg-center bg-indigo-500 h-10 w-10  shadow-xl shadow-indigo-500/30 duration-300 hover:shadow-indigo-500/50 "
-                    style={{backgroundImage: `url( "https://source.unsplash.com/random?symbol+${data.value1}" `}}>
-                  </div>{" "} */}
-                      {data?.value1?.includes("e") ? (
-                        <GiFigurehead
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      ) : data?.value1?.includes("t") ? (
-                        <GiMazeCornea
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      ) : (
-                        <GiCurlyWing
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      )}
-
-                      {/* <GiAerialSignal fontSize="2.4em" color="#ff3366" className="drop-shadow"/> */}
-                    </div>
-                    {/* Trait 2 */}
-                    <div className="flex justify-between  bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
-                      <div>
-                        <p className="text-xs text-[#868686] uppercase">
-                          {data.trait2 ? data.trait2 : "Trait 2"} &nbsp;
-                        </p>
-                        {data.value2 ? data.value2 : "Value 2"}
-                      </div>
-                      {data.trait2 === "Location" ||
-                      "Zone" ||
-                      "District" ||
-                      "Place" ||
-                      "Country" ||
-                      "City" ||
-                      "Venue" ||
-                      "Street" ||
-                      "Season" ? (
-                        <GiAbstract103
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      ) : data?.value2?.includes("a") ? (
-                        <GiCrystalWand
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      ) : data?.value2?.includes("s") ? (
-                        <GiSewedShell
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      ) : (
-                        <GiAbstract066
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      )}
-                    </div>
-                    {/* Trait 3 */}
-                    <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
-                      <div>
-                        <p className="text-xs text-[#868686] uppercase">
-                          {data.trait3 ? data.trait3 : "Trait 3"} &nbsp;
-                        </p>
-                        {data.value3 ? data.value3 : "Value 3"}
-                      </div>
-                      {data?.value3?.includes("e") ? (
-                        <GiCloudRing
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      ) : data?.value3?.includes("t") ? (
-                        <GiLaserGun
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      ) : (
-                        <GiChaingun
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      )}
-                    </div>
-
-                    {/* Trait 4 */}
-                    <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
-                      <div>
-                        <p className="text-xs text-[#868686] uppercase">
-                          {data.trait4 ? data.trait4 : "Trait 4"} &nbsp;
-                        </p>
-
-                        {data.value4 ? data.value4 : "Value 4"}
-                      </div>
-                      {data.trait4 === "Strength" ? (
-                        <GiFist
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      ) : data?.value4?.includes("t") ? (
-                        <GiFleshyMass
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      ) : data?.value4?.includes("o") ? (
-                        <GiChaingun
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      ) : (
-                        <GiAbstract039
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      )}
-                    </div>
-                    {/* Trait 5 */}
-                    <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
-                      <div>
-                        <p className="text-xs text-[#868686] uppercase">
-                          {data.trait5 ? data.trait5 : "Trait 5"} &nbsp;
-                        </p>
-
-                        {data.value5 ? data.value5 : "Value 5"}
-                      </div>
-                      {data.trait5 === "Health" ? (
-                        <GiHeartPlus
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      ) : data?.value5?.includes("e") ? (
-                        <GiAbstract083
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      ) : data?.value5?.includes("r") ? (
-                        <GiAbstract013
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      ) : (
-                        <GiCrackedSaber
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      )}
-                    </div>
-                    {/* Trait 6 */}
-                    <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3 ">
-                      <div>
-                        <p className="text-xs text-[#868686] uppercase">
-                          {data.trait6 ? data.trait6 : "Trait 6"} &nbsp;
-                        </p>
-
-                        {data.value6 ? data.value6 : "Value 6"}
-                      </div>
-
-                      {data.trait6 === "Intelligence" ? (
-                        <GiBrain
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      ) : data?.value6?.includes("p") ? (
-                        <GiDwennimmen
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      ) : data?.value6?.includes("s") ? (
-                        <GiCrystalEye
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      ) : (
-                        <GiAbstract069
-                          fontSize="2.4em"
-                          color="orange"
-                          className="drop-shadow"
-                        />
-                      )}
-                    </div>
+                    ))}
                   </div>
                 </div>
               </div>
 
+              {/* VEIW TAGS */}
               <div className="flex flex-wrap mt-2">
                 <div className="text-[#868686] text-sm mt-3 w-96 md:w-11 ">
                   {" "}
@@ -691,85 +444,51 @@ const NFTPage = () => {
                 </div>
                 <div className=" flex items-center text-[#868686] text-sm h-fit ">
                   <div className="flex flex-wrap ">
-                    <Link to={{ pathname: `/Explore/${data.style}` }}>
-                      <button
-                        id="style"
-                        value={data.style}
-                        onClick={(id) => handleCollection(id)}
-                        className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1"
-                      >
-                        #{data.style ? data.style : "Style"}
-                      </button>{" "}
-                    </Link>
-                    &nbsp;&nbsp;
-                    <Link to={{ pathname: `/Explore/${data.medium}` }}>
-                      <button
-                        id="medium"
-                        value={data.medium}
-                        onClick={(id) => handleCollection(id)}
-                        className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1"
-                      >
-                        #{data.medium ? data.medium : "Medium"}
-                      </button>{" "}
-                    </Link>
-                    &nbsp;&nbsp;
-                    <Link to={{ pathname: `/Explore/${data.texture}` }}>
-                      <button
-                        id="texture"
-                        value={data.texture}
-                        onClick={handleCollection}
-                        className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1"
-                      >
-                        #{data.texture ? data.texture : "Texture"}
-                      </button>{" "}
-                    </Link>
-                    &nbsp;&nbsp;
-                    <Link to={{ pathname: `/Explore/${data.artist}` }}>
-                      <button
-                        id="artist"
-                        value={data.artist}
-                        onClick={handleCollection}
-                        className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1"
-                      >
-                        #{data.artist ? data.artist : "Artist"}
-                      </button>{" "}
-                    </Link>
-                    &nbsp;&nbsp;
-                    <Link to={{ pathname: `/Explore/${data.colour}` }}>
-                      <button
-                        id="colour"
-                        value={data.colour}
-                        onClick={handleCollection}
-                        className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1 "
-                      >
-                        #{data.colour ? data.colour : "Colour"}
-                      </button>{" "}
-                    </Link>
-                    &nbsp;&nbsp;
-                    <Link to={{ pathname: `/Explore/${data.theme}` }}>
-                      <button
-                        id="theme"
-                        value={data.theme}
-                        onClick={handleCollection}
-                        className=" text-md  border px-3 h-8 rounded-full white-glassmorphism my-1"
-                      >
-                        #{data.theme ? data.theme : "Theme"}
-                      </button>{" "}
-                    </Link>
-                    &nbsp;&nbsp;
+                    {tagsArray.map((tag) => (
+                      <Link to={{ pathname: `/Explore/${tag.value}` }}>
+                        <div className="group relative">
+                          <button
+                            id={tag.id}
+                            value={tag.value}
+                            onClick={(id) => handleCollection(id)}
+                            className={
+                              tag.value === collection
+                                ? "text-amber-500 text-md hover:bg-transparent hover:text-neutral-500 border px-3 h-8 rounded-full white-glassmorphism my-1"
+                                : " text-md  border px-3 h-8 rounded-full white-glassmorphism my-1"
+                            }
+                          >
+                            #{tag.value ? tag.value : "Style"}
+                          </button>{" "}
+                          &nbsp;&nbsp;
+                          <span className="absolute flex bottom-10 right-4 scale-0 transition-all rounded-full bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                            <BiFilterAlt
+                              fontSize={18}
+                              className={
+                                tag.value === collection
+                                  ? "text-amber-500 "
+                                  : ""
+                              }
+                            />
+                            {tag.value === collection ? "x" : "?"}
+                          </span>
+                        </div>
+                      </Link>
+                    ))}
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </TETabsPane>
+
+        {/* TRADE PANEL */}
         <TETabsPane show={tab === "tab2"}>
           <div className="flex  w-full justify-center  flex-col md:flex-row white-glassmorphism  ">
             <div className="text-lg w-full md:w-1/2 xl:w-2/5 aspect-square   rounded-lg  ">
               <div className="rounded-xl p-2 md:py-6 md:pl-6 h-fit mb-2">
                 {data.image ? (
                   <img
-                  src={marketData[tokenid]?.image || data?.image}
+                    src={data?.image}
                     alt="Detailed image"
                     className="rounded-lg"
                   />
@@ -795,8 +514,9 @@ const NFTPage = () => {
                     <strong>
                       {data.collection ? data.collection : "Title"}{" "}
                     </strong>
-                    <span className="absolute bottom-10 -right-5 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
-                      Etherscan
+                    <span className="flex absolute bottom-10 -right-5 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                      Etherscan&nbsp;
+                      <BiLinkExternal fontSize={16} className="" />
                     </span>
                     <a
                       href={link}
@@ -830,15 +550,18 @@ const NFTPage = () => {
                     token={tokenId}
                     value={data.seller}
                     onClick={(id, token) => handleCollection(id, token)}
-                    className="flex items-end rounded-full bg-cover bg-center  border-2 h-16 w-16 md:h-24 md:w-24 hover:scale-[1.02] shadow-xl shadow-indigo-500/30 duration-300 hover:shadow-indigo-500/50 border-indigo-500"
+                    className="flex group relative items-end rounded-full bg-cover bg-center  border-2 h-16 w-16 md:h-24 md:w-24 hover:scale-[1.02] shadow-xl shadow-indigo-500/30 duration-300 hover:shadow-indigo-500/50 border-[#F60C4B]"
                     style={{
                       backgroundImage: `url( "https://robohash.org/${data.seller}.png?set=set3"  `,
                     }}
                   >
-                    <div className="bg-red-500  px-2 py-1 rounded-full text-white text-xs hidden md:inline-block">
+                    <div className="bg-[#F60C4B]  px-2 py-1 rounded-full text-white text-xs hidden md:inline-block">
                       {/* { data.seller && shortenAddress(data.seller)} */}
                       Seller
                     </div>
+                    <span className="absolute bottom-24 -right-5 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                      View Profile?
+                    </span>
                   </div>{" "}
                 </Link>
               </div>
@@ -846,7 +569,8 @@ const NFTPage = () => {
               <div className=" w-full text-[#868686] text-sm  h-fit ">
                 TRADE{" "}
                 <div className=" text-lg  pt-3 text-white">
-                  Make an offer on this NFT above {data.price} ETH.
+                  This NFT last sold for {data.price} ETH{" "}
+                  {data.date ? "on " + data.date : ""}
                 </div>
               </div>
 
@@ -855,13 +579,20 @@ const NFTPage = () => {
                   {checksumAddress !== data.seller ? (
                     <div>
                       <div className="check mt-3 gap-x-2.5"></div>
-                      <div className="flex justify-around items-center">
+                      <div className="flex justify-around items-center group relative">
                         <button
                           className="activeButton text-white outline-none  font-semibold py-2 px-10 my-5 rounded text-[15px]"
                           onClick={() => buyNFT(tokenId)}
                         >
                           BUY
                         </button>
+                        <span className="absolute bottom-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                          {!currentAccount
+                            ? "Wallet Not Connected?"
+                            : !data.price
+                            ? "Enter an offer price"
+                            : ""}
+                        </span>
                         <input
                           className=" rounded outline-none text-white text-[15px] font-semibold border-none white-glassmorphism shadow-2xl px-2 text-center h-11 w-[120px] "
                           type="number"
@@ -886,7 +617,7 @@ const NFTPage = () => {
                   ) : (
                     <div>
                       <div className="check mt-3 gap-x-2.5"></div>
-                      <div className="flex justify-around items-center">
+                      <div className="flex justify-around items-center group relative">
                         <input
                           className=" rounded outline-none text-white text-md text-center border-none white-glassmorphism shadow-2xl px-2  h-11 w-[120px] "
                           type="number"
@@ -903,13 +634,20 @@ const NFTPage = () => {
                           // }
                         ></input>
                         <button
-                          className="outline-none bg-[#F60C4B] hover:bg-[#F60C6d] border-[#F60C4B] text-white font-bold py-2 px-10 my-5 rounded text-sm"
+                          className=" outline-none bg-[#F60C4B] hover:bg-[#F60C6d] border-[#F60C4B] text-white font-bold py-2 px-10 my-5 rounded text-sm"
                           onClick={() => listNFT(tokenId)}
                         >
                           SELL
                         </button>
+                        <span className="absolute bottom-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                          {!currentAccount
+                            ? "Wallet Not Connected?"
+                            : !price
+                            ? "No Price Entered?"
+                            : "Click 'Sell' To Proceed"}
+                        </span>
                       </div>
-                      <div className="text-white text-center  text-lg ">
+                      <div className="text-white text-center  text-md ">
                         {currentAccount
                           ? "Enter your sell price"
                           : "Connect your MetaMask account to trade"}
@@ -922,8 +660,9 @@ const NFTPage = () => {
                 <div className="flex text-[#868686] text-sm pt-5">
                   METADATA&nbsp;&nbsp;
                   <div className="group cursor-pointer relative mb-3">
-                    <span className="absolute bottom-8 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
-                      Metadata
+                    <span className="flex absolute bottom-7 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                      Metadata&nbsp;
+                      <BiLinkExternal fontSize={16} className="" />
                     </span>
                     <a
                       href={data.metadataURL}
@@ -997,20 +736,26 @@ const NFTPage = () => {
                 <br />
                 CONTRACT
                 <div className="flex text-white justify-between items-end py-2 ">
-                  <p className="text-sm">
+                  <p className="text-sm group relative">
                     Contract
                     <a className="">
                       &nbsp; &nbsp;&nbsp;
                       {data.owner && shortenAddress(data.owner)}
                     </a>
+                    <span className="absolute flex bottom-6 right-0 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                      <BiLinkExternal fontSize={18} className="" />
+                    </span>
                   </p>
 
-                  <p className="text-sm text-right ">
+                  <p className="text-sm text-right group relative ">
                     Seller{" "}
                     <a>
                       &nbsp;&nbsp;{data.seller && shortenAddress(data.seller)}
                       &nbsp;
                     </a>
+                    <span className="absolute flex bottom-6 right-0 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                      <BiLinkExternal fontSize={18} className="" />
+                    </span>
                     <br />
                     {/* <span>{checksum && shortenAddress(checksum)}</span> */}
                   </p>
@@ -1032,15 +777,10 @@ const NFTPage = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {/* <Slider {...settings}> */}
-        {collectionNFTs
-          // .slice(collectionNFTs.length - 8)
-          .reverse()
-          .map((data) => (
-            <NFTTile data={data} key={data.tokenId} />
-          ))}
-        {/* </Slider> */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 xl:text-xs gap-4">
+        {collectionNFTs.reverse().map((data) => (
+          <NFTTile data={data} key={data.tokenId} />
+        ))}
       </div>
     </div>
   );

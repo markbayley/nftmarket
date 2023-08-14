@@ -1,20 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AiFillPlayCircle } from "react-icons/ai";
-import { SiEthereum } from "react-icons/si";
-import { BsInfoCircle } from "react-icons/bs";
+import React, { useContext } from "react";
 import { TransactionContext } from "../context/TransactionContext";
 import { shortenAddress } from "../utils/shortenAddress";
 import Loader from "./Loader";
-import {
-  TETabs,
-  TETabsContent,
-  TETabsItem,
-  TETabsPane,
-} from "tw-elements-react";
 import NFTTile from "./NFTTile";
-import profileJpg from "../images/profile.jpg";
 import Transactions from "./Transactions";
 import SubMenu from "./SubMenu";
+import { uploadJSONToIPFS } from "../utils/pinata";
+import {
+  TETabsContent,
+  TETabsPane,
+} from "tw-elements-react";
+import { AiFillPlayCircle } from "react-icons/ai";
+import { SiEthereum } from "react-icons/si";
+import { BsInfoCircle } from "react-icons/bs";
 
 const Input = ({
   placeholder,
@@ -64,12 +62,48 @@ const Wallet = () => {
 
   window.localStorage.setItem("profileParams", profileParams);
   //PROFILE
-  const handleSubmitProfile = (e) => {
-    const { user, country, bio, website, profileUrl, currentAccount } =
-      profileParams;
+  const handleSubmitProfile = async (e) => {
+   
     e.preventDefault();
     console.log("profileParams", profileParams);
     window.localStorage.setItem("profileParams", profileParams);
+
+
+    const {
+      user,
+      country,
+      bio,
+      website,
+      profileUrl,
+      address,
+    } = profileParams;
+  
+    if (!user || !country || !website || !bio || !profileUrl || !address) {
+      console.log("Please enter details in all fields");
+      // setIsMinting(false);
+      return -1;
+    }
+  
+    const nftJSON = {
+      user,
+      country,
+      bio,
+      website,
+      profileUrl,
+      address: checksumAddress,
+  }
+  
+  try {
+    //upload the metadata JSON to IPFS
+    const response = await uploadJSONToIPFS(nftJSON);
+    if (response.success === true) {
+      console.log(response.pinataURL)
+      return response.pinataURL;
+    
+    }
+  } catch (e) {
+    console.log("Error storing metadata. Try again");
+  }
   };
 
   //PROFILE IMAGE
@@ -97,25 +131,32 @@ const Wallet = () => {
     });
   }
 
+console.log("profileParams", profileParams)
+
+
+
+
+
+
+
+
   const walletNFTs = marketData.filter(
     (item) => item.seller === checksumAddress
   );
   console.log(walletNFTs);
 
   return (
-    <div className="flex w-full justify-center items-center fade-in">
+    <div className="flex w-full justify-center items-center ">
       <div className="flex-col justify-center items-start md:w-3/4 mx-2 ">
-
-
-      <SubMenu
-        title="My Wallet"
-        subtitle="Fund your wallet to mint NFTs"
-        tab1="Transfer"
-        tab2="My NFTs"
-        tab3="Profile"
-        handleTab={handleTab}
-        tab={tab}
-      />
+        <SubMenu
+          title="My Wallet"
+          subtitle="Fund your wallet to mint NFTs"
+          tab1="Transfer"
+          tab2="My NFTs"
+          tab3="Profile"
+          handleTab={handleTab}
+          tab={tab}
+        />
         {/* <div className="flex flex-wrap justify-between items-center my-5 ">
           <div className="flex flex-col w-full justify-center md:w-1/2 pl-2">
             <h1 className="text-4xl sm:text-5xl text-white text-gradient">
@@ -167,7 +208,9 @@ const Wallet = () => {
                   </div>
                   <div>
                     <p className=" text-white font-light tshade ">
-                      {checksumAddress ? shortenAddress(checksumAddress) : "0x123...aBcD"}
+                      {checksumAddress
+                        ? shortenAddress(checksumAddress)
+                        : "0x123...aBcD"}
                     </p>
                     <p className="text-white font-semibold text-lg mt-1 tshade">
                       {accountBalance} Ethereum
@@ -177,7 +220,7 @@ const Wallet = () => {
               </div>
 
               {/* SEND FORM */}
-              <div className=" md:w-96  w-full flex flex-col justify-center items-center px-2 md:px-0 md:py-2 max-w-[410px]">
+              <div className=" md:w-96  w-full flex flex-col justify-center items-center px-2 md:px-0 md:py-2 max-w-[410px] ">
                 <Input
                   placeholder="Address To"
                   name="addressTo"
@@ -220,7 +263,7 @@ const Wallet = () => {
 
           <TETabsPane show={tab === "tab2"}>
             <div className="grid md:grid-cols-4 text-md md:text-xs gap-4">
-              {[...walletNFTs].reverse().map((value, index) => {
+              {[...walletNFTs].map((value, index) => {
                 return <NFTTile data={value} key={index}></NFTTile>;
               })}
             </div>
@@ -232,8 +275,8 @@ const Wallet = () => {
           </TETabsPane>
 
           <TETabsPane show={tab === "tab3"}>
-            <div className="flex flex-wrap justify-evenly items-start flex-row w-full white-glassmorphism">
-              <div className="p-3 md:p-7 sm:w-96 h-96  lg:h-96 lg:mx-0 lg:mt-0 flex justify-end items-start flex-col rounded-xl">
+            <div className="flex flex-wrap justify-around items-start flex-row w-full white-glassmorphism md:p-7 ">
+              <div className="p-3 w-96 lg:w-1/2 h-96  lg:h-96 lg:mx-0 lg:mt-0 flex justify-end items-start flex-col rounded-xl">
                 <div className="flex justify-between flex-col w-full h-full">
                   {/* <button
                     style={{
@@ -250,41 +293,42 @@ const Wallet = () => {
                       Creator
                     </div>
                   </button>{" "} */}
-                  
+
                   <div className="flex justify-between items-start ">
                     <div className="w-32 h-32 rounded-full border border-white flex justify-center items-start ">
                       <label
                         htmlFor="dropzone-file"
                         className="flex items-center justify-center w-full h-full cursor-move bg-opacity-10 bg-[#273057] hover:bg-opacity-70"
                       >
+
+                       
+                         {/* <button
+                            style={{
+                              backgroundImage: profileParams.profileUrl
+                                ? profileParams.profileUrl
+                                : ""
+                                // `url( "https://robohash.org/${checksumAddress}.png?set=set3" `,
+                            }}
+                            alt="profile photo"
+                            className="rounded-full object-cover w-32 h-32 bg-cover bg-center "
+                          ></button> */}
                         <div className="flex flex-col items-start justify-end relative">
-                        <input
+                          <input
                             id="dropzone-file"
                             type="file"
                             className="hidden z-10"
                             onChange={(e) => uploadLocally(e)}
                           />
-                          <button
-                           style={{ backgroundImage:
-                              profileParams.profileUrl
-                                ? profileParams.profileUrl
-                                : `url( "https://robohash.org/${checksumAddress}.png?set=set3" ` }}
-                            
-                            alt="profile photo"
-                            className="rounded-full object-cover w-32 h-32 bg-cover bg-center "
-                          >
-                            </button>
-                            <div className="bg-indigo-500  px-3 py-1 rounded-full text-white text-sm hidden md:inline-block absolute bottom-2">
+                          <img src={profileParams.profileUrl}  />
+                          <div className="bg-indigo-500  px-3 py-1 rounded-full text-white text-sm hidden md:inline-block absolute bottom-2">
                             {/* {checksumAddress ? shortenAddress(checksumAddress) : "0x123...aBcD"} */}
                             Profile
-                    </div>
-                        
+                          </div>
                         </div>
                       </label>
                     </div>
                     <BsInfoCircle fontSize={17} color="#fff" />
                   </div>
-
 
                   <div className="flex align-center">
                     <p className="text-white font-semibold tshade">
@@ -310,11 +354,13 @@ const Wallet = () => {
                       : "Website URL"}
                   </p>
                   <p className=" text-[#868686] font-light tshade ">
-                    {checksumAddress ? shortenAddress(checksumAddress) : "0x123...aBcD"}
+                    {checksumAddress
+                      ? shortenAddress(checksumAddress)
+                      : "0x123...aBcD"}
                   </p>
                 </div>
               </div>
-              <div className="p-2 md:p-7  sm:w-96  w-full flex flex-col justify-center items-center ">
+              <div className="p-2 sm:w-96  w-full flex flex-col justify-center items-center ">
                 <Input
                   placeholder="Name"
                   name="user"
@@ -355,7 +401,7 @@ const Wallet = () => {
                   <button
                     type="button"
                     onClick={handleSubmitProfile}
-                    className="text-white w-full  border-[1px] p-2 border-[#6c63ff] hover:bg-[#6c63ff] rounded cursor-pointer shadow-lg shadow-indigo-500/30"
+                    className="text-white w-full  border-[1px] p-2  h-12 border-[#6c63ff] hover:bg-indigo-500 rounded cursor-pointer shadow-lg shadow-indigo-500/30"
                   >
                     Save
                   </button>

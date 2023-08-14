@@ -6,7 +6,7 @@ import { useContext, useState } from "react";
 import { TransactionContext } from "../context/TransactionContext";
 import Loader from "./Loader";
 
-const NFTTile = (data) => {
+const NFTTile = (data, key) => {
   const { favorites, setFavorites, handleCollection } = useContext(TransactionContext);
 
   const IPFSUrl = GetIpfsUrlFromPinata(data?.data?.image);
@@ -95,11 +95,11 @@ const NFTTile = (data) => {
         <strong>{data.data.collection}&nbsp; </strong>&nbsp;
         <em>'{data.data.name}'</em>
       </div>
-      <div className=" flex w-full text-[#868686] justify-around text-xs pt-1">
+      {/* <div className=" flex w-full text-[#868686] justify-around text-xs pt-1">
         <span className="border border-indigo-500 px-2 rounded">{data.data.price}ETH</span>
         <span className="border border-teal-700 px-2 rounded">{data.data.listing}</span>
         <span className="border border-amber-600 px-2 rounded">#{data.data.tokenId}</span>
-        </div>
+        </div> */}
   
     </div>
   );

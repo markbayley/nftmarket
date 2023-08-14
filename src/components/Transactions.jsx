@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import { TransactionContext } from "../context/TransactionContext";
-import dummyData from "../data/dummyData";
 import { shortenAddress } from "../utils/shortenAddress";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { BiEnvelope } from "react-icons/bi";

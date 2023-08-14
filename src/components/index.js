@@ -9,5 +9,5 @@ export { default as NFTPage } from './NFTpage';
 export { default as Wallet } from './Wallet';
 export { default as Collections } from './Collections';
 export { default as Marketplace } from './Marketplace';
-export { default as ImageSlider } from './ImageSlider';
+export { default as ImageSlider } from '../misc/ImageSlider';
 export { default as FeaturePage } from './FeaturePage';

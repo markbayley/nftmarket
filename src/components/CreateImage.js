@@ -1,18 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { SiEthereum } from "react-icons/si";
-import { BsInfoCircle } from "react-icons/bs";
-// import placeholder from "../images/placer.png";
 import {
-  TETabs,
   TETabsContent,
-  TETabsItem,
   TETabsPane,
 } from "tw-elements-react";
 import createSvg from "../images/create.svg";
 import uploadSvg from "../images/upload.svg";
-import Loader from "./Loader";
-
 
 const CreateImage = ({
   isUploading,
@@ -22,11 +16,7 @@ const CreateImage = ({
   fileURL,
   message,
   OnUploadFile,
-  setIsChecked,
   hashLink,
-  metaData,
-  mint,
-  setTab,tab,
   isChecked
 }) => {
   const [basicActive, setBasicActive] = useState("tab1");
@@ -38,11 +28,6 @@ const CreateImage = ({
     setBasicActive(value);
   };
 
-  function revokeObjectURL(fileURL) {
-    return window.URL
-      ? window.URL.revokeObjectURL(fileURL)
-      : window.webkitURL.revokeObjectURL(fileURL);
-  }
 
   return (
     <div className="w-full  aspect-square ">

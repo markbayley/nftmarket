@@ -2,14 +2,13 @@ import React, { useContext } from "react";
 import { useParams } from "react-router";
 import { TransactionContext } from "../context/TransactionContext";
 import NFTTile from "./NFTTile";
+import SubMenu from "./SubMenu";
 import { shortenAddress } from "../utils/shortenAddress";
-import profileImg from "../images/profile.jpg";
 import Slider from "react-slick";
-import { Link } from "react-router-dom";
 import { BsShieldFillCheck } from "react-icons/bs";
 import { BiSearchAlt } from "react-icons/bi";
 import { RiHeart2Fill } from "react-icons/ri";
-import SubMenu from "./SubMenu";
+
 
 const FeaturePage = () => {
   var settings = {
@@ -23,22 +22,18 @@ const FeaturePage = () => {
   };
 
   const {
-    filteredResults,
-    currentAccount,
     profileParams,
     id,
-    token,
     marketData,
     handleTab,
     tab,
-    collection
   } = useContext(TransactionContext);
 
   const params = useParams();
   const creatorAddress = params.creatorAddress;
 
   //   console.log("creatorAddress", creatorAddress, token);
-  const creatorNFTs = marketData.filter(
+  const creatorNFTs = marketData.reverse().filter(
     (item) => item[id] && shortenAddress(item[id]) === creatorAddress || "0x8d0...Ba2B"
   );
 
@@ -48,7 +43,7 @@ console.log("backLink", backLink)
 
 console.log("creatorAddress", creatorAddress)
   return (
-    <div className="mx-2 lg:mx-[15%] pb-10">
+    <div className="mx-2 lg:mx-[15%] pb-20 ">
       {/* <div className="flex  justify-start items-center ">
         <div className="flex mf:flex-row flex-col items-center justify-between ">
           <div className="flex-1 flex flex-col justify-start items-center py-2 ">
@@ -68,9 +63,9 @@ console.log("creatorAddress", creatorAddress)
       </div> */}
         <SubMenu
         title="Profile"
-        subtitle="Featuring NFT artists and collectors"
+        subtitle="Featuring artists and collectors"
         tab1="Profile"
-        tab2="Back"
+        //tab2="Back"
         // tab3="Market"
         handleTab={handleTab}
         tab={tab}
@@ -139,11 +134,12 @@ console.log("creatorAddress", creatorAddress)
 
         <div className="w-full ">
           <Slider {...settings} >
-            {creatorNFTs
+            {creatorNFTs.reverse()
               .slice(creatorNFTs.length - 8)
-              .reverse()
               .map((data) => (
+       
                 <NFTTile data={data} key={data.tokenId} />
+     
               ))}
           </Slider>
         </div>

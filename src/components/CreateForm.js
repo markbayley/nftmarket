@@ -3,99 +3,110 @@ import {
   artists,
   styles,
   mediums,
-  category,
   textures,
   colours,
   themes,
-  subcategory,
 } from "../data/lists.js";
 
 const CreateForm = ({
-  isUploading,
-  isCreating,
-  isMinting,
   formParams,
-  fileURL,
   OnCreateFile,
   OnUploadFile,
-  file,
   activeKeywords,
   handleChecked,
   handleForm,
   updateFormParams,
-  listNFT,
-  setIsSaving,
-  isSaving,
   isChecked,
-  transactionHash,
-  mint,
-  fill,
-  message
 }) => {
-  const styleWords = activeKeywords.filter((word) =>
-    styles.some((style) => style.name === word)
+
+
+  // Filter the keywords tags selected
+  function filterKeywordsByArray(activeKeywords, arrayToFilter, property) {
+    return activeKeywords.filter((word) =>
+      arrayToFilter.some((item) => item[property] === word)
+    );
+  }
+
+  const styleWords = filterKeywordsByArray(activeKeywords, styles, "name");
+  const artistWords = filterKeywordsByArray(activeKeywords, artists, "name");
+  const textureWords = filterKeywordsByArray(activeKeywords, textures, "name");
+  const colourWords = filterKeywordsByArray(activeKeywords, colours, "name");
+  const themeWords = filterKeywordsByArray(activeKeywords, themes, "name");
+  const mediumWords = filterKeywordsByArray(activeKeywords, mediums, "name");
+
+  const KeywordButtons = ({ activeKeywords, keywords, onClick }) => (
+    <div className="tabs">
+      {keywords.slice(0, 4).map((item, index) => (
+        <button
+          key={index}
+          onClick={onClick}
+          value={item}
+          style={
+            keywords === colourWords
+              ? { backgroundColor: item, color: "#ffffff", border: "none" }
+              : { border: "none" }
+          }
+          className={`fade-in button ${
+            activeKeywords.includes(item)
+              ? "flex items-center text-sm text-indigo-500 border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500 hover:bg-transparent mt-2"
+              : ""
+          }`}
+        >
+          #{item}
+        </button>
+      ))}
+    </div>
   );
 
-  const artistWords = activeKeywords.filter((word) =>
-    artists.some((artist) => artist.name === word)
-  );
+// Define the auto description input
+ const [autoDescription, setAutoDescription] = useState(false);
 
-  const textureWords = activeKeywords.filter((word) =>
-    textures.some((texture) => texture.name === word)
-  );
-
-  const colourWords = activeKeywords.filter((word) =>
-    colours.some((colour) => colour.name === word)
-  );
-
-  const themeWords = activeKeywords.filter((word) =>
-    themes.some((theme) => theme.name === word)
-  );
-
-  const mediumWords = activeKeywords.filter((word) =>
-    mediums.some((medium) => medium.name === word)
-  );
-
-  // console.log("formParams", formParams);
-
-  // const handleSelector = (ids) => {
-  //   const selectorWords = activeKeywords.filter((word) =>
-  //   ids.some((id) => id.name === word)
-  // );
-  // return selectorWords
-  // }
-
-  // const ids = [ 'styles', 'mediums']
-
-  // const results = handleSelector(ids)
-
-  const [ autoDescription, setAutoDescription ] = useState(false)
+  const fill = "From the collection '" + formParams.collection + "' this artwork entitled '" + formParams.name + "' was made using a digital " + formParams.medium + 
+  " medium in a creative " + formParams?.style + " style. The " + formParams.theme + " theme combines with subtle " + formParams.texture + " textures, " 
+  + formParams.colour + " colors and " + formParams.artist + " influences." + formParams.description
 
   const handleDescription = (e) => {
-    if(formParams.description ) {
-    e.preventDefault();
-    updateFormParams({
-      ...formParams,
-    description: ""
-  })
-}
-else {
-    updateFormParams({
-      ...formParams,
-    description: e.target.value
-    })
-  }
+    if (formParams.description) {
+      e.preventDefault();
+      updateFormParams({
+        ...formParams,
+        description: "",
+      });
+    } else {
+      updateFormParams({
+        ...formParams,
+        description: e.target.value,
+      });
+    }
+  };
 
-  }
+  // Handle the selector dropdown inputs
+  const SelectOptions = ({ id, options, value, onChange }) => (
+    <select
+      id={id}
+      onChange={(e) => onChange(id, e.target.value)}
+      value={value}
+      className="text-white outline-none blue-glassmorphism w-half rounded bg-[#313751] shadow-2xl border-none"
+    >
+      {options.map((option, index) => (
+        <option key={index} value={option.name}>
+          {option.name}
+        </option>
+      ))}
+    </select>
+  );
+
+
 
   return (
-    <form className="">
-      <div className=" flex flex-col justify-start items-start   ">
+    <form>
+      <div className="flex flex-col justify-start items-start">
         <>
-          <div className="flex w-full mb-3  justify-between gap-x-2.5 ">
+          {/* INPUTS */}
+          <div className="flex w-full mb-3 justify-between gap-x-2.5">
             <input
               required
-              className="w-full  xl:w-[48%] rounded-sm outline-none  text-white border-none white-glassmorphism select:bg-red-500"
+              className="w-full xl:w-[48%] rounded-sm outline-none text-white border-none white-glassmorphism select:bg-red-500"
               type="text"
               placeholder="NFT Collection..."
               id="collection"
@@ -108,7 +119,7 @@ else {
               value={formParams.collection}
             ></input>
             <input
-              className="w-full  xl:w-[48%] rounded-sm  outline-none  text-white border-none white-glassmorphism"
+              className="w-full xl:w-[48%] rounded-sm outline-none text-white border-none white-glassmorphism"
               required
               type="text"
               placeholder="NFT Title..."
@@ -122,236 +133,120 @@ else {
               value={formParams.name}
             ></input>
           </div>
-          <p className="pb-3 text-[#868686] text-sm uppercase">
-          INPUTS
-            </p>
+
+          {/* SELECTORS */}
+          <p className="pb-3 text-[#868686] text-sm uppercase">INPUTS</p>
           <div className="check ">
-            <select
+            <SelectOptions
               id="style"
-              onChange={(id) => handleForm(id)}
-              value=""
-              className="text-white outline-none  w-half  rounded bg-[#313751] shadow-2xl border-none "
-            >
-              {styles.map((style, index) => (
-                <option key={index} value={style.name}>
-                  {style.name}
-                </option>
-              ))}
-            </select>
-
-            <select
-              id="theme"
-              onChange={(id) => handleForm(id)}
-              value=""
-              className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#313751] shadow-2xl border-none "
-            >
-              {themes.map((theme, index) => (
-                <option key={index} value={theme.name}>
-                  {theme.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="check"></div>
-
-          <div className="check mt-3">
-            <select
+              options={styles}
+              value={""}
+              onChange={handleForm}
+            />
+            <SelectOptions
               id="medium"
-              onChange={(id) => handleForm(id)}
-              value=""
-              className="text-white outline-none blue-glassmorphism w-half rounded  bg-[#313751] shadow-2xl border-none"
-            >
-              {mediums.map((medium, index) => (
-                <option key={index} value={medium.name}>
-                  {medium.name}
-                </option>
-              ))}
-            </select>
-            <select
+              options={mediums}
+              value={""}
+              onChange={handleForm}
+            />
+          </div>
+          <div className="check mt-3">
+            <SelectOptions
+              id="theme"
+              options={themes}
+              value={""}
+              onChange={handleForm}
+            />
+            <SelectOptions
               id="texture"
-              onChange={(id) => handleForm(id)}
-              value=""
-              className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#313751] shadow-2xl border-none"
-            >
-              {textures.map((texture, index) => (
-                <option key={index} value={texture.name}>
-                  {texture.name}
-                </option>
-              ))}
-            </select>
+              options={textures}
+              value={""}
+              onChange={handleForm}
+            />
           </div>
-
-          <div className="check">
-            {/* <div className=" tabs">
-              {mediumWords.slice(0, 4).map((item, index) => (
-                <button
-                  key={index}
-                  onClick={handleChecked}
-                  value={item}
-                  className={`fade-in button ${
-                    activeKeywords.includes(item) ? "flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2" : ""
-                  }`}
-                >
-                  #{item}
-                </button>
-              ))}
-            </div> */}
-            {/* <div className="tabs">
-              {textureWords.slice(0, 4).map((item, index) => (
-                <button
-                  key={index}
-                  onClick={handleChecked}
-                  value={item}
-                  className={`fade-in button ${
-                    activeKeywords.includes(item) ? "flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2" : ""
-                  }`}
-                >
-                  #{item}
-                </button>
-              ))}
-            </div> */}
-          </div>
-
-          <div className="check mt-3 ">
-            <select
-              id="colour"
-              onChange={(id) => handleForm(id)}
-              value=""
-              className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#313751] shadow-2xl border-none"
-            >
-              {colours.map((colour, index) => (
-                <option key={index} value={colour.name}>
-                  {colour.name}
-                </option>
-              ))}
-            </select>
-            <select
+          <div className="check mt-3">
+            <SelectOptions
               id="artist"
-              onChange={(id) => handleForm(id)}
-              value=""
-              className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#313751] shadow-2xl border-none"
-            >
-              {artists.map((artist, index) => (
-                <option key={index} value={artist.name}>
-                  {artist.name}
-                </option>
-              ))}
-            </select>
+              options={artists}
+              value={""}
+              onChange={handleForm}
+            />
+            <SelectOptions
+              id="colour"
+              options={colours}
+              value={""}
+              onChange={handleForm}
+            />
           </div>
 
+          {/* TAGS */}
           <div className="flex flex-wrap gap-x-2 py-1">
-            <div className="tabs">
-              {styleWords.slice(0, 4).map((item, index) => (
-                <button
-                  key={index}
-                  onClick={handleChecked}
-                  value={item}
-                  className={`fade-in button ${
-                    activeKeywords.includes(item)
-                      ? "flex items-center text-md text-[#6c63ff]   border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2"
-                      : ""
-                  }`}
-                >
-                  #{item}
-                </button>
-              ))}
-            </div>
-          
-            <div className=" tabs">
-              {mediumWords.slice(0, 4).map((item, index) => (
-                <button
-                  key={index}
-                  onClick={handleChecked}
-                  value={item}
-                  className={`fade-in button ${
-                    activeKeywords.includes(item)
-                      ? "flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2"
-                      : ""
-                  }`}
-                >
-                  #{item}
-                </button>
-              ))}
-            </div>
-            <div className=" tabs">
-              {colourWords.slice(0, 5).map((item, index) => (
-                <button
-                  style={{ backgroundColor: item }}
-                  className="text-md text-white border-none brightness-100 hover:brightness-50 px-3 h-8 mt-2 flex items-center  rounded-full  fade-in"
-                  key={index}
-                  onClick={handleChecked}
-                  value={item}
-                >
-                  #{item}
-                </button>
-              ))}
-            </div>
-            <div className="tabs">
-              {themeWords.slice(0, 4).map((item, index) => (
-                <button
-                  key={index}
-                  onClick={handleChecked}
-                  value={item}
-                  // className={`fade-in button ${
-                  //   activeKeywords.includes(item) ? "colourButton" : ""
-                  // }`}
-                  className={`fade-in button ${
-                    activeKeywords.includes(item)
-                      ? "flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2"
-                      : ""
-                  }`}
-                >
-                  #{item}
-                </button>
-              ))}
-            </div>
-            <div className="tabs">
-              {textureWords.slice(0, 4).map((item, index) => (
-                <button
-                  key={index}
-                  onClick={handleChecked}
-                  value={item}
-                  className={`fade-in button ${
-                    activeKeywords.includes(item)
-                      ? "flex items-center text-md text-[#6c63ff]  border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2"
-                      : ""
-                  }`}
-                >
-                  #{item}
-                </button>
-              ))}
-            </div>
-         
-            <div className=" tabs">
-              {artistWords.slice(0, 4).map((item, index) => (
-                <button
-                  key={index}
-                  onClick={handleChecked}
-                  value={item}
-                  className={`fade-in button ${
-                    activeKeywords.includes(item)
-                      ? "flex items-center text-md text-[#6c63ff]   border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500  hover:bg-transparent mt-2"
-                      : ""
-                  }`}
-                >
-                  #{item}
-                </button>
-              ))}
-            </div>
+            <KeywordButtons
+              activeKeywords={activeKeywords}
+              keywords={styleWords}
+              onClick={handleChecked}
+            />
+            <KeywordButtons
+              activeKeywords={activeKeywords}
+              keywords={themeWords}
+              onClick={handleChecked}
+            />
+            <KeywordButtons
+              activeKeywords={activeKeywords}
+              keywords={artistWords}
+              onClick={handleChecked}
+            />
+            <KeywordButtons
+              activeKeywords={activeKeywords}
+              keywords={mediumWords}
+              onClick={handleChecked}
+            />
+            <KeywordButtons
+              activeKeywords={activeKeywords}
+              keywords={textureWords}
+              onClick={handleChecked}
+            />
+            <KeywordButtons
+              activeKeywords={activeKeywords}
+              keywords={colourWords}
+              onClick={handleChecked}
+            />
           </div>
 
-          <div className=" text-white leading-tight  mb-2  w-full">
+          {/* DESCRIPTION */}
+          <div className=" text-white leading-tight mb-2 w-full">
             <div className="py-3 text-[#868686] text-sm uppercase">
               {" "}
-              {!formParams.description && formParams.collection && formParams.name
-                ? <p>Write a description or  <button className=" text-indigo-500 h-6 px-0 bg-transparent border-none hover:bg-transparent " value={fill} onClick={(e) => handleDescription(e)}
-                
-                 >AUTO GENERATE</button>  one.</p>
-                : <><p>DESCRIPTION<button className=" text-indigo-500 h-6 px-0 bg-transparent border-none hover:bg-transparent " value={fill} onClick={(e) => handleDescription(e)}
-             > &nbsp;&nbsp;CLEAR</button></p></> }
+              {!formParams.description &&
+              formParams.collection &&
+              formParams.name ? (
+                <p>
+                  Write a description or{" "}
+                  <button
+                    className=" text-indigo-500 h-6 px-0 bg-transparent border-none hover:bg-transparent"
+                    value={fill}
+                    onClick={(e) => handleDescription(e)}
+                  >
+                    AUTO GENERATE
+                  </button>{" "}
+                  one.
+                </p>
+              ) : (
+                <>
+                  <p>
+                    DESCRIPTION
+                    <button
+                      className=" text-indigo-500 h-6 px-0 bg-transparent border-none hover:bg-transparent"
+                      value={fill}
+                      onClick={(e) => handleDescription(e)}
+                    >
+                      {" "}
+                      &nbsp;&nbsp;CLEAR
+                    </button>
+                  </p>
+                </>
+              )}
             </div>
-
             {!autoDescription ? (
               <textarea
                 required
@@ -364,7 +259,7 @@ else {
                 value={formParams.description}
                 id="description"
                 rows="4"
-                className=" mb-3 block py-1.5 px-2.5 w-full text-white rounded border border-[#6c63ff] focus:ring-blue-500 focus:border-blue-500 white-glassmorphism "
+                className="mb-3 block py-1.5 px-2.5 w-full text-white rounded border border-[#6c63ff] focus:ring-blue-500 focus:border-blue-500 white-glassmorphism"
                 placeholder="NFT Description..."
               ></textarea>
             ) : (
@@ -372,40 +267,22 @@ else {
             )}
           </div>
         </>
-    
-        {/* Buttons */}
-        <div className="flex w-full justify-end text-white gap-x-3 mt-1 relative">
-    
-      {/* <div className="message group relative text-white w-1/2 h-9 flex items-center ">
-        {message}
-      </div> */}
-     
+
+        {/* BUTTONS */}
+        <div className="flex w-full justify-end text-white gap-x-3 relative">
           {!isChecked ? (
             <button
               type="button"
               onClick={OnCreateFile}
-             value="Create"
+              value="Create"
               className={
-                formParams.name && formParams.collection && formParams.description
-                  ? "activeButton md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 "
-                  : "inactiveButton md:w-1/2 w-full group shadow-lg shadow-indigo-500/30"
-                // ? "disabledButton md:w-1/2 w-full group"
-                // : isMinting
-                // ? "inactiveButton md:w-1/2 w-full group"
-                // : isCreating
-                // ? "waitingButton md:w-1/2 w-full group"
-                // : !formParams.name || !formParams.collection
-                // ? "inactiveButton  md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 "
-                // : "activeButton md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 "
+                formParams.name &&
+                formParams.collection &&
+                formParams.description
+                  ? "md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-indigo-500 px-3 h-10 rounded-lg hover:bg-transparent hover:text-indigo-500"
+                  : "md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-neutral-900 px-3 h-10 rounded-lg hover:bg-transparent hover:text-indigo-500"
               }
             >
-              {/* <span className="absolute -bottom-12  scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100 ">
-                {isChecked
-                  ? "Upload is selected..?"
-                  : !formParams.name || !formParams.collection
-                  ? "Enter title & description..."
-                  : "Ready to create image..."}
-              </span>*/}
               Generate
             </button>
           ) : (
@@ -414,15 +291,7 @@ else {
               type="file"
               value=""
               className={
-                !isChecked
-                  ? "disabledButton w-1/2"
-                  : isMinting
-                  ? "waitingButton w-1/2"
-                  : isSaving
-                  ? "waitingButton w-1/2"
-                  : !fileURL
-                  ? "inactiveButton w-1/2 shadow-lg shadow-indigo-500/30 duration-300"
-                  : "activeButton w-1/2 rounded"
+                "md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-neutral-900 h-10 rounded-lg hover:bg-transparent hover:text-indigo-500"
               }
             />
           )}

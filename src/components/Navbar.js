@@ -4,11 +4,11 @@ import {
   NavLink,
 } from "react-router-dom";
 import { useLocation } from "react-router";
+import { TransactionContext } from "../context/TransactionContext";
+import { shortenAddress } from "../utils/shortenAddress";
 import { HiMenuAlt4 } from "react-icons/hi";
 import { AiFillPlayCircle, AiOutlineClose } from "react-icons/ai";
 import inblockLogo from "../images/inblocklogolight.png";
-import { TransactionContext } from "../context/TransactionContext";
-import { shortenAddress } from "../utils/shortenAddress";
 
 const NavBarItem = ({ title, classprops, link }) => (
   <div    >
@@ -40,7 +40,7 @@ const Navbar = () => {
     <nav className="w-full flex md:justify-center justify-between items-center p-4 ">
     
       <Link
-        to="/nftmarket"
+        to="/Home"
         className="md:flex-[0.5] flex-initial justify-center items-center"
       >
        <img src={inblockLogo} alt="logo" className="w-28 cursor-pointer" />
@@ -83,7 +83,7 @@ const Navbar = () => {
         </div>
 
       <ul className="text-white md:flex hidden list-none flex-row justify-between items-center flex-initial">
-        {["Create", "Explore", "Wallet", "Help"].map((item, index) => (
+        {[ "Home", "Create", "Explore", "Wallet"].map((item, index) => (
           <NavBarItem
             key={item + index}
             title={item}
@@ -153,7 +153,7 @@ const Navbar = () => {
             </li>
 
             <li onClick={() => setToggleMenu(false)}>
-            {["Create", "Explore", "Wallet", "Help"].map(
+            {[ "Home","Create", "Explore", "Wallet" ].map(
               (item, index) => (
                 <NavBarItem
                   classprops="my-2 text-lg"

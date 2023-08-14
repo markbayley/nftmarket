@@ -2,8 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { TransactionContext } from "../context/TransactionContext";
 import NFTTile from "./NFTTile";
 import { shortenAddress } from "../utils/shortenAddress";
-import { TECollapse } from "tw-elements-react";
 import {
+  TECollapse,
   TETabsContent,
   TETabsPane,
 } from "tw-elements-react";
@@ -24,6 +24,7 @@ export default function Marketplace() {
     filteredResults,
     handleCollection,
     favorites,
+    setTopCollections
   } = useContext(TransactionContext);
 
   // window.localStorage.setItem("marketData", marketData);
@@ -64,7 +65,6 @@ export default function Marketplace() {
   };
 
   function getTerms(tab) {
-    console.log("tab", tab);
     switch (tab) {
       case "tab1":
         return ["Unlisted", "Auction", "Listed For Sale", undefined];
@@ -156,7 +156,14 @@ export default function Marketplace() {
     propertiesToExtract
   );
 
+  const collectionsArray = uniqueValuesWithProperty.slice(0, 5).map(item => item.value);
+//  setTopCollections(() => collectionsArray)
+
   const resultLength = getResults(getTerms(tab)).length;
+  console.log(resultLength)
+
+  console.log("searchResults", searchResults)
+  console.log("filteredResults", filteredResults)
 
   return (
     <div className="fade-in md:px-[3%] px-2">
@@ -169,23 +176,24 @@ export default function Marketplace() {
 
           <div className="text-white flex items-center text-gradient ">
             {tab == "tab1"
-              ? " ALL NFT Results "
+              ? " ALL NFT Result"
               : tab == "tab2"
-              ? " " + resultLength + " FOR SALE Results "
+              ? " " + resultLength + " For Sale Result"
               : tab == "tab3"
-              ? " " + resultLength + " AUCTION Results "
-              : " " + resultLength + " UNLISTED Results "}
+              ? " " + resultLength + " Auction Result"
+              : " " + resultLength + " Unlisted Result"}
+              { resultLength !== 1 || tab == "tab1" ? "s " : " " }
             {collection && showFavorites
-              ? "- Filtered Favorites"
+              ? "| Filtered | Favorites"
               : collection
-              ? "- Filtered"
+              ? "| Filtered"
               : showFavorites
-              ? " Favorites"
+              ? "| Favorites"
               : searchInput
-              ? " Search"
-              : " Unfiltered"}
+              ? "| Search"
+              : "| Unfiltered"}
             &nbsp;
-            {newest ? "By Date" : "By Price"}
+            {newest ? "| Date" : "| Price"}
           </div>
         </div>
 
@@ -198,15 +206,15 @@ export default function Marketplace() {
                 id=""
                 value=""
                 className={ collection ? "flex items-center whitespace-nowrap bg-transparent text-amber-500  border border-amber-500 px-3 h-10 rounded-full white-glassmorphism hover:text-neutral-500 hover:bg-transparent"
-                : "flex items-center text-white  border px-3 h-10 rounded-full white-glassmorphism hover:text-[#E4A11B] hover:brightness-110  hover:bg-transparent" }
+                : "flex items-center text-white  border  px-3 h-10 rounded-full white-glassmorphism hover:text-[#E4A11B] hover:brightness-110  hover:bg-transparent" }
                 onClick={collection ? (id) => handleCollection(id) : toggleShowTags }
               >
                 <BiFilterAlt 
                   fontSize={22}
-                  className={collection ? "text-amber-500 " : "text-white"}
+                  className={collection ? "text-amber-500 " : " hover:text-amber-500"}
                 />
                 &nbsp;#
-                {collection.length > 30
+                {collection?.length > 30
                   ? shortenAddress(collection)
                   : collection || "Filter"}
                 &nbsp;
@@ -332,21 +340,25 @@ export default function Marketplace() {
         </TETabsPane>
       </TETabsContent>
       {/* <Loader /> */}
-      {resultLength ? "" : <Loader />}
+      {/* {resultLength ? "" : <Loader />} */}
       {/* NOTIFICATIONS */}
       <div className="flex flex-col flex-1 items-start justify-center w-full mf:mt-0 my-7">
         <div className="text-center text-white font-light text-base w-full">
-          {!ethereum ? (
+          {/* {!ethereum ? (
             <div className="flex flex-wrap justify-around items-center flex-row w-full white-glassmorphism p-5 ">
-              Install MetaMask and connect wallet to trade NFTs
+              {resultLength ? "Install MetaMask and connect wallet to trade NFTs" : "No results found. Try removing one  or more search filters." }
             </div>
-          ) : currentAccount !== "" ? (
+          ) : currentAccount !== "" ? ( */}
             <div className="flex flex-wrap justify-center items-center flex-row w-full white-glassmorphism p-5 ">
               {tab == "tab1"
-                ? "Displaying " + resultLength + " FOR SALE results. "
+                ? "Found " + resultLength + " NFT result"
                 : tab == "tab2"
-                ? "Displaying " + resultLength + " AUCTION results. "
-                : "Displaying " + resultLength + " UNLISTED results. "}
+                ? "Found " + resultLength + " 'For Sale' result"
+                : tab == "tab3"
+                ? "Found " + resultLength + " 'Auction' result"
+                : "Found " + resultLength + " 'Unlisted' result"
+              }
+               { resultLength !== 1  ? "s. " : ". " }
               {searchInput || showFavorites || collection
                 ? "Filtered by"
                 : "No search filters applied. "}
@@ -371,11 +383,12 @@ export default function Marketplace() {
                 </>
               )}
             </div>
-          ) : (
+          {/* ) : (
             <div className="flex flex-wrap justify-around items-center flex-row w-full white-glassmorphism p-5 ">
-              Connect your MetaMask wallet to trade NFTs
+              {resultLength ? "Connect your MetaMask wallet to trade NFTs." : "No results found. Try removing one  or more search filters." } 
+              
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

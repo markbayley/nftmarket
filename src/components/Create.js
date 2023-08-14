@@ -7,14 +7,14 @@ import CreateImage from "./CreateImage";
 import CreateForm from "./CreateForm";
 import MintForm from "./MintForm";
 import {
-  TETabs,
   TETabsContent,
-  TETabsItem,
   TETabsPane,
 } from "tw-elements-react";
 import { TransactionContext } from "../context/TransactionContext";
 import SubMenu from "./SubMenu";
 import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
+
+import { OnUploadFile } from "../context/Functions"
 
 const Create = () => {
   const {
@@ -24,8 +24,6 @@ const Create = () => {
     setActiveKeywords,
     fileURL,
     setFileURL,
-    setTab,
-    currentAccount,
     checksumAddress,
     marketData, 
     getAllNFTs,
@@ -34,22 +32,24 @@ const Create = () => {
   } = useContext(TransactionContext);
 
   const [isChecked, setIsChecked] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
-  const [isCreating, setIsCreating] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [message, updateMessage] = useState("");
+  const [file, setFile] = useState(null);
+
   const [isMinting, setIsMinting] = useState(false);
   const [mint, setMint] = useState(false);
-
+  const [isSaving, setIsSaving] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
   const [powerPoints, setPowerPoints] = useState(null);
   const [metaData, setMetaData] = useState(null);
   const [transactionHash, setTransactionHash] = useState();
   const [hashLink, setHashLink] = useState(null);
   const [dateCreated, setDateCreated] = useState();
 
-  const [file, setFile] = useState(null);
+  
 
   const ethers = require("ethers");
-  const [message, updateMessage] = useState("");
+
   const location = useLocation();
   const [svgFile, setSvgFile] = useState("");
 
@@ -63,7 +63,7 @@ const Create = () => {
   // ]);
 
   // useEffect(() => {
-  //       setTab('tab1')
+  //  
   // }, []);
 
   const [formParams, updateFormParams] = useState({
@@ -94,10 +94,10 @@ const Create = () => {
     value6: "",
   });
 
-  const handleForm = (e) => {
-    let title = e.target.id;
-    setActiveKeywords([...activeKeywords, e.target.value]);
-    updateFormParams({ ...formParams, [title]: e.target.value });
+
+  const handleForm = (id, value) => {
+    setActiveKeywords([...activeKeywords, value]);
+    updateFormParams({ ...formParams, [id]: value });
   };
 
   const handleChecked = (e) => {
@@ -113,52 +113,10 @@ const Create = () => {
     }
   };
 
-  //UPLOADING
-  async function OnUploadFile(e) {
-    e.preventDefault();
-
-    if (isChecked) {
-      updateMessage("Uploading image...");
-      const file = e.target.files[0];
-
-      try {
-        setIsUploading(true);
-        updateMessage("Loading image..!");
-        const response = await uploadFileToIPFS(file);
-        if (response.success === true) {
-          updateMessage("Image uploaded successfully!");
-          console.log("Image uploaded: ", response.pinataURL);
-          setFileURL(response.pinataURL);
-
-          setIsUploading(false);
-        }
-      } catch (e) {
-        updateMessage("Error during file upload", e);
-        setIsUploading(false);
-      }
-    } else {
-      console.log("Error during file upload");
-    }
-  }
-
-  const fill = "From the collection '" + formParams.collection + "' this artwork entitled '" + formParams.name + "' was made using a digital " + formParams.medium + 
-  " medium in a creative " + formParams?.style + " style. The " + formParams.theme + " theme combines with subtle " + formParams.texture + " textures, " 
-  + formParams.colour + " colors and " + formParams.artist + " influences." + formParams.description
-
   //CREATING
   async function OnCreateFile(e) {
     setIsCreating(true);
     updateMessage("Generating AI Image...");
-
-    // updateFormParams({
-    //   ...formParams,
-    //   description: e.target.value,
-    // })
-
-    // updateFormParams({
-    //   ...formParams,
-    //   description: fill,
-    // })
 
     const URL = `https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2`;
 
@@ -186,17 +144,11 @@ const Create = () => {
 
     const type = response.headers["content-type"];
     const data = response.data;
-
     const base64data = Buffer.from(data).toString("base64");
     const file = `data:${type};base64,` + base64data;
-
     const filePinata = new File([data], "image.jpeg", { type: "image/jpeg" });
+
     setFile(filePinata);
-
-    // console.log("fileAFTERP", file); 
-
-    // console.log("filePinata", filePinata);
-
     setFileURL(file);
     updateMessage("Image Created...");
     setProgress('Created');
@@ -208,27 +160,18 @@ const Create = () => {
       if (response.success === true) {
   
         updateMessage("Image created..!");
-        console.log("Image created: ", response.pinataURL); 
         setFileURL(response.pinataURL);
       }
     } catch (e) {
       setIsCreating(false);
       updateMessage("Install MetaMask to mint NFTs");
     }
-
-    // setImage(img);
     updateMessage("Success! Enter details to mint NFT");
-    // setTab("tab2");
     setIsCreating(false);
-    // updateFormParams({
-    //   ...formParams,
-    //   description: "",
-    // })
-   
+
     return data;
-
-
   }
+
 
 
 
@@ -337,12 +280,10 @@ const Create = () => {
 
       if (metadataURL === -1) return;
       setMetaData(metadataURL);
-      console.log("metadataURL", metadataURL);
       updateMessage("Click Confirm in MetaMask");
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
-
       let contract = new ethers.Contract(
         Marketplace.address,
         Marketplace.abi,
@@ -357,37 +298,22 @@ const Create = () => {
         value: listingPrice,
       });
       await transaction.wait();
-      console.log("transaction", transaction);
-      updateMessage("Minted NFT...Storing Data");
 
+      updateMessage("Minted NFT...Storing Data");
       setTransactionHash(transaction.hash);
-      console.log("transaction", transaction);
       setHashLink(`https://sepolia.etherscan.io/tx/${transaction.hash}`);
-      console.log("hashLink", hashLink);
       const powerPoints = transaction.hash.slice(64, 66);
       setPowerPoints(powerPoints);
-
-     
-
       updateMessage("Successfully listed your NFT!");
       setProgress('Minted');
       setIsMinting(false);
       setActiveKeywords([])
       await getAllNFTs();
 
-      console.log("marketData", marketData)
-      console.log("marketData.length", marketData.length)
-      console.log("marketData[marketData.length].tokenId", marketData[marketData.length].tokenId )
-      // window.location.replace(`/Trade/Detail/${marketData && marketData[marketData.length].tokenId}`);
-  //  setTab("tab3")
     } catch (e) {
       updateMessage("Connect MetaMask wallet to mint NFT.", e);
     }
   }
-
-  const index = parseInt(marketData.length)
-  console.log("marketData[marketData.length]", marketData[index] )
-  // console.log("activeKeywords", activeKeywords);
 
   return (
     <div className="fade-in lg:px-[5%] px-2">
@@ -448,7 +374,7 @@ const Create = () => {
               isChecked={isChecked}
               OnUploadFile={OnUploadFile}
               transactionHash={transactionHash}
-              fill={fill}
+              //fill={fill}
               message={message}
             />
           </TETabsPane>
