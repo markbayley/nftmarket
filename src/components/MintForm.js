@@ -1,10 +1,10 @@
 import React, { useState } from "react";
+import { traits1, traits2, traits3 } from "../data/traits.js";
+import { MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos } from "react-icons/md";
 import {
   royalty,
   listing,
 } from "../data/lists.js";
-import { traits1, traits2, traits3 } from "../data/traits.js";
-import { MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos } from "react-icons/md";
 
 const MintForm = ({
   isCreating,
@@ -13,10 +13,9 @@ const MintForm = ({
   fileURL,
   handleForm,
   updateFormParams,
-  listNFT,
+  OnMintNFT,
   transactionHash,
 }) => {
-  // console.log("formParams", formParams);
 
   const [showMore, setShowMore] = useState(false);
 
@@ -121,92 +120,6 @@ const MintForm = ({
                 ></input>
               </div>
 
-              {/* <div className="flex w-full mb-3  justify-between gap-x-2.5 ">
-                <input
-                  className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
-                  type="text"
-                  placeholder="Nature..."
-                  value={formParams.trait1}
-                  id="trait1"
-                  onChange={(e) =>
-                    updateFormParams({
-                      ...formParams,
-                      trait1: e.target.value,
-                    })
-                  }
-                ></input>
-                <input
-                  className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
-                  type="text"
-                  placeholder="Personality Trait..."
-                  id="value1"
-                  onChange={(e) =>
-                    updateFormParams({
-                      ...formParams,
-                      value1: e.target.value,
-                    })
-                  }
-                  value={formParams.value1}
-                ></input>
-              </div>
-
-              <div className="flex w-full my-2 sm:flex-wrap justify-between gap-x-2.5 ">
-                <input
-                  className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
-                  type="text"
-                  placeholder="Talent..."
-                  value={formParams.trait2}
-                  id="trait2"
-                  onChange={(e) =>
-                    updateFormParams({
-                      ...formParams,
-                      trait2: e.target.value,
-                    })
-                  }
-                ></input>
-                <input
-                  className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
-                  type="text"
-                  placeholder="Special Ability..."
-                  id="value2"
-                  onChange={(e) =>
-                    updateFormParams({
-                      ...formParams,
-                      value2: e.target.value,
-                    })
-                  }
-                  value={formParams.value2}
-                ></input>
-              </div> 
-
-            <div className="flex w-full my-3 sm:flex-wrap justify-between gap-x-2.5 ">
-                <input
-                  className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
-                  type="text"
-                  placeholder="Possession..."
-                  value={formParams.trait3}
-                  id="trait3"
-                  onChange={(e) =>
-                    updateFormParams({
-                      ...formParams,
-                      trait3: e.target.value,
-                    })
-                  }
-                ></input>
-                <input
-                  className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
-                  type="text"
-                  placeholder="Survival Tool..."
-                  id="value3"
-                  onChange={(e) =>
-                    updateFormParams({
-                      ...formParams,
-                      value3: e.target.value,
-                    })
-                  }
-                  value={formParams.value3}
-                ></input>
-              </div> */}
             </div>
           ) : (
             <div>
@@ -334,35 +247,6 @@ const MintForm = ({
             LiSTING DETAILS
           </p>
 
-          {/* <div className="flex w-full mb-3  justify-between gap-x-2.5 ]">
-                <input5
-                  className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
-                  type="text"
-                  placeholder="Nature..."
-                  value={formParams.trait1}
-                  id="trait1"
-                  onChange={(e) =>
-                    updateFormParams({
-                      ...formParams,
-                      trait1: e.target.value,
-                    })
-                  }
-                ></input>
-                <input
-                  className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
-                  type="text"
-                  placeholder="Personality Trait..."
-                  id="value1"
-                  onChange={(e) =>
-                    updateFormParams({
-                      ...formParams,
-                      value1: e.target.value,
-                    })
-                  }
-                  value={formParams.value1}
-                ></input>
-              </div> */}
-
           <div className="check mt-3 ">
             <select
               id="royalty"
@@ -429,35 +313,10 @@ const MintForm = ({
           </div>
         </div>
 
-   
-
         {/* Buttons */}
         <div className="flex w-full justify-end text-white gap-x-3 mt-14 relative">
-          {/* <button
-            onChange={(e) => OnUploadFile(e)}
-            type="button"
-            value={isSaving ? "Saving..." : "Save"}
-            className={
-              !isChecked
-                ? "disabledButton w-1/3"
-                : isMinting
-                ? "waitingButton w-1/3"
-                : isSaving
-                ? "waitingButton w-1/3"
-                : !fileURL
-                ? "inactiveButton w-1/3"
-                : "activeButton w-1/3"
-            }
-          >
-            Save
-          </button> */}
-
-{/* <div className="message group relative text-white w-1/2 h-9 flex items-center ">
-        {message}
-      </div> */}
-
           <button
-            onClick={listNFT}
+            onClick={OnMintNFT}
             value={isMinting ? "Minting..." : "Mint"}
             type="button"
             className={

@@ -6,10 +6,7 @@ import NFTTile from "./NFTTile";
 import Transactions from "./Transactions";
 import SubMenu from "./SubMenu";
 import { uploadJSONToIPFS } from "../utils/pinata";
-import {
-  TETabsContent,
-  TETabsPane,
-} from "tw-elements-react";
+import { TETabsContent, TETabsPane } from "tw-elements-react";
 import { AiFillPlayCircle } from "react-icons/ai";
 import { SiEthereum } from "react-icons/si";
 import { BsInfoCircle } from "react-icons/bs";
@@ -63,27 +60,18 @@ const Wallet = () => {
   window.localStorage.setItem("profileParams", profileParams);
   //PROFILE
   const handleSubmitProfile = async (e) => {
-   
     e.preventDefault();
     console.log("profileParams", profileParams);
     window.localStorage.setItem("profileParams", profileParams);
 
+    const { user, country, bio, website, profileUrl, address } = profileParams;
 
-    const {
-      user,
-      country,
-      bio,
-      website,
-      profileUrl,
-      address,
-    } = profileParams;
-  
     if (!user || !country || !website || !bio || !profileUrl || !address) {
       console.log("Please enter details in all fields");
       // setIsMinting(false);
       return -1;
     }
-  
+
     const nftJSON = {
       user,
       country,
@@ -91,19 +79,18 @@ const Wallet = () => {
       website,
       profileUrl,
       address: checksumAddress,
-  }
-  
-  try {
-    //upload the metadata JSON to IPFS
-    const response = await uploadJSONToIPFS(nftJSON);
-    if (response.success === true) {
-      console.log(response.pinataURL)
-      return response.pinataURL;
-    
+    };
+
+    try {
+      //upload the metadata JSON to IPFS
+      const response = await uploadJSONToIPFS(nftJSON);
+      if (response.success === true) {
+        console.log(response.pinataURL);
+        return response.pinataURL;
+      }
+    } catch (e) {
+      console.log("Error storing metadata. Try again");
     }
-  } catch (e) {
-    console.log("Error storing metadata. Try again");
-  }
   };
 
   //PROFILE IMAGE
@@ -131,14 +118,7 @@ const Wallet = () => {
     });
   }
 
-console.log("profileParams", profileParams)
-
-
-
-
-
-
-
+  console.log("profileParams", profileParams);
 
   const walletNFTs = marketData.filter(
     (item) => item.seller === checksumAddress
@@ -157,42 +137,6 @@ console.log("profileParams", profileParams)
           handleTab={handleTab}
           tab={tab}
         />
-        {/* <div className="flex flex-wrap justify-between items-center my-5 ">
-          <div className="flex flex-col w-full justify-center md:w-1/2 pl-2">
-            <h1 className="text-4xl sm:text-5xl text-white text-gradient">
-              My Wallet
-            </h1>
-            <h2 className="text-left mb-3 text-gradient text-lg  ">
-              Fund your wallet to mint and trade NFTs
-            </h2>
-          </div>
-
-          <div className="flex justify-center w-full md:w-1/2 md:justify-end">
-            <TETabs className="">
-              <TETabsItem
-                className="hover:bg-transparent"
-                onClick={() => handleTab("tab1")}
-                active={tab === "tab1"}
-              >
-                Transfer
-              </TETabsItem>
-              <TETabsItem
-                className="hover:bg-transparent "
-                onClick={() => handleTab("tab2")}
-                active={tab === "tab2"}
-              >
-                My NFTs
-              </TETabsItem>
-              <TETabsItem
-                className="hover:bg-transparent "
-                onClick={() => handleTab("tab3")}
-                active={tab === "tab3"}
-              >
-                Profile
-              </TETabsItem>
-            </TETabs>
-          </div>
-        </div> */}
 
         <TETabsContent>
           <TETabsPane show={tab === "tab1"}>
@@ -233,12 +177,6 @@ console.log("profileParams", profileParams)
                   type="number"
                   handleChange={handleChange}
                 />
-                {/* <Input
-                  placeholder="Keyword (Gif)"
-                  name="keyword"
-                  type="text"
-                  handleChange={handleChange}
-                /> */}
                 <Input
                   placeholder="Enter Message"
                   name="message"
@@ -267,42 +205,19 @@ console.log("profileParams", profileParams)
                 return <NFTTile data={value} key={index}></NFTTile>;
               })}
             </div>
-            {/* <div className="mt-10 text-xl">
-              {walletData && walletData.length == 0
-                ? "Oops, No NFT data to display (Are you logged in?)"
-                : ""}
-            </div> */}
           </TETabsPane>
 
           <TETabsPane show={tab === "tab3"}>
             <div className="flex flex-wrap justify-around items-start flex-row w-full white-glassmorphism md:p-7 ">
               <div className="p-3 w-96 lg:w-1/2 h-96  lg:h-96 lg:mx-0 lg:mt-0 flex justify-end items-start flex-col rounded-xl">
                 <div className="flex justify-between flex-col w-full h-full">
-                  {/* <button
-                    style={{
-                      backgroundImage: profileParams.profileUrl
-                        ? profileParams.profileUrl
-                        : `url( "https://robohash.org/${currentAccount}.png?set=set3" `,
-                    }}
-                    alt="profile photo"
-                    className="rounded-full object-cover w-32 h-32 bg-cover bg-center "
-                    value={currentAccount}
-                    onChange={(e) => uploadLocally(e)}
-                  >
-                    <div className="bg-yellow-600  px-2 rounded-full text-white text-sm hidden md:inline-block">
-                      Creator
-                    </div>
-                  </button>{" "} */}
-
                   <div className="flex justify-between items-start ">
                     <div className="w-32 h-32 rounded-full border border-white flex justify-center items-start ">
                       <label
                         htmlFor="dropzone-file"
                         className="flex items-center justify-center w-full h-full cursor-move bg-opacity-10 bg-[#273057] hover:bg-opacity-70"
                       >
-
-                       
-                         {/* <button
+                        {/* <button
                             style={{
                               backgroundImage: profileParams.profileUrl
                                 ? profileParams.profileUrl
@@ -319,7 +234,7 @@ console.log("profileParams", profileParams)
                             className="hidden z-10"
                             onChange={(e) => uploadLocally(e)}
                           />
-                          <img src={profileParams.profileUrl}  />
+                          <img src={profileParams.profileUrl} />
                           <div className="bg-indigo-500  px-3 py-1 rounded-full text-white text-sm hidden md:inline-block absolute bottom-2">
                             {/* {checksumAddress ? shortenAddress(checksumAddress) : "0x123...aBcD"} */}
                             Profile
@@ -422,8 +337,6 @@ console.log("profileParams", profileParams)
                 Connect MetaMask wallet to send ethereum and view your NFTs
               </div>
             )}
-
-            {/* {currentAccount !== "0x" ? (currentAccount.substring(0,5)+'...'+(currentAccount.substring(38,42))):""} */}
           </div>
         </div>
       </div>

@@ -18,8 +18,8 @@ const SubMenu = ({
   isChecked,
   marketData,
 }) => {
-  const viewLink =
-    marketData && marketData[marketData?.length - 1].tokenId?.toString();
+  // const viewLink =
+  //   marketData && marketData[marketData?.length - 1].tokenId?.toString();
 
   return (
     <div className="flex flex-row place-items-center justify-between flex-wrap w-full pt-3 pl-2">

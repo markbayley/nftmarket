@@ -18,8 +18,6 @@ const CreateForm = ({
   updateFormParams,
   isChecked,
 }) => {
-
-
   // Filter the keywords tags selected
   function filterKeywordsByArray(activeKeywords, arrayToFilter, property) {
     return activeKeywords.filter((word) =>
@@ -58,12 +56,28 @@ const CreateForm = ({
     </div>
   );
 
-// Define the auto description input
- const [autoDescription, setAutoDescription] = useState(false);
+  // Define the auto description input
+  const [autoDescription, setAutoDescription] = useState(false);
 
-  const fill = "From the collection '" + formParams.collection + "' this artwork entitled '" + formParams.name + "' was made using a digital " + formParams.medium + 
-  " medium in a creative " + formParams?.style + " style. The " + formParams.theme + " theme combines with subtle " + formParams.texture + " textures, " 
-  + formParams.colour + " colors and " + formParams.artist + " influences." + formParams.description
+  const fill =
+    "From the collection '" +
+    formParams.collection +
+    "' this artwork entitled '" +
+    formParams.name +
+    "' was made using a digital " +
+    formParams.medium +
+    " medium in a creative " +
+    formParams?.style +
+    " style. The " +
+    formParams.theme +
+    " theme combines with subtle " +
+    formParams.texture +
+    " textures, " +
+    formParams.colour +
+    " colors and " +
+    formParams.artist +
+    " influences." +
+    formParams.description;
 
   const handleDescription = (e) => {
     if (formParams.description) {
@@ -95,8 +109,6 @@ const CreateForm = ({
       ))}
     </select>
   );
-
-
 
   return (
     <form>

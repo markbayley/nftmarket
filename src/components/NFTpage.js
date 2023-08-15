@@ -6,26 +6,21 @@ import SubMenu from "./SubMenu";
 import NFTTile from "./NFTTile";
 import Loader from "./Loader";
 import { GetIpfsUrlFromPinata } from "../utils/utils";
-import { RandomIcons } from "../data/icons"
+import { RandomIcons } from "../data/icons";
 import { shortenAddress } from "../utils/shortenAddress";
 import { TransactionContext } from "../context/TransactionContext";
-import {
-  TETabsContent,
-  TETabsPane,
-} from "tw-elements-react";
+import { TETabsContent, TETabsPane } from "tw-elements-react";
 
-import {  BiLinkExternal, BiFilterAlt } from "react-icons/bi";
+import { BiLinkExternal, BiFilterAlt } from "react-icons/bi";
 import {
   MdFavorite,
   MdOutlineFavoriteBorder,
   MdOutlineKeyboardDoubleArrowLeft,
   MdOutlinePercent,
   MdQrCode2,
-  MdSell
+  MdSell,
 } from "react-icons/md";
 import { SiEthereum } from "react-icons/si";
-
-
 
 const NFTPage = () => {
   const {
@@ -47,8 +42,6 @@ const NFTPage = () => {
   const [data, updateData] = useState({});
   const [dataFetched, updateDataFetched] = useState(false);
   const [message, updateMessage] = useState("");
-
-
 
   async function getNFTToken(tokenId) {
     try {
@@ -113,9 +106,6 @@ const NFTPage = () => {
       updateData(item);
       updateDataFetched(true);
       setProgress("Viewed");
-      // } else {
-      //   console.log("Ethereum is not present NFT Page");
-      // }
     } catch (error) {
       console.log(error);
     }
@@ -144,14 +134,12 @@ const NFTPage = () => {
 
       updateMessage("Success! Check your wallet");
       setProgress("Traded");
-      // updateMessage("");
     } catch (e) {
       alert("Upload Error" + e);
     }
   }
 
   const [price, setPrice] = useState();
- 
 
   async function listNFT(tokenId) {
     try {
@@ -175,7 +163,6 @@ const NFTPage = () => {
       await transaction.wait();
       console.log("updateListPrice", transaction);
       updateMessage("Success! Check your wallet");
-      // updateMessage("");
     } catch (e) {
       alert("Upload Error" + e);
     }
@@ -183,10 +170,7 @@ const NFTPage = () => {
 
   const params = useParams();
   const tokenId = params.tokenId;
-
-
-  const tokenData = marketData[marketData.length - tokenId]
-
+  const tokenData = marketData[marketData.length - tokenId];
   const attributesArray = tokenData?.attributes || data?.attributes;
 
   if (!dataFetched) getNFTToken(tokenId);
@@ -195,14 +179,12 @@ const NFTPage = () => {
 
   const link = `https://sepolia.etherscan.io/address/${data.owner}`;
 
-  const [loaded, setLoaded] = useState(false);
-
   const collectionNFTs = marketData.filter(
     (item) => item.collection === tokenData.collection
   );
 
   const tagsArray = [
-    { id: "style", value:  tokenData?.style },
+    { id: "style", value: tokenData?.style },
     { id: "theme", value: tokenData?.theme },
     { id: "artist", value: tokenData?.artist },
     { id: "medium", value: tokenData?.medium },
@@ -213,8 +195,12 @@ const NFTPage = () => {
   return (
     <div className=" mx-2 lg:px-[5%] fade-in">
       <SubMenu
-        title="View NFT"
-        subtitle="Discover more or trade this NFT"
+        title="NFT Details"
+        subtitle={
+          tab === "tab1"
+            ? "Discover more about this NFT"
+            : "View trade details of this NFT"
+        }
         tab0={<MdOutlineKeyboardDoubleArrowLeft fontSize={20} />}
         tab1="View"
         tab2="Trade"
@@ -233,54 +219,8 @@ const NFTPage = () => {
             <div className="text-lg w-full md:w-1/2 xl:w-2/5 aspect-square   rounded-lg  ">
               {/* IMAGE */}
               <div className="rounded-xl   p-2 md:py-6 md:pl-6 h-fit mb-2">
-                {/* <img
-                  src={ data.image || marketData[tokenid].image ||     
-                     <div className="w-full h-full aspect-square rounded-lg seal ">
-                  <label className="flex  items-center justify-center w-full h-full">
-                    <div className="flex flex-col items-center justify-center ">
-                      <Loader />
-                      <p className="text-sm text-white ">
-                        LOADING NFT DATA...
-                      </p>
-                    </div>
-                  </label>
-                </div>}
-                    alt="Detailed image"
-                    className="rounded-lg"
-                 
-                  /> */}
-
-                {/* {marketData ? (
-                  // <img
-                  //   src={marketData[tokenid].image}
-                  //   alt="Detailed image"
-                  //   className="rounded-lg"
-                  // />
-                  // <NFTTile data={marketData[tokenid]} key={tokenId}></NFTTile>
-                  // <Link to={{ pathname: `/Trade/Detail/` + data.data.tokenId }} className="z-0">
-                  <img
-                    src={marketData[tokenid].image} 
-                    alt="thumbnail"
-                    className="rounded-lg"
-                  />
-                // </Link>
-                ) : (
-            
-                  <div className="w-full h-full aspect-square rounded-lg seal ">
-                    <label className="flex  items-center justify-center w-full h-full">
-                      <div className="flex flex-col items-center justify-center ">
-                        <Loader />
-                        <p className="text-sm text-white ">
-                          LOADING NFT DATA...
-                        </p>
-                      </div>
-                    </label>
-                  </div>
-                )} */}
-
                 <img
                   src={tokenData?.image || data?.image}
-               
                   alt="thumbnail"
                   className="rounded-lg "
                 />
@@ -314,7 +254,9 @@ const NFTPage = () => {
                 {/* TITLE */}
                 <div className="">
                   <p className=" text-2xl md:text-3x1  drop-shadow-x2 leading-tight font-thin group relative">
-                    <strong>{tokenData?.collection || data?.collection || "Token"} </strong>
+                    <strong>
+                      {tokenData?.collection || data?.collection || "Token"}{" "}
+                    </strong>
                     <span className="absolute bottom-10 -right-5 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
                       Etherscan Link
                     </span>

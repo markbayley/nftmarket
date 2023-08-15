@@ -6,14 +6,14 @@ import { SiEthereum } from "react-icons/si";
 
 const ServiceCard = ({ color, title, icon, subtitle }) => (
   <div className="flex flex-row justify-start items-start white-glassmorphism p-3 m-2 cursor-pointer hover:shadow-xl">
-    <div className={`w-10 h-10 rounded-full flex justify-center items-center ${color}`}>
+    <div
+      className={`w-10 h-10 rounded-full flex justify-center items-center ${color}`}
+    >
       {icon}
     </div>
     <div className="ml-5 flex flex-col flex-1">
       <h3 className="mt-2 text-white text-lg">{title}</h3>
-      <p className="mt-1 text-white text-sm md:w-9/12">
-        {subtitle}
-      </p>
+      <p className="mt-1 text-white text-sm md:w-9/12">{subtitle}</p>
     </div>
   </div>
 );
@@ -21,16 +21,9 @@ const ServiceCard = ({ color, title, icon, subtitle }) => (
 const Services = () => (
   <div className="flex w-full justify-center items-center fade-in ">
     <div className="flex mf:flex-row flex-col items-center justify-between md:p-20 py-12 px-4 ">
-
-
-
-
-
       <div className="flex-1 flex flex-col justify-start items-start w-half">
         <h1 className="text-white text-3xl sm:text-5xl py-2 text-gradient ">
           Getting Started is Easy
-          {/* <br />
-          continue to improve */}
         </h1>
         <p className="text-left my-2 text-white font-light md:w-11/12 w-11/12 text-base">
           The best choice for creating and trading your digital assets.
@@ -41,10 +34,12 @@ const Services = () => (
         <ServiceCard
           color="bg-[#2952E3]"
           title="Install MetaMask"
-          icon={<BsShieldFillCheck fontSize={21} className="text-white w-half" />}
+          icon={
+            <BsShieldFillCheck fontSize={21} className="text-white w-half" />
+          }
           subtitle="Metamask is an Ethereum based wallet. Is a decentralized account to make payments on the blockchain."
         />
-          <ServiceCard
+        <ServiceCard
           color="bg-[#F84550]"
           title="Create or Upload Images"
           icon={<RiHeart2Fill fontSize={21} className="text-white w-half" />}
@@ -56,7 +51,6 @@ const Services = () => (
           icon={<BiSearchAlt fontSize={21} className="text-white w-half" />}
           subtitle="Purchase Ethereum and other cryptocurrencies through Coinbase, Binance, or other exchange providers."
         />
-      
       </div>
     </div>
   </div>

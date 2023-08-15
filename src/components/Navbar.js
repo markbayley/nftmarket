@@ -1,19 +1,17 @@
-import { useContext, useEffect, useState } from "react";
-import {
-  Link,
-  NavLink,
-} from "react-router-dom";
-import { useLocation } from "react-router";
+import { useContext, useState } from "react";
+import { Link, NavLink } from "react-router-dom";
 import { TransactionContext } from "../context/TransactionContext";
 import { shortenAddress } from "../utils/shortenAddress";
 import { HiMenuAlt4 } from "react-icons/hi";
-import { AiFillPlayCircle, AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose } from "react-icons/ai";
 import inblockLogo from "../images/inblocklogolight.png";
 
 const NavBarItem = ({ title, classprops, link }) => (
-  <div    >
+  <div>
     <NavLink
-      className={({isActive}) => (isActive ? " text-indigo-500" : 'text-white ')}
+      className={({ isActive }) =>
+        isActive ? " text-indigo-500" : "text-white "
+      }
       to={link}
     >
       <li className={`mx-5 cursor-pointer   ${classprops}`}>{title}</li>
@@ -22,87 +20,76 @@ const NavBarItem = ({ title, classprops, link }) => (
 );
 
 const Navbar = () => {
-
   const {
     currentAccount,
     connectWallet,
-    accountMsg,
     ethereum,
     checksumAddress,
   } = useContext(TransactionContext);
 
   const [toggleMenu, setToggleMenu] = useState(false);
-  const [connected, toggleConnect] = useState(false);
-  const location = useLocation();
   const [isHovering, setHover] = useState(false);
 
   return (
     <nav className="w-full flex md:justify-center justify-between items-center p-4 ">
-    
       <Link
         to="/Home"
         className="md:flex-[0.5] flex-initial justify-center items-center"
       >
-       <img src={inblockLogo} alt="logo" className="w-28 cursor-pointer" />
+        <img src={inblockLogo} alt="logo" className="w-28 cursor-pointer" />
       </Link>
 
       <div className="flex md:hidden">
-        {!ethereum ? 
-             <a target="_blank" href="https://metamask.io/">
-             <button 
-               type="button"
-               className=" nav-install"
-               onClick={connectWallet}
-             >
-            Install
-             </button>
-           </a>
-           : currentAccount === "" ? 
+        {!ethereum ? (
+          <a target="_blank" href="https://metamask.io/">
             <button
               type="button"
-              className=" nav-connect bg-yellow-600 hover:bg-[#6c63ff]  "
+              className=" nav-install"
               onClick={connectWallet}
             >
-              Connect
+              Install
             </button>
-           : 
-           <button
-           type="button"
-           className="  nav-connected hover:bg-[#6c63ff]"
-           onClick={connectWallet}
-           onMouseEnter={() => setHover(true)}
-           onMouseLeave={() => setHover(false)}
-         >
-            {currentAccount !== "" && isHovering ? shortenAddress(checksumAddress) :
-            "Connected"} 
-         </button>
-         
-          }
-
-
-        </div>
+          </a>
+        ) : currentAccount === "" ? (
+          <button
+            type="button"
+            className=" nav-connect bg-yellow-600 hover:bg-[#6c63ff]  "
+            onClick={connectWallet}
+          >
+            Connect
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="  nav-connected hover:bg-[#6c63ff]"
+            onClick={connectWallet}
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+          >
+            {currentAccount !== "" && isHovering
+              ? shortenAddress(checksumAddress)
+              : "Connected"}
+          </button>
+        )}
+      </div>
 
       <ul className="text-white md:flex hidden list-none flex-row justify-between items-center flex-initial">
-        {[ "Home", "Create", "Explore", "Wallet"].map((item, index) => (
-          <NavBarItem
-            key={item + index}
-            title={item}
-            link={"/" + item}
-          />
+        {["Home", "Create", "Explore", "Wallet"].map((item, index) => (
+          <NavBarItem key={item + index} title={item} link={"/" + item} />
         ))}
 
         <li>
-        {!ethereum ? 
-             <a target="_blank" href="https://metamask.io/">
-             <button 
-               type="button"
-               className="px-5 mx-3 nav-install"
-               onClick={connectWallet}
-             >
-               Install MetaMask
-             </button>
-           </a>
-           : currentAccount === "" ? 
+          {!ethereum ? (
+            <a target="_blank" href="https://metamask.io/">
+              <button
+                type="button"
+                className="px-5 mx-3 nav-install"
+                onClick={connectWallet}
+              >
+                Install MetaMask
+              </button>
+            </a>
+          ) : currentAccount === "" ? (
             <button
               type="button"
               className="px-5 mx-3 nav-connect bg-yellow-600 hover:bg-[#6c63ff] "
@@ -110,21 +97,19 @@ const Navbar = () => {
             >
               Connect
             </button>
-           : 
-           <button
-           type="button"
-           className="px-5 mx-3 nav-connected hover:bg-[#6c63ff]"
-           onClick={connectWallet}
-           onMouseEnter={() => setHover(true)}
-           onMouseLeave={() => setHover(false)}
-         >
-            {currentAccount !== "" && isHovering ? shortenAddress(checksumAddress) :
-            "Connected"} 
-         </button>
-         
-          }
-
-
+          ) : (
+            <button
+              type="button"
+              className="px-5 mx-3 nav-connected hover:bg-[#6c63ff]"
+              onClick={connectWallet}
+              onMouseEnter={() => setHover(true)}
+              onMouseLeave={() => setHover(false)}
+            >
+              {currentAccount !== "" && isHovering
+                ? shortenAddress(checksumAddress)
+                : "Connected"}
+            </button>
+          )}
         </li>
       </ul>
 
@@ -153,35 +138,18 @@ const Navbar = () => {
             </li>
 
             <li onClick={() => setToggleMenu(false)}>
-            {[ "Home","Create", "Explore", "Wallet" ].map(
-              (item, index) => (
+              {["Home", "Create", "Explore", "Wallet"].map((item, index) => (
                 <NavBarItem
                   classprops="my-2 text-lg"
                   key={item + index}
                   title={item}
                   link={"/" + item}
-              
-                 
-                
                 />
-              )
-            )}
+              ))}
             </li>
-          
-     
-
-
-
-
           </ul>
         )}
-
-
-        
-     
       </div>
-
-      
     </nav>
   );
 };
