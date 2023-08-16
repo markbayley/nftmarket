@@ -139,24 +139,36 @@ export const TransactionsProvider = ({ children }) => {
 
 
   //CREATE
-  const [formParams, updateFormParams] = useState({
-    title: "",
-    collection: "",
+  const [formParams, updateFormParams] = useState(
+    {
+    name: "",
     description: "",
+    collection: "",
     theme: "",
     style: "",
     artist: "",
     colour: "",
     medium: "",
     texture: "",
-    royalty: "",
-    seal: "",
-    listing: "",
+    seal: "Yes",
+    listing: "Listed For Sale",
     price: "",
- 
-
-  }, localStorage.getItem("formParams"));
-
+    royalty: "No Royalties",
+    trait1: "Trait",
+    value1: "",
+    trait2: "Trait",
+    value2: "",
+    trait3: "Trait",
+    value3: "",
+    trait4: "Trait",
+    value4: "",
+    trait5: "Trait",
+    value5: "",
+    trait6: "Trait",
+    value6: ""
+    },
+   localStorage.getItem("formParams")
+  );
 
   const handleProfile = (e, name) => {
     updateProfileParams((prevState) => ({
@@ -203,7 +215,7 @@ export const TransactionsProvider = ({ children }) => {
        
         //Pull the deployed contract instance
         const transaction = await marketplaceContract.getAllNFTs();
-       console.log("transaction" , transaction)
+      //  console.log("transaction" , transaction)
         //Fetch all the details of every NFT from the contract and display
         const items = await Promise.all(
           transaction.map(async (i) => {
@@ -245,17 +257,10 @@ export const TransactionsProvider = ({ children }) => {
        
         updateMarketData(items);
 
-    
-       
-      // } else {
-      //   console.log("Ethereum is not present GANFTs");
-      // }
     } catch (error) {
       console.log(error);
     }
   };
-
-
 
 
 
@@ -383,52 +388,50 @@ export const TransactionsProvider = ({ children }) => {
   const [collection, setCollection] = useState("");
   const [id, setId] = useState('');
   const [token, setToken] = useState('');
-  // const params = useParams();
-  // const tokenId = params?.tokenId
 
-  function handleCollection(e) {
-    let col = e.target.value;
-    setCollection(col);
-    let id = e.target.id;
-    let token = e.target.token;
-    setId(id);
-    setToken(token);
-    if (col !== "") {
+const [searchResults, setSearchResults] = useState(marketData);
+const [searchInput, setSearchInput] = useState("");
+const [globalResults, setGlobalResults] = useState(marketData);
+
+const searchItems = (searchValue) => {
+  setSearchResults(searchValue);
+
+  // Filter searchResults based on search input
+  const searchedData = marketData.filter((item) => {
+    return Object.values(item)
+      .join("")
+      .toLowerCase()
+      .includes(searchValue.toLowerCase());
+  });
+  setSearchResults(searchedData);
+};
+
+function handleCollection(e) {
+  let col = e.target.value;
+  setCollection(col);
+  let id = e.target.id;
+  let token = e.target.token;
+  setId(id);
+  setToken(token);
+  if (col !== undefined) {
     const results = marketData.filter(item => {
-        return item[id] === col;  
+      return item[id] === col;  
     });
     setFilteredResults(results);
     console.log("results", results);
+
+    // Find subset of items in both searchResults and filteredResults
+    const commonResults = searchResults.filter(item => results.includes(item));
+    console.log("commonResults", commonResults);
+//  `   setGlobalResults(commonResults);`
   } else {
     setFilteredResults([]);
   }   
 }
 
-// function handleCollection(id, col, token) {
-//   setCollection(col);
-//   setId(id);
-//   setToken(token);
-
-//   if (col !== "") {
-//     const results = marketData.filter(item => {
-//       return item[id] === col;  
-//     });
-//     setFilteredResults(results);
-//     console.log("results", results);
-//   } else {
-//     setFilteredResults([]);
-//   }
-// }
 
 const [favorites, setFavorites] = useState([], localStorage.getItem("favorites"));
-// const [hearted, setHearted] = useState(false);
 
-  // const handleFavorite = (e) => {
-  //   setHearted(!hearted);
-  //   let token = e.target.id
-  //   setFavorites((prevArray => [...prevArray, token])) 
-  // };
-  // console.log("favorites", favorites);
 
   useEffect(() => {
     checkIfTransactionsExists();
@@ -442,6 +445,14 @@ const [favorites, setFavorites] = useState([], localStorage.getItem("favorites")
   const [message, updateMessage] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [file, setFile] = useState(null);
+  const [isMinting, setIsMinting] = useState(false);
+  const [dateCreated, setDateCreated] = useState();
+  const [metaData, setMetaData] = useState(null);
+  const [transactionHash, setTransactionHash] = useState();
+  const [hashLink, setHashLink] = useState(null);
+  const [mint, setMint] = useState(false);
 
   return (
     <TransactionContext.Provider
@@ -504,11 +515,25 @@ const [favorites, setFavorites] = useState([], localStorage.getItem("favorites")
       progress,
       setProgress,
 
-      setTopCollections,
+      setTopCollections, topCollections,
 
       message, updateMessage,
       isUploading, setIsUploading,
       isChecked, setIsChecked,
+      isCreating, setIsCreating,
+      file, setFile,
+      isMinting, setIsMinting,
+      setDateCreated,
+      setMetaData,
+      setTransactionHash,
+      setHashLink,
+      setMint,
+
+      searchResults, setSearchResults,
+      searchItems,
+
+      globalResults, setGlobalResults,
+      searchInput, setSearchInput
       }}
     >
       {children}

@@ -4,8 +4,9 @@ import { useContext } from "react";
 import { collections } from "../data/collections";
 
 const Collections = () => {
-  const { handleCollection } = useContext(TransactionContext);
+  const { handleCollection, topCollections } = useContext(TransactionContext);
 
+   console.log("topCollections", topCollections)
   return (
     <div className="md:mt-12 md:mb-36 mb-8">
       {/* HEADING */}

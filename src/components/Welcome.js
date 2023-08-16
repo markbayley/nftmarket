@@ -61,7 +61,7 @@ const Welcome = () => {
               } */}
               <img src={nftImage2} alt="Futuristic City NFT" />
               <div className="title">
-                <strong>Tokyo Haze </strong> &nbsp;<em>'Metropolis Life'</em>
+                <strong>Tokyo Dreams </strong> &nbsp;<em>'Metropolis'</em>
               </div>
             </div>
           </Link>
@@ -81,8 +81,8 @@ const Welcome = () => {
 
               <img src={nftImage3} alt="Futuristic City NFT" />
               <div className="title">
-                <strong>Kyoto Life </strong> &nbsp;
-                <em>'Dreams of Afterlife'</em>
+                <strong>Afterlife </strong> &nbsp;
+                <em>'Library'</em>
               </div>
             </div>
           </Link>

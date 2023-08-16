@@ -18,16 +18,11 @@ export default function Marketplace() {
     marketData,
     tab,
     handleTab,
-    ethereum,
-    currentAccount,
     collection,
     filteredResults,
     handleCollection,
     favorites,
-    setTopCollections
   } = useContext(TransactionContext);
-
-  // window.localStorage.setItem("marketData", marketData);
 
   // SEARCH
   const [searchResults, setSearchResults] = useState(marketData);
@@ -48,10 +43,16 @@ export default function Marketplace() {
       });
       setSearchResults(searchedData);
     } else {
-      const result = searchResults.filter(
-        (val) => !filteredResults.includes(val)
-      );
-      setSearchResults(result);
+      const searchedData = marketData.filter((item) => {
+        return Object.values(item)
+          .join("")
+          .toLowerCase()
+          .includes(searchInput.toLowerCase());
+      });
+    // Find subset of items in both searchResults and filteredResults
+    const commonResults = filteredResults.filter(item => searchedData.includes(item));
+    console.log("commonResults", commonResults);
+      setSearchResults(commonResults);
     }
   };
 
@@ -155,10 +156,7 @@ export default function Marketplace() {
     marketData,
     propertiesToExtract
   );
-
-  const collectionsArray = uniqueValuesWithProperty.slice(0, 5).map(item => item.value);
-//  setTopCollections(() => collectionsArray)
-
+ 
   const resultLength = getResults(getTerms(tab)).length;
   console.log(resultLength)
 
@@ -169,19 +167,19 @@ export default function Marketplace() {
     <div className="fade-in md:px-[3%] px-2">
       <div className="flex flex-row place-items-center justify-between flex-wrap w-full pt-3 pb-1 lg:pl-2">
         {/* HEADING */}
-        <div>
+        <div className="w-full xl:w-1/4">
           <h1 className="text-3xl sm:text-5xl text-white leading-tight text-gradient ">
             Explore NFTs
           </h1>
 
           <div className="text-white flex items-center text-gradient ">
             {tab == "tab1"
-              ? " ALL NFT Result"
+              ? " All NFT"
               : tab == "tab2"
-              ? " " + resultLength + " For Sale Result"
+              ? " " + resultLength + " For Sale NFT"
               : tab == "tab3"
-              ? " " + resultLength + " Auction Result"
-              : " " + resultLength + " Unlisted Result"}
+              ? " " + resultLength + " Auctioned NFT"
+              : " " + resultLength + " Unlisted NFT"}
               { resultLength !== 1 || tab == "tab1" ? "s " : " " }
             {collection && showFavorites
               ? "| Filtered | Favorites"
@@ -193,91 +191,82 @@ export default function Marketplace() {
               ? "| Search"
               : "| Unfiltered"}
             &nbsp;
-            {newest ? "| Date" : "| Price"}
+            {newest ? "| By Date" : "| By Price"}
           </div>
         </div>
 
         {/* MENU BUTTONS */}
-        <div className="flex md:mb-0 py-2  ">
+        <div className="flex md:mb-0 py-2 gap-x-2">
 
           {/* Filter */}
-          <div className="flex items-center   cursor-pointer">
+          <div className="flex items-center cursor-pointer">
               <button
                 id=""
                 value=""
-                className={ collection ? "flex items-center whitespace-nowrap bg-transparent text-amber-500  border border-amber-500 px-3 h-10 rounded-full white-glassmorphism hover:text-neutral-500 hover:bg-transparent"
-                : "flex items-center text-white  border  px-3 h-10 rounded-full white-glassmorphism hover:text-[#E4A11B] hover:brightness-110  hover:bg-transparent" }
+                className={ collection ? "flex items-center whitespace-nowrap bg-transparent text-amber-500 border border-amber-500 px-3 h-10 rounded-full white-glassmorphism hover:text-neutral-500 hover:bg-transparent"
+                : "flex items-center text-white  border px-3 h-10 rounded-full white-glassmorphism hover:text-[#E4A11B] hover:brightness-110 hover:bg-transparent" }
                 onClick={collection ? (id) => handleCollection(id) : toggleShowTags }
               >
                 <BiFilterAlt 
                   fontSize={22}
-                  className={collection ? "text-amber-500 " : " hover:text-amber-500"}
+                  className={collection ? "text-amber-500" : " hover:text-amber-500"}
                 />
-                &nbsp;#
-                {collection?.length > 30
+               {collection?.length > 30
                   ? shortenAddress(collection)
                   : collection || "Filter"}
-                &nbsp;
               </button>
           </div>
-          &nbsp; &nbsp;
-
+     
           {/* Sort */}
-          <div className="flex items-center  cursor-pointer text-white ">
+          <div className={ collection ? "hidden lg:flex items-center cursor-pointer text-white" : "flex items-center cursor-pointer text-white" }>
                 <button
                   onClick={toggleSort}
-                  className="flex items-center bg-[#6c63ff] text-white px-3 h-10 rounded-full border-none  hover:brightness-125"
+                  className="flex items-center bg-indigo-500 text-white px-3 h-10 rounded-full border-none hover:brightness-150"
                 >
                   <BiSort fontSize={20} />
-                  <p className="hidden lg:flex"> &nbsp;{ newest ? "Date" : "Price" }&nbsp; </p>
+                  <p className="hidden lg:flex">{ newest ? "Date" : "Price" }</p>
                 </button>
           </div>
-          &nbsp; &nbsp;
-
+        
           {/* Favorite */}
-          <div className="flex items-center  cursor-pointer text-white">
+          <div className="flex items-center cursor-pointer text-white">
                 <button
-                  className={ showFavorites ? "flex items-center  bg-[#ff3366]  px-3 h-10 rounded-full  hover:bg-[#ff3366] border-none hover:brightness-125"
-                  : "flex items-center white-glassmorphism  border px-3 h-10 rounded-full  hover:bg-[#ff3366] hover:brightness-125" }
+                  className={ showFavorites ? "flex items-center bg-[#ff3366] px-3 h-10 rounded-full hover:bg-[#ff3366] border-none hover:brightness-150"
+                  : "flex items-center white-glassmorphism border px-3 h-10 rounded-full hover:bg-transparent hover:brightness-150" }
                   onClick={toggleShowFavorites}
                 >
                   <MdFavorite
                     fontSize={22}
-                    className=""
-             
                   />
-                  <p className="hidden lg:flex"> &nbsp;Favs&nbsp; </p>
+                  <p className="hidden lg:flex">&nbsp;Favs</p>
                 </button>
           </div>
-          &nbsp; &nbsp;
-
+   
           {/* Listing */}
-          <div className="flex items-center  cursor-pointer text-white">
+          <div className="flex items-center cursor-pointer text-white">
             <select
-              style={{ minWidth: "5vw", padding: "9px " }}
-              className="flex items-center  outline-none   bg-teal-600 shadow-2xl border-none  rounded-full hover:brightness-125 "
+              className="flex items-center outline-none py-2 min-w-[100px] bg-teal-600 shadow-2xl border border-teal-600 rounded-full hover:brightness-110"
               onChange={(e) => handleTab(e.target.value)}
             >
-              {/* <MdOutlinePlaylistAddCheck fontSize={26} color="#fff"/> */}
-              <option value="tab1">&nbsp;&nbsp;All NFTs</option>
-              <option value="tab2">&nbsp;&nbsp;For Sale</option>
-              <option value="tab3">&nbsp;&nbsp;Auction</option>
-              <option value="tab4">&nbsp;&nbsp;Unlisted</option>
+              <option value="tab1">All NFTs</option>
+              <option value="tab2">For Sale</option>
+              <option value="tab3">Auction</option>
+              <option value="tab4">Unlisted</option>
             </select>
           </div>
         </div>
 
         {/* SEARCH */}
-        <div className=" w-full lg:w-auto my-3 lg:mx-0">
+        <div className="w-full lg:w-auto my-3 lg:mx-0">
           <label className="relative block">
             <span className="sr-only">Search</span>
-            <span className="absolute inset-y-0 right-4 flex items-center ">
-              <BiSearchAlt fontSize={26} color="grey" className="" />
+            <span className="absolute inset-y-0 right-4 flex items-center">
+              <BiSearchAlt fontSize={26} color="grey"/>
             </span>
             <input
               type="text"
               onChange={(e) => searchItems(e.target.value)}
-              className="w-full rounded-full outline-none py-3 pl-7 text-white border-none white-glassmorphism min-w-[300px]"
+              className="w-full rounded-full outline-none h-12 pl-7 text-white border-none white-glassmorphism min-w-[300px]"
               placeholder="Search NFTs..."
               name="search"
             />
@@ -287,7 +276,7 @@ export default function Marketplace() {
 
       {/* HASHTAGS */}
       <TECollapse show={showTags} className="z-50">
-        <div className="block rounded-lg bg-transparent text-neutral-500 shadow-lg  z-50">
+        <div className="block rounded-lg bg-transparent text-neutral-500 shadow-lg z-50">
           <div className=" flex flex-wrap gap-1 ">
             {uniqueValuesWithProperty.map((item, index) => (
               <button
@@ -307,7 +296,7 @@ export default function Marketplace() {
       {/*TAB GALLERIES */}
       <TETabsContent>
         <TETabsPane show={tab === "tab1"}>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {getResults(getTerms(tab)).map((value, tokenId) => {
               return <NFTTile data={value} key={tokenId}></NFTTile>;
             })}
@@ -316,7 +305,7 @@ export default function Marketplace() {
 
         <TETabsPane show={tab === "tab2"}>
           {/* Listed */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {getResults(getTerms(tab)).map((value, tokenId) => {
               return <NFTTile data={value} key={tokenId}></NFTTile>;
             })}
@@ -324,7 +313,7 @@ export default function Marketplace() {
         </TETabsPane>
         <TETabsPane show={tab === "tab3"}>
           {/* Auction */}
-          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 ">
+          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
             {getResults(getTerms(tab)).map((value, tokenId) => {
               return <NFTTile data={value} key={tokenId}></NFTTile>;
             })}
@@ -332,24 +321,17 @@ export default function Marketplace() {
         </TETabsPane>
         <TETabsPane show={tab === "tab4"}>
           {/* Unlisted */}
-          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4  ">
+          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
             {getResults(getTerms(tab)).map((value, tokenId) => {
               return <NFTTile data={value} key={tokenId}></NFTTile>;
             })}
           </div>
         </TETabsPane>
       </TETabsContent>
-      {/* <Loader /> */}
-      {/* {resultLength ? "" : <Loader />} */}
       {/* NOTIFICATIONS */}
       <div className="flex flex-col flex-1 items-start justify-center w-full mf:mt-0 my-7">
         <div className="text-center text-white font-light text-base w-full">
-          {/* {!ethereum ? (
-            <div className="flex flex-wrap justify-around items-center flex-row w-full white-glassmorphism p-5 ">
-              {resultLength ? "Install MetaMask and connect wallet to trade NFTs" : "No results found. Try removing one  or more search filters." }
-            </div>
-          ) : currentAccount !== "" ? ( */}
-            <div className="flex flex-wrap justify-center items-center flex-row w-full white-glassmorphism p-5 ">
+            <div className="flex flex-wrap justify-center items-center flex-row w-full white-glassmorphism p-5">
               {tab == "tab1"
                 ? "Found " + resultLength + " NFT result"
                 : tab == "tab2"
@@ -383,12 +365,6 @@ export default function Marketplace() {
                 </>
               )}
             </div>
-          {/* ) : (
-            <div className="flex flex-wrap justify-around items-center flex-row w-full white-glassmorphism p-5 ">
-              {resultLength ? "Connect your MetaMask wallet to trade NFTs." : "No results found. Try removing one  or more search filters." } 
-              
-            </div>
-          )} */}
         </div>
       </div>
     </div>

@@ -21,6 +21,7 @@ import {
   MdSell,
 } from "react-icons/md";
 import { SiEthereum } from "react-icons/si";
+import { FaEye } from "react-icons/fa";
 
 const NFTPage = () => {
   const {
@@ -257,8 +258,8 @@ const NFTPage = () => {
                     <strong>
                       {tokenData?.collection || data?.collection || "Token"}{" "}
                     </strong>
-                    <span className="absolute bottom-10 -right-5 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
-                      Etherscan Link
+                    <span className="flex absolute bottom-10 -right-5 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                      Etherscan <BiLinkExternal fontSize={16} />
                     </span>
                     <a
                       href={link}
@@ -323,8 +324,8 @@ const NFTPage = () => {
                       {/* {data.creator ? shortenAddress(data.creator)  : "0x123...aBcD"} */}
                       Creator
                     </div>
-                    <span className="absolute bottom-24 -right-5 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
-                      View Profile?
+                    <span className="flex absolute bottom-24 -right-5 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                      View &nbsp; <FaEye fontSize={16}/>
                     </span>
                   </div>{" "}
                 </Link>
@@ -345,7 +346,7 @@ const NFTPage = () => {
                     ATTRIBUTES&nbsp;&nbsp;
                     <div className="group cursor-pointer relative">
                       <span className="absolute flex bottom-7 scale-0 transition-all rounded bg-gray-900  p-2 text-xs text-white group-hover:scale-100">
-                        Metadata
+                        Metadata   <BiLinkExternal fontSize={16} />
                       </span>
                       <a
                         href={tokenData?.metadataURL || data.metadataURL}
@@ -363,9 +364,9 @@ const NFTPage = () => {
                       <div className="flex justify-between bg-[darkgrey] bg-opacity-[0.1] rounded-lg p-3">
                         <div>
                           <p className="text-xs text-[#868686] uppercase">
-                            {item.trait ? item.trait : "Trait 1"} &nbsp;
+                            {item.trait ? item.trait : "Trait"} &nbsp;
                           </p>
-                          {item.value ? item.value : "Value 1"}
+                          {item.value ? item.value : "Value"}
                         </div>
                         <RandomIcons
                           fontSize="2.4em"
@@ -391,6 +392,7 @@ const NFTPage = () => {
                         <div className="group relative">
                           <button
                             id={tag.id}
+                            style={ tag.id === "colour" ? { background: tag.value, color: "transparent" } : null}
                             value={tag.value}
                             onClick={(id) => handleCollection(id)}
                             className={
@@ -399,19 +401,21 @@ const NFTPage = () => {
                                 : " text-md  border px-3 h-8 rounded-full white-glassmorphism my-1"
                             }
                           >
-                            #{tag.value ? tag.value : "Style"}
+                            #{tag.id === "colour" ? "" : tag.value || "Loading..."}
                           </button>{" "}
                           &nbsp;&nbsp;
-                          <span className="absolute flex bottom-10 right-4 scale-0 transition-all rounded-full bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                          <span className={ tag.value === collection
+                                  ? "text-amber-500 absolute flex bottom-10 capitalize scale-0 transition-all rounded-full bg-gray-900 p-2 text-xs  group-hover:scale-100"
+                                  : "text-white absolute flex bottom-10 capitalize scale-0 transition-all rounded-full bg-gray-900 p-2 text-xs  group-hover:scale-100"}>
                             <BiFilterAlt
-                              fontSize={18}
+                              fontSize={16}
                               className={
                                 tag.value === collection
                                   ? "text-amber-500 "
-                                  : ""
+                                  : "text-white"
                               }
                             />
-                            {tag.value === collection ? "x" : "?"}
+                            { tag.id === "colour" ?  tag.value: tag.id}
                           </span>
                         </div>
                       </Link>
@@ -604,7 +608,7 @@ const NFTPage = () => {
                   <div className="group cursor-pointer relative mb-3">
                     <span className="flex absolute bottom-7 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
                       Metadata&nbsp;
-                      <BiLinkExternal fontSize={16} className="" />
+                      <BiLinkExternal fontSize={16} />
                     </span>
                     <a
                       href={data.metadataURL}
@@ -612,7 +616,7 @@ const NFTPage = () => {
                       rel="noopener noreferrer"
                     >
                       {" "}
-                      <BiLinkExternal fontSize={20} className="" />
+                      <BiLinkExternal fontSize={16} />
                     </a>
                   </div>
                 </div>
@@ -685,7 +689,7 @@ const NFTPage = () => {
                       {data.owner && shortenAddress(data.owner)}
                     </a>
                     <span className="absolute flex bottom-6 right-0 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
-                      <BiLinkExternal fontSize={18} className="" />
+                      <BiLinkExternal fontSize={16} className="" />
                     </span>
                   </p>
 
@@ -696,7 +700,7 @@ const NFTPage = () => {
                       &nbsp;
                     </a>
                     <span className="absolute flex bottom-6 right-0 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
-                      <BiLinkExternal fontSize={18} className="" />
+                      <BiLinkExternal fontSize={16} className="" />
                     </span>
                     <br />
                     {/* <span>{checksum && shortenAddress(checksum)}</span> */}

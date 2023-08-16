@@ -120,7 +120,7 @@ const FeaturePage = () => {
           <Slider {...settings}>
             {creatorNFTs
               .reverse()
-              .slice(creatorNFTs.length - 8)
+              .slice(creatorNFTs.length - 10)
               .map((data) => (
                 <NFTTile data={data} key={data.tokenId} />
               ))}

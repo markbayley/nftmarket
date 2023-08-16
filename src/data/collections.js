@@ -1,5 +1,5 @@
 import nftImage1 from "../images/futuristic-city.jpg";
-import nftImage2 from "../images/tokyo-haze.jpg";
+import nftImage2 from "../images/abstractions.jpg";
 import nftImage3 from "../images/laughing-panda.jpg";
 import nftImage4 from "../images/kyoto-girl.jpg";
 import nftImage5 from "../images/tokyo-dreams.jpg";
@@ -13,7 +13,7 @@ export const collections = [
   },
   {
     id: 2,
-    name: "Kyoto Nights",
+    name: "Abstractions",
     image: nftImage2,
   },
   {

@@ -7,7 +7,7 @@ import Loader from "./Loader";
 
 const NFTTile = (data) => {
 
-  const { favorites, setFavorites } = useContext(TransactionContext);
+  const { favorites, setFavorites, marketData } = useContext(TransactionContext);
   const link = `https://sepolia.etherscan.io/address/${data?.data?.owner}`;
 
   window.localStorage.setItem("favorites", favorites);
@@ -72,7 +72,7 @@ const NFTTile = (data) => {
         to={{ pathname: `/Explore/Detail/` + data.data.tokenId }}
         className="z-0"
       >
-        {data?.data?.image ? (
+        { marketData ? (
           <img src={data?.data?.image} alt="thumbnail" />
         ) : (
           <Loader />

@@ -261,3 +261,9 @@ export const OnUploadMetadata = async () => {
       updateMessage("Connect MetaMask wallet to mint NFT.", e);
     }
   }
+
+
+
+
+  
+

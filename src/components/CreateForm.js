@@ -7,6 +7,7 @@ import {
   colours,
   themes,
 } from "../data/lists.js";
+import { MdOutlineRemoveCircleOutline } from "react-icons/md";
 
 const CreateForm = ({
   formParams,
@@ -32,16 +33,17 @@ const CreateForm = ({
   const themeWords = filterKeywordsByArray(activeKeywords, themes, "name");
   const mediumWords = filterKeywordsByArray(activeKeywords, mediums, "name");
 
-  const KeywordButtons = ({ activeKeywords, keywords, onClick }) => (
+  const KeywordButtons = ({ activeKeywords, keywords, onClick, id }) => (
     <div className="tabs">
-      {keywords.slice(0, 4).map((item, index) => (
+      {keywords.slice(0, 3).map((item, index) => (
+        <div className="group relative">
         <button
           key={index}
           onClick={onClick}
           value={item}
           style={
-            keywords === colourWords
-              ? { backgroundColor: item, color: "#ffffff", border: "none" }
+            id === "colour"
+              ? { backgroundColor: item, border: "none", color: "transparent" }
               : { border: "none" }
           }
           className={`fade-in button ${
@@ -50,8 +52,15 @@ const CreateForm = ({
               : ""
           }`}
         >
-          #{item}
+          {id !== "colour" ? "#"+item : '#'}
         </button>
+        <span className="absolute flex bottom-10  scale-0 transition-all rounded-full bg-gray-900 p-2 text-xs text-white group-hover:scale-100 capitalize">
+                            <MdOutlineRemoveCircleOutline
+                              fontSize={16}
+                            />
+                            { keywords === colourWords ?  item : id}
+                          </span>
+        </div>
       ))}
     </div>
   );
@@ -109,6 +118,8 @@ const CreateForm = ({
       ))}
     </select>
   );
+
+  console.log("formparams: ", formParams);
 
   return (
     <form>
@@ -184,7 +195,7 @@ const CreateForm = ({
               onChange={handleForm}
             />
             <SelectOptions
-              id="colour"
+              id={ formParams.colour ? "colour2" : formParams.colour2 ? "colour3" : "colour"}
               options={colours}
               value={""}
               onChange={handleForm}
@@ -194,31 +205,37 @@ const CreateForm = ({
           {/* TAGS */}
           <div className="flex flex-wrap gap-x-2 py-1">
             <KeywordButtons
+        id="style"
               activeKeywords={activeKeywords}
               keywords={styleWords}
               onClick={handleChecked}
             />
             <KeywordButtons
+             id="theme"
               activeKeywords={activeKeywords}
               keywords={themeWords}
               onClick={handleChecked}
             />
             <KeywordButtons
+             id="artist"
               activeKeywords={activeKeywords}
               keywords={artistWords}
               onClick={handleChecked}
             />
             <KeywordButtons
+               id="medium"
               activeKeywords={activeKeywords}
               keywords={mediumWords}
               onClick={handleChecked}
             />
             <KeywordButtons
+             id="texture"
               activeKeywords={activeKeywords}
               keywords={textureWords}
               onClick={handleChecked}
             />
             <KeywordButtons
+            id="colour"
               activeKeywords={activeKeywords}
               keywords={colourWords}
               onClick={handleChecked}
