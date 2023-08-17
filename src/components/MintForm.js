@@ -34,18 +34,7 @@ const MintForm = ({
             // First Three Traits
             <div>
               <div className="check  gap-x-2.5">
-                <select
-                  id="trait1"
-                  onChange={(id) => handleForm(id)}
-                  value={traits1.name}
-                  className="text-white outline-none  w-half  rounded  bg-[#313751] shadow-2xl border-none "
-                >
-                  {traits1.map((trait, index) => (
-                    <option key={index} value={trait.name}>
-                      {trait.name}
-                    </option>
-                  ))}
-                </select>
+             
 
                 <input
                   className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
@@ -60,85 +49,8 @@ const MintForm = ({
                   }
                   value={formParams.value1}
                 ></input>
-              </div>
 
-              <div className="check mt-3 gap-x-2.5">
-                <select
-                  id="trait2"
-                  onChange={(id) => handleForm(id)}
-                  value={traits2.name}
-                  className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#313751] shadow-2xl border-none"
-                >
-                  {traits2.map((trait, index) => (
-                    <option key={index} value={trait.name}>
-                      {trait.name}
-                    </option>
-                  ))}
-                </select>
-
-                <input
-                  className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
-                  type="text"
-                  placeholder="Trait 2 Value..."
-                  id="value2"
-                  onChange={(e) =>
-                    updateFormParams({
-                      ...formParams,
-                      value2: e.target.value,
-                    })
-                  }
-                  value={formParams.value2}
-                ></input>
-              </div>
-
-              <div className="check mt-3 gap-x-2.5">
-                <select
-                  id="trait3"
-                  onChange={(id) => handleForm(id)}
-                  value={traits3.name}
-                  className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#313751] shadow-2xl border-none"
-                >
-                  {traits3.map((trait, index) => (
-                    <option key={index} value={trait.name}>
-                      {trait.name}
-                    </option>
-                  ))}
-                </select>
-
-                <input
-                  className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
-                  type="text"
-                  placeholder="Trait 3 Value..."
-                  id="value3"
-                  onChange={(e) =>
-                    updateFormParams({
-                      ...formParams,
-                      value3: e.target.value,
-                    })
-                  }
-                  value={formParams.value3}
-                ></input>
-              </div>
-
-            </div>
-          ) : (
-            <div>
-              {/* Second Three Traits */}
-              <div className="flex w-full  mb-3  justify-between gap-x-2.5 ">
-                <input
-                  className="w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
-                  type="text"
-                  placeholder="Trait 4 Type..."
-                  value={formParams.trait4}
-                  id="trait4"
-                  onChange={(e) =>
-                    updateFormParams({
-                      ...formParams,
-                      trait4: e.target.value,
-                    })
-                  }
-                ></input>
-                <input
+<input
                   className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
                   type="text"
                   placeholder="Trait 4 Value..."
@@ -153,22 +65,24 @@ const MintForm = ({
                 ></input>
               </div>
 
-              <div className="flex w-full my-2  justify-between gap-x-2.5 ">
+              <div className="check mt-3 gap-x-2.5">
+             
+
                 <input
-                  className="w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
+                  className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
                   type="text"
-                  placeholder="Trait 5 Type..."
-                  value={formParams.trait5}
-                  id="trait5"
+                  placeholder="Trait 2 Value..."
+                  id="value2"
                   onChange={(e) =>
                     updateFormParams({
                       ...formParams,
-                      trait5: e.target.value,
+                      value2: e.target.value,
                     })
                   }
+                  value={formParams.value2}
                 ></input>
 
-                <input
+<input
                   className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
                   type="text"
                   placeholder="Trait 5 Value..."
@@ -183,7 +97,148 @@ const MintForm = ({
                 ></input>
               </div>
 
+              <div className="check mt-3 gap-x-2.5">
+         
+
+                <input
+                  className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
+                  type="text"
+                  placeholder="Trait 3 Value..."
+                  id="value3"
+                  onChange={(e) =>
+                    updateFormParams({
+                      ...formParams,
+                      value3: e.target.value,
+                    })
+                  }
+                  value={formParams.value3}
+                ></input>
+
+<input
+                  className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
+                  type="text"
+                  placeholder="Trait 6 Value..."
+                  id="value6"
+                  onChange={(e) =>
+                    updateFormParams({
+                      ...formParams,
+                      value6: e.target.value,
+                    })
+                  }
+                  value={formParams.value6}
+                ></input>
+              </div>
+
+            </div>
+          ) : (
+            <div>
+              {/* Second Three Traits */}
+              <div className="flex w-full  mb-3  justify-between gap-x-2.5 ">
+
+
+          <select
+                  id="trait1"
+                  onChange={(id) => handleForm(id)}
+                  value={traits1.name}
+                  className="text-white outline-none  w-half  rounded  bg-[#313751] shadow-2xl border-none "
+                >
+                  {traits1.map((trait, index) => (
+                    <option key={index} value={trait.name}>
+                      {trait.name}
+                    </option>
+                  ))}
+                </select>
+
+
+                <input
+                  className="w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
+                  type="text"
+                  placeholder="Trait 4 Type..."
+                  value={formParams.trait4}
+                  id="trait4"
+                  onChange={(e) =>
+                    updateFormParams({
+                      ...formParams,
+                      trait4: e.target.value,
+                    })
+                  }
+                ></input>
+                {/* <input
+                  className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
+                  type="text"
+                  placeholder="Trait 4 Value..."
+                  id="value4"
+                  onChange={(e) =>
+                    updateFormParams({
+                      ...formParams,
+                      value4: e.target.value,
+                    })
+                  }
+                  value={formParams.value4}
+                ></input> */}
+              </div>
+
+              <div className="flex w-full my-2  justify-between gap-x-2.5 ">
+
+               
+
+                 <select
+                  id="trait2"
+                  onChange={(id) => handleForm(id)}
+                  value={traits2.name}
+                  className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#313751] shadow-2xl border-none"
+                >
+                  {traits2.map((trait, index) => (
+                    <option key={index} value={trait.name}>
+                      {trait.name}
+                    </option>
+                  ))}
+                </select>
+
+
+                <input
+                  className="w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
+                  type="text"
+                  placeholder="Trait 5 Type..."
+                  value={formParams.trait5}
+                  id="trait5"
+                  onChange={(e) =>
+                    updateFormParams({
+                      ...formParams,
+                      trait5: e.target.value,
+                    })
+                  }
+                ></input>
+
+                {/* <input
+                  className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
+                  type="text"
+                  placeholder="Trait 5 Value..."
+                  id="value5"
+                  onChange={(e) =>
+                    updateFormParams({
+                      ...formParams,
+                      value5: e.target.value,
+                    })
+                  }
+                  value={formParams.value5}
+                ></input> */}
+              </div>
+
               <div className="flex w-full  mt-3  justify-between gap-x-2.5 ">
+
+                 <select
+                  id="trait3"
+                  onChange={(id) => handleForm(id)}
+                  value={traits3.name}
+                  className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#313751] shadow-2xl border-none"
+                >
+                  {traits3.map((trait, index) => (
+                    <option key={index} value={trait.name}>
+                      {trait.name}
+                    </option>
+                  ))}
+                </select>
                 <input
                   className="w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
                   type="text"
@@ -197,7 +252,9 @@ const MintForm = ({
                     })
                   }
                 ></input>
-                <input
+
+
+                {/* <input
                   className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
                   type="text"
                   placeholder="Trait 6 Value..."
@@ -209,7 +266,7 @@ const MintForm = ({
                     })
                   }
                   value={formParams.value6}
-                ></input>
+                ></input> */}
               </div>
             </div>
           )}
@@ -229,8 +286,8 @@ const MintForm = ({
               <MdOutlineArrowBackIosNew size="24" />
             </button>
             {!showMore
-              ? "Click right to enter more traits"
-              : "Click left to go back"}
+              ? "Add up to six unique traits"
+              : "Edit trait titles (optional)"}
             <button
               onClick={handleShow}
               className={

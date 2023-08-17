@@ -130,7 +130,11 @@ const Wallet = () => {
       <div className="flex-col justify-center items-start md:w-3/4 mx-2 ">
         <SubMenu
           title="My Wallet"
-          subtitle="Fund your wallet to mint NFTs"
+          subtitle={
+            tab === "tab1"
+              ? "Fund your wallet to mint NFTs"
+              : tab === "tab2" ? "View all the NFTs you own" : "Update your creator profile"
+          }
           tab1="Transfer"
           tab2="My NFTs"
           tab3="Profile"

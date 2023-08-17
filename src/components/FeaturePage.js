@@ -8,6 +8,7 @@ import Slider from "react-slick";
 import { BsShieldFillCheck } from "react-icons/bs";
 import { BiSearchAlt } from "react-icons/bi";
 import { RiHeart2Fill } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 const FeaturePage = () => {
   var settings = {
@@ -20,7 +21,7 @@ const FeaturePage = () => {
     arrows: false,
   };
 
-  const { profileParams, id, marketData, handleTab, tab } =
+  const { profileParams, id, marketData, handleTab, tab, handleCollection } =
     useContext(TransactionContext);
 
   const params = useParams();
@@ -37,11 +38,11 @@ const FeaturePage = () => {
   const backLink = creatorNFTs.length.toString();
 
   return (
-    <div className="mx-2 lg:mx-[15%] pb-20 ">
+    <div className="mx-2 lg:mx-[10%] xl:mx-[15%] pb-20 ">
       <SubMenu
         title="Profile"
-        subtitle="Featuring artists and collectors"
-        //tab1="x"
+        subtitle="Featured artists and collectors"
+        tab1="x"
         handleTab={handleTab}
         tab={tab}
         backLink={backLink}
@@ -56,10 +57,17 @@ const FeaturePage = () => {
               fontSize={28}
               className="text-blue-700 absolute right-0"
             />
+             <Link
+              to={{ pathname: `/Explore/${creatorAddress}` }}
+            >
             <BiSearchAlt
-              fontSize={32}
-              className="text-yellow-700 absolute right-10"
+             id="collection"
+             value={creatorAddress}
+             onClick={(id) => handleCollection(id)}
+            fontSize={32}
+            className="text-yellow-700 absolute right-10"
             />
+            </Link>
             <RiHeart2Fill
               fontSize={32}
               className="text-red-700 absolute right-20"
@@ -84,28 +92,34 @@ const FeaturePage = () => {
           </a>{" "}
           <div className=" flex flex-col flex-1">
             <h3 className=" text-white text-lg">
-              {profileParams.user || "User"},{" "}
-              <em>{profileParams.country || "Country"}</em>
+              {profileParams.user || "Mark"},{" "}
+              <em>{profileParams.country || "Australia"}</em>
             </h3>
 
             <p className="mt-3 text-white text-md ">
-              {profileParams.bio} A brief bio describing your interests and
-              creative influences as well as how you became interested in
+              {profileParams.bio} This is a brief bio describing our interests and
+              creative influences as well as how we became interested in
               blockchain and NFTs.
             </p>
             <p className="mt-3 text-white text-md ">
-              The NFTs below were created by {profileParams.user || "User"} and
-              are currently listed for sale by Inblock.
+              The NFTs below were created by {profileParams.user || "us"} with the help of Stable Diffusion and
+              use a variety of inputs and specific keywords to generate AI art collections. They
+              are currently listed for sale by InblockDesign through this website.
             </p>
 
             <p className="mt-3 text-white text-md ">
               {" "}
-              Duis aute irure dolor in reprehenderit in voluptate velit esse
-              cillum dolore eu fugiat nulla pariatur.{" "}
+              We like to create NFTs that depict future scenarios as AI becomes an integral 
+              part of our societies and we begin to use it more as a part of everyday life.
+              The role of blockchain technology in this future is also interesting to consider.{" "}
             </p>
-            <div className="flex w-full justify-between pt-2">
+            <p className="mt-3 text-white text-md ">
+              {" "}
+              View our other work at the website below.{" "}
+            </p>
+            <div className="flex w-full justify-between pt-1">
               <h3 className=" text-white text-md py-3">
-                {profileParams.website || "Website URL"}
+                {profileParams.website || "www.inblockdesign.com"}
               </h3>
               <a href="" className="mt-3  text-md pr-4">
                 {creatorAddress
@@ -116,11 +130,11 @@ const FeaturePage = () => {
           </div>
         </div>
 
-        <div className="w-full ">
+        <div className=" ">
           <Slider {...settings}>
             {creatorNFTs
               .reverse()
-              .slice(creatorNFTs.length - 10)
+              .slice(creatorNFTs.length - 8)
               .map((data) => (
                 <NFTTile data={data} key={data.tokenId} />
               ))}

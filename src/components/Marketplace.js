@@ -167,20 +167,20 @@ export default function Marketplace() {
     <div className="fade-in md:px-[3%] px-2">
       <div className="flex flex-row place-items-center justify-between flex-wrap w-full pt-3 pb-1 lg:pl-2">
         {/* HEADING */}
-        <div className="w-full xl:w-1/4">
+        <div className="w-full xl:w-auto">
           <h1 className="text-3xl sm:text-5xl text-white leading-tight text-gradient ">
             Explore NFTs
           </h1>
 
-          <div className="text-white flex items-center text-gradient ">
+          <div className="text-white flex items-center text-gradient text-lg">
             {tab == "tab1"
               ? " All NFT"
               : tab == "tab2"
-              ? " " + resultLength + " For Sale NFT"
+              ? " " + resultLength + " For Sale "
               : tab == "tab3"
-              ? " " + resultLength + " Auctioned NFT"
-              : " " + resultLength + " Unlisted NFT"}
-              { resultLength !== 1 || tab == "tab1" ? "s " : " " }
+              ? " " + resultLength + " Auctioned "
+              : " " + resultLength + " Unlisted "}
+              { tab == "tab1" ? "s " : " " }
             {collection && showFavorites
               ? "| Filtered | Favorites"
               : collection
@@ -196,7 +196,7 @@ export default function Marketplace() {
         </div>
 
         {/* MENU BUTTONS */}
-        <div className="flex md:mb-0 py-2 gap-x-2">
+        <div className="flex items-center justify-center gap-x-2">
 
           {/* Filter */}
           <div className="flex items-center cursor-pointer">
@@ -204,7 +204,7 @@ export default function Marketplace() {
                 id=""
                 value=""
                 className={ collection ? "flex items-center whitespace-nowrap bg-transparent text-amber-500 border border-amber-500 px-3 h-10 rounded-full white-glassmorphism hover:text-neutral-500 hover:bg-transparent"
-                : "flex items-center text-white  border px-3 h-10 rounded-full white-glassmorphism hover:text-[#E4A11B] hover:brightness-110 hover:bg-transparent" }
+                : "flex items-center justify-center text-white  border px-3 h-10 rounded-full white-glassmorphism hover:text-[#E4A11B] hover:brightness-110 hover:bg-transparent lg:w-[100px]" }
                 onClick={collection ? (id) => handleCollection(id) : toggleShowTags }
               >
                 <BiFilterAlt 
@@ -218,10 +218,10 @@ export default function Marketplace() {
           </div>
      
           {/* Sort */}
-          <div className={ collection ? "hidden lg:flex items-center cursor-pointer text-white" : "flex items-center cursor-pointer text-white" }>
+          <div className={ collection ? "hidden md:flex items-center cursor-pointer text-white" : "flex items-center cursor-pointer text-white" }>
                 <button
                   onClick={toggleSort}
-                  className="flex items-center bg-indigo-500 text-white px-3 h-10 rounded-full border-none hover:brightness-150"
+                  className="flex items-center bg-indigo-500 text-white px-3 h-10 rounded-full border-none hover:brightness-150 lg:w-[85px]"
                 >
                   <BiSort fontSize={20} />
                   <p className="hidden lg:flex">{ newest ? "Date" : "Price" }</p>
@@ -229,10 +229,10 @@ export default function Marketplace() {
           </div>
         
           {/* Favorite */}
-          <div className="flex items-center cursor-pointer text-white">
+          <div className="flex items-center cursor-pointer text-white ">
                 <button
-                  className={ showFavorites ? "flex items-center bg-[#ff3366] px-3 h-10 rounded-full hover:bg-[#ff3366] border-none hover:brightness-150"
-                  : "flex items-center white-glassmorphism border px-3 h-10 rounded-full hover:bg-transparent hover:brightness-150" }
+                  className={ showFavorites ? "flex items-center bg-[#ff3366] px-3 h-10 rounded-full hover:bg-[#ff3366] border-none hover:brightness-150 lg:w-[85px]"
+                  : "flex items-center white-glassmorphism border px-3 h-10 rounded-full hover:bg-transparent hover:brightness-150 lg:w-[85px]" }
                   onClick={toggleShowFavorites}
                 >
                   <MdFavorite
@@ -243,15 +243,15 @@ export default function Marketplace() {
           </div>
    
           {/* Listing */}
-          <div className="flex items-center cursor-pointer text-white">
+          <div className="flex cursor-pointer text-white">
             <select
-              className="flex items-center outline-none py-2 min-w-[100px] bg-teal-600 shadow-2xl border border-teal-600 rounded-full hover:brightness-110"
+              className="flex outline-none py-2 min-w-[90px] h-[40px] bg-teal-600 shadow-2xl border border-teal-600 rounded-full hover:brightness-110"
               onChange={(e) => handleTab(e.target.value)}
             >
-              <option value="tab1">All NFTs</option>
-              <option value="tab2">For Sale</option>
-              <option value="tab3">Auction</option>
-              <option value="tab4">Unlisted</option>
+              <option value="tab1">&nbsp;&nbsp;All NFTs</option>
+              <option value="tab2">&nbsp;&nbsp;For Sale</option>
+              <option value="tab3">&nbsp;&nbsp;Auction</option>
+              <option value="tab4">&nbsp;&nbsp;Unlisted</option>
             </select>
           </div>
         </div>

@@ -23,7 +23,7 @@ const SubMenu = ({
 
   return (
     <div className="flex flex-row place-items-center justify-between flex-wrap w-full pt-3 pl-2">
-      <div className="w-full lg:w-1/4">
+      <div className="w-full xl:w-1/4">
         {/* HEADING */}
         <div className="flex items-center whitespace-nowrap">
           <h1 className="text-3xl sm:text-5xl text-white leading-tight text-gradient">
@@ -43,7 +43,7 @@ const SubMenu = ({
               </button>
             </Link> */}
         </div>
-        <h2 className="text-left text-gradient text-lg">{subtitle}</h2>
+        <h2 className="text-left text-gradient text-lg ">{subtitle}</h2>
       </div>
 
       {/* GENERATE OR UPLOAD BUTTONS*/}
@@ -80,6 +80,7 @@ const SubMenu = ({
       )}
 
       {/* TABS */}
+      { tab1 !== "x" &&
       <div className=" flex lg:w-auto w-full justify-center lg:justify-end">
         <TETabs className=" flex items-center ">
           {tab1 === "View" && (
@@ -97,6 +98,7 @@ const SubMenu = ({
             </Link>
           )}
 
+     
           <TETabsItem
             className="hover:bg-transparent hover:text-[#E4A11B] text-[16px] mt-0"
             onClick={() => (handleTab("tab1"), setMint && setMint(() => false))}
@@ -105,6 +107,7 @@ const SubMenu = ({
           >
             {tab1}
           </TETabsItem>
+
 
           {tab2 === "Back" ? (
             // <Link  to={{ pathname: `/Trade/Detail/${backLink}` }} >
@@ -160,6 +163,7 @@ const SubMenu = ({
           )}
         </TETabs>
       </div>
+}
     </div>
   );
 };

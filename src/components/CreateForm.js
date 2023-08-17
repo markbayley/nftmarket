@@ -19,51 +19,6 @@ const CreateForm = ({
   updateFormParams,
   isChecked,
 }) => {
-  // Filter the keywords tags selected
-  function filterKeywordsByArray(activeKeywords, arrayToFilter, property) {
-    return activeKeywords.filter((word) =>
-      arrayToFilter.some((item) => item[property] === word)
-    );
-  }
-
-  const styleWords = filterKeywordsByArray(activeKeywords, styles, "name");
-  const artistWords = filterKeywordsByArray(activeKeywords, artists, "name");
-  const textureWords = filterKeywordsByArray(activeKeywords, textures, "name");
-  const colourWords = filterKeywordsByArray(activeKeywords, colours, "name");
-  const themeWords = filterKeywordsByArray(activeKeywords, themes, "name");
-  const mediumWords = filterKeywordsByArray(activeKeywords, mediums, "name");
-
-  const KeywordButtons = ({ activeKeywords, keywords, onClick, id }) => (
-    <div className="tabs">
-      {keywords.slice(0, 3).map((item, index) => (
-        <div className="group relative">
-        <button
-          key={index}
-          onClick={onClick}
-          value={item}
-          style={
-            id === "colour"
-              ? { backgroundColor: item, border: "none", color: "transparent" }
-              : { border: "none" }
-          }
-          className={`fade-in button ${
-            activeKeywords.includes(item)
-              ? "flex items-center text-sm text-indigo-500 border px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500 hover:bg-transparent mt-2"
-              : ""
-          }`}
-        >
-          {id !== "colour" ? "#"+item : '#'}
-        </button>
-        <span className="absolute flex bottom-10  scale-0 transition-all rounded-full bg-gray-900 p-2 text-xs text-white group-hover:scale-100 capitalize">
-                            <MdOutlineRemoveCircleOutline
-                              fontSize={16}
-                            />
-                            { keywords === colourWords ?  item : id}
-                          </span>
-        </div>
-      ))}
-    </div>
-  );
 
   // Define the auto description input
   const [autoDescription, setAutoDescription] = useState(false);
@@ -82,11 +37,16 @@ const CreateForm = ({
     " theme combines with subtle " +
     formParams.texture +
     " textures, " +
-    formParams.colour +
+    formParams.colour0 +
+    " " +
+    formParams.colour1 +
+    " & " +
+    formParams.colour2 +
     " colors and " +
     formParams.artist +
-    " influences." +
-    formParams.description;
+    " influences."
+    //  +
+    // formParams.description;
 
   const handleDescription = (e) => {
     if (formParams.description) {
@@ -103,23 +63,76 @@ const CreateForm = ({
     }
   };
 
+  // Filter the keywords tags selected
+  function filterKeywordsByArray(activeKeywords, arrayToFilter, property) {
+    return activeKeywords.filter((word) =>
+      arrayToFilter.some((item) => item[property] === word)
+    );
+  }
+
+  const styleWords = filterKeywordsByArray(activeKeywords, styles, "name");
+  const artistWords = filterKeywordsByArray(activeKeywords, artists, "name");
+  const textureWords = filterKeywordsByArray(activeKeywords, textures, "name");
+  const colourWords = filterKeywordsByArray(activeKeywords, colours, "name");
+  const themeWords = filterKeywordsByArray(activeKeywords, themes, "name");
+  const mediumWords = filterKeywordsByArray(activeKeywords, mediums, "name");
+
+  const KeywordButtons = ({ activeKeywords, keywords, onClick, id }) => (
+    <div className="tabs">
+      {keywords.slice(0, 3).map((item, index) => (
+        <div className="group relative" key={index}>
+       
+          <button
+            id={ keywords === colourWords ? id+index : id } // Ensure that each button has a unique id
+            value={item} //colour name
+            onClick={(e) => onClick(e, e.target.id)} // Pass the item and id to the onClick function
+            style={
+              id.includes("colour")
+                ? {
+                    backgroundColor: item,
+                    color: "transparent"
+                  }
+                : null
+            }
+            className={`fade-in button ${
+              activeKeywords.includes(item)
+                ? "flex items-center text-sm text-indigo-500 border-none px-3 h-8 rounded-full white-glassmorphism hover:text-neutral-500 hover:bg-transparent mt-2"
+                : ""
+            }`}
+          >
+            {!id.includes("colour") ? "#" + item : "#" }  
+          </button>
+          <span className="absolute flex bottom-10  scale-0 transition-all rounded-full bg-gray-900 p-2 text-xs text-white group-hover:scale-100 capitalize">
+            <MdOutlineRemoveCircleOutline fontSize={16} />
+            {keywords === colourWords ? item : id}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+
   // Handle the selector dropdown inputs
   const SelectOptions = ({ id, options, value, onChange }) => (
+    
     <select
       id={id}
-      onChange={(e) => onChange(id, e.target.value)}
       value={value}
-      className="text-white outline-none blue-glassmorphism w-half rounded bg-[#313751] shadow-2xl border-none"
+      onChange={(e) => onChange(id, e.target.value)}
+      className={"text-white outline-none blue-glassmorphism w-half rounded bg-[#313751] shadow-2xl border-none"  }
     >
       {options.map((option, index) => (
         <option key={index} value={option.name}>
-          {option.name}
+          {option.name} 
         </option>
       ))}
     </select>
   );
 
   console.log("formparams: ", formParams);
+  console.log("activeKeywords: ", activeKeywords);
+
+
+
 
   return (
     <form>
@@ -172,7 +185,7 @@ const CreateForm = ({
               value={""}
               onChange={handleForm}
             />
-          </div>
+          </div>  
           <div className="check mt-3">
             <SelectOptions
               id="theme"
@@ -185,6 +198,7 @@ const CreateForm = ({
               options={textures}
               value={""}
               onChange={handleForm}
+       
             />
           </div>
           <div className="check mt-3">
@@ -194,52 +208,60 @@ const CreateForm = ({
               value={""}
               onChange={handleForm}
             />
+     
             <SelectOptions
-              id={ formParams.colour ? "colour2" : formParams.colour2 ? "colour3" : "colour"}
+              id={ !formParams.colour0
+              ? "colour0"
+              : !formParams.colour1
+              ? "colour1"
+              : "colour2"}
               options={colours}
               value={""}
               onChange={handleForm}
+         
             />
+         
           </div>
 
           {/* TAGS */}
           <div className="flex flex-wrap gap-x-2 py-1">
             <KeywordButtons
-        id="style"
+              id="style"
               activeKeywords={activeKeywords}
               keywords={styleWords}
               onClick={handleChecked}
             />
             <KeywordButtons
-             id="theme"
+              id="theme"
               activeKeywords={activeKeywords}
               keywords={themeWords}
               onClick={handleChecked}
             />
             <KeywordButtons
-             id="artist"
+              id="artist"
               activeKeywords={activeKeywords}
               keywords={artistWords}
               onClick={handleChecked}
             />
             <KeywordButtons
-               id="medium"
+              id="medium"
               activeKeywords={activeKeywords}
               keywords={mediumWords}
               onClick={handleChecked}
             />
             <KeywordButtons
-             id="texture"
+              id="texture"
               activeKeywords={activeKeywords}
               keywords={textureWords}
               onClick={handleChecked}
             />
             <KeywordButtons
-            id="colour"
+              id={"colour"}
               activeKeywords={activeKeywords}
               keywords={colourWords}
               onClick={handleChecked}
             />
+
           </div>
 
           {/* DESCRIPTION */}

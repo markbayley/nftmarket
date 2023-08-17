@@ -141,34 +141,70 @@ export const TransactionsProvider = ({ children }) => {
   //CREATE
   const [formParams, updateFormParams] = useState(
     {
-    name: "",
-    description: "",
-    collection: "",
-    theme: "",
-    style: "",
-    artist: "",
-    colour: "",
-    medium: "",
-    texture: "",
+    // name: "",
+    // description: "",
+    // collection: "",
+    // theme: "",
+    // style: "",
+    // artist: "",
+    // colour: "",
+    // colour2: "",
+    // colour3: "",
+    // medium: "",
+    // texture: "",
     seal: "Yes",
     listing: "Listed For Sale",
-    price: "",
+    // price: "",
     royalty: "No Royalties",
     trait1: "Trait",
-    value1: "",
+    // value1: "",
     trait2: "Trait",
-    value2: "",
+    // value2: "",
     trait3: "Trait",
-    value3: "",
+    // value3: "",
     trait4: "Trait",
-    value4: "",
+    // value4: "",
     trait5: "Trait",
-    value5: "",
+    // value5: "",
     trait6: "Trait",
-    value6: ""
+    // value6: ""
     },
-   localStorage.getItem("formParams")
+  //  localStorage.getItem("formParams")
   );
+
+  // const [formParams, updateFormParams] = useState(() => {
+  //   const storedFormParams = localStorage.getItem("formParams");
+  //   return storedFormParams ? JSON.parse(storedFormParams) : {
+  //     name: "",
+  //     description: "",
+  //     collection: "",
+  //     theme: "",
+  //     style: "",
+  //     artist: "",
+  //     colour: "",
+  //     colour2: "",
+  //     colour3: "",
+  //     medium: "",
+  //     texture: "",
+  //     seal: "Yes",
+  //     listing: "Listed For Sale",
+  //     price: "",
+  //     royalty: "No Royalties",
+  //     trait1: "Trait",
+  //     value1: "",
+  //     trait2: "Trait",
+  //     value2: "",
+  //     trait3: "Trait",
+  //     value3: "",
+  //     trait4: "Trait",
+  //     value4: "",
+  //     trait5: "Trait",
+  //     value5: "",
+  //     trait6: "Trait",
+  //     value6: ""
+  //   };
+  // });
+  
 
   const handleProfile = (e, name) => {
     updateProfileParams((prevState) => ({
@@ -191,7 +227,9 @@ export const TransactionsProvider = ({ children }) => {
 
 
 
-  const [activeKeywords, setActiveKeywords] = useState([], localStorage.getItem("activeKeywords"));
+  const [activeKeywords, setActiveKeywords] = useState([]
+    // , localStorage.getItem("activeKeywords")
+    );
   const [fileURL, setFileURL] = useState(null, localStorage.getItem("fileURL"));
 
 
@@ -243,6 +281,10 @@ export const TransactionsProvider = ({ children }) => {
               medium: meta.medium,
               artist: meta.artist,
               colour: meta.colour,
+              colour: [ meta.colour0, meta.colour1, meta.colour2 ],
+              colour0: meta.colour0,
+              colour1: meta.colour1,
+              colour2: meta.colour2,
               theme: meta.theme,
               texture: meta.texture,
               tags: meta.tags,

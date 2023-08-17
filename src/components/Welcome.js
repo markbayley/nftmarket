@@ -29,7 +29,7 @@ const Welcome = () => {
             className={!marketData.length ? "drift-left" : " "}
           >
             <div
-              className="flex justify-center items-center w-full scale-[0.95] hover:scale-[0.98] duration-300 cursor-pointer p-5 md:-mr-5 sm:w-96  
+              className="hidden xl:flex justify-center items-center w-full scale-[0.95] hover:scale-[0.98] duration-300 cursor-pointer p-5 md:-mr-5 sm:w-96  
            flex-col white-glassmorphism relative z-0  -rotate-3 -md:rotate-6 shadow-xl hover:shadow-indigo-500/20"
             >
               <div className="rounded-full border border-white flex justify-center items-center absolute w-[10%] aspect-square top-[6.5%] left-[7%]  eth-card  seal ">
@@ -48,17 +48,13 @@ const Welcome = () => {
             className={!marketData.length ? "drift-center" : " "}
           >
             <div
-              className="  scale-[0.95] hover:scale-[0.98] duration-300 backdrop-blur-[5px] p-5 cursor-pointer sm:w-96 w-full white-glassmorphism  z-30
+              className="hidden md:flex justify-center items-center w-full flex-col scale-[0.95] hover:scale-[0.98] duration-300 backdrop-blur-[5px] p-5 cursor-pointer sm:w-96 white-glassmorphism  z-30
             rotate-3 md:rotate-6 shadow-xl hover:shadow-indigo-500/20"
             >
               <div className="w-10 h-10 rounded-full border border-white flex justify-center items-center absolute top-7 left-7 eth-card  seal ">
                 <SiEthereum fontSize={21} color="#fff" />
               </div>
-              {/* { !marketData.length &&   
-              <div className="absolute top-40 left-40">
-              <Loader />
-              </div>
-              } */}
+          
               <img src={nftImage2} alt="Futuristic City NFT" />
               <div className="title">
                 <strong>Tokyo Dreams </strong> &nbsp;<em>'Metropolis'</em>

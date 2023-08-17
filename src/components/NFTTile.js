@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Link } from "react-router-dom";
 import { SiEthereum } from "react-icons/si";
 import { MdOutlineFavoriteBorder, MdFavorite } from "react-icons/md";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { TransactionContext } from "../context/TransactionContext";
 import Loader from "./Loader";
 
@@ -25,8 +25,10 @@ const NFTTile = (data) => {
     }
   };
 
+  const [ loaded, setLoaded] = useState(false)
+
   return (
-    <div className=" backdrop-blur-[5px] p-[5%] cursor-pointer sm:w-96  w-full md:w-auto  white-glassmorphism shadow-lg hover:shadow-indigo-500/30 duration-200 z-10">
+    <div className=" backdrop-blur-[5px] p-[5%] sm:w-96  w-full md:w-auto  white-glassmorphism shadow-lg hover:shadow-indigo-500/30 duration-200 z-10">
       
       {/* ETHERSCAN */}
       <Link
@@ -48,7 +50,7 @@ const NFTTile = (data) => {
       {/* FAVORITE */}
       <div
         onClick={(e) => toggleFavorite(e)}
-        className="absolute top-[6%] right-[6%] bg-transparent h-9 m-0 text-[#fffefe] hover:text-[#ff3366] duration-300 hover:scale-[1.1]"
+        className="absolute top-[6%] right-[6%] bg-transparent h-9 m-0 text-[#fffefe] hover:text-[#ff3366] duration-300 hover:scale-[1.1] cursor-pointer "
       >
         {favorites.includes(data.data.tokenId) ? (
           <div className="relative">
@@ -72,11 +74,33 @@ const NFTTile = (data) => {
         to={{ pathname: `/Explore/Detail/` + data.data.tokenId }}
         className="z-0"
       >
-        { marketData ? (
+        {/* { marketData ? (
           <img src={data?.data?.image} alt="thumbnail" />
         ) : (
           <Loader />
-        )}
+        )} */}
+
+
+{loaded ? null : (
+                  <div className="w-full h-full aspect-square rounded seal ">
+                    <label className="flex  items-center justify-center w-full h-full">
+                      <div className="flex flex-col items-center justify-center ">
+                        <Loader />
+                        <p className="text-sm text-white ">
+                          LOADING NFT DATA...
+                        </p>
+                      </div>
+                    </label>
+                  </div>
+                )}
+
+                <img
+                  style={loaded ? {} : { display: "none" }}
+                  src={data?.data?.image }
+                  onLoad={() => setLoaded(true)}
+                  alt="thumbnail"
+                  className="rounded cursor-pointer "
+                />
       </Link>
 
       {/* TITLE */}

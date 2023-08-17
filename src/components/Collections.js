@@ -16,15 +16,15 @@ const Collections = () => {
             <h1 className="text-white text-3xl sm:text-5xl py-2  ">
               Top Collections
             </h1>
-            <h2 className="text-left mb-3 text-gradient text-lg ">
-              View what our top artists have created
+            <h2 className="text-left mb-3 text-gradient text-xl ">
+              View what top artists have created
             </h2>
           </div>
         </div>
       </div>
 
       {/* LINKS */}
-      <div className=" grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 px-4 gap-6  md:px-20 w-full ">
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 place-items-center px-4 gap-6  md:px-20 w-full ">
         {collections.map((collection, index) => {
           return (
             <Link
@@ -35,12 +35,12 @@ const Collections = () => {
                 id="collection"
                 value={collection.name}
                 onClick={(id) => handleCollection(id)}
-                className="flex items-end rounded-full h-[9.5em] w-[9.5em] md:h-[12em] md:w-[12em] bg-cover bg-center border-transparent hover:border-indigo-500 shadow-xl hover:border-2 hover:scale-[1.15] shadow-indigo-500/25 duration-200 hover:shadow-indigo-500/50"
+                className="flex items-end rounded-full h-[8.5em] w-[8.5em] sm:h-[12em] sm:w-[12em] bg-cover bg-center border-transparent hover:border-indigo-500 shadow-xl hover:border-2 hover:scale-[1.15] shadow-indigo-500/25 duration-200 hover:shadow-indigo-500/50"
                 style={{
                   backgroundImage: `url(${collection.image})`,
                 }}
               >
-                <span className="pointer-events-none bg-yellow-600 py-1 px-2 rounded-full text-white text-sm">
+                <span className="pointer-events-none bg-yellow-600 py-1 px-2 rounded-full text-white text-xs md:text-sm">
                   {" "}
                   #{collection.id} {collection.name}
                 </span>

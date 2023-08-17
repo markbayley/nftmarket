@@ -38,6 +38,7 @@ const NFTPage = () => {
     collection,
     progress,
     setProgress,
+
   } = useContext(TransactionContext);
 
   const [data, updateData] = useState({});
@@ -190,8 +191,15 @@ const NFTPage = () => {
     { id: "artist", value: tokenData?.artist },
     { id: "medium", value: tokenData?.medium },
     { id: "texture", value: tokenData?.texture },
-    { id: "colour", value: tokenData?.colour },
+    // { id: "colour", value: tokenData?.colour },
+    { id: "colour0", value: tokenData?.colour0},
+    { id: "colour1", value: tokenData?.colour1 },
+    { id: "colour2", value: tokenData?.colour2 },
   ];
+
+  console.log("tagsArray", tagsArray)
+
+  // const [ loaded, setLoaded] = useState(false)
 
   return (
     <div className=" mx-2 lg:px-[5%] fade-in">
@@ -226,26 +234,7 @@ const NFTPage = () => {
                   className="rounded-lg "
                 />
 
-                {/* {loaded ? null : (
-                  <div className="w-full h-full aspect-square rounded-lg seal ">
-                    <label className="flex  items-center justify-center w-full h-full">
-                      <div className="flex flex-col items-center justify-center ">
-                        <Loader />
-                        <p className="text-sm text-white ">
-                          LOADING NFT DATA...
-                        </p>
-                      </div>
-                    </label>
-                  </div>
-                )}
-
-                <img
-                  style={loaded ? {} : { display: "none" }}
-                  src={marketData[tokenId]?.image || data?.image}
-                  onLoad={() => setLoaded(true)}
-                  alt="thumbnail"
-                  className="rounded-lg "
-                /> */}
+             
               </div>
             </div>
 
@@ -392,16 +381,16 @@ const NFTPage = () => {
                         <div className="group relative">
                           <button
                             id={tag.id}
-                            style={ tag.id === "colour" ? { background: tag.value, color: "transparent" } : null}
+                            style={ tag.id.includes("colour") ? { background: tag.value, color: "transparent" } : null}
                             value={tag.value}
                             onClick={(id) => handleCollection(id)}
                             className={
                               tag.value === collection
                                 ? "text-amber-500 text-md hover:bg-transparent hover:text-neutral-500 border px-3 h-8 rounded-full white-glassmorphism my-1"
-                                : " text-md  border px-3 h-8 rounded-full white-glassmorphism my-1"
+                                : " text-md  border px-3 h-8 rounded-full white-glassmorphism my-1 hover:brightness-125"
                             }
                           >
-                            #{tag.id === "colour" ? "" : tag.value || "Loading..."}
+                            #{!tag.id.includes("colour") ?  tag.value : ' ' || "Loading..."}
                           </button>{" "}
                           &nbsp;&nbsp;
                           <span className={ tag.value === collection
@@ -415,7 +404,7 @@ const NFTPage = () => {
                                   : "text-white"
                               }
                             />
-                            { tag.id === "colour" ?  tag.value: tag.id}
+                            { tag.id.includes("colour") ?  tag.value: tag.id}
                           </span>
                         </div>
                       </Link>
