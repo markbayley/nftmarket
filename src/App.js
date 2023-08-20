@@ -16,8 +16,8 @@ import {
 
 function App() {
   return (
-    <div className="app min-h-screen">
-      <div className="min-h-screen">
+    <div className="app min-h-screen ">
+      <div className="min-h-screen ">
         <Navbar />
         <Routes>
           {/* <Route

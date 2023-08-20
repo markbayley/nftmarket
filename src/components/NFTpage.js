@@ -23,6 +23,7 @@ import {
 import { SiEthereum } from "react-icons/si";
 import { FaEye } from "react-icons/fa";
 
+
 const NFTPage = () => {
   const {
     tab,
@@ -202,7 +203,7 @@ const NFTPage = () => {
   // const [ loaded, setLoaded] = useState(false)
 
   return (
-    <div className=" mx-2 lg:px-[5%] fade-in">
+    <div className=" mx-2 lg:px-[7%]  fade-in">
       <SubMenu
         title="NFT Details"
         subtitle={
@@ -239,9 +240,9 @@ const NFTPage = () => {
             </div>
 
             {/* NFT DETAILS */}
-            <div className="text-lg w-full md:w-1/2 xl:w-3/5 px-2 md:p-5 rounded-lg">
+            <div className="text-lg w-full md:w-1/2 xl:w-3/5 px-2 md:p-5  rounded-lg">
               <div className="  flex justify-between items-start flex-nowrap  text-white  h-fit pb-3">
-                {/* TITLE */}
+                {/* VIEW TITLE */}
                 <div className="">
                   <p className=" text-2xl md:text-3x1  drop-shadow-x2 leading-tight font-thin group relative">
                     <strong>
@@ -286,7 +287,7 @@ const NFTPage = () => {
                   </div>
                 </div>
 
-                {/* CREATOR */}
+                {/* CREATOR LINK */}
                 <Link
                   to={{
                     pathname: `/Explore/Profile/${
@@ -298,13 +299,13 @@ const NFTPage = () => {
                   <div
                     id="creator"
                     token={tokenId}
-                    value={data.creator}
+                    value={tokenData?.creator}
                     onClick={(id, token) => handleCollection(id, token)}
                     className="flex group relative items-end rounded-full bg-cover bg-center  border-2 h-16 w-16 md:h-24 md:w-24 hover:scale-[1.02] shadow-xl shadow-indigo-500/30 duration-300 hover:shadow-indigo-500/50 hover:border-teal-400 border-teal-500"
                     style={{
                       backgroundImage: `url( "https://robohash.org/${
-                        data.creator
-                          ? shortenAddress(data.creator)
+                        tokenData?.creator
+                          ? shortenAddress(tokenData?.creator)
                           : "0x123...aBcD"
                       }.png?set=set3" `,
                     }}
@@ -314,7 +315,7 @@ const NFTPage = () => {
                       Creator
                     </div>
                     <span className="flex absolute bottom-24 -right-5 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
-                      View &nbsp; <FaEye fontSize={16}/>
+                      View&nbsp;Profile&nbsp;<FaEye fontSize={16}/>
                     </span>
                   </div>{" "}
                 </Link>
@@ -420,6 +421,7 @@ const NFTPage = () => {
         <TETabsPane show={tab === "tab2"}>
           <div className="flex  w-full justify-center  flex-col md:flex-row white-glassmorphism  ">
             <div className="text-lg w-full md:w-1/2 xl:w-2/5 aspect-square   rounded-lg  ">
+              {/* IMAGE */}
               <div className="rounded-xl p-2 md:py-6 md:pl-6 h-fit mb-2">
                 {data.image ? (
                   <img
@@ -444,6 +446,7 @@ const NFTPage = () => {
 
             <div className="text-lg w-full md:w-1/2 xl:w-3/5 px-2 md:p-5 rounded-lg ">
               <div className="  flex justify-between items-start flex-nowrap  text-white  h-fit pb-3">
+                {/* TRADE TITLE */}
                 <div className="">
                   <p className="text-2xl md:text-3x1  drop-shadow-x2 leading-tight font-thin group relative">
                     <strong>
@@ -471,10 +474,11 @@ const NFTPage = () => {
                     <SiEthereum fontSize={16} color="#fff" />
                   </div>
                 </div>
-                <div className=" flex items-center text-[#868686] text-sm h-fit mb-2 "></div>{" "}
+              
+                {/* SELLER LINK */}
                 <Link
                   to={{
-                    pathname: `/Trade/Profile/${
+                    pathname: `/Explore/Profile/${
                       data.seller && shortenAddress(data.seller)
                     }`,
                   }}
@@ -510,6 +514,7 @@ const NFTPage = () => {
               </div>
 
               <div className=" text-[#868686] text-sm  mt-2 ">
+                {/* BUY PANEL */}
                 <div className="white-glassmorphism ">
                   {checksumAddress !== data.seller ? (
                     <div>
@@ -551,6 +556,7 @@ const NFTPage = () => {
                     </div>
                   ) : (
                     <div>
+                      {/* SELL PANEL */}
                       <div className="check mt-3 gap-x-2.5"></div>
                       <div className="flex justify-around items-center group relative">
                         <input
@@ -592,6 +598,8 @@ const NFTPage = () => {
 
                   <div className="text-orange text-center mt-3">{message}</div>
                 </div>
+
+                {/* TRADE INFO */}
                 <div className="flex text-[#868686] text-sm pt-5">
                   METADATA&nbsp;&nbsp;
                   <div className="group cursor-pointer relative mb-3">
@@ -701,6 +709,7 @@ const NFTPage = () => {
         </TETabsPane>
       </TETabsContent>
 
+    {/* COLLECTION */}
       <div className="w-full py-5 pl-2">
         <div className=" whitespace-nowrap">
           <h1 className="text-2xl sm:text-3xl text-white leading-tight text-gradient">

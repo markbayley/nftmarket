@@ -38,10 +38,10 @@ const FeaturePage = () => {
   const backLink = creatorNFTs.length.toString();
 
   return (
-    <div className="mx-2 lg:mx-[10%] xl:mx-[15%] pb-20 ">
+    <div className="mx-2 lg:mx-[10%] xl:mx-[20%] pb-20  ">
       <SubMenu
         title="Profile"
-        subtitle="Featured artists and collectors"
+        subtitle="Featured creator"
         tab1="x"
         handleTab={handleTab}
         tab={tab}
@@ -50,8 +50,9 @@ const FeaturePage = () => {
         creatorAddress={creatorAddress}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 mt-2">
-        <div className="flex flex-col  justify-start items-start white-glassmorphism p-5 h-auto cursor-pointer hover:shadow-xl mb-4 md:mb-0">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 mt-2 xl:text-sm">
+        {/* LEFT SIDE */}
+        <div className="flex flex-col  justify-start items-start white-glassmorphism p-6  h-auto cursor-pointer hover:shadow-xl mb-4 md:mb-0 ">
           <div className="relative w-full">
             <BsShieldFillCheck
               fontSize={28}
@@ -103,16 +104,15 @@ const FeaturePage = () => {
             </p>
             <p className="mt-3 text-white text-md ">
               The NFTs below were created by {profileParams.user || "us"} with the help of Stable Diffusion and
-              use a variety of inputs and specific keywords to generate AI art collections. They
-              are currently listed for sale by InblockDesign through this website.
+              use a variety of inputs and specific keywords to generate AI art collections. 
             </p>
 
-            <p className="mt-3 text-white text-md ">
+            {/* <p className="mt-3 text-white text-md ">
               {" "}
               We like to create NFTs that depict future scenarios as AI becomes an integral 
               part of our societies and we begin to use it more as a part of everyday life.
               The role of blockchain technology in this future is also interesting to consider.{" "}
-            </p>
+            </p> */}
             <p className="mt-3 text-white text-md ">
               {" "}
               View our other work at the website below.{" "}
@@ -129,7 +129,7 @@ const FeaturePage = () => {
             </div>
           </div>
         </div>
-
+        {/* RIGHT SIDE */}
         <div className=" ">
           <Slider {...settings}>
             {creatorNFTs

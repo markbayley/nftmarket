@@ -145,7 +145,7 @@ const Wallet = () => {
         <TETabsContent>
           <TETabsPane show={tab === "tab1"}>
             <div className="flex flex-wrap justify-around items-center flex-row w-auto white-glassmorphism md:p-7 ">
-              {/* CARD */}
+              {/* INFO CARD */}
               <div className=" flex justify-end items-start flex-col rounded-xl seal eth-card w-full  aspect-[10/6] mb-2 max-w-[385px] m-2 md:m-0 p-5 ">
                 <div className="flex justify-between flex-col w-full h-full">
                   <div className="flex justify-between items-start">
@@ -203,6 +203,7 @@ const Wallet = () => {
             <Transactions />
           </TETabsPane>
 
+          {/* MY NFTS */}
           <TETabsPane show={tab === "tab2"}>
             <div className="grid md:grid-cols-4 text-md md:text-xs gap-4">
               {[...walletNFTs].map((value, index) => {
@@ -213,6 +214,7 @@ const Wallet = () => {
 
           <TETabsPane show={tab === "tab3"}>
             <div className="flex flex-wrap justify-around items-start flex-row w-full white-glassmorphism md:p-7 ">
+              {/* PROFILE DATA */}
               <div className="p-3 w-96 lg:w-1/2 h-96  lg:h-96 lg:mx-0 lg:mt-0 flex justify-end items-start flex-col rounded-xl">
                 <div className="flex justify-between flex-col w-full h-full">
                   <div className="flex justify-between items-start ">
@@ -279,6 +281,8 @@ const Wallet = () => {
                   </p>
                 </div>
               </div>
+
+              {/* PROFILE FORM */}
               <div className="p-2 sm:w-96  w-full flex flex-col justify-center items-center ">
                 <Input
                   placeholder="Name"
@@ -330,6 +334,7 @@ const Wallet = () => {
           </TETabsPane>
         </TETabsContent>
 
+        {/* NOTIFICATIONS */}
         <div className="flex flex-col flex-1 items-start justify-center w-full mf:mt-0 mt-10 ">
           <div className="text-center  text-white font-light text-base w-full">
             {!ethereum ? (

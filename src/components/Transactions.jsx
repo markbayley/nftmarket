@@ -42,7 +42,7 @@ const TransactionsCard = ({
           <p className="text-white text-base">{amount} ETH</p>
 
           <div className="group relative cursor-pointer ">
-            <span className="absolute  bottom-6 scale-0 transition-all rounded bg-[#6c63ff] p-2 text-xs  group-hover:scale-100 ">
+            <span className="absolute  bottom-6 scale-0 transition-all rounded bg-neutral-900 p-2 text-xs  group-hover:scale-100 ">
               {message && (
                 <p className="text-white flex">
                   Message: <em className=""> &nbsp;{message}</em>{" "}

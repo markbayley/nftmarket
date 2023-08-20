@@ -6,7 +6,6 @@ import { TETabsContent, TETabsPane } from "tw-elements-react";
 import { TransactionContext } from "../context/TransactionContext";
 import SubMenu from "./SubMenu";
 import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
-import { OnUploadFile, OnMintNFT } from "../context/Functions";
 import Marketplace from "../abis/Marketplace.json";
 import { uploadFileToIPFS, uploadJSONToIPFS } from "../utils/pinata";
 import axios from "axios";
@@ -40,16 +39,43 @@ const Create = () => {
     setMetaData,
     setTransactionHash,
     getAllNFTs,
-    setDateCreated
+    setDateCreated,
   } = useContext(TransactionContext);
 
   // window.localStorage.setItem("activeKeywords", activeKeywords);
   // window.localStorage.setItem("fileURL", fileURL);
 
+  //UPLOADING FUNCTION
+  const OnUploadFile = async (e) => {
+    const { updateMessage, setIsUploading, setFileURL, isChecked } =
+      useContext(TransactionContext);
 
-  //CREATING
+    e.preventDefault();
+
+    if (isChecked) {
+      updateMessage("Uploading image...");
+      const file = e.target.files[0];
+
+      try {
+        setIsUploading(true);
+        updateMessage("Loading image..!");
+        const response = await uploadFileToIPFS(file);
+        if (response.success === true) {
+          updateMessage("Image uploaded successfully!");
+          setFileURL(response.pinataURL);
+          setIsUploading(false);
+        }
+      } catch (e) {
+        updateMessage("Error during file upload", e);
+        setIsUploading(false);
+      }
+    } else {
+      console.log("Error during file upload");
+    }
+  };
+
+  //CREATING FUNCTION
   const OnCreateFile = async (e) => {
-
     setIsCreating(true);
     updateMessage("Generating AI image...");
 
@@ -102,28 +128,26 @@ const Create = () => {
     setIsCreating(false);
 
     return data;
-  }
-
+  };
 
   //UPLOAD METADATA
- const OnUploadMetadata = async () => {
-
+  const OnUploadMetadata = async () => {
     const {
       name,
       collection,
       description,
+      style,
+      theme,
       artist,
+      medium,
+      texture,
       colour0,
       colour1,
       colour2,
-      style,
-      medium,
-      texture,
-      theme,
       royalty,
       listing,
-      price,
       seal,
+      price,
       trait1,
       value1,
       trait2,
@@ -159,19 +183,17 @@ const Create = () => {
       collection,
       description,
       creator: checksumAddress,
-      theme,
-      artist,
-      // colour,
-      colour0,
-      colour1,
-      colour2,
-      style,
-      texture,
-      medium,
-      royalty,
-      listing,
-      seal,
-      price,
+      date: date,
+      image: fileURL,
+      createParams: [
+        { style: style },
+        { theme: theme },
+        { artist: artist },
+        { medium: medium },
+        { texture: texture },
+        { colour: [colour0, colour1, colour2] },
+        { tags: activeKeywords },
+      ],
       attributes: [
         { trait_type: trait1, value: value1 },
         { trait_type: trait2, value: value2 },
@@ -180,17 +202,12 @@ const Create = () => {
         { trait_type: trait5, value: value5 },
         { trait_type: trait6, value: value6 },
       ],
-      hashtags: [
-        { style: style },
-        { theme: theme },
-        { colour: [colour0, colour1, colour2] },
-        { texture: texture },
-        { medium: medium },
-        { artist: artist },
+      mintParams : [
+        { royalty: royalty },
+        { listing: listing },
+        { seal: seal },
+        { price: price },
       ],
-      image: fileURL,
-      tags: activeKeywords,
-      date: date,
     };
 
     try {
@@ -201,11 +218,10 @@ const Create = () => {
     } catch (e) {
       updateMessage("Error storing metadata. Try again");
     }
-  }
+  };
 
-  //MINTING
+  //MINTING FUNCTION
   const OnMintNFT = async (e) => {
-
     const ethers = require("ethers");
 
     e.preventDefault();
@@ -213,6 +229,8 @@ const Create = () => {
 
     try {
       const metadataURL = await OnUploadMetadata();
+
+      console.log("metadataURL", metadataURL)
 
       if (metadataURL === -1) return;
       setMetaData(metadataURL);
@@ -235,6 +253,8 @@ const Create = () => {
       });
       await transaction.wait();
 
+      console.log("transaction", transaction);
+
       updateMessage("Minted NFT...Storing Data");
       setTransactionHash(transaction.hash);
       setHashLink(`https://sepolia.etherscan.io/tx/${transaction.hash}`);
@@ -243,43 +263,37 @@ const Create = () => {
       setActiveKeywords([]);
 
       await getAllNFTs();
-      
     } catch (e) {
       updateMessage("Connect MetaMask wallet to mint NFT.", e);
     }
-  }
+  };
 
-
-
-
-
-
-  const handleForm = (id, value) => {
-
+  //FORM HANDLING
+  const handleSelect = (id, value) => {
     console.log("select", id);
 
     setActiveKeywords([...activeKeywords, value]);
     updateFormParams({ ...formParams, [id]: value });
   };
 
-
-const handleChecked = (e) => {
-
-  e.preventDefault();
-  console.log("button", e.target.id);
- let idn = e.target.id
-  if (activeKeywords.includes(e.target.value)) {
-    const newActive = activeKeywords.filter((item) => item !== e.target.value);
-    setActiveKeywords(newActive);
-    updateFormParams({ ...formParams, [idn]: "" });
-  } else {
-    setActiveKeywords((prevArr) => [...prevArr, e.target.value]);
-    updateFormParams({ ...formParams, [idn]: "" }); // Update formParams with an empty string
-  }
-};
+  const handleChecked = (e) => {
+    e.preventDefault();
+    console.log("button", e.target.id);
+    let idn = e.target.id;
+    if (activeKeywords.includes(e.target.value)) {
+      const newActive = activeKeywords.filter(
+        (item) => item !== e.target.value
+      );
+      setActiveKeywords(newActive);
+      updateFormParams({ ...formParams, [idn]: "" });
+    } else {
+      setActiveKeywords((prevArr) => [...prevArr, e.target.value]);
+      updateFormParams({ ...formParams, [idn]: "" }); // Update formParams with an empty string
+    }
+  };
 
   return (
-    <div className="fade-in lg:px-[5%] px-2">
+    <div className="fade-in lg:px-[6%]  px-2">
       <SubMenu
         title="Create NFTs"
         subtitle={
@@ -319,7 +333,7 @@ const handleChecked = (e) => {
               formParams={formParams}
               OnCreateFile={OnCreateFile}
               handleChecked={handleChecked}
-              handleForm={handleForm}
+              handleSelect={handleSelect}
               updateFormParams={updateFormParams}
               activeKeywords={activeKeywords}
               isChecked={isChecked}
@@ -333,7 +347,7 @@ const handleChecked = (e) => {
               isMinting={isMinting}
               formParams={formParams}
               fileURL={fileURL}
-              handleForm={handleForm}
+              handleSelect={handleSelect}
               updateFormParams={updateFormParams}
               OnMintNFT={OnMintNFT}
               transactionHash={transactionHash}

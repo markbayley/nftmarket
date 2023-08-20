@@ -1,22 +1,21 @@
 import React, { useState } from "react";
 import { traits1, traits2, traits3 } from "../data/traits.js";
-import { MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos } from "react-icons/md";
 import {
-  royalty,
-  listing,
-} from "../data/lists.js";
+  MdOutlineArrowBackIosNew,
+  MdOutlineArrowForwardIos,
+} from "react-icons/md";
+import { royalty, listing } from "../data/lists.js";
 
 const MintForm = ({
   isCreating,
   isMinting,
   formParams,
   fileURL,
-  handleForm,
+  handleSelect,
   updateFormParams,
   OnMintNFT,
   transactionHash,
 }) => {
-
   const [showMore, setShowMore] = useState(false);
 
   const handleShow = (e) => {
@@ -31,11 +30,9 @@ const MintForm = ({
           <p className="pb-3 text-[#868686] text-sm uppercase">ATTRIBUTES</p>
 
           {!showMore ? (
-            // First Three Traits
+            // TRAIT VALUES
             <div>
               <div className="check  gap-x-2.5">
-             
-
                 <input
                   className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
                   type="text"
@@ -50,7 +47,7 @@ const MintForm = ({
                   value={formParams.value1}
                 ></input>
 
-<input
+                <input
                   className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
                   type="text"
                   placeholder="Trait 4 Value..."
@@ -66,8 +63,6 @@ const MintForm = ({
               </div>
 
               <div className="check mt-3 gap-x-2.5">
-             
-
                 <input
                   className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
                   type="text"
@@ -82,7 +77,7 @@ const MintForm = ({
                   value={formParams.value2}
                 ></input>
 
-<input
+                <input
                   className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
                   type="text"
                   placeholder="Trait 5 Value..."
@@ -98,8 +93,6 @@ const MintForm = ({
               </div>
 
               <div className="check mt-3 gap-x-2.5">
-         
-
                 <input
                   className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
                   type="text"
@@ -114,7 +107,7 @@ const MintForm = ({
                   value={formParams.value3}
                 ></input>
 
-<input
+                <input
                   className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
                   type="text"
                   placeholder="Trait 6 Value..."
@@ -128,17 +121,14 @@ const MintForm = ({
                   value={formParams.value6}
                 ></input>
               </div>
-
             </div>
           ) : (
             <div>
-              {/* Second Three Traits */}
+            {/* TRAIT TITLES */}
               <div className="flex w-full  mb-3  justify-between gap-x-2.5 ">
-
-
-          <select
+                <select
                   id="trait1"
-                  onChange={(id) => handleForm(id)}
+                  onChange={(id) => handleSelect(id)}
                   value={traits1.name}
                   className="text-white outline-none  w-half  rounded  bg-[#313751] shadow-2xl border-none "
                 >
@@ -148,7 +138,6 @@ const MintForm = ({
                     </option>
                   ))}
                 </select>
-
 
                 <input
                   className="w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
@@ -179,12 +168,9 @@ const MintForm = ({
               </div>
 
               <div className="flex w-full my-2  justify-between gap-x-2.5 ">
-
-               
-
-                 <select
+                <select
                   id="trait2"
-                  onChange={(id) => handleForm(id)}
+                  onChange={(id) => handleSelect(id)}
                   value={traits2.name}
                   className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#313751] shadow-2xl border-none"
                 >
@@ -194,7 +180,6 @@ const MintForm = ({
                     </option>
                   ))}
                 </select>
-
 
                 <input
                   className="w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
@@ -226,10 +211,9 @@ const MintForm = ({
               </div>
 
               <div className="flex w-full  mt-3  justify-between gap-x-2.5 ">
-
-                 <select
+                <select
                   id="trait3"
-                  onChange={(id) => handleForm(id)}
+                  onChange={(id) => handleSelect(id)}
                   value={traits3.name}
                   className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#313751] shadow-2xl border-none"
                 >
@@ -252,7 +236,6 @@ const MintForm = ({
                     })
                   }
                 ></input>
-
 
                 {/* <input
                   className=" w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism "
@@ -300,6 +283,7 @@ const MintForm = ({
             </button>
           </div>
 
+          {/* LISTING OPTIONS */}
           <p className="pt-3 text-[#868686] text-sm uppercase">
             LiSTING DETAILS
           </p>
@@ -307,7 +291,7 @@ const MintForm = ({
           <div className="check mt-3 ">
             <select
               id="royalty"
-              onChange={(id) => handleForm(id)}
+              onChange={(id) => handleSelect(id)}
               value={royalty.name}
               className="text-white outline-none blue-glassmorphism w-half rounded  bg-[#313751] shadow-2xl border-none"
             >
@@ -319,7 +303,7 @@ const MintForm = ({
             </select>
             <select
               id="listing"
-              onChange={(id) => handleForm(id)}
+              onChange={(id) => handleSelect(id)}
               value={listing.name}
               className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#313751] shadow-2xl border-none"
             >
@@ -370,8 +354,8 @@ const MintForm = ({
           </div>
         </div>
 
-        {/* Buttons */}
-        <div className="flex w-full justify-end text-white gap-x-3 mt-14 relative">
+        {/* MINT BUTTON */}
+        <div className="flex w-full justify-end text-white gap-x-3 mt-7 relative">
           <button
             onClick={OnMintNFT}
             value={isMinting ? "Minting..." : "Mint"}

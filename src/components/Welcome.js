@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import nftImage1 from "../images/futuristic-city.jpg";
 import nftImage2 from "../images/tokyo-haze.jpg";
 import nftImage3 from "../images/kyoto-girl.jpg";
@@ -6,9 +6,12 @@ import { Link } from "react-router-dom";
 import { TransactionContext } from "../context/TransactionContext";
 import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 import { SiEthereum } from "react-icons/si";
+import Loader from "./Loader";
 
 const Welcome = () => {
   const { marketData } = useContext(TransactionContext);
+
+  const [loaded, setLoaded] = useState(false);
 
   return (
     <div className="fade-in flex justify-center items-center">
@@ -35,7 +38,24 @@ const Welcome = () => {
               <div className="rounded-full border border-white flex justify-center items-center absolute w-[10%] aspect-square top-[6.5%] left-[7%]  eth-card  seal ">
                 <SiEthereum color="#fff" />
               </div>
-              <img src={nftImage1} alt="Futuristic City NFT" />
+
+              {loaded ? null : (
+                <div className="w-full h-full aspect-square rounded seal ">
+                  <label className="flex  items-center justify-center w-full h-full">
+                    <div className="flex flex-col items-center justify-center ">
+                      <Loader />
+                      <p className="text-sm text-white ">LOADING...</p>
+                    </div>
+                  </label>
+                </div>
+              )}
+
+              <img
+                src={nftImage1}
+                alt="Futuristic City NFT"
+                style={loaded ? {} : { display: "none" }}
+                onLoad={() => setLoaded(true)}
+              />
               <div className="title">
                 <strong>Future Drift</strong>&nbsp; <em>'Cypherdome Rain'</em>
               </div>
@@ -54,8 +74,24 @@ const Welcome = () => {
               <div className="w-10 h-10 rounded-full border border-white flex justify-center items-center absolute top-7 left-7 eth-card  seal ">
                 <SiEthereum fontSize={21} color="#fff" />
               </div>
-          
-              <img src={nftImage2} alt="Futuristic City NFT" />
+
+              {loaded ? null : (
+                <div className="w-full h-full aspect-square rounded seal ">
+                  <label className="flex  items-center justify-center w-full h-full">
+                    <div className="flex flex-col items-center justify-center ">
+                      <Loader />
+                      <p className="text-sm text-white ">LOADING...</p>
+                    </div>
+                  </label>
+                </div>
+              )}
+
+              <img
+                src={nftImage2}
+                alt="Futuristic City NFT"
+                style={loaded ? {} : { display: "none" }}
+                onLoad={() => setLoaded(true)}
+              />
               <div className="title">
                 <strong>Tokyo Dreams </strong> &nbsp;<em>'Metropolis'</em>
               </div>
@@ -75,7 +111,23 @@ const Welcome = () => {
                 <SiEthereum fontSize={21} color="#fff" />
               </div>
 
-              <img src={nftImage3} alt="Futuristic City NFT" />
+              {loaded ? null : (
+                <div className="w-full h-full aspect-square rounded seal ">
+                  <label className="flex  items-center justify-center w-full h-full">
+                    <div className="flex flex-col items-center justify-center ">
+                      <Loader />
+                      <p className="text-sm text-white ">LOADING...</p>
+                    </div>
+                  </label>
+                </div>
+              )}
+
+              <img
+                src={nftImage3}
+                alt="Futuristic City NFT"
+                style={loaded ? {} : { display: "none" }}
+                onLoad={() => setLoaded(true)}
+              />
               <div className="title">
                 <strong>Afterlife </strong> &nbsp;
                 <em>'Library'</em>

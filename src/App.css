@@ -556,6 +556,12 @@ button:hover {
   }
 }
 
+@media screen and (min-width: 2000px) {
+  .large-screen {
+    max-width: 25vw;
+  }
+}
+
 
 
 #slider-container article {

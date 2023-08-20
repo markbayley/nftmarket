@@ -273,7 +273,11 @@ export const TransactionsProvider = ({ children }) => {
               name: meta.name,
               description: meta.description,
               collection: meta.collection,
+
               attributes: meta.attributes,
+              mintParams: meta.mintParams,
+              createParams: meta.createParams,
+
               metadata: tokenURI,
 
               hashtags: meta.hashtags,
@@ -292,6 +296,7 @@ export const TransactionsProvider = ({ children }) => {
               listing: meta.listing,
               creator: meta.creator,
               seal: meta.seal,
+              date: meta.date,
             };
             return item;
           })

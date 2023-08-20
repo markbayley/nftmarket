@@ -15,7 +15,7 @@ const CreateForm = ({
   OnUploadFile,
   activeKeywords,
   handleChecked,
-  handleForm,
+  handleSelect,
   updateFormParams,
   isChecked,
 }) => {
@@ -177,13 +177,13 @@ const CreateForm = ({
               id="style"
               options={styles}
               value={""}
-              onChange={handleForm}
+              onChange={handleSelect}
             />
             <SelectOptions
               id="medium"
               options={mediums}
               value={""}
-              onChange={handleForm}
+              onChange={handleSelect}
             />
           </div>  
           <div className="check mt-3">
@@ -191,13 +191,13 @@ const CreateForm = ({
               id="theme"
               options={themes}
               value={""}
-              onChange={handleForm}
+              onChange={handleSelect}
             />
             <SelectOptions
               id="texture"
               options={textures}
               value={""}
-              onChange={handleForm}
+              onChange={handleSelect}
        
             />
           </div>
@@ -206,7 +206,7 @@ const CreateForm = ({
               id="artist"
               options={artists}
               value={""}
-              onChange={handleForm}
+              onChange={handleSelect}
             />
      
             <SelectOptions
@@ -217,7 +217,7 @@ const CreateForm = ({
               : "colour2"}
               options={colours}
               value={""}
-              onChange={handleForm}
+              onChange={handleSelect}
          
             />
          
@@ -266,7 +266,7 @@ const CreateForm = ({
 
           {/* DESCRIPTION */}
           <div className=" text-white leading-tight mb-2 w-full">
-            <div className="py-3 text-[#868686] text-sm uppercase">
+            <div className="py-2 text-[#868686] text-sm uppercase">
               {" "}
               {!formParams.description &&
               formParams.collection &&
@@ -309,7 +309,7 @@ const CreateForm = ({
                 }
                 value={formParams.description}
                 id="description"
-                rows="4"
+                rows="3"
                 className="mb-3 block py-1.5 px-2.5 w-full text-white rounded border border-[#6c63ff] focus:ring-blue-500 focus:border-blue-500 white-glassmorphism"
                 placeholder="NFT Description..."
               ></textarea>

@@ -12,6 +12,7 @@ import { BiSearchAlt, BiSort, BiFilterAlt } from "react-icons/bi";
 import {
   MdFavorite,
 } from "react-icons/md";
+import { MdOutlineRemoveCircleOutline } from "react-icons/md";
 
 export default function Marketplace() {
   const {
@@ -196,10 +197,10 @@ export default function Marketplace() {
         </div>
 
         {/* MENU BUTTONS */}
-        <div className="flex items-center justify-center gap-x-2">
+        <div className="flex items-center justify-center gap-x-2 py-3">
 
           {/* Filter */}
-          <div className="flex items-center cursor-pointer">
+          <div className="flex items-center cursor-pointer group relative">
               <button
                 id=""
                 value=""
@@ -215,6 +216,9 @@ export default function Marketplace() {
                   ? shortenAddress(collection)
                   : collection || "Filter"}
               </button>
+              <span className="flex absolute bottom-12  scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                    {collection ? "Remove Filter" : "Add Filter" } 
+                    </span>
           </div>
      
           {/* Sort */}
@@ -226,6 +230,9 @@ export default function Marketplace() {
                   <BiSort fontSize={20} />
                   <p className="hidden lg:flex">{ newest ? "Date" : "Price" }</p>
                 </button>
+                {/* <span className="flex absolute bottom-12  scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                { sorted ? "Sort Date" : "Sort Price" } 
+                    </span> */}
           </div>
         
           {/* Favorite */}

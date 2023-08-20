@@ -6,15 +6,15 @@ import { TransactionContext } from "../context/TransactionContext";
 import Loader from "./Loader";
 
 const NFTTile = (data) => {
-
-  const { favorites, setFavorites, marketData } = useContext(TransactionContext);
+  const { favorites, setFavorites, marketData } =
+    useContext(TransactionContext);
   const link = `https://sepolia.etherscan.io/address/${data?.data?.owner}`;
 
   window.localStorage.setItem("favorites", favorites);
 
   const toggleFavorite = (e) => {
-  const tokenId = data.data.tokenId;
-  const isFavorite = favorites.includes(tokenId);
+    const tokenId = data.data.tokenId;
+    const isFavorite = favorites.includes(tokenId);
 
     if (isFavorite) {
       setFavorites((prevFavorites) =>
@@ -25,11 +25,10 @@ const NFTTile = (data) => {
     }
   };
 
-  const [ loaded, setLoaded] = useState(false)
+  const [loaded, setLoaded] = useState(false);
 
   return (
     <div className=" backdrop-blur-[5px] p-[5%] sm:w-96  w-full md:w-auto  white-glassmorphism shadow-lg hover:shadow-indigo-500/30 duration-200 z-10">
-      
       {/* ETHERSCAN */}
       <Link
         to={link}
@@ -38,7 +37,7 @@ const NFTTile = (data) => {
         className="z-50"
       >
         {data.data.seal === "Yes" && (
-          <div className="w-[2em] h-[2em] rounded-full border  flex justify-center items-center absolute top-[6.5%] left-[6.7%] eth-card group seal hover:scale-[1.1] duration-300">
+          <div className="w-[2em] h-[2em] rounded-full border  flex justify-center items-center absolute top-[6.5%] left-[6.7%] eth-card group seal  duration-300">
             <SiEthereum fontSize="1em" color="#fff" />
             <span className="absolute bottom-10 scale-0 transition-all rounded bg-gray-900 p-2 text-xs group-hover:scale-100 shadow-lg shadow-indigo-500/50 duration-200 z-50">
               Token&nbsp;#{data.data.tokenId} {data.data.price}&nbsp;ETH
@@ -80,27 +79,24 @@ const NFTTile = (data) => {
           <Loader />
         )} */}
 
+        {loaded ? null : (
+          <div className="w-full h-full aspect-square rounded seal ">
+            <label className="flex  items-center justify-center w-full h-full">
+              <div className="flex flex-col items-center justify-center ">
+                <Loader />
+                <p className="text-sm text-white ">LOADING NFT DATA...</p>
+              </div>
+            </label>
+          </div>
+        )}
 
-{loaded ? null : (
-                  <div className="w-full h-full aspect-square rounded seal ">
-                    <label className="flex  items-center justify-center w-full h-full">
-                      <div className="flex flex-col items-center justify-center ">
-                        <Loader />
-                        <p className="text-sm text-white ">
-                          LOADING NFT DATA...
-                        </p>
-                      </div>
-                    </label>
-                  </div>
-                )}
-
-                <img
-                  style={loaded ? {} : { display: "none" }}
-                  src={data?.data?.image }
-                  onLoad={() => setLoaded(true)}
-                  alt="thumbnail"
-                  className="rounded cursor-pointer "
-                />
+        <img
+          style={loaded ? {} : { display: "none" }}
+          src={data?.data?.image}
+          onLoad={() => setLoaded(true)}
+          alt="thumbnail"
+          className="rounded cursor-pointer w-full"
+        />
       </Link>
 
       {/* TITLE */}

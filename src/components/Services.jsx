@@ -49,7 +49,7 @@ const Services = () => (
           color="bg-[#8945F8]"
           title="Fund Your Wallet To Mint"
           icon={<BiSearchAlt fontSize={21} className="text-white w-half" />}
-          subtitle="When you are ready to list your art for sale or purchase an existing NFT, connect your MetaMask wallet. Ethereum can be purchased through Coinbase or other exchange providers.  "
+          subtitle="When you are ready to list your art for sale or purchase an existing NFT, connect your MetaMask wallet. Ethereum can be purchased through Coinbase, Binance and other exchange providers.  "
         />
       </div>
     </div>
