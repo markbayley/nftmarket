@@ -5,6 +5,7 @@ import {
   MdOutlineArrowForwardIos,
 } from "react-icons/md";
 import { royalty, listing } from "../data/lists.js";
+import { BsInfoCircle} from "react-icons/bs";
 
 const MintForm = ({
   isCreating,
@@ -27,7 +28,15 @@ const MintForm = ({
     <form className="">
       <div className="max-w-2/3  ">
         <div>
-          <p className="pb-3 text-[#868686] text-sm uppercase">ATTRIBUTES</p>
+          <div className="pb-3 text-[#868686] text-sm flex justify-between w-full">ATTRIBUTES
+
+          <div className="group relative cursor-pointer mt-1">
+                    <BsInfoCircle fontSize={15} color="#fff" />
+                    <span className="flex absolute w-64 bottom-0 right-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                     Adding several well chosen traits to your NFT helps enhance its rarity and value to potential buyers. </span>
+                    </div>
+
+                    </div>
 
           {!showMore ? (
             // TRAIT VALUES

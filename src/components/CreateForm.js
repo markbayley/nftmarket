@@ -8,6 +8,7 @@ import {
   themes,
 } from "../data/lists.js";
 import { MdOutlineRemoveCircleOutline } from "react-icons/md";
+import { BsInfoCircle } from "react-icons/bs";
 
 const CreateForm = ({
   formParams,
@@ -102,7 +103,7 @@ const CreateForm = ({
           >
             {!id.includes("colour") ? "#" + item : "#" }  
           </button>
-          <span className="absolute flex bottom-10  scale-0 transition-all rounded-full bg-gray-900 p-2 text-xs text-white group-hover:scale-100 capitalize">
+          <span className="absolute flex bottom-10 scale-0 transition-all rounded-full bg-gray-900 p-2 text-xs text-white group-hover:scale-100 capitalize">
             <MdOutlineRemoveCircleOutline fontSize={16} />
             {keywords === colourWords ? item : id}
           </span>
@@ -171,7 +172,13 @@ const CreateForm = ({
           </div>
 
           {/* SELECTORS */}
-          <p className="pb-3 text-[#868686] text-sm uppercase">INPUTS</p>
+          <div className=" flex w-full justify-between pb-3 text-[#868686] text-sm ">INPUTS
+          <div className="group relative cursor-pointer mt-1">
+                    <BsInfoCircle fontSize={15} color="#fff" />
+                    <span className="flex absolute w-64 bottom-0 right-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                     Adding inputs below will assist the A.I. to generate your artwork and description, and help buyers find it. </span>
+                    </div>
+          </div>
           <div className="check ">
             <SelectOptions
               id="style"

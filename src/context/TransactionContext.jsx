@@ -253,7 +253,7 @@ export const TransactionsProvider = ({ children }) => {
        
         //Pull the deployed contract instance
         const transaction = await marketplaceContract.getAllNFTs();
-      //  console.log("transaction" , transaction)
+        console.log("transaction" , transaction)
         //Fetch all the details of every NFT from the contract and display
         const items = await Promise.all(
           transaction.map(async (i) => {

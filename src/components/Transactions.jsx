@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { TransactionContext } from "../context/TransactionContext";
 import { shortenAddress } from "../utils/shortenAddress";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
-import { BiEnvelope } from "react-icons/bi";
+import { BiEnvelope, BiLinkExternal } from "react-icons/bi";
 
 const TransactionsCard = ({
   addressTo,
@@ -23,8 +23,12 @@ const TransactionsCard = ({
             href={`https://sepolia.etherscan.io/address/${addressFrom}`}
             target="_blank"
             rel="noreferrer"
+            className="group relative"
           >
             <p className=" text-base">From: {shortenAddress(addressFrom)}</p>
+            <span className="flex absolute bottom-7 -right-0 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                      Etherscan <BiLinkExternal fontSize={16} />
+                    </span>
           </a>
           <MdKeyboardDoubleArrowRight
             fontSize={20}
@@ -35,14 +39,18 @@ const TransactionsCard = ({
             href={`https://sepolia.etherscan.io/address/${addressTo}`}
             target="_blank"
             rel="noreferrer"
+            className="group relative"
           >
             <p className="text-base">To: {shortenAddress(addressTo)}</p>
+            <span className="flex absolute bottom-7 -right-0 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                      Etherscan <BiLinkExternal fontSize={16} />
+                    </span>
           </a>
 
           <p className="text-white text-base">{amount} ETH</p>
 
           <div className="group relative cursor-pointer ">
-            <span className="absolute  bottom-6 scale-0 transition-all rounded bg-neutral-900 p-2 text-xs  group-hover:scale-100 ">
+            <span className="absolute  bottom-7 -right-0 scale-0 transition-all rounded bg-gray-900 p-2 text-xs  group-hover:scale-100 ">
               {message && (
                 <p className="text-white flex">
                   Message: <em className=""> &nbsp;{message}</em>{" "}

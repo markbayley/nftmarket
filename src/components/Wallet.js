@@ -10,6 +10,8 @@ import { TETabsContent, TETabsPane } from "tw-elements-react";
 import { AiFillPlayCircle } from "react-icons/ai";
 import { SiEthereum } from "react-icons/si";
 import { BsInfoCircle } from "react-icons/bs";
+import { MdOutlineFileUpload } from "react-icons/md";
+import { BiLinkExternal } from "react-icons/bi";
 
 const Input = ({
   placeholder,
@@ -133,7 +135,9 @@ const Wallet = () => {
           subtitle={
             tab === "tab1"
               ? "Fund your wallet to mint NFTs"
-              : tab === "tab2" ? "View all the NFTs you own" : "Update your creator profile"
+              : tab === "tab2"
+              ? "View all the NFTs you own"
+              : "Update your creator profile"
           }
           tab1="Transfer"
           tab2="My NFTs"
@@ -149,10 +153,32 @@ const Wallet = () => {
               <div className=" flex justify-end items-start flex-col rounded-xl seal eth-card w-full  aspect-[10/6] mb-2 max-w-[385px] m-2 md:m-0 p-5 ">
                 <div className="flex justify-between flex-col w-full h-full">
                   <div className="flex justify-between items-start">
-                    <div className="w-10 h-10 rounded-full border border-white flex justify-center items-center eth-card seal  ">
-                      <SiEthereum fontSize={21} color="#fff" />
+                    <a
+                      href={`https://sepolia.etherscan.io/address/${checksumAddress}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <div className="group relative cursor-pointer w-10 h-10 rounded-full border border-white flex justify-center items-center eth-card seal  ">
+                        <SiEthereum fontSize={21} color="#fff" />
+                        <span className="flex absolute top-0 left-12  w-40 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                          {checksumAddress ? (
+                            <>
+                             External&nbsp;Link&nbsp;Etherscan&nbsp;
+                              <BiLinkExternal fontSize={16} />
+                            </>
+                          ) : (
+                            "Link to Etherscan address here when connected."
+                          )}
+                        </span>
+                      </div>
+                    </a>
+                    <div className="group relative cursor-pointer">
+                      <BsInfoCircle fontSize={17} color="#fff" />
+                      <span className="flex absolute w-52 top-0 right-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                        Your address and balance will show below when you are
+                        connected.{" "}
+                      </span>
                     </div>
-                    <BsInfoCircle fontSize={17} color="#fff" />
                   </div>
                   <div>
                     <p className=" text-white font-light tshade ">
@@ -206,23 +232,26 @@ const Wallet = () => {
           {/* MY NFTS */}
           <TETabsPane show={tab === "tab2"}>
             <div className="grid md:grid-cols-4 text-md md:text-xs gap-4">
-              {[...walletNFTs].map((value, index) => {
+              {[...walletNFTs].sort((a, b) => parseFloat(b.tokenId) - parseFloat(a.tokenId)).map((value, index) => {
                 return <NFTTile data={value} key={index}></NFTTile>;
               })}
             </div>
           </TETabsPane>
 
           <TETabsPane show={tab === "tab3"}>
-            <div className="flex flex-wrap justify-around items-start flex-row w-full white-glassmorphism md:p-7 ">
+            <div className="flex flex-wrap justify-around items-start flex-row border white-glassmorphism md:p-7 ">
               {/* PROFILE DATA */}
-              <div className="p-3 w-96 lg:w-1/2 h-96  lg:h-96 lg:mx-0 lg:mt-0 flex justify-end items-start flex-col rounded-xl">
+              <div className="p-3 lg:w-1/2 h-96  lg:h-96 lg:mx-0 lg:mt-0 flex justify-start items-start flex-col rounded-xl">
                 <div className="flex justify-between flex-col w-full h-full">
-                  <div className="flex justify-between items-start ">
-                    <div className="w-32 h-32 rounded-full border border-white flex justify-center items-start ">
+                  <div className="flex justify-between items-start">
+                    <div className="w-32 aspect-square rounded-full border-2 border-white flex justify-start items-start">
                       <label
                         htmlFor="dropzone-file"
-                        className="flex items-center justify-center w-full h-full cursor-move bg-opacity-10 bg-[#273057] hover:bg-opacity-70"
+                        className=" group relative flex items-center justify-center w-full h-full cursor-move bg-opacity-10 bg-[#273057] hover:bg-opacity-70 rounded-full"
                       >
+                             <span className="flex bottom-20 left-32 absolute w-48  scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                           Upload your avatar or a profile image so buyers recognize you.
+                          </span>
                         {/* <button
                             style={{
                               backgroundImage: profileParams.profileUrl
@@ -233,22 +262,44 @@ const Wallet = () => {
                             alt="profile photo"
                             className="rounded-full object-cover w-32 h-32 bg-cover bg-center "
                           ></button> */}
-                        <div className="flex flex-col items-start justify-end relative">
+                        <div className="flex flex-col items-start justify-start relative">
                           <input
                             id="dropzone-file"
                             type="file"
-                            className="hidden z-10"
+                            className="hidden  "
                             onChange={(e) => uploadLocally(e)}
                           />
-                          <img src={profileParams.profileUrl} />
-                          <div className="bg-indigo-500  px-3 py-1 rounded-full text-white text-sm hidden md:inline-block absolute bottom-2">
+                          {profileParams.profileUrl ? (
+                            <>
+                            <img
+                              src={profileParams.profileUrl}
+                              className="rounded-full"
+                              alt="profile"
+                            />
+                            <div className="bg-indigo-500  px-3 py-1 rounded-full text-white text-sm hidden md:inline-block absolute bottom-0 left-0">
                             {/* {checksumAddress ? shortenAddress(checksumAddress) : "0x123...aBcD"} */}
                             Profile
                           </div>
+                          </>
+                          ) : (
+                           
+                            <MdOutlineFileUpload
+                              fontSize={36}
+                              color="#ffffff"
+                            />
+                     
+                          )}
+                       
                         </div>
                       </label>
                     </div>
-                    <BsInfoCircle fontSize={17} color="#fff" />
+                    <div className="group relative cursor-pointer">
+                      <BsInfoCircle fontSize={17} color="#fff" />
+                      <span className="flex absolute -bottom-11 w-48 right-8 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                        A link to your profile will appear when a user clicks on
+                        an NFT to view its details or buy it.{" "}
+                      </span>
+                    </div>
                   </div>
 
                   <div className="flex align-center">
@@ -264,26 +315,49 @@ const Wallet = () => {
                       </p>
                     </em>
                   </div>
-                  <p className=" text-white font-light tshade ">
+                  <p className=" text-white font-light tshade pr-2">
                     {profileParams.bio
                       ? profileParams.bio
                       : "Write a brief bio describing your interests and creative influences as well as how you became interested in blockchain and NFTs."}
                   </p>
-                  <p className=" text-white font-light tshade ">
-                    {profileParams.website
-                      ? profileParams.website
-                      : "Website URL"}
+
+                  <p className="mt-3 text-white text-md ">
+                    {" "}
+                    Link to website and wallet address below.{" "}
                   </p>
-                  <p className=" text-[#868686] font-light tshade ">
-                    {checksumAddress
-                      ? shortenAddress(checksumAddress)
-                      : "0x123...aBcD"}
-                  </p>
+                  <div className="flex w-full justify-between pt-1">
+                    <a
+                      href={`${profileParams.website}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <p className=" text-white font-light tshade ">
+                        {profileParams.website
+                          ? profileParams.website
+                          : "Website URL"}
+                      </p>
+                    </a>
+                    <a
+                      href={`https://sepolia.etherscan.io/address/${checksumAddress}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="group relative"
+                    >
+                      <p className=" text-indigo-500 font-light tshade ">
+                        {checksumAddress
+                          ? shortenAddress(checksumAddress)
+                          : "0x123...aBcD"}
+                      </p>
+                      <span className="flex whitespace-nowrap absolute bottom-6 right-0 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                      {checksumAddress ? <>Etherscan <BiLinkExternal fontSize={16} /></> : "Not Connected" }
+                    </span>
+                    </a>
+                  </div>
                 </div>
               </div>
 
               {/* PROFILE FORM */}
-              <div className="p-2 sm:w-96  w-full flex flex-col justify-center items-center ">
+              <div className="p-2 lg:p-3 lg:w-1/2  w-full flex flex-col justify-center items-center">
                 <Input
                   placeholder="Name"
                   name="user"

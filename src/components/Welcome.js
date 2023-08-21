@@ -137,19 +137,19 @@ const Welcome = () => {
         </div>
 
         {/* BUTTON */}
-        {marketData.length && (
+      
           <div className="flex flex-col flex-1 items-center justify-start w-full mf:mt-0 mt-10 ">
             <Link to={"/Create"}>
               <button className="rounded-md text-md py-5 px-12 flex items-center font-thin bg-transparent shadow-lg shadow-indigo-500/30 duration-300">
-                Get Started{" "}
-                <MdOutlineKeyboardDoubleArrowRight
+              {marketData.length ? "Get Started" : "Loading..." }
+                {/* <MdOutlineKeyboardDoubleArrowRight
                   fontSize={20}
                   className="mt-[3px]"
-                />
+                /> */}
               </button>
             </Link>
           </div>
-        )}
+       
       </div>
     </div>
   );

@@ -485,7 +485,7 @@ button:hover {
 
 
 .drift-left {
-  animation: drift-left 3s;
+  animation: drift-left 4s;
 }
 @keyframes drift-left {
   0% {
@@ -500,7 +500,7 @@ button:hover {
 }
 
 .drift-center {
-  animation: drift-center 3s;
+  animation: drift-center 4s;
 }
 @keyframes drift-center {
   0% {

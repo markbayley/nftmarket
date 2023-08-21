@@ -28,7 +28,7 @@ const NFTTile = (data) => {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <div className=" backdrop-blur-[5px] p-[5%] sm:w-96  w-full md:w-auto  white-glassmorphism shadow-lg hover:shadow-indigo-500/30 duration-200 z-10">
+    <div className=" backdrop-blur-[5px] p-[5%]  w-full md:w-auto  white-glassmorphism shadow-lg hover:shadow-indigo-500/30 duration-200 z-10">
       {/* ETHERSCAN */}
       <Link
         to={link}
@@ -80,7 +80,7 @@ const NFTTile = (data) => {
         )} */}
 
         {loaded ? null : (
-          <div className="w-full h-full aspect-square rounded seal ">
+          <div className="w-full aspect-square rounded seal ">
             <label className="flex  items-center justify-center w-full h-full">
               <div className="flex flex-col items-center justify-center ">
                 <Loader />

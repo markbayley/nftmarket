@@ -17,7 +17,7 @@ const Collections = () => {
               Top Collections
             </h1>
             <h2 className="text-left mb-3 text-gradient text-xl ">
-              View what top artists have created
+              Our Most Popular Creators
             </h2>
           </div>
         </div>
@@ -35,7 +35,7 @@ const Collections = () => {
                 id="collection"
                 value={collection.name}
                 onClick={(id) => handleCollection(id)}
-                className="flex items-end rounded-full h-[8.5em] w-[8.5em] sm:h-[12em] sm:w-[12em] bg-cover bg-center border-transparent hover:border-indigo-500 shadow-xl hover:border-2 hover:scale-[1.15] shadow-indigo-500/25 duration-200 hover:shadow-indigo-500/50"
+                className="flex items-end rounded-full h-[8.5em] w-[8.5em] sm:h-[11em] sm:w-[11em] bg-cover bg-center border-transparent hover:border-indigo-500 shadow-xl hover:border-2 hover:scale-[1.15] shadow-indigo-500/25 duration-200 hover:shadow-indigo-500/50"
                 style={{
                   backgroundImage: `url(${collection.image})`,
                 }}

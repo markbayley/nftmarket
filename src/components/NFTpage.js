@@ -22,6 +22,7 @@ import {
 } from "react-icons/md";
 import { SiEthereum } from "react-icons/si";
 import { FaEye } from "react-icons/fa";
+import { BsInfoCircle } from "react-icons/bs";
 
 
 const NFTPage = () => {
@@ -157,14 +158,14 @@ const NFTPage = () => {
         MarketplaceJSON.abi,
         signer
       );
-      const listPrice = ethers.utils.parseUnits(price, "ether");
+      const sellPrice = ethers.utils.parseUnits(price, "ether");
       updateMessage("Listing NFT... Please Wait");
 
-      let transaction = await contract.updateListPrice(tokenId, {
-        value: listPrice,
+      let transaction = await contract.resellToken(tokenId, {
+        value: sellPrice,
       });
       await transaction.wait();
-      console.log("updateListPrice", transaction);
+      console.log("resellToken", transaction);
       updateMessage("Success! Check your wallet");
     } catch (e) {
       alert("Upload Error" + e);
@@ -271,7 +272,7 @@ const NFTPage = () => {
                     // onClick={(e) => toggleFavorite(e)}
                     className=" text-white "
                   >
-                    {favorites.includes(parseInt(data.tokenId)) ? (
+                    {favorites.includes(parseInt(tokenData?.tokenId)) ? (
                       <MdFavorite
                         fontSize="1.8em"
                         color="#ff3366"
@@ -332,21 +333,29 @@ const NFTPage = () => {
               {/* ATTRIBUTES */}
               <div className="  text-white rounded-lg py-5 ">
                 <div className="">
-                  <div className="flex text-[#868686] text-sm ">
+                  <div className="flex text-[#868686] text-sm">
                     ATTRIBUTES&nbsp;&nbsp;
-                    <div className="group cursor-pointer relative">
-                      <span className="absolute flex bottom-7 scale-0 transition-all rounded bg-gray-900  p-2 text-xs text-white group-hover:scale-100">
+                    <div className="flex justify-between cursor-pointer relative w-full">
+                      {/* <span className="absolute flex bottom-7 scale-0 transition-all rounded bg-gray-900  p-2 text-xs text-white group-hover:scale-100">
                         Metadata   <BiLinkExternal fontSize={16} />
-                      </span>
+                      </span> */}
                       <a
                         href={tokenData?.metadataURL || data.metadataURL}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
                         {" "}
-                        <BiLinkExternal fontSize={20} className="" />
+                        <BiLinkExternal fontSize={18} className="" />
                       </a>
+
+                      <div className="group relative cursor-pointer">
+                    <BsInfoCircle fontSize={16} color="#fff" />
+                    <span className="flex absolute w-52 -bottom-2 right-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                      Unique traits can help to enhance the rarity and value of NFTs. </span>
                     </div>
+                    </div>
+
+                 
                   </div>
 
                   <div className="grid grid-cols-2 lg:grid-cols-3  gap-3 pt-5 text-sm text-white">
@@ -469,10 +478,11 @@ const NFTPage = () => {
                   <span className=" text-2xl font-extralight text-gradient py-2 italic leading-tight ">
                     '{data.name ? data.name : "Untitled"}'
                   </span>
-
+                  { data.seal === "Yes" &&
                   <div className="w-7 h-7 rounded-full border border-white flex justify-center items-center eth-card seal mt-1">
-                    <SiEthereum fontSize={16} color="#fff" />
+                  <SiEthereum fontSize={16} color="#fff" /> 
                   </div>
+                  }  
                 </div>
               
                 {/* SELLER LINK */}
@@ -498,8 +508,8 @@ const NFTPage = () => {
                       {/* { data.seller && shortenAddress(data.seller)} */}
                       Seller
                     </div>
-                    <span className="absolute bottom-24 -right-5 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
-                      View Profile?
+                    <span className="flex absolute bottom-24 -right-5 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                    View&nbsp;Profile&nbsp;<FaEye fontSize={16}/>
                     </span>
                   </div>{" "}
                 </Link>
@@ -507,10 +517,16 @@ const NFTPage = () => {
 
               <div className=" w-full text-[#868686] text-sm  h-fit ">
                 TRADE{" "}
-                <div className=" text-lg  pt-3 text-white">
-                  This NFT last sold for {data.price} ETH{" "}
-                  {data.date ? "on " + data.date : ""}
-                </div>
+                <div className="flex justify-between items-end text-md  pt-2 text-white">
+                  Last sold for {data.price} ETH{" "}
+                  {tokenData.date ? "on " + tokenData.date : ""}
+              
+                <div className="group relative cursor-pointer mb-1">
+                    <BsInfoCircle fontSize={16} color="#fff" />
+                    <span className="flex absolute w-64 bottom-0 right-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                      A Sell panel will appear below when connected if you are the owner of this NFT. </span>
+                    </div>
+                    </div>
               </div>
 
               <div className=" text-[#868686] text-sm  mt-2 ">
@@ -519,26 +535,28 @@ const NFTPage = () => {
                   {checksumAddress !== data.seller ? (
                     <div>
                       <div className="check mt-3 gap-x-2.5"></div>
-                      <div className="flex justify-around items-center group relative">
+                      <div className="flex justify-around items-center">
                         <button
                           className="activeButton text-white outline-none  font-semibold py-2 px-10 my-5 rounded text-[15px]"
                           onClick={() => buyNFT(tokenId)}
                         >
                           BUY
                         </button>
-                        <span className="absolute bottom-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                        {/* <span className="absolute bottom-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
                           {!currentAccount
                             ? "Wallet Not Connected?"
-                            : !data.price
+                            : !price
                             ? "Enter an offer price"
                             : ""}
-                        </span>
+                        </span> */}
                         <input
                           className=" rounded outline-none text-white text-[15px] font-semibold border-none white-glassmorphism shadow-2xl px-2 text-center h-11 w-[120px] "
                           type="number"
                           placeholder="Price (ETH)"
                           step="0.001"
                           min={data.price}
+                          value={price}
+                          onChange={(e) => setPrice(e.target.value)}
                           // value={formParams.price}
                           // onChange={(e) =>
                           //   updateFormParams({
@@ -548,19 +566,21 @@ const NFTPage = () => {
                           // }
                         ></input>
                       </div>
-                      <div className="text-white text-center text-md ">
-                        {currentAccount
-                          ? "Enter your buy price"
-                          : "Connect your MetaMask account to trade"}
+                      <div className="text-white text-center text-md mb-3">
+                      {!currentAccount
+                            ? "Wallet Not Connected"
+                            : !price
+                            ? "Enter An Offer Price"
+                            : message ? message : "Click BUY To Proceed"}
                       </div>
                     </div>
                   ) : (
                     <div>
                       {/* SELL PANEL */}
                       <div className="check mt-3 gap-x-2.5"></div>
-                      <div className="flex justify-around items-center group relative">
+                      <div className="flex justify-around items-center">
                         <input
-                          className=" rounded outline-none text-white text-md text-center border-none white-glassmorphism shadow-2xl px-2  h-11 w-[120px] "
+                          className=" rounded outline-none text-white text-[15px] font-semibold text-center border-none white-glassmorphism shadow-2xl px-2  h-11 w-[120px] "
                           type="number"
                           placeholder="Price (ETH)"
                           step="0.001"
@@ -575,28 +595,30 @@ const NFTPage = () => {
                           // }
                         ></input>
                         <button
-                          className=" outline-none bg-[#F60C4B] hover:bg-[#F60C6d] border-[#F60C4B] text-white font-bold py-2 px-10 my-5 rounded text-sm"
+                          className=" outline-none bg-[#F60C4B] hover:bg-[#F60C6d] border-[#F60C4B] text-white text-[15px] font-semibold  py-2 px-10 my-5 rounded "
                           onClick={() => listNFT(tokenId)}
                         >
                           SELL
                         </button>
-                        <span className="absolute bottom-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                        {/* <span className="absolute bottom-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
                           {!currentAccount
                             ? "Wallet Not Connected?"
                             : !price
                             ? "No Price Entered?"
                             : "Click 'Sell' To Proceed"}
-                        </span>
+                        </span> */}
                       </div>
-                      <div className="text-white text-center  text-md ">
-                        {currentAccount
-                          ? "Enter your sell price"
-                          : "Connect your MetaMask account to trade"}
+                      <div className="text-white text-center  text-md mb-3">
+                      {!currentAccount
+                            ? "Wallet Not Connected?"
+                            : !price
+                            ? "No Price Entered"
+                            : message ? message : "Click SELL To Proceed"}
                       </div>
                     </div>
                   )}
 
-                  <div className="text-orange text-center mt-3">{message}</div>
+                  {/* <div className="text-orange text-center mt-3">{message}</div> */}
                 </div>
 
                 {/* TRADE INFO */}
@@ -613,7 +635,7 @@ const NFTPage = () => {
                       rel="noopener noreferrer"
                     >
                       {" "}
-                      <BiLinkExternal fontSize={16} />
+                      <BiLinkExternal fontSize={18} />
                     </a>
                   </div>
                 </div>
@@ -670,9 +692,9 @@ const NFTPage = () => {
                       {data.seal ? data.seal : "N/A"}
                     </div>
                     <SiEthereum
-                      fontSize="2.4em"
+                      fontSize="2em"
                       color="orange"
-                      className="drop-shadow"
+                      className="drop-shadow mt-1"
                     />
                   </div>
                 </div>
