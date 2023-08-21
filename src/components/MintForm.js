@@ -364,7 +364,7 @@ const MintForm = ({
         </div>
 
         {/* MINT BUTTON */}
-        <div className="flex w-full justify-end text-white gap-x-3 mt-7 relative">
+        <div className="flex w-full justify-end text-white gap-x-3 mt-8 relative ">
           <button
             onClick={OnMintNFT}
             value={isMinting ? "Minting..." : "Mint"}

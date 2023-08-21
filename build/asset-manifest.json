@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/Home/static/css/main.64c89237.css",
-    "main.js": "/Home/static/js/main.629e87ab.js",
-    "static/media/kyoto-girl.jpg": "/Home/static/media/kyoto-girl.6b87e2739cff8d7511d0.jpg",
-    "static/media/futuristic-city.jpg": "/Home/static/media/futuristic-city.1c971f9c3cc893d3ed1a.jpg",
-    "static/media/laughing-panda.jpg": "/Home/static/media/laughing-panda.42286bd6357bb0defa84.jpg",
-    "static/media/download.jpg": "/Home/static/media/download.d70737e1afc160c7630e.jpg",
-    "static/media/tokyo-dreams.jpg": "/Home/static/media/tokyo-dreams.026a07c3646e66e73c5c.jpg",
-    "static/media/tokyo-haze.jpg": "/Home/static/media/tokyo-haze.3c20d66d8a70c2bc97ad.jpg",
-    "static/media/abstractions.jpg": "/Home/static/media/abstractions.391c820f5316cbc0477f.jpg",
-    "static/media/inblocklogolight.png": "/Home/static/media/inblocklogolight.ce6796b5883951647e96.png",
-    "static/media/full_logo.png": "/Home/static/media/full_logo.4ff31c2779193816cee4.png",
-    "static/media/create.svg": "/Home/static/media/create.42779dc224fe6922e6e5ce37fcb11ad4.svg",
-    "index.html": "/Home/index.html",
-    "static/media/upload.svg": "/Home/static/media/upload.93e0e327903511174b7768c6080596dd.svg",
-    "main.64c89237.css.map": "/Home/static/css/main.64c89237.css.map",
-    "main.629e87ab.js.map": "/Home/static/js/main.629e87ab.js.map"
+    "main.css": "/nftmarket/static/css/main.98d5e60f.css",
+    "main.js": "/nftmarket/static/js/main.32d20561.js",
+    "static/media/kyoto-girl.jpg": "/nftmarket/static/media/kyoto-girl.6b87e2739cff8d7511d0.jpg",
+    "static/media/futuristic-city.jpg": "/nftmarket/static/media/futuristic-city.1c971f9c3cc893d3ed1a.jpg",
+    "static/media/laughing-panda.jpg": "/nftmarket/static/media/laughing-panda.42286bd6357bb0defa84.jpg",
+    "static/media/download.jpg": "/nftmarket/static/media/download.d70737e1afc160c7630e.jpg",
+    "static/media/tokyo-dreams.jpg": "/nftmarket/static/media/tokyo-dreams.026a07c3646e66e73c5c.jpg",
+    "static/media/tokyo-haze.jpg": "/nftmarket/static/media/tokyo-haze.3c20d66d8a70c2bc97ad.jpg",
+    "static/media/abstractions.jpg": "/nftmarket/static/media/abstractions.391c820f5316cbc0477f.jpg",
+    "static/media/inblocklogolight.png": "/nftmarket/static/media/inblocklogolight.ce6796b5883951647e96.png",
+    "static/media/full_logo.png": "/nftmarket/static/media/full_logo.4ff31c2779193816cee4.png",
+    "static/media/create.svg": "/nftmarket/static/media/create.42779dc224fe6922e6e5ce37fcb11ad4.svg",
+    "index.html": "/nftmarket/index.html",
+    "static/media/upload.svg": "/nftmarket/static/media/upload.93e0e327903511174b7768c6080596dd.svg",
+    "main.98d5e60f.css.map": "/nftmarket/static/css/main.98d5e60f.css.map",
+    "main.32d20561.js.map": "/nftmarket/static/js/main.32d20561.js.map"
   },
   "entrypoints": [
-    "static/css/main.64c89237.css",
-    "static/js/main.629e87ab.js"
+    "static/css/main.98d5e60f.css",
+    "static/js/main.32d20561.js"
   ]
 }

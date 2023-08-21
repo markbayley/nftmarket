@@ -20,7 +20,7 @@ function App() {
       <div className="min-h-screen ">
         <Navbar />
         <Routes>
-          {/* <Route
+          <Route
             path="/nftmarket"
             element={
               <div className="">
@@ -30,7 +30,7 @@ function App() {
                 <FeaturePage />
               </div>
             }
-          /> */}
+          />
             <Route
             path="/Home"
             element={
