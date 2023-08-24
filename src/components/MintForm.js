@@ -5,10 +5,10 @@ import {
   MdOutlineArrowForwardIos,
 } from "react-icons/md";
 import { royalty, listing } from "../data/lists.js";
-import { BsInfoCircle} from "react-icons/bs";
+import { BsInfoCircle } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const MintForm = ({
-  isCreating,
   isMinting,
   formParams,
   fileURL,
@@ -16,7 +16,10 @@ const MintForm = ({
   updateFormParams,
   OnMintNFT,
   transactionHash,
+  hashLink,
 }) => {
+
+  console.log("hashlink", hashLink, transactionHash)
   const [showMore, setShowMore] = useState(false);
 
   const handleShow = (e) => {
@@ -28,15 +31,54 @@ const MintForm = ({
     <form className="">
       <div className="max-w-2/3  ">
         <div>
-          <div className="pb-3 text-[#868686] text-sm flex justify-between w-full">ATTRIBUTES
+          <div className="pb-3 text-[#868686] text-sm flex justify-between w-full">
+            <div>
+              ATTRIBUTES&nbsp;{" "}
+              {!showMore ? (
+                <span
+                  onClick={(e) =>
+                    updateFormParams({
+                      ...formParams,
+                      value1:
+                        "Skill " +
+                        Math.floor(Math.random() * (100 - 0) + 0).toString(),
 
-          <div className="group relative cursor-pointer mt-1">
-                    <BsInfoCircle fontSize={15} color="#fff" />
-                    <span className="flex absolute w-64 bottom-0 right-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
-                     Adding several well chosen traits to your NFT helps enhance its rarity and value to potential buyers. </span>
-                    </div>
+                      value2:
+                        "Attack " +
+                        Math.floor(Math.random() * (100 - 0) + 0).toString(),
+                      value3:
+                        "Wealth " +
+                        Math.floor(Math.random() * (100 - 0) + 0).toString(),
 
-                    </div>
+                      value4:
+                        "Charisma " +
+                        Math.floor(Math.random() * (100 - 0) + 0).toString(),
+                      value5:
+                        "Health " +
+                        Math.floor(Math.random() * (100 - 0) + 0).toString(),
+
+                      value6:
+                        "Defense " +
+                        Math.floor(Math.random() * (100 - 0) + 0).toString(),
+                    })
+                  }
+                  className="text-indigo-500 cursor-pointer hover:text-white"
+                >
+                  AUTO GENERATE
+                </span>
+              ) : (
+                "- TRAIT TITLES"
+              )}
+            </div>
+
+            <div className="group relative cursor-pointer mt-1">
+              <BsInfoCircle fontSize={15} color="#fff" />
+              <span className="flex absolute w-60 bottom-0 right-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                Adding several well chosen traits to your NFT helps to enhance
+                its rarity and value.{" "}
+              </span>
+            </div>
+          </div>
 
           {!showMore ? (
             // TRAIT VALUES
@@ -133,9 +175,9 @@ const MintForm = ({
             </div>
           ) : (
             <div>
-            {/* TRAIT TITLES */}
+              {/* TRAIT TITLES */}
               <div className="flex w-full  mb-3  justify-between gap-x-2.5 ">
-                <select
+                {/* <select
                   id="trait1"
                   onChange={(id) => handleSelect(id)}
                   value={traits1.name}
@@ -146,12 +188,25 @@ const MintForm = ({
                       {trait.name}
                     </option>
                   ))}
-                </select>
+                </select> */}
+                <input
+                  className="w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
+                  type="text"
+                  placeholder="Trait 1 Title..."
+                  value={formParams.trait1}
+                  id="trait1"
+                  onChange={(e) =>
+                    updateFormParams({
+                      ...formParams,
+                      trait1: e.target.value,
+                    })
+                  }
+                ></input>
 
                 <input
                   className="w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
                   type="text"
-                  placeholder="Trait 4 Type..."
+                  placeholder="Trait 4 Title..."
                   value={formParams.trait4}
                   id="trait4"
                   onChange={(e) =>
@@ -177,7 +232,7 @@ const MintForm = ({
               </div>
 
               <div className="flex w-full my-2  justify-between gap-x-2.5 ">
-                <select
+                {/* <select
                   id="trait2"
                   onChange={(id) => handleSelect(id)}
                   value={traits2.name}
@@ -188,12 +243,25 @@ const MintForm = ({
                       {trait.name}
                     </option>
                   ))}
-                </select>
+                </select> */}
+                <input
+                  className="w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
+                  type="text"
+                  placeholder="Trait 2 Title..."
+                  value={formParams.trait2}
+                  id="trait2"
+                  onChange={(e) =>
+                    updateFormParams({
+                      ...formParams,
+                      trait2: e.target.value,
+                    })
+                  }
+                ></input>
 
                 <input
                   className="w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
                   type="text"
-                  placeholder="Trait 5 Type..."
+                  placeholder="Trait 5 Title..."
                   value={formParams.trait5}
                   id="trait5"
                   onChange={(e) =>
@@ -220,22 +288,35 @@ const MintForm = ({
               </div>
 
               <div className="flex w-full  mt-3  justify-between gap-x-2.5 ">
-                <select
+                {/* <select
                   id="trait3"
                   onChange={(id) => handleSelect(id)}
                   value={traits3.name}
                   className="text-white outline-none blue-glassmorphism w-half  rounded  bg-[#313751] shadow-2xl border-none"
                 >
                   {traits3.map((trait, index) => (
-                    <option key={index} value={trait.name}>
+                    <option key={index} value={traits3.name}>
                       {trait.name}
                     </option>
                   ))}
-                </select>
+                </select> */}
                 <input
                   className="w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
                   type="text"
-                  placeholder="Trait 6 Type..."
+                  placeholder="Trait 3 Title..."
+                  value={formParams.trait3}
+                  id="trait3"
+                  onChange={(e) =>
+                    updateFormParams({
+                      ...formParams,
+                      trait3: e.target.value,
+                    })
+                  }
+                ></input>
+                <input
+                  className="w-full lg:w-[48%] rounded-sm p-2 outline-none  text-white border-none white-glassmorphism"
+                  type="text"
+                  placeholder="Trait 6 Title..."
                   value={formParams.trait6}
                   id="trait6"
                   onChange={(e) =>
@@ -363,36 +444,50 @@ const MintForm = ({
           </div>
         </div>
 
-        {/* MINT BUTTON */}
+        {/* MINT BUTTONS */}
         <div className="flex w-full justify-end text-white gap-x-3 mt-8 relative ">
+          {hashLink && (
+            <a
+              href={hashLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={
+                "md:w-1/2 w-full group shadow-lg text-white hover:text-white shadow-indigo-500/30 flex items-center justify-center bg-indigo-500 brightness-90  h-10 rounded-lg hover:bg-indigo-500 hover:brightness-110"
+              }
+            >
+              <span className="absolute bottom-12 right-0 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100 ">
+                Confirm your transaction on the blockchain
+              </span>
+              View Transaction
+            </a>
+          )}
+
           <button
             onClick={OnMintNFT}
-            value={isMinting ? "Minting..." : "Mint"}
+            value=""
             type="button"
             className={
-              !fileURL
-                ? "disabledButton md:w-1/2 w-full group"
-                : !formParams.price ||
-                  !formParams.name ||
-                  !formParams.description
-                ? "inactiveButton md:w-1/2 w-full group"
-                : isMinting || isCreating
-                ? "waitingButton md:w-1/2 w-full group"
-                : "activeButton md:w-1/2 w-full group"
+              formParams.name &&
+              formParams.collection &&
+              formParams.description &&
+              formParams.price &&
+              fileURL
+                ? "md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-indigo-500 brightness-90  h-10 rounded-lg hover:bg-indigo-500 hover:brightness-110"
+                : "md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-neutral-900  h-10 rounded-lg hover:bg-transparent hover:text-indigo-500"
             }
           >
-            <span className="absolute -bottom-12  scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100 ">
-              {!fileURL
+            <span className="absolute bottom-12 right-0 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100 ">
+              {hashLink
+                ? "Already minted NFT..."
+                : !fileURL
                 ? "Create or upload image to mint..."
                 : !formParams.price
                 ? "Enter a price..."
                 : !formParams.name || !formParams.description
                 ? "Enter title & description..."
-                : transactionHash
-                ? "Already minted NFT..."
                 : "Ready to mint..."}
             </span>
-            Mint
+            {isMinting ? "Minting..." : hashLink ? "Minted NFT" : "Mint NFT"}
           </button>
         </div>
       </div>

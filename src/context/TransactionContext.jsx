@@ -273,6 +273,7 @@ export const TransactionsProvider = ({ children }) => {
               name: meta.name,
               description: meta.description,
               collection: meta.collection,
+              creator: meta.creator,
 
               attributes: meta.attributes,
               mintParams: meta.mintParams,
@@ -280,22 +281,23 @@ export const TransactionsProvider = ({ children }) => {
 
               metadata: tokenURI,
 
-              hashtags: meta.hashtags,
+              // hashtags: meta.hashtags,
               style: meta.style,
               medium: meta.medium,
               artist: meta.artist,
-              colour: meta.colour,
-              colour: [ meta.colour0, meta.colour1, meta.colour2 ],
-              colour0: meta.colour0,
-              colour1: meta.colour1,
-              colour2: meta.colour2,
               theme: meta.theme,
               texture: meta.texture,
-              tags: meta.tags,
+              colour: meta.colour,
+              // colour: [ meta.colour0, meta.colour1, meta.colour2 ],
+              // colour0: meta.colour0,
+              // colour1: meta.colour1,
+              // colour2: meta.colour2,
+            
+              // tags: meta.tags,
 
-              listing: meta.listing,
-              creator: meta.creator,
-              seal: meta.seal,
+               listing: meta.listing,
+               royalty: meta.royalty,
+               seal: meta.seal,
               date: meta.date,
             };
             return item;
@@ -501,6 +503,8 @@ const [favorites, setFavorites] = useState([], localStorage.getItem("favorites")
   const [hashLink, setHashLink] = useState(null);
   const [mint, setMint] = useState(false);
 
+  console.log("hashlink", hashLink, transactionHash)
+
   return (
     <TransactionContext.Provider
       value={{
@@ -580,7 +584,9 @@ const [favorites, setFavorites] = useState([], localStorage.getItem("favorites")
       searchItems,
 
       globalResults, setGlobalResults,
-      searchInput, setSearchInput
+      searchInput, setSearchInput,
+      hashLink, setHashLink,
+      setTransactionHash
       }}
     >
       {children}

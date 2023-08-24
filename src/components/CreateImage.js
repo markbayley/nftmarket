@@ -13,14 +13,24 @@ const CreateImage = ({
   OnUploadFile,
   hashLink,
   isChecked,
+  marketData
 }) => {
+
+  const viewLink =
+  marketData && marketData[marketData?.length - 1].tokenId?.toString();
+
+  console.log("viewlink", viewLink)
+  console.log("hashlink", hashLink)
   return (
     <div className="w-full  aspect-square mt-2">
       {/* // Create */}
       <div className="image border-[#6c63ff] border rounded-lg relative">
+     
         {message && (
           <div className="flex w-full h-full justify-center items-center absolute text-md text-white z-50">
-            <p className="border blue-glassmorphism p-3">{message}</p>
+             
+            <p className="border blue-glassmorphism rounded px-3 py-1 ">{message}</p>
+            {/* <Link to={{ pathname: `/Explore/Detail/${viewLink}` }} className="border blue-glassmorphism rounded px-3 py-1 mt-32 ">View NFT</Link> */}
           </div>
         )}
         {/* Stable Creating*/}

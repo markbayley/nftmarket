@@ -40,6 +40,7 @@ const Create = () => {
     setTransactionHash,
     getAllNFTs,
     setDateCreated,
+    setIsUploading
   } = useContext(TransactionContext);
 
   // window.localStorage.setItem("activeKeywords", activeKeywords);
@@ -47,8 +48,6 @@ const Create = () => {
 
   //UPLOADING FUNCTION
   const OnUploadFile = async (e) => {
-    const { updateMessage, setIsUploading, setFileURL, isChecked } =
-      useContext(TransactionContext);
 
     e.preventDefault();
 
@@ -76,6 +75,18 @@ const Create = () => {
 
   //CREATING FUNCTION
   const OnCreateFile = async (e) => {
+
+    if (!formParams.collection || !formParams.name ) {
+      // updateMessage("Enter a collection name and title");
+      return -1;
+    }
+
+    if (!formParams.description) {
+      // updateMessage("Write or generate a description");
+      return -1;
+    }
+
+
     setIsCreating(true);
     updateMessage("Generating AI image...");
 
@@ -163,12 +174,12 @@ const Create = () => {
     } = formParams;
 
     if (!price) {
-      updateMessage("Please select a price in ETH!");
+      // updateMessage("Please select a price in ETH!");
       setIsMinting(false);
       return -1;
     }
     if (!fileURL) {
-      updateMessage("No image created or uploaded yet!");
+      // updateMessage("No image created or uploaded yet!");
       setIsMinting(false);
       return -1;
     }
@@ -265,6 +276,7 @@ const Create = () => {
       await getAllNFTs();
     } catch (e) {
       updateMessage("Connect MetaMask wallet to mint NFT.", e);
+      setIsMinting(false)
     }
   };
 
@@ -291,6 +303,8 @@ const Create = () => {
       updateFormParams({ ...formParams, [idn]: "" }); // Update formParams with an empty string
     }
   };
+
+  console.log("hashlink", hashLink, transactionHash)
 
   return (
     <div className="fade-in lg:px-[6%]  px-2">
@@ -326,6 +340,7 @@ const Create = () => {
           OnUploadFile={OnUploadFile}
           hashLink={hashLink}
           isChecked={isChecked}
+          marketdata={marketData}
         />
         <TETabsContent>
           <TETabsPane show={tab === "tab1"}>
@@ -338,6 +353,12 @@ const Create = () => {
               activeKeywords={activeKeywords}
               isChecked={isChecked}
               OnUploadFile={OnUploadFile}
+              handleTab={handleTab}
+              fileURL={fileURL}
+              setFileURL={setFileURL}
+              updateMessage={updateMessage}
+              isCreating={isCreating}
+        
             />
           </TETabsPane>
 
@@ -351,6 +372,7 @@ const Create = () => {
               updateFormParams={updateFormParams}
               OnMintNFT={OnMintNFT}
               transactionHash={transactionHash}
+              hashLink={hashLink}
             />
           </TETabsPane>
         </TETabsContent>

@@ -42,15 +42,15 @@ const Services = () => (
         />
         <ServiceCard
           color="bg-[#F84550]"
-          title="Create or Upload"
+          title="Create Or Upload"
           icon={<RiHeart2Fill fontSize={21} className="text-white w-half" />}
           subtitle="Our A.I. technology makes creating NFTs easy. With just a few decriptive keywords you can start generating artworks for free, or you can upload your existing creations to our exchange."
         />
         <ServiceCard
           color="bg-[#8945F8]"
-          title="Fund Your Wallet"
+          title="Mint Your NFT"
           icon={<BiSearchAlt fontSize={21} className="text-white w-half" />}
-          subtitle="When you are ready to list your art for sale or purchase an existing NFT, connect your MetaMask wallet. Ethereum can be purchased through Coinbase, Binance and other exchange providers.  "
+          subtitle="When you are ready to list your art for sale or purchase an existing NFT, connect your MetaMask wallet. Ethereum can be purchased through Coinbase, Binance and other exchange providers."
         />
       </div>
     </div>

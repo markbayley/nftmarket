@@ -188,18 +188,21 @@ const NFTPage = () => {
   );
 
   const tagsArray = [
-    { id: "style", value: tokenData?.style },
-    { id: "theme", value: tokenData?.theme },
-    { id: "artist", value: tokenData?.artist },
-    { id: "medium", value: tokenData?.medium },
-    { id: "texture", value: tokenData?.texture },
-    // { id: "colour", value: tokenData?.colour },
-    { id: "colour0", value: tokenData?.colour0},
-    { id: "colour1", value: tokenData?.colour1 },
-    { id: "colour2", value: tokenData?.colour2 },
+    { id: "style", value: tokenData?.style ?? tokenData?.createParams?.[0]?.style },
+    { id: "theme", value: tokenData?.theme ?? tokenData?.createParams?.[1]?.theme },
+    { id: "artist", value: tokenData?.artist ?? tokenData?.createParams?.[2]?.artist },
+    { id: "medium", value: tokenData?.medium ?? tokenData?.createParams?.[3]?.medium },
+    { id: "texture", value: tokenData?.texture ?? tokenData?.createParams?.[4]?.texture },
+    { id: "colour0", value: tokenData?.createParams?.[5]?.colour?.[0] ?? tokenData?.colour0 ?? tokenData?.colour },
+    { id: "colour1", value: tokenData?.createParams?.[5]?.colour?.[1] ?? tokenData?.colour1 ?? tokenData?.colour },
+    { id: "colour2", value:  tokenData?.createParams?.[5]?.colour?.[2] ?? tokenData?.colour2 ?? tokenData?.colour },
   ];
+  
 
   console.log("tagsArray", tagsArray)
+
+  console.log("tokenData", tokenData)
+
 
   // const [ loaded, setLoaded] = useState(false)
 
@@ -351,7 +354,7 @@ const NFTPage = () => {
                       <div className="group relative cursor-pointer">
                     <BsInfoCircle fontSize={16} color="#fff" />
                     <span className="flex absolute w-52 -bottom-2 right-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
-                      Unique traits can help to enhance the rarity and value of NFTs. </span>
+                      Unique traits can help to enhance the rarity and value of your NFTs. </span>
                     </div>
                     </div>
 
@@ -386,7 +389,7 @@ const NFTPage = () => {
                 </div>
                 <div className=" flex items-center text-[#868686] text-sm h-fit ">
                   <div className="flex flex-wrap ">
-                    {tagsArray.map((tag) => (
+                    {tagsArray?.map((tag) => (
                       <Link to={{ pathname: `/Explore/${tag.value}` }}>
                         <div className="group relative">
                           <button
@@ -497,11 +500,11 @@ const NFTPage = () => {
                   <div
                     id="seller"
                     token={tokenId}
-                    value={data.seller}
+                    value={tokenData?.seller}
                     onClick={(id, token) => handleCollection(id, token)}
                     className="flex group relative items-end rounded-full bg-cover bg-center  border-2 h-16 w-16 md:h-24 md:w-24 hover:scale-[1.02] shadow-xl shadow-indigo-500/30 duration-300 hover:shadow-indigo-500/50 border-[#F60C4B]"
                     style={{
-                      backgroundImage: `url( "https://robohash.org/${data.seller}.png?set=set3"  `,
+                      backgroundImage: `url( "https://robohash.org/${tokenData?.seller}.png?set=set3"  `,
                     }}
                   >
                     <div className="bg-[#F60C4B]  px-2 py-1 rounded-full text-white text-xs hidden md:inline-block">
@@ -518,13 +521,13 @@ const NFTPage = () => {
               <div className=" w-full text-[#868686] text-sm  h-fit ">
                 TRADE{" "}
                 <div className="flex justify-between items-end text-md  pt-2 text-white">
-                  Last sold for {data.price} ETH{" "}
-                  {tokenData.date ? "on " + tokenData.date : ""}
+                  Last sold for {tokenData?.price} ETH{" "}
+                  {tokenData?.date ? "on " + tokenData?.date : ""}
               
                 <div className="group relative cursor-pointer mb-1">
                     <BsInfoCircle fontSize={16} color="#fff" />
                     <span className="flex absolute w-64 bottom-0 right-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
-                      A Sell panel will appear below when connected if you are the owner of this NFT. </span>
+                      A Sell panel will appear below when you are connected if you are the owner of this NFT. </span>
                     </div>
                     </div>
               </div>
@@ -532,7 +535,7 @@ const NFTPage = () => {
               <div className=" text-[#868686] text-sm  mt-2 ">
                 {/* BUY PANEL */}
                 <div className="white-glassmorphism ">
-                  {checksumAddress !== data.seller ? (
+                  {checksumAddress !== tokenData?.seller ? (
                     <div>
                       <div className="check mt-3 gap-x-2.5"></div>
                       <div className="flex justify-around items-center">
@@ -554,7 +557,7 @@ const NFTPage = () => {
                           type="number"
                           placeholder="Price (ETH)"
                           step="0.001"
-                          min={data.price}
+                          min={tokenData?.price || tokenData?.mintParams[3]?.price}
                           value={price}
                           onChange={(e) => setPrice(e.target.value)}
                           // value={formParams.price}
@@ -630,7 +633,7 @@ const NFTPage = () => {
                       <BiLinkExternal fontSize={16} />
                     </span>
                     <a
-                      href={data.metadataURL}
+                      href={tokenData?.metadataURL}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -646,7 +649,7 @@ const NFTPage = () => {
                         {"Status"} &nbsp;
                       </p>
 
-                      {data.listing ? data.listing : "N/A"}
+                      {tokenData?.listing ?? tokenData?.mintParams?.[1]?.listing }
                     </div>
                     <MdSell
                       fontSize="2.4em"
@@ -661,7 +664,7 @@ const NFTPage = () => {
                         {"Royalty"} &nbsp;
                       </p>
 
-                      {data.royalty ? data.royalty : "N/A"}
+                      { tokenData?.royalty ?? tokenData?.mintParams?.[0]?.royalty }
                     </div>
                     <MdOutlinePercent
                       fontSize="2.4em"
@@ -689,7 +692,7 @@ const NFTPage = () => {
                       <p className="text-xs text-[#868686] uppercase">
                         {"Seal"} &nbsp;
                       </p>
-                      {data.seal ? data.seal : "N/A"}
+                      { tokenData?.seal ?? tokenData?.mintParams?.[2]?.seal }
                     </div>
                     <SiEthereum
                       fontSize="2em"

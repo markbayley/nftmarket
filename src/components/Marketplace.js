@@ -199,6 +199,18 @@ export default function Marketplace() {
         {/* MENU BUTTONS */}
         <div className="flex items-center justify-center gap-x-2 py-3">
 
+             {/* Listing */}
+             <div className="flex cursor-pointer text-white">
+            <select
+              className="flex outline-none py-2 min-w-[90px] h-[40px] bg-teal-600 shadow-2xl border border-teal-600 rounded-full hover:brightness-110"
+              onChange={(e) => handleTab(e.target.value)}
+            >
+              <option value="tab1">&nbsp;&nbsp;All NFTs</option>
+              <option value="tab2">&nbsp;&nbsp;For Sale</option>
+              <option value="tab3">&nbsp;&nbsp;Auction</option>
+              <option value="tab4">&nbsp;&nbsp;Unlisted</option>
+            </select>
+          </div>
           {/* Filter */}
           <div className="flex items-center cursor-pointer group relative">
               <button
@@ -217,24 +229,11 @@ export default function Marketplace() {
                   : collection || "Filter"}
               </button>
               <span className="flex absolute bottom-12  scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
-                    {collection ? "Remove Filter" : "Add Filter" } 
+                    {collection ? "Remove" : "Add Filter" } 
                     </span>
           </div>
      
-          {/* Sort */}
-          <div className={ collection ? "hidden md:flex items-center cursor-pointer text-white" : "flex items-center cursor-pointer text-white" }>
-                <button
-                  onClick={toggleSort}
-                  className="flex items-center bg-indigo-500 text-white px-3 h-10 rounded-full border-none hover:brightness-150 lg:w-[85px]"
-                >
-                  <BiSort fontSize={20} />
-                  <p className="hidden lg:flex">{ newest ? "Date" : "Price" }</p>
-                </button>
-                {/* <span className="flex absolute bottom-12  scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
-                { sorted ? "Sort Date" : "Sort Price" } 
-                    </span> */}
-          </div>
-        
+       
           {/* Favorite */}
           <div className="flex items-center cursor-pointer text-white ">
                 <button
@@ -248,19 +247,23 @@ export default function Marketplace() {
                   <p className="hidden lg:flex">&nbsp;Favs</p>
                 </button>
           </div>
-   
-          {/* Listing */}
-          <div className="flex cursor-pointer text-white">
-            <select
-              className="flex outline-none py-2 min-w-[90px] h-[40px] bg-teal-600 shadow-2xl border border-teal-600 rounded-full hover:brightness-110"
-              onChange={(e) => handleTab(e.target.value)}
-            >
-              <option value="tab1">&nbsp;&nbsp;All NFTs</option>
-              <option value="tab2">&nbsp;&nbsp;For Sale</option>
-              <option value="tab3">&nbsp;&nbsp;Auction</option>
-              <option value="tab4">&nbsp;&nbsp;Unlisted</option>
-            </select>
+
+             {/* Sort */}
+             <div className={ collection ? "hidden md:flex items-center cursor-pointer text-white" : "flex items-center cursor-pointer text-white" }>
+                <button
+                  onClick={toggleSort}
+                  className="flex items-center bg-indigo-500 text-white px-3 h-10 rounded-full border-none hover:brightness-150 lg:w-[85px]"
+                >
+                  <BiSort fontSize={20} />
+                  <p className="hidden lg:flex">{ newest ? "Date" : "Price" }</p>
+                </button>
+                {/* <span className="flex absolute bottom-12  scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                { sorted ? "Sort Date" : "Sort Price" } 
+                    </span> */}
           </div>
+        
+   
+       
         </div>
 
         {/* SEARCH */}

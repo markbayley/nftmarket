@@ -295,7 +295,7 @@ const Wallet = () => {
                     </div>
                     <div className="group relative cursor-pointer">
                       <BsInfoCircle fontSize={17} color="#fff" />
-                      <span className="flex absolute -bottom-11 w-48 right-8 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                      <span className="flex absolute -bottom-7 w-64 right-8 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
                         A link to your profile will appear when a user clicks on
                         an NFT to view its details or buy it.{" "}
                       </span>
@@ -409,17 +409,17 @@ const Wallet = () => {
         </TETabsContent>
 
         {/* NOTIFICATIONS */}
-        <div className="flex flex-col flex-1 items-start justify-center w-full mf:mt-0 mt-10 ">
+        <div className="flex flex-col flex-1 items-start justify-center w-full mf:mt-0 mt-6 ">
           <div className="text-center  text-white font-light text-base w-full">
-            {!ethereum ? (
+         
+              <div className="flex flex-wrap justify-around items-center flex-row w-full white-glassmorphism p-5 ">
+              {!ethereum ? (
               "Install MetaMask and connect wallet to send ethereum and view your NFTs"
             ) : currentAccount !== "" ? (
-              ""
-            ) : (
-              <div className="flex flex-wrap justify-around items-center flex-row w-full white-glassmorphism p-5 ">
-                Connect MetaMask wallet to send ethereum and view your NFTs
+              "Connected to MetaMask wallet " 
+            ) : (  "Connect MetaMask wallet to send ethereum and view your NFTs"  )}
               </div>
-            )}
+          
           </div>
         </div>
       </div>

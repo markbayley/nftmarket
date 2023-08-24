@@ -84,17 +84,13 @@ const Transactions = () => {
 
   return (
     <div className="flex w-full justify-start items-center  ">
+          {currentAccount && 
       <div className="flex flex-col pt-6 ">
-        {currentAccount ? (
+    
           <h6 className="text-white text-1xl  text-left my-2">
             Recent Transfers
           </h6>
-        ) : (
-          // <h3 className="text-white text-1xl text-left my-2">
-          //   Connect your account to see the latest transactions
-          // </h3>
-          ""
-        )}
+      
 
         <div className="flex flex-wrap justify-center items-center ">
           {[...filteredTransactions].reverse().map((transaction, i) => (
@@ -106,6 +102,7 @@ const Transactions = () => {
           ))}
         </div>
       </div>
+}
     </div>
   );
 };

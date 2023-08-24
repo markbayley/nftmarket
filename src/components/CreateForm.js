@@ -7,8 +7,12 @@ import {
   colours,
   themes,
 } from "../data/lists.js";
-import { MdOutlineRemoveCircleOutline } from "react-icons/md";
+import {
+  MdOutlineKeyboardDoubleArrowRight,
+  MdOutlineRemoveCircleOutline,
+} from "react-icons/md";
 import { BsInfoCircle } from "react-icons/bs";
+import { FaUndoAlt } from "react-icons/fa";
 
 const CreateForm = ({
   formParams,
@@ -19,8 +23,12 @@ const CreateForm = ({
   handleSelect,
   updateFormParams,
   isChecked,
+  handleTab,
+  fileURL,
+  setFileURL,
+  updateMessage,
+  isCreating
 }) => {
-
   // Define the auto description input
   const [autoDescription, setAutoDescription] = useState(false);
 
@@ -29,8 +37,8 @@ const CreateForm = ({
     formParams.collection +
     "' this artwork entitled '" +
     formParams.name +
-    "' was made using a digital " +
-    formParams.medium +
+    "' was made using a digital "  
+     + formParams.medium  +
     " medium in a creative " +
     formParams?.style +
     " style. The " +
@@ -45,9 +53,8 @@ const CreateForm = ({
     formParams.colour2 +
     " colors and " +
     formParams.artist +
-    " influences."
-    //  +
-    // formParams.description;
+    " influences.";
+
 
   const handleDescription = (e) => {
     if (formParams.description) {
@@ -82,16 +89,15 @@ const CreateForm = ({
     <div className="tabs">
       {keywords.slice(0, 3).map((item, index) => (
         <div className="group relative" key={index}>
-       
           <button
-            id={ keywords === colourWords ? id+index : id } // Ensure that each button has a unique id
+            id={keywords === colourWords ? id + index : id} // Ensure that each button has a unique id
             value={item} //colour name
             onClick={(e) => onClick(e, e.target.id)} // Pass the item and id to the onClick function
             style={
               id.includes("colour")
                 ? {
                     backgroundColor: item,
-                    color: "transparent"
+                    color: "transparent",
                   }
                 : null
             }
@@ -101,7 +107,7 @@ const CreateForm = ({
                 : ""
             }`}
           >
-            {!id.includes("colour") ? "#" + item : "#" }  
+            {!id.includes("colour") ? "#" + item : "#"}
           </button>
           <span className="absolute flex bottom-10 scale-0 transition-all rounded-full bg-gray-900 p-2 text-xs text-white group-hover:scale-100 capitalize">
             <MdOutlineRemoveCircleOutline fontSize={16} />
@@ -114,16 +120,17 @@ const CreateForm = ({
 
   // Handle the selector dropdown inputs
   const SelectOptions = ({ id, options, value, onChange }) => (
-    
     <select
       id={id}
       value={value}
       onChange={(e) => onChange(id, e.target.value)}
-      className={"text-white outline-none blue-glassmorphism w-half rounded bg-[#313751] shadow-2xl border-none"  }
+      className={
+        "text-white outline-none blue-glassmorphism w-half rounded bg-[#313751] shadow-2xl border-none"
+      }
     >
       {options.map((option, index) => (
         <option key={index} value={option.name}>
-          {option.name} 
+          {option.name}
         </option>
       ))}
     </select>
@@ -131,9 +138,6 @@ const CreateForm = ({
 
   console.log("formparams: ", formParams);
   console.log("activeKeywords: ", activeKeywords);
-
-
-
 
   return (
     <form>
@@ -172,12 +176,15 @@ const CreateForm = ({
           </div>
 
           {/* SELECTORS */}
-          <div className=" flex w-full justify-between pb-3 text-[#868686] text-sm ">INPUTS
-          <div className="group relative cursor-pointer mt-1">
-                    <BsInfoCircle fontSize={15} color="#fff" />
-                    <span className="flex absolute w-64 bottom-0 right-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
-                     Adding inputs below will assist the A.I. to generate your artwork and description, and help buyers find it. </span>
-                    </div>
+          <div className=" flex w-full justify-between pb-3 text-[#868686] text-sm ">
+            INPUTS
+            <div className="group relative cursor-pointer mt-1">
+              <BsInfoCircle fontSize={15} color="#fff" />
+              <span className="flex absolute w-64 bottom-0 right-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                Selecting inputs below will assist the A.I. to generate your
+                artwork and auto description.{" "}
+              </span>
+            </div>
           </div>
           <div className="check ">
             <SelectOptions
@@ -192,7 +199,7 @@ const CreateForm = ({
               value={""}
               onChange={handleSelect}
             />
-          </div>  
+          </div>
           <div className="check mt-3">
             <SelectOptions
               id="theme"
@@ -205,7 +212,6 @@ const CreateForm = ({
               options={textures}
               value={""}
               onChange={handleSelect}
-       
             />
           </div>
           <div className="check mt-3">
@@ -215,19 +221,19 @@ const CreateForm = ({
               value={""}
               onChange={handleSelect}
             />
-     
+
             <SelectOptions
-              id={ !formParams.colour0
-              ? "colour0"
-              : !formParams.colour1
-              ? "colour1"
-              : "colour2"}
+              id={
+                !formParams.colour0
+                  ? "colour0"
+                  : !formParams.colour1
+                  ? "colour1"
+                  : "colour2"
+              }
               options={colours}
               value={""}
               onChange={handleSelect}
-         
             />
-         
           </div>
 
           {/* TAGS */}
@@ -268,11 +274,10 @@ const CreateForm = ({
               keywords={colourWords}
               onClick={handleChecked}
             />
-
           </div>
 
           {/* DESCRIPTION */}
-          <div className=" text-white leading-tight mb-2 w-full">
+          <div className="  leading-tight mb-2 w-full">
             <div className="py-2 text-[#868686] text-sm uppercase">
               {" "}
               {!formParams.description &&
@@ -327,33 +332,74 @@ const CreateForm = ({
         </>
 
         {/* BUTTONS */}
-        <div className="flex w-full justify-end text-white gap-x-3 relative">
-          {!isChecked ? (
+        {fileURL ? (
+          <div className="flex w-full justify-end text-white gap-x-3 group relative">
             <button
               type="button"
-              onClick={OnCreateFile}
-              value="Create"
+              onClick={() => (setFileURL(""), updateMessage(""))}
+              // value="Create"
               className={
-                formParams.name &&
-                formParams.collection &&
-                formParams.description
-                  ? "md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-indigo-500 px-3 h-10 rounded-lg hover:bg-transparent hover:text-indigo-500"
-                  : "md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-neutral-900 px-3 h-10 rounded-lg hover:bg-transparent hover:text-indigo-500"
+                "md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-[#F60C6d] border-none px-3 h-10 rounded-lg hover:bg-[#F60C6d] hover:brightness-125"
               }
             >
-              Generate
+              Remove Image &nbsp;
+              <FaUndoAlt fontSize={14} />
             </button>
-          ) : (
-            <input
-              onChange={(e) => OnUploadFile(e)}
-              type="file"
-              value=""
+            <button
+              type="button"
+              onClick={() => handleTab("tab2")}
+              value="tab2"
               className={
-                "md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-neutral-900 h-10 rounded-lg hover:bg-transparent hover:text-indigo-500"
+                "md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-indigo-500 brightness-90 px-3 h-10 rounded-lg hover:bg-indigo-500 hover:brightness-110"
               }
-            />
-          )}
-        </div>
+            >
+              Go To Mint&nbsp;
+              <MdOutlineKeyboardDoubleArrowRight
+                fontSize={26}
+                fontStyle={"bold"}
+              />
+            </button>
+          </div>
+        ) : (
+          <div className="flex w-full justify-end text-white gap-x-3 group relative">
+            {!isChecked ? (
+              <button
+                type="button"
+                onClick={OnCreateFile}
+                value=""
+                className={
+                  formParams.name &&
+                  formParams.collection &&
+                  formParams.description
+                    ? "md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-indigo-500 brightness-90 px-3 h-10 rounded-lg hover:bg-indigo-500 hover:brightness-110"
+                    : "md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-neutral-900 px-3 h-10 rounded-lg hover:bg-transparent hover:text-indigo-500"
+                }
+              >
+               { isCreating ?  "Generating..." : "Generate Image" }
+              </button>
+            ) : (
+              <input
+                onChange={(e) => OnUploadFile(e)}
+                type="file"
+                value=""
+                className={
+                  formParams.name &&
+                  formParams.collection &&
+                  formParams.description
+                    ? "md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-indigo-500 brightness-90  h-10 rounded-lg hover:bg-indigo-500 hover:brightness-110"
+                    : "md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-neutral-900  h-10 rounded-lg hover:bg-transparent hover:text-indigo-500"
+                }
+              />
+            )}
+            <span className="flex absolute w-44 bottom-12 right-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+              {formParams.name &&
+              formParams.collection &&
+              formParams.description
+                ? "Click when ready to proceed..."
+                : "Enter a collection name, title and a description to proceed."}
+            </span>
+          </div>
+        )}
       </div>
     </form>
   );
