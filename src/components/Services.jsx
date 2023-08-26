@@ -5,7 +5,7 @@ import { RiHeart2Fill } from "react-icons/ri";
 import { SiEthereum } from "react-icons/si";
 
 const ServiceCard = ({ color, title, icon, subtitle }) => (
-  <div className="flex flex-row justify-start items-start white-glassmorphism p-5 m-2 cursor-pointer hover:shadow-xl  ">
+  <div className="flex flex-row justify-start items-start white-glassmorphism p-5 m-2 cursor-pointer hover:shadow-xl  2xl:mx-[10%]">
     <div
       className={`w-10 h-10 mt-2 rounded-full flex justify-center items-center ${color}`}
     >

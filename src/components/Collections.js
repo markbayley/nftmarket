@@ -8,7 +8,7 @@ const Collections = () => {
 
    console.log("topCollections", topCollections)
   return (
-    <div className="md:mt-12 md:mb-36 mb-8">
+    <div className="md:mt-12 md:mb-36 mb-8 2xl:mx-[5%]">
       {/* HEADING */}
       <div className="flex w-full justify-start items-center fade-in ">
         <div className="flex mf:flex-row flex-col items-center justify-between md:px-20 py-5 px-4 ">

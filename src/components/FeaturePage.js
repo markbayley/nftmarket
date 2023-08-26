@@ -38,7 +38,7 @@ const FeaturePage = () => {
   const backLink = creatorNFTs.length.toString();
 
   return (
-    <div className="mx-2 lg:mx-[10%] xl:mx-[20%] pb-20  ">
+    <div className="mx-2 lg:mx-[10%] 2xl:mx-[20%]  pb-20  ">
       <SubMenu
         title="Profile"
         subtitle="View Featured Creator"
@@ -50,7 +50,7 @@ const FeaturePage = () => {
         creatorAddress={creatorAddress}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 mt-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4  mt-2 ">
         {/* LEFT SIDE */}
         <div className="flex flex-col justify-start items-start white-glassmorphism p-5 pt-8 h-auto cursor-pointer hover:shadow-xl mb-4 md:mb-0">
           <div className="relative w-full">
@@ -141,7 +141,7 @@ const FeaturePage = () => {
           </div>
         </div>
         {/* RIGHT SIDE */}
-        <div className=" text-lg">
+        <div className=" text-lg max-w-[450px]">
           <Slider {...settings}>
             {creatorNFTs
               .reverse()

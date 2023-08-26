@@ -19,8 +19,8 @@ const CreateImage = ({
   const viewLink =
   marketData && marketData[marketData?.length - 1].tokenId?.toString();
 
-  console.log("viewlink", viewLink)
-  console.log("hashlink", hashLink)
+  // console.log("viewlink", viewLink)
+  // console.log("hashlink", hashLink)
   return (
     <div className="w-full  aspect-square mt-2">
       {/* // Create */}

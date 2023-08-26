@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import CreateImage from "./CreateImage";
 import CreateForm from "./CreateForm";
 import MintForm from "./MintForm";
@@ -9,6 +9,9 @@ import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 import Marketplace from "../abis/Marketplace.json";
 import { uploadFileToIPFS, uploadJSONToIPFS } from "../utils/pinata";
 import axios from "axios";
+import { BsFillTrash2Fill } from "react-icons/bs";
+import { FaTrashAlt } from "react-icons/fa";
+import Loader from "./Loader";
 
 const Create = () => {
   const {
@@ -40,7 +43,8 @@ const Create = () => {
     setTransactionHash,
     getAllNFTs,
     setDateCreated,
-    setIsUploading
+    setIsUploading,
+    fileURLs, setFileURLs
   } = useContext(TransactionContext);
 
   // window.localStorage.setItem("activeKeywords", activeKeywords);
@@ -48,7 +52,6 @@ const Create = () => {
 
   //UPLOADING FUNCTION
   const OnUploadFile = async (e) => {
-
     e.preventDefault();
 
     if (isChecked) {
@@ -74,9 +77,12 @@ const Create = () => {
   };
 
   //CREATING FUNCTION
-  const OnCreateFile = async (e) => {
 
-    if (!formParams.collection || !formParams.name ) {
+  const [files, setFiles] = useState([]);
+  // const [fileURLs, setFileURLs] = useState([]);
+
+  const OnCreateFile = async (e, i) => {
+    if (!formParams.collection || !formParams.name) {
       // updateMessage("Enter a collection name and title");
       return -1;
     }
@@ -86,6 +92,9 @@ const Create = () => {
       return -1;
     }
 
+    console.log("i", i);
+    console.log("formparams: ", formParams);
+    console.log("activeKeywords: ", activeKeywords);
 
     setIsCreating(true);
     updateMessage("Generating AI image...");
@@ -108,7 +117,9 @@ const Create = () => {
           " " +
           formParams.description +
           " " +
-          activeKeywords,
+          activeKeywords +
+          " " +
+          i,
         options: { wait_for_model: true },
       }),
       responseType: "arraybuffer",
@@ -122,20 +133,28 @@ const Create = () => {
 
     setFile(filePinata);
     setFileURL(file);
+
+    setFiles((prevArr) => [...prevArr, filePinata]);
+    console.log("files", files);
+    // setFileURLs((prevArr) => ([...prevArr, file]));
+    // console.log("fileURLs-file", fileURLs);
+
     setIsCreating(false);
 
     try {
       updateMessage("Storing image..");
-      const response = await uploadFileToIPFS(filePinata);
+      const response = await uploadFileToIPFS(filePinata, formParams.collection, formParams.name);
       if (response.success === true) {
         updateMessage("AI Image created!");
         setFileURL(response.pinataURL);
+        setFileURLs((prevArr) => [...prevArr, response.pinataURL]);
+        console.log("fileURLs-response", fileURLs);
       }
     } catch (e) {
       setIsCreating(false);
       updateMessage("Install MetaMask to mint NFTs");
     }
-    updateMessage("Success! Select the next tab to mint NFT");
+  updateMessage("Success! Select the next tab to mint NFT");
     setIsCreating(false);
 
     return data;
@@ -213,7 +232,7 @@ const Create = () => {
         { trait_type: trait5, value: value5 },
         { trait_type: trait6, value: value6 },
       ],
-      mintParams : [
+      mintParams: [
         { royalty: royalty },
         { listing: listing },
         { seal: seal },
@@ -241,7 +260,7 @@ const Create = () => {
     try {
       const metadataURL = await OnUploadMetadata();
 
-      console.log("metadataURL", metadataURL)
+      console.log("metadataURL", metadataURL);
 
       if (metadataURL === -1) return;
       setMetaData(metadataURL);
@@ -254,14 +273,15 @@ const Create = () => {
         Marketplace.abi,
         signer
       );
-
+   
       const price = ethers.utils.parseUnits(formParams.price, "ether");
       let listingPrice = await contract.getListPrice();
       listingPrice = listingPrice.toString();
-
+      
       let transaction = await contract.createToken(metadataURL, price, {
         value: listingPrice,
       });
+      updateMessage("Minting NFT...");
       await transaction.wait();
 
       console.log("transaction", transaction);
@@ -271,12 +291,18 @@ const Create = () => {
       setHashLink(`https://sepolia.etherscan.io/tx/${transaction.hash}`);
       updateMessage("Successfully listed your NFT!");
       setIsMinting(false);
-      setActiveKeywords([]);
+      // setActiveKeywords([]);
+      updateFormParams({
+        ...formParams,
+        description: "",
+        name: "", 
+        price: ""
+      })
 
       await getAllNFTs();
     } catch (e) {
       updateMessage("Connect MetaMask wallet to mint NFT.", e);
-      setIsMinting(false)
+      setIsMinting(false);
     }
   };
 
@@ -304,10 +330,24 @@ const Create = () => {
     }
   };
 
-  console.log("hashlink", hashLink, transactionHash)
+  // console.log("hashlink", hashLink, transactionHash)
+
+  const removeItem = (index) => {
+    const updatedItems = [...fileURLs]; // Create a copy of the original array
+    updatedItems.splice(index, 1);   // Remove the item at the specified index
+    setFileURLs(updatedItems);          // Update the state with the new array
+    setHashLink(null);
+  };
+
+  const viewLink = marketData && marketData[0]?.tokenId?.toString();
+
+  // console.log("viewlink", viewLink)   
+console.log("activeKeywords", activeKeywords, formParams)
+
+const [loaded, setLoaded] = useState(false);
 
   return (
-    <div className="fade-in lg:px-[6%]  px-2">
+    <div className="fade-in lg:px-[3%] xl:px-[6%]   px-2">
       <SubMenu
         title="Create NFTs"
         subtitle={
@@ -329,7 +369,7 @@ const Create = () => {
         marketData={marketData}
       />
 
-      <div className="form  md:py-5 md:px-[2%] gap-x-6 px-1 white-glassmorphism rounded-lg mt-2">
+      <div className="form  md:py-5 md:px-[2%] gap-x-6 px-1 white-glassmorphism rounded-lg mt-2 ">
         <CreateImage
           isUploading={isUploading}
           isCreating={isCreating}
@@ -341,6 +381,7 @@ const Create = () => {
           hashLink={hashLink}
           isChecked={isChecked}
           marketdata={marketData}
+       
         />
         <TETabsContent>
           <TETabsPane show={tab === "tab1"}>
@@ -358,7 +399,7 @@ const Create = () => {
               setFileURL={setFileURL}
               updateMessage={updateMessage}
               isCreating={isCreating}
-        
+              setHashLink={setHashLink}
             />
           </TETabsPane>
 
@@ -373,9 +414,55 @@ const Create = () => {
               OnMintNFT={OnMintNFT}
               transactionHash={transactionHash}
               hashLink={hashLink}
+              viewLink={viewLink}
             />
           </TETabsPane>
         </TETabsContent>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mt-5 ">
+        {fileURLs?.map((url, index) => (
+          <>
+          <div className="relative flex items-start justify-end ">
+            <button
+              key={index}
+              onClick={() => removeItem(index)}
+              className="absolute bottom-0 text-[14px] bg-[#F60C6d] hover:bg-[#F60C6d] border-none text-white h-7 cursor-pointer z-50  m-1 rounded hover:text-neutral-300"
+            >
+             < FaTrashAlt />
+            </button>
+
+            {loaded ? null : (
+          <div className="w-full aspect-square rounded seal ">
+            <label className="flex  items-center justify-center w-full h-full">
+              <div className="flex flex-col items-center justify-center ">
+                <Loader />
+                <p className="text-sm text-white ">LOADING IMAGE...</p>
+              </div>
+            </label>
+          </div>
+        )}
+            <img
+              src={url}
+              style={loaded ? {} : { display: "none" }}
+      
+              onLoad={() => setLoaded(true)}
+              alt="file-url"
+              className="rounded cursor-pointer shadow-lg hover:shadow-indigo-500/50 duration-200"
+              onClick={() => ( setFileURL(url),  setHashLink(""))}
+            />
+            <span className="absolute text-[16px] bg-amber-500 text-white px-2   m-1 rounded-full">
+              {index + 1}
+            </span>
+          </div>
+            {/* <button
+            value={index}
+            onClick={() => setFileURLs(fileURLs.splice(index, 1))}
+            className="absolute bottom-0 text-[14px] bg-[#F60C6d] text-white p-1 cursor-pointer z-50  m-1 rounded hover:text-neutral-300"
+          >
+            delete
+          </button> */}
+          </>
+        ))}
       </div>
     </div>
   );

@@ -342,18 +342,18 @@ const NFTPage = () => {
                       {/* <span className="absolute flex bottom-7 scale-0 transition-all rounded bg-gray-900  p-2 text-xs text-white group-hover:scale-100">
                         Metadata   <BiLinkExternal fontSize={16} />
                       </span> */}
-                      <a
+                      {/* <a
                         href={tokenData?.metadataURL || data.metadataURL}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
                         {" "}
                         <BiLinkExternal fontSize={18} className="" />
-                      </a>
+                      </a> */}
 
                       <div className="group relative cursor-pointer">
-                    <BsInfoCircle fontSize={16} color="#fff" />
-                    <span className="flex absolute w-52 -bottom-2 right-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                    <BsInfoCircle fontSize={16} className="text-teal-500 hover:scale-[1.1]" />
+                    <span className="flex absolute w-52 -bottom-2 left-6 scale-0 transition-all rounded bg-teal-600 p-2 text-xs text-white group-hover:scale-100">
                       Unique traits can help to enhance the rarity and value of your NFTs. </span>
                     </div>
                     </div>
@@ -393,7 +393,7 @@ const NFTPage = () => {
                       <Link to={{ pathname: `/Explore/${tag.value}` }}>
                         <div className="group relative">
                           <button
-                            id={tag.id}
+                            id={ tag.id.includes("colour") ? "colour" : tag.id}
                             style={ tag.id.includes("colour") ? { background: tag.value, color: "transparent" } : null}
                             value={tag.value}
                             onClick={(id) => handleCollection(id)}
@@ -525,8 +525,8 @@ const NFTPage = () => {
                   {tokenData?.date ? "on " + tokenData?.date : ""}
               
                 <div className="group relative cursor-pointer mb-1">
-                    <BsInfoCircle fontSize={16} color="#fff" />
-                    <span className="flex absolute w-64 bottom-0 right-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+                    <BsInfoCircle fontSize={16} className="text-teal-500 hover:scale-[1.1]" />
+                    <span className="flex absolute w-64 bottom-0 right-6 scale-0 transition-all rounded bg-teal-600 p-2 text-xs text-white group-hover:scale-100">
                       A Sell panel will appear below when you are connected if you are the owner of this NFT. </span>
                     </div>
                     </div>

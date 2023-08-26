@@ -8,11 +8,20 @@ import {
   themes,
 } from "../data/lists.js";
 import {
+  MdLayers,
   MdOutlineKeyboardDoubleArrowRight,
   MdOutlineRemoveCircleOutline,
 } from "react-icons/md";
-import { BsInfoCircle } from "react-icons/bs";
-import { FaUndoAlt } from "react-icons/fa";
+// import { BsInfoCircle } from "react-icons/bs";
+import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
+import { LuLayers } from "react-icons/lu";
+import {
+  BsFillLayersFill,
+  BsGear,
+  BsGearFill,
+  BsInfoCircle,
+  BsLayers,
+} from "react-icons/bs";
 
 const CreateForm = ({
   formParams,
@@ -27,7 +36,8 @@ const CreateForm = ({
   fileURL,
   setFileURL,
   updateMessage,
-  isCreating
+  isCreating,
+  setHashLink
 }) => {
   // Define the auto description input
   const [autoDescription, setAutoDescription] = useState(false);
@@ -37,8 +47,8 @@ const CreateForm = ({
     formParams.collection +
     "' this artwork entitled '" +
     formParams.name +
-    "' was made using a digital "  
-     + formParams.medium  +
+    "' was made using a digital " +
+    formParams.medium +
     " medium in a creative " +
     formParams?.style +
     " style. The " +
@@ -54,7 +64,6 @@ const CreateForm = ({
     " colors and " +
     formParams.artist +
     " influences.";
-
 
   const handleDescription = (e) => {
     if (formParams.description) {
@@ -84,6 +93,28 @@ const CreateForm = ({
   const colourWords = filterKeywordsByArray(activeKeywords, colours, "name");
   const themeWords = filterKeywordsByArray(activeKeywords, themes, "name");
   const mediumWords = filterKeywordsByArray(activeKeywords, mediums, "name");
+
+  const countWords = (id) => {
+    return id === "style"
+      ? styleWords.length
+      : id === "medium"
+      ? mediumWords.length
+      : id === "texture"
+      ? textureWords.length
+      : id === "artist"
+      ? artistWords.length
+      : id === "theme"
+      ? themeWords.length
+      : colourWords.length;
+  };
+
+  const [creatingSet, setCreatingSet] = useState(false);
+  const OnCreateSet = () => {
+    for (var i = 0; i < 5; i++) {
+      setCreatingSet(true);
+      OnCreateFile(i);
+    }
+  };
 
   const KeywordButtons = ({ activeKeywords, keywords, onClick, id }) => (
     <div className="tabs">
@@ -129,15 +160,22 @@ const CreateForm = ({
       }
     >
       {options.map((option, index) => (
-        <option key={index} value={option.name}>
-          {option.name}
+        <option
+          key={index}
+          value={option.name}
+          className={
+            activeKeywords.includes(option.name)
+              ? "text-indigo-500"
+              : "text-white"
+          }
+        >
+          {index === 0
+            ? option.name + " " + "(" + countWords(id) + ")"
+            : option.name}
         </option>
       ))}
     </select>
   );
-
-  console.log("formparams: ", formParams);
-  console.log("activeKeywords: ", activeKeywords);
 
   return (
     <form>
@@ -147,7 +185,7 @@ const CreateForm = ({
           <div className="flex w-full mb-3 justify-between gap-x-2.5">
             <input
               required
-              className="w-full xl:w-[48%] rounded-sm outline-none text-white border-none white-glassmorphism select:bg-red-500"
+              className="w-full xl:w-[50%] rounded-sm outline-none text-white border-none white-glassmorphism select:bg-red-500"
               type="text"
               placeholder="NFT Collection..."
               id="collection"
@@ -160,7 +198,7 @@ const CreateForm = ({
               value={formParams.collection}
             ></input>
             <input
-              className="w-full xl:w-[48%] rounded-sm outline-none text-white border-none white-glassmorphism"
+              className="w-full xl:w-[50%] rounded-sm outline-none text-white border-none white-glassmorphism"
               required
               type="text"
               placeholder="NFT Title..."
@@ -176,11 +214,14 @@ const CreateForm = ({
           </div>
 
           {/* SELECTORS */}
-          <div className=" flex w-full justify-between pb-3 text-[#868686] text-sm ">
-            INPUTS
-            <div className="group relative cursor-pointer mt-1">
-              <BsInfoCircle fontSize={15} color="#fff" />
-              <span className="flex absolute w-64 bottom-0 right-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
+          <div className=" flex w-full justify-between items-center pb-3 text-[#868686] text-sm ">
+            A.I. INPUTS
+            <div className="group relative cursor-pointer">
+              <BsInfoCircle
+                fontSize={16}
+                className="text-teal-500 hover:scale-[1.1]"
+              />
+              <span className="flex absolute w-64 bottom-0 right-6 scale-0 transition-all rounded bg-teal-600  p-2 text-xs text-white group-hover:scale-100">
                 Selecting inputs below will assist the A.I. to generate your
                 artwork and auto description.{" "}
               </span>
@@ -277,12 +318,13 @@ const CreateForm = ({
           </div>
 
           {/* DESCRIPTION */}
-          <div className="  leading-tight mb-2 w-full">
+          <div className="  leading-tight mb-2 w-full ">
             <div className="py-2 text-[#868686] text-sm uppercase">
               {" "}
-              {!formParams.description &&
-              formParams.collection &&
-              formParams.name ? (
+              {!formParams.description ?
+              // formParams.collection &&
+              // formParams.name ?
+               (
                 <p>
                   Write a description or{" "}
                   <button
@@ -295,19 +337,16 @@ const CreateForm = ({
                   one.
                 </p>
               ) : (
-                <>
-                  <p>
-                    DESCRIPTION
-                    <button
-                      className=" text-indigo-500 h-6 px-0 bg-transparent border-none hover:bg-transparent"
-                      value={fill}
-                      onClick={(e) => handleDescription(e)}
-                    >
-                      {" "}
-                      &nbsp;&nbsp;CLEAR
-                    </button>
-                  </p>
-                </>
+                <p className=" ">
+                  DESCRIPTION
+                  <button
+                    className=" text-indigo-500 h-6 px-0 bg-transparent border-none hover:bg-transparent"
+                    value={fill}
+                    onClick={(e) => handleDescription(e)}
+                  >
+                &nbsp;&nbsp;CLEAR
+                  </button>
+                </p>
               )}
             </div>
             {!autoDescription ? (
@@ -322,7 +361,7 @@ const CreateForm = ({
                 value={formParams.description}
                 id="description"
                 rows="3"
-                className="mb-3 block py-1.5 px-2.5 w-full text-white rounded border border-[#6c63ff] focus:ring-blue-500 focus:border-blue-500 white-glassmorphism"
+                className="mb-3 block py-1.5 px-2.5 w-full text-white rounded border border-b-[#6c63ff] white-glassmorphism mt-1"
                 placeholder="NFT Description..."
               ></textarea>
             ) : (
@@ -336,21 +375,21 @@ const CreateForm = ({
           <div className="flex w-full justify-end text-white gap-x-3 group relative">
             <button
               type="button"
-              onClick={() => (setFileURL(""), updateMessage(""))}
+              onClick={() => (setFileURL(""), updateMessage(""),  setHashLink(null))}
               // value="Create"
               className={
                 "md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-[#F60C6d] border-none px-3 h-10 rounded-lg hover:bg-[#F60C6d] hover:brightness-125"
               }
             >
-              Remove Image &nbsp;
-              <FaUndoAlt fontSize={14} />
+              Remove&nbsp;Image&nbsp;
+              <MdOutlineRemoveCircleOutline fontSize={20} />
             </button>
             <button
               type="button"
-              onClick={() => handleTab("tab2")}
+              onClick={() => (handleTab("tab2"), updateMessage(""))}
               value="tab2"
               className={
-                "md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-indigo-500 brightness-90 px-3 h-10 rounded-lg hover:bg-indigo-500 hover:brightness-110"
+                "md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-amber-500 brightness-90 px-3 h-10 rounded-lg hover:bg-amber-500 hover:brightness-110"
               }
             >
               Go To Mint&nbsp;
@@ -361,22 +400,76 @@ const CreateForm = ({
             </button>
           </div>
         ) : (
-          <div className="flex w-full justify-end text-white gap-x-3 group relative">
+          <div className="flex w-full justify-end text-white gap-x-3 group relative ">
             {!isChecked ? (
-              <button
-                type="button"
-                onClick={OnCreateFile}
-                value=""
-                className={
-                  formParams.name &&
-                  formParams.collection &&
-                  formParams.description
-                    ? "md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-indigo-500 brightness-90 px-3 h-10 rounded-lg hover:bg-indigo-500 hover:brightness-110"
-                    : "md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-neutral-900 px-3 h-10 rounded-lg hover:bg-transparent hover:text-indigo-500"
-                }
-              >
-               { isCreating ?  "Generating..." : "Generate Image" }
-              </button>
+              <>
+                <button
+                  type="button"
+                  onClick={OnCreateSet}
+                  value=""
+                  className={
+                    formParams.name &&
+                    formParams.collection &&
+                    formParams.description
+                      ? "pl-0 md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center  bg-teal-500 brightness-90  h-10 rounded-lg hover:bg-teal-500 hover:brightness-110"
+                      : "pl-0 md:w-1/2 w-full group shadow-lg shadow-indigo-500/30 flex items-center  bg-neutral-900  h-10 rounded-lg hover:bg-transparent hover:text-indigo-500"
+                  }
+                >
+                  {isCreating && creatingSet ? (
+                    <span className="flex items-center justify-center w-full"> Generating Set...</span>
+                  ) : (
+                    <>
+                      <select
+                        className="flex outline-none p-0  md:pl-3 py-2  min-w-[0px] max-w-[80px] h-[40px] bg-transparent z-50 shadow-2xl border-none backdrop-brightness-90 hover:brightness-110"
+                        //   onChange={(e) => handleTab(e.target.value)}
+                      >
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                      </select>
+                     <span className="flex items-center justify-center w-11/12 md:w-7/12"> Collection&nbsp; <LuLayers /></span>
+                    </>
+                  )}
+                           <span className="flex absolute w-64 bottom-12 right-0 scale-0 transition-all rounded bg-teal-600 p-2 text-xs text-white group-hover:scale-100">
+              {!formParams.name || !formParams.collection
+                ? "Enter a collection name and title to proceed."
+                : !formParams.description
+                ? "Select some inputs to complete description."
+                : "Generate a collection or a single image..."}
+            </span>
+                </button>
+       
+
+                <button
+                  type="button"
+                  onClick={OnCreateFile}
+                  value=""
+                  className={
+                    formParams.name &&
+                    formParams.collection &&
+                    formParams.description
+                      ? "md:w-6/12 w-full group2 shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-indigo-500 brightness-90 px-3 h-10 rounded-lg hover:bg-indigo-500 hover:brightness-110"
+                      : "md:w-6/12 w-full group2 shadow-lg shadow-indigo-500/30 flex items-center justify-center bg-neutral-900 px-3 h-10 rounded-lg hover:bg-transparent hover:text-indigo-500"
+                  }
+                >
+                  {isCreating && !creatingSet ? (
+                     <span className="flex items-center justify-center w-full"> Generating Image...</span>
+                  ) : (
+                    <>
+                      Image&nbsp; <BsGearFill />
+                    </>
+                  )}
+                      {/* <span className="flex absolute w-64 bottom-12 right-0 scale-0 transition-all rounded bg-teal-600 p-2 text-xs text-white group-hover:scale-100">
+              {!formParams.name || !formParams.collection
+                ? "Enter a collection name and title to proceed."
+                : !formParams.description
+                ? "Select some inputs to complete description."
+                : "Generate a collection or a single image..."}
+            </span> */}
+                </button>
+              </>
             ) : (
               <input
                 onChange={(e) => OnUploadFile(e)}
@@ -391,13 +484,7 @@ const CreateForm = ({
                 }
               />
             )}
-            <span className="flex absolute w-44 bottom-12 right-6 scale-0 transition-all rounded bg-gray-900 p-2 text-xs text-white group-hover:scale-100">
-              {formParams.name &&
-              formParams.collection &&
-              formParams.description
-                ? "Click when ready to proceed..."
-                : "Enter a collection name, title and a description to proceed."}
-            </span>
+        
           </div>
         )}
       </div>

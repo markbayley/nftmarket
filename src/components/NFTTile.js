@@ -39,7 +39,7 @@ const NFTTile = (data) => {
         {data.data.seal === "Yes" && (
           <div className="w-[2em] h-[2em] rounded-full border  flex justify-center items-center absolute top-[6.5%] left-[6.7%] eth-card group seal  duration-300">
             <SiEthereum fontSize="1em" color="#fff" />
-            <span className="absolute bottom-10 scale-0 transition-all rounded bg-gray-900 p-2 text-xs group-hover:scale-100 shadow-lg shadow-indigo-500/50 duration-200 z-50">
+            <span className="absolute bottom-10 scale-0 transition-all rounded bg-gray-900 p-2 text-xs group hover:scale-100 shadow-lg shadow-indigo-500/50 duration-200 z-50">
               Token&nbsp;#{data.data.tokenId} {data.data.price}&nbsp;ETH
             </span>
           </div>

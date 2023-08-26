@@ -55,6 +55,6 @@ export const RandomIcons = () => {
     const RandomIcon = availableIcons[randomIndex];
 
     return (
-      <RandomIcon fontSize="2.4em" color="orange" className="drop-shadow" />
+      <RandomIcon fontSize="2.4em" color="orange" className="drop-shadow " />
     );
   }
