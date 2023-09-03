@@ -18,16 +18,30 @@ const Input = ({
   name,
   type,
   value,
-  handleChange,
   handleProfile,
+}) => (
+  <input
+    placeholder={placeholder}
+    type={type}
+    value={value}
+    onChange={(e) => handleProfile(e, name)}
+    className="mb-3 p-3 w-full rounded-sm outline-none text-white border border-b-[#6c63ff] shadow-2xl white-glassmorphism"
+  />
+);
+
+const Input2 = ({
+  placeholder,
+  name,
+  type,
+  value,
+  handleChange,
 }) => (
   <input
     placeholder={placeholder}
     type={type}
     step="0.0001"
     value={value}
-    // onChange={(e) => handleChange(e, name)}
-    onChange={(e) => handleProfile(e, name)}
+     onChange={(e) => handleChange(e, name)}
     className="mb-3 p-3 w-full rounded-sm outline-none text-white border border-b-[#6c63ff] shadow-2xl white-glassmorphism"
   />
 );
@@ -53,9 +67,9 @@ const Wallet = () => {
 
   //TRANSACTION
   const handleSubmitTransaction = (e) => {
-    const { addressTo, amount, keyword, message } = formData;
+    const { addressTo, amount, message } = formData;
     e.preventDefault();
-    if (!addressTo || !amount || !keyword || !message) return;
+    if (!addressTo || !amount || !message) return;
     sendTransaction();
   };
 
@@ -195,19 +209,19 @@ const Wallet = () => {
 
               {/* SEND FORM */}
               <div className=" md:w-96  w-full flex flex-col justify-center items-center px-2 md:px-0 md:py-2 max-w-[410px] ">
-                <Input
+                <Input2
                   placeholder="Address To"
                   name="addressTo"
                   type="text"
                   handleChange={handleChange}
                 />
-                <Input
+                <Input2
                   placeholder="Amount (ETH)"
                   name="amount"
                   type="number"
                   handleChange={handleChange}
                 />
-                <Input
+                <Input2
                   placeholder="Enter Message"
                   name="message"
                   type="text"

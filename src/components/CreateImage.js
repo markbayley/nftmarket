@@ -41,8 +41,8 @@ const CreateImage = ({
               {hashLink && formParams.seal === "Yes" && (
                 <Link to={hashLink} target="_blank" rel="noopener noreferrer">
                   <div className="w-10 h-10 rounded-full border flex justify-center items-center absolute top-2 left-2 eth-card seal group ">
-                    <span className="absolute  bottom-10 scale-0 transition-all rounded bg-gray-700 p-2 text-xs text-white group-hover:scale-100">
-                      Authenticty&nbsp;Seal:&nbsp;Click&nbsp;to&nbsp;verify&nbsp;NFT
+                    <span className="absolute  bottom-11 scale-0 transition-all rounded bg-neutral-900 p-2 text-xs text-white group-hover:scale-100">
+                      Minting&nbsp;Seal:&nbsp;Click&nbsp;to&nbsp;verify&nbsp;NFT
                     </span>
                     <SiEthereum fontSize={21} color="#fff" />
                   </div>

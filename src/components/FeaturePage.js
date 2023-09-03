@@ -28,12 +28,14 @@ const FeaturePage = () => {
   const creatorAddress = params.creatorAddress;
 
   const creatorNFTs = marketData
-    .reverse()
+    //.reverse()
     .filter(
       (item) =>
         (item[id] && shortenAddress(item[id]) === creatorAddress) ||
-        "0x8d0...Ba2B"
+        "0xcFB...38fF"
     );
+
+    console.log("creatorNFTs", creatorNFTs, "id", id, creatorAddress);
 
   const backLink = creatorNFTs.length.toString();
 
@@ -144,8 +146,8 @@ const FeaturePage = () => {
         <div className=" text-lg max-w-[450px]">
           <Slider {...settings}>
             {creatorNFTs
-              .reverse()
-              .slice(creatorNFTs.length - 8)
+               .reverse()
+              .slice(0, 8)
               .map((data) => (
                 <NFTTile data={data} key={data.tokenId} />
               ))}

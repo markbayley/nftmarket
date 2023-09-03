@@ -383,10 +383,10 @@ const NFTPage = () => {
 
               {/* VEIW TAGS */}
               <div className="flex flex-wrap mt-2">
-                <div className="text-[#868686] text-sm mt-3 w-96 md:w-11 ">
+                {/* <div className="text-[#868686] text-sm mt-3 w-96 md:w-11 ">
                   {" "}
                   TAGS
-                </div>
+                </div> */}
                 <div className=" flex items-center text-[#868686] text-sm h-fit ">
                   <div className="flex flex-wrap ">
                     {tagsArray?.map((tag) => (

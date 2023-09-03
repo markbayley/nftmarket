@@ -13,7 +13,7 @@ export const uploadJSONToIPFS = async(JSONBody) => {
             headers: {
                 pinata_api_key: key,
                 pinata_secret_api_key: secret,
-            }
+            },
         })
         .then(function (response) {
            return {
@@ -42,7 +42,7 @@ export const uploadFileToIPFS = async(file, collection, title) => {
     const metadata = JSON.stringify({
         name: collection + ": " + title,
         keyvalues: {
-            exampleKey: 'exampleValue'
+            exampleKey: title
         }
     });
     data.append('pinataMetadata', metadata);

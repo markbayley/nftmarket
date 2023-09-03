@@ -241,7 +241,7 @@ const Create = () => {
     };
 
     try {
-      const response = await uploadJSONToIPFS(nftJSON);
+      const response = await uploadJSONToIPFS(nftJSON, formParams.collection, formParams.name);
       if (response.success === true) {
         return response.pinataURL;
       }
@@ -420,7 +420,7 @@ const [loaded, setLoaded] = useState(false);
         </TETabsContent>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mt-5 ">
-        {fileURLs?.map((url, index) => (
+        {fileURLs?.reverse().map((url, index) => (
           <>
           <div className="relative flex items-start justify-end ">
             <button
@@ -450,9 +450,9 @@ const [loaded, setLoaded] = useState(false);
               className="rounded cursor-pointer shadow-lg hover:shadow-indigo-500/50 duration-200"
               onClick={() => ( setFileURL(url),  setHashLink(""))}
             />
-            <span className="absolute text-[16px] bg-amber-500 text-white px-2   m-1 rounded-full">
+            {/* <span className="absolute text-md bg-amber-500 text-white px-2    m-1 rounded-full">
               {index + 1}
-            </span>
+            </span> */}
           </div>
             {/* <button
             value={index}
